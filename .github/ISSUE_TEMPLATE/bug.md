@@ -1,6 +1,6 @@
 ---
 name: Bug
-about: 버그 발
+about: 버그가 생겼어요
 title: ''
 labels: ''
 assignees: ''
