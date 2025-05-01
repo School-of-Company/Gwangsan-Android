@@ -1,14 +1,9 @@
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
-        google {
-            content {
-                includeGroupByRegex("com\\.android.*")
-                includeGroupByRegex("com\\.google.*")
-                includeGroupByRegex("androidx.*")
-            }
-        }
-        mavenCentral()
-        gradlePluginPortal()
+            google()
+            mavenCentral()
+            gradlePluginPortal()
     }
 }
 dependencyResolutionManagement {
@@ -28,6 +23,6 @@ include(":core:datastore")
 include(":core:design-system")
 include(":core:model")
 include(":core:network")
-include(":build-logic")
 include(":core:ui")
 include(":feature")
+gradle.startParameter.excludedTaskNames.addAll(listOf(":build-logic:convention:testClasses"))
