@@ -32,7 +32,7 @@ object GwangSanTypography {
     val titleMedium2 = TextStyle(
         fontFamily = pretendard,
         fontWeight = FontWeight.SemiBold,
-        fontSize = 36.sp,
+        fontSize = 26.sp,
         lineHeight = 31.2.sp
     )
 
