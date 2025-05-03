@@ -12,5 +12,4 @@ android {
 dependencies {
     implementation(libs.coil.kt)
     implementation(libs.androidx.material.ripple)
-    implementation(libs.lottie.compose)
 }
