@@ -17,46 +17,40 @@ tasks.withType<KotlinCompile>().configureEach {
 }
 
 dependencies {
-    compileOnly(libs.android.gradlePlugin)
-    compileOnly(libs.kotlin.gradlePlugin)
-    compileOnly(libs.ksp.gradlePlugin)
+    implementation(libs.android.gradlePlugin)
+    implementation(libs.kotlin.gradlePlugin)
+    implementation(libs.ksp.gradlePlugin)
 }
 
 gradlePlugin {
     plugins {
         register("androidApplication") {
             id = "gwangsan.android.application"
-            implementationClass = "com.school_of_company.convention.AndoridApplicationConventionPlugin"
+            implementationClass = "com.school_of_company.convention.AndroidApplicationConventionPlugin"
         }
-
         register("androidHilt") {
             id = "gwangsan.android.hilt"
-            implementationClass = "com.school_of_company.convention.AndoridHiltConventionPlugin"
+            implementationClass = "com.school_of_company.convention.AndroidHiltConventionPlugin"
         }
-
         register("androidLint") {
             id = "gwangsan.android.lint"
-            implementationClass = "AndroidLintConventionPlugin"
+            implementationClass = "com.school_of_company.convention.AndroidLintConventionPlugin"
         }
-
         register("androidCore") {
             id = "gwangsan.android.core"
-            implementationClass = "AndoridCoreConventionPlugin"
+            implementationClass = "com.school_of_company.convention.AndroidCoreConventionPlugin"
         }
-
         register("androidCompose") {
             id = "gwangsan.android.compose"
-            implementationClass = "AndroidComposeConventionPlugin"
+            implementationClass = "com.school_of_company.convention.AndroidComposeConventionPlugin"
         }
-
-        register("androidFeautre") {
+        register("androidFeature") {
             id = "gwangsan.android.feature"
-            implementationClass = "AndroidFeatureConventionPlugin"
+            implementationClass = "com.school_of_company.convention.AndroidFeatureConventionPlugin"
         }
-
         register("jvmLibrary") {
             id = "gwangsan.jvm.library"
-            implementationClass = "JvmLibraryConventionPlugin"
+            implementationClass = "com.school_of_company.convention.JvmLibraryConventionPlugin"
         }
     }
 }
