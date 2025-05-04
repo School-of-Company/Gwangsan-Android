@@ -15,13 +15,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.school_of_company.design_system.componet.button.state.ButtonState
 import com.school_of_company.design_system.componet.clickable.GwanGsanClickable
 import com.school_of_company.design_system.theme.GwangSanTheme
 
 @Composable
-fun GwangSanButton(
+fun GwAnGSanButton(
     modifier: Modifier = Modifier,
     text: String,
     color: Color,
@@ -45,30 +46,30 @@ fun GwangSanButton(
         ) {
             Text(
                 text = text,
-                style = typography.body1,
+                style = typography.body2,
                 fontWeight = FontWeight.SemiBold,
                 color = colors.white
             )
         }
     }
 }
-// 상태에 따라 활성화/비활성화 가능한 버튼 컴포저블
+
 @Composable
 fun GwangSanStateButton(
     modifier: Modifier = Modifier,
     text: String,
-    state: ButtonState = ButtonState.Enable, // 버튼의 상태 (기본값: Enable)
+    state: ButtonState = ButtonState.Enable,
     onClick: () -> Unit,
 ) {
     GwangSanTheme { colors, typography ->
 
-        val interactionSource = remember { MutableInteractionSource() } // 버튼의 상호작용 상태 저장
+        val interactionSource = remember { MutableInteractionSource() }
 
-        // 버튼의 상태에 따라 활성화 여부를 결정하는 람다
+
         val enabledState: (buttonState: ButtonState) -> Boolean = {
             when (it) {
-                ButtonState.Enable -> true  // Enable 상태면 활성화
-                ButtonState.Disable -> false // Disable 상태면 비활성화
+                ButtonState.Enable -> true
+                ButtonState.Disable -> false
             }
         }
 
@@ -79,7 +80,7 @@ fun GwangSanStateButton(
             colors = ButtonDefaults.buttonColors(
                 containerColor = colors.main500,
                 contentColor = colors.white,
-                disabledContainerColor = colors.gray200,//비활성화 버튼은 회색으로 처리
+                disabledContainerColor = colors.gray200,
                 disabledContentColor = colors.gray400
             ),
             contentPadding = PaddingValues(horizontal=22.dp, vertical = 13.dp),
@@ -94,7 +95,7 @@ fun GwangSanStateButton(
     }
 }
 
-// 항상 활성화된 버튼 컴포저블 (텍스트 색상과 배경색을 인자로 받음)
+
 @Composable
 fun GwangSanEnableButton(
     modifier: Modifier = Modifier,
@@ -114,10 +115,10 @@ fun GwangSanEnableButton(
             interactionSource = interactionSource,
             contentPadding = PaddingValues(horizontal=22.dp, vertical = 13.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = backgroundColor, // 배경색을 인자로 받음
+                containerColor = backgroundColor,
                 contentColor = colors.white,
             ),
-            shape = RoundedCornerShape(6.dp), // 버튼 테두리 둥글기 설정
+            shape = RoundedCornerShape(8.dp),
             onClick = onClick
         ) {
             Text(
@@ -127,4 +128,13 @@ fun GwangSanEnableButton(
             )
         }
     }
+}
+@Preview
+@Composable
+fun ButtonPreView(){
+    GwangSanStateButton(
+        text = "버튼",
+        state = ButtonState.Enable,
+        onClick = {}
+    )
 }
