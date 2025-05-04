@@ -15,10 +15,10 @@ jetbrainsKotlinJvm = "2.0.21"
 androidGradlePlugin = "8.9.2"
 coroutines = "1.8.1"
 coil = "2.7.0"
-materialRipple = "1.7.0"
+materialRipple = "1.8.0"
 lottieCompose = "6.4.1"
 ksp = "1.8.10-1.0.9"
-material3 = "1.2.1"
+material3 = "1.3.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -43,7 +43,7 @@ android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", ver
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "symbol-processing-gradle-plugin", version.ref = "ksp" }
 coil-kt = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
-androidx-material-ripple = { group = "androidx.compose.material", name = "material-ripple", version.ref = "materialRipple" }
+androidx-material-ripple = { module = "androidx.compose.material:material-ripple", version.ref = "materialRipple" }
 lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottieCompose" }
 compose = { module = "androidx.compose.ui:ui", version.ref = "composeBom" }
 
