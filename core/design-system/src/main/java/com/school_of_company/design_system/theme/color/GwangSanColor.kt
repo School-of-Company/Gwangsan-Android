@@ -1,4 +1,4 @@
-package com.kim.design_system.theme.color
+package com.school_of_company.design_system.theme.color
 
 import androidx.compose.ui.graphics.Color
 

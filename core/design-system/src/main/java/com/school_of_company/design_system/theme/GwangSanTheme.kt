@@ -1,8 +1,8 @@
-package com.kim.design_system.theme
+package com.school_of_company.design_system.theme
 
 import androidx.compose.runtime.Composable
-import com.kim.design_system.theme.color.ColorTheme
-import com.kim.design_system.theme.color.GwangSanColor
+import com.school_of_company.design_system.theme.color.ColorTheme
+import com.school_of_company.design_system.theme.color.GwangSanColor
 
 @Composable
 fun GwangSanTheme(
