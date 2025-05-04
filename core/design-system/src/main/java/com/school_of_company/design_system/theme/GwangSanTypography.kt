@@ -1,4 +1,4 @@
-package com.kim.design_system.theme
+package com.school_of_company.design_system.theme
 
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.text.TextStyle
