@@ -23,6 +23,7 @@ fun GwangSanTextField(
     placeHolder: String,
     errorText: String = "",
     isError: Boolean = false,
+    isDisabled: Boolean = false,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     onTextChange: (String) -> Unit,
@@ -55,6 +56,7 @@ fun GwangSanTextField(
                 maxLines = 1,
                 keyboardOptions = keyboardOptions,
                 readOnly = isReadOnly,
+                enabled = !isDisabled,
                 modifier = Modifier
                     .fillMaxWidth()
                     .onFocusChanged { isFocused.value = it.isFocused }
