@@ -26,7 +26,8 @@ fun GwangSanTextField(
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     onTextChange: (String) -> Unit,
-    icon: @Composable () -> Unit = {}
+    icon: @Composable () -> Unit = {},
+    isReadOnly: Boolean = false
 ) {
     var text by remember { mutableStateOf(value ?: "") }
     val isFocused = remember { mutableStateOf(false)}
@@ -53,6 +54,7 @@ fun GwangSanTextField(
                 textStyle = typography.body5,
                 maxLines = 1,
                 keyboardOptions = keyboardOptions,
+                readOnly = isReadOnly,
                 modifier = Modifier
                     .fillMaxWidth()
                     .onFocusChanged { isFocused.value = it.isFocused }
