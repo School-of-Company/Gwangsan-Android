@@ -85,7 +85,7 @@ object GwangSanTypography {
     )
 
     @Stable
-    val laBal = TextStyle(
+    val label = TextStyle(
         fontFamily = pretendard,
         fontWeight = FontWeight.Medium,
         fontSize = 14.sp,
