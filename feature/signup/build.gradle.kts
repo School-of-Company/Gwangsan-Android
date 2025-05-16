@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.school_of_company.signin"
+    namespace = "com.school_of_company.signup"
 }
 
 dependencies {
