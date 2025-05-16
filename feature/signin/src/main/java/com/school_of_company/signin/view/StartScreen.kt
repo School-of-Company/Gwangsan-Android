@@ -2,7 +2,6 @@ package com.school_of_company.signin.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -60,8 +59,7 @@ private fun LoginScreen(
 
                 GwangSanStateButton(
                     text = "로그인",
-                    modifier = Modifier
-                        .fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth()
                 ) {
                     onInputLoginClick()
                 }
