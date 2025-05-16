@@ -13,7 +13,7 @@ fun DownArrowIcon(
     tint: Color = Color.Unspecified
 ) {
     Icon(
-        painter = painterResource(id = R.drawable.frame_276),
+        painter = painterResource(id = R.drawable.back_icon),
         contentDescription = "뒤로가기",
         modifier = modifier,
         tint = tint
