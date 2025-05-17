@@ -96,7 +96,7 @@ private fun PasswordSignupScreen(
                 Spacer(modifier = Modifier.height(6.dp))
 
                 Text(
-                    text = "별칭을 입력해주세요",
+                    text = "비밀번호을 입력해주세요",
                     style = typography.label,
                     color = colors.black.copy(alpha = 0.5f),
                     fontWeight = FontWeight.Normal
@@ -113,7 +113,7 @@ private fun PasswordSignupScreen(
                     placeHolder = "비밀번호",
                     isError = isPasswordValidError,
                     isDisabled = false,
-                    errorText = "수고",
+                    errorText = "유효하지 않은 빌밀번호입니다.",
                     onTextChange = onPasswordChange,
                 )
 
@@ -124,12 +124,12 @@ private fun PasswordSignupScreen(
                         .fillMaxWidth()
                         .height(90.dp),
                     value = rePassword,
-                    placeHolder = "재확인 비밀번호",
+                    placeHolder = "비밀번호 재입력",
                     isError = isPasswordMismatchError,
                     isDisabled = false,
                     errorText = "비밀번호가 틀립니다.",
                     onTextChange = onRePasswordChange,
-                    label = "비밀번호 확인"
+                    label = "비밀번호를 다시 입력해주세요"
                 )
             }
             Column(
