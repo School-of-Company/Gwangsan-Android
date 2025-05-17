@@ -124,10 +124,10 @@ private fun SignInScreen(
             }
 
             Column(
+                verticalArrangement = Arrangement.Bottom,
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(bottom = 64.dp), // 필요 시 여백 추가
-                verticalArrangement = Arrangement.Bottom
+                    .padding(bottom = 64.dp)
             ) {
                 GwangSanStateButton(
                     text = "로그인",

@@ -49,131 +49,115 @@ private fun CerTinSignUpScreen(
     sendCertificationCodeCallBack: () -> Unit,
     onPhoneNumberChange: (String) -> Unit,
     onCertificationNumberChange: (String) -> Unit,
-    ) {
+) {
     GwangSanTheme { colors, typography ->
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween,
+            verticalArrangement = Arrangement.Top,
             modifier = modifier
                 .fillMaxSize()
                 .background(color = colors.white)
                 .imePadding()
-                .padding(
-                    top = 24.dp,
-                    start = 24.dp,
-                    end = 24.dp
-                )
+                .padding(24.dp)
                 .verticalScroll(scrollState)
                 .pointerInput(Unit) {
-                    detectTapGestures {
-                        focusManager.clearFocus()
-                    }
+                    detectTapGestures { focusManager.clearFocus() }
                 }
         ) {
-            Column(
-                horizontalAlignment = Alignment.Start,
-                modifier = Modifier.fillMaxWidth(),
+            GwanGsanTopBar(
+                startIcon = { DownArrowIcon(modifier = Modifier.GwanGsanClickable { }) },
+                betweenText = "뒤로"
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Text(
+                text = "회원가입",
+                style = typography.titleMedium2,
+                color = colors.black,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.align(Alignment.Start)
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = "전화번호를 입력해주세요",
+                style = typography.label,
+                color = colors.black.copy(alpha = 0.5f),
+                fontWeight = FontWeight.Normal,
+                modifier = Modifier.align(Alignment.Start)
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier.fillMaxWidth()
             ) {
-                Row(
-                    horizontalArrangement = Arrangement.Start,
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .padding(
-                            top = 18.dp,
-                            bottom = 32.dp
-                        ),
-                ) {
-                    GwanGsanTopBar(
-                        startIcon = { DownArrowIcon(modifier = Modifier.GwanGsanClickable { }) },
-                        betweenText = "뒤로"
-                    )
-                    Text(
-                        text = "회원가입",
-                        style = typography.titleMedium2,
-                        color = colors.black,
-                        fontWeight = FontWeight.Bold
-                    )
-
-                    Spacer(modifier = Modifier.height(6.dp))
-
-                    Text(
-                        text = "별칭을 입력해주세요",
-                        style = typography.label,
-                        color = colors.black.copy(alpha = 0.5f),
-                        fontWeight = FontWeight.Normal
-                    )
-
-                    Spacer(modifier = Modifier.height(48.dp))
-
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.Start),
-                        verticalAlignment = Alignment.Bottom
-                    ) {
-                        GwangSanTextField(
-                            modifier = Modifier
-                                .height(54.dp)
-                                .width(240.dp),
-                            value = phoneNumber,
-                            label = "number",
-                            placeHolder = "연락처는 \" - \" 빼고 입력해주세요",
-                            isError = false,
-                            isDisabled = false,
-                            errorText = "",
-                            onTextChange = onPhoneNumberChange,
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                        )
-
-                        GwangSanStateButton(
-                            text = "인증",
-                            state = if (phoneNumber.isNotBlank()) ButtonState.Enable else ButtonState.Disable,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(54.dp)
-                        ) {
-                            sendCertificationCodeCallBack()
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.padding(16.dp))
-
-                    GwangSanTextField(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(90.dp),
-                        value = certificationNumber,
-                        placeHolder = "재확인 비밀번호",
-                        isError = isCertificationCodeError,
-                        isDisabled = false,
-                        errorText = "비밀번호가 틀립니다.",
-                        onTextChange = {
-                            if (it.length <= 6 && it.all { char -> char.isDigit() }) onCertificationNumberChange(
-                                it
-                            )
-                        },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                        label = "비밀번호 확인"
-                    )
-                }
-                Column(
-                    verticalArrangement = Arrangement.Bottom,
+                GwangSanTextField(
+                    value = phoneNumber,
+                    label = "전화번호",
+                    placeHolder = "연락처는 \" - \" 빼고 입력해주세요",
+                    isError = false,
+                    isDisabled = false,
+                    errorText = "",
+                    onTextChange = onPhoneNumberChange,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     modifier = Modifier
-                        .fillMaxSize()
-                        .padding(bottom = 64.dp),
+                        .weight(1f)
+                        .height(60.dp),
+                )
+
+                GwangSanStateButton(
+                    text = "인증",
+                    state = if (phoneNumber.isNotBlank()) ButtonState.Enable else ButtonState.Disable,
+                    modifier = Modifier
+                        .height(54.dp)
                 ) {
-                    GwangSanStateButton(
-                        text = "인증하기",
-                        state = if (password.isNotBlank() && rePassword.isNotBlank()) ButtonState.Enable else ButtonState.Disable,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        certificationCallBack()
-                    }
+                    sendCertificationCodeCallBack()
                 }
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            GwangSanTextField(
+                value = certificationNumber,
+                placeHolder = "전화번호 인증",
+                isError = isCertificationCodeError,
+                isDisabled = false,
+                errorText = "인증번호가 틀립니다..",
+                onTextChange = {
+                    if (it.length <= 6 && it.all { char -> char.isDigit() }) onCertificationNumberChange(it)
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                label = "비밀번호 확인",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(90.dp),
+            )
+        }
+        Column(
+            verticalArrangement = Arrangement.Bottom,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(
+                    start = 24.dp,
+                    end = 24.dp,
+                    bottom = 64.dp
+                ),
+        ) {
+            GwangSanStateButton(
+                text = "인증하기",
+                state = if (password.isNotBlank() && rePassword.isNotBlank()) ButtonState.Enable else ButtonState.Disable,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                certificationCallBack()
             }
         }
     }
 }
-
 
 @Preview
 @Composable
