@@ -1,11 +1,12 @@
 [versions]
-kotlin = "2.0.21"
+kotlin = "1.9.22"
 agp = "8.6.0"
-androidxComposeCompiler = "1.5.13"
+androidxComposeCompiler = "1.5.8"
 composeBom = "2023.08.00"
 coreKtx = "1.12.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
+androidxWearCompose = "1.2.0"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.10.1"
@@ -55,6 +56,8 @@ hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", v
 androidx-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleCompose" }
 androidx-lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycleCompose" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxDatetime" }
+androidx-wear-compose = { group = "androidx.wear.compose", name = "compose-material", version.ref = "androidxWearCompose"}
+androidx-compose-compiler = { group = "androidx.compose.compiler", name = "compiler", version.ref = "androidxComposeCompiler" }
 kotlinx-immutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinxImmutable" }
 
 [plugins]

@@ -1,4 +1,4 @@
-package com.example.signin
+package com.school_of_company.signin
 
 import org.junit.Test
 

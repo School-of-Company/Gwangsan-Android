@@ -1,0 +1,72 @@
+package com.school_of_company.signup.componet
+
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.school_of_company.design_system.theme.GwangSanTheme
+
+@Composable
+fun AreaListItem(
+    modifier: Modifier = Modifier,
+    areaName: String
+) {
+    GwangSanTheme { colors, typography ->
+
+        Column(
+            horizontalAlignment = Alignment.Start,
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(top = 24.dp, bottom = 24.dp),
+        ) {
+            Text(
+                text = areaName,
+                color = colors.black,
+                style = typography.body3
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Divider(color = colors.gray200)
+        }
+    }
+}
+
+@Composable
+fun AreaList(
+    modifier: Modifier = Modifier,//더 자세한 api 명세서가 나오면 수정하겠습니다.
+    areaList: List<String>
+) {
+    GwangSanTheme { colors, _ ->
+
+        LazyColumn(
+            modifier = modifier
+                .fillMaxWidth()
+                .heightIn(max = 10000.dp)
+        ) {
+            items(
+                items = areaList,
+                key = { areaName -> areaName }// 더 자세한 api명세서가 나오면 수정하겠습니다.
+            ) { areaName ->
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    AreaListItem(areaName = areaName)
+
+                    Divider(
+                        color = colors.white,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }
+            }
+        }
+    }
+}
