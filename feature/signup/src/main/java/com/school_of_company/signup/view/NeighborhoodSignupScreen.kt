@@ -95,7 +95,7 @@ private fun NeighborhoodSignupScreen(
                 Spacer(modifier = Modifier.height(6.dp))
 
                 Text(
-                    text = "별칭을 입력해주세요",
+                    text = "동네를 선택해주세요",
                     style = typography.label,
                     color = colors.black.copy(alpha = 0.5f),
                     fontWeight = FontWeight.Normal
@@ -104,7 +104,7 @@ private fun NeighborhoodSignupScreen(
                 Spacer(modifier = Modifier.height(48.dp))
 
                 GwangSanSearchTextField(
-                    placeHolder = "검색어를 입력하세요",
+                    placeHolder = "동네를 검색해주세요",
                     setText = studentSearch,
                     onValueChange = onStudentSearchChange,
                     onSearchTextChange = studentSearchCallBack,
