@@ -103,9 +103,9 @@ private fun NameSignupScreen(
                 GwangSanTextField(
                     placeHolder = "별칭",
                     onTextChange = onIdChange,
-                    label = "별칭",
+                    label = "별칭을 입력해주세요",
                     isError = isEmailError,
-                    errorText = "유효하지 않은 이메일입니다",
+                    errorText = "유효하지 않은 별칭입니다",
                     modifier = modifier.fillMaxWidth()
                 )
             }
@@ -117,7 +117,7 @@ private fun NameSignupScreen(
                     .padding(bottom = 64.dp),
             ) {
                 GwangSanStateButton(
-                    text = "로그인",
+                    text = "다음",
                     state = if (id.isNotBlank()) ButtonState.Enable else ButtonState.Disable,
                     modifier = Modifier.fillMaxWidth()
                 ) {
