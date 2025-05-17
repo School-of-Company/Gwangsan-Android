@@ -1,5 +1,5 @@
 [versions]
-kotlin = "1.9.23"
+kotlin = "1.9.22"
 agp = "8.6.0"
 androidxComposeCompiler = "1.5.13"
 composeBom = "2023.08.00"
