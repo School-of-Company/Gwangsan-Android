@@ -22,3 +22,20 @@ fun GwanGsanSubText(
         )
     }
 }
+
+@Composable
+fun GwanGsanText(
+    modifier: Modifier = Modifier,
+    subjectText: String,
+) {
+    GwangSanTheme { colors, typography ->
+        Text(
+            modifier = modifier,
+            text = subjectText,
+            color = colors.black,
+            style = typography.body2,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+    }
+}
