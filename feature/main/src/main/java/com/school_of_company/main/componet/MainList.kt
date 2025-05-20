@@ -41,7 +41,6 @@ fun MainListItem(
             modifier = modifier
                 .background(color = color.white)
                 .fillMaxWidth(),
-
             verticalAlignment = Alignment.CenterVertically
         ) {
             if (coverImage.isNotEmpty()) {
@@ -61,8 +60,8 @@ fun MainListItem(
                 Spacer(modifier = Modifier.width(24.dp))
 
                 Column(
+                    horizontalAlignment = Alignment.Start,
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.Start
 
                 ) {
                     Text(
@@ -98,9 +97,8 @@ fun MainListItem(
                 Spacer(modifier = Modifier.width(24.dp))
 
                 Column(
-                    modifier = Modifier
-                        .weight(1f),
-                    horizontalAlignment = Alignment.Start
+                    horizontalAlignment = Alignment.Start,
+                    modifier = Modifier.weight(1f),
 
                 ) {
                     Text(
