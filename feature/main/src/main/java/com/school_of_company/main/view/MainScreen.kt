@@ -39,7 +39,7 @@ private fun MainScreen(
                 horizontalAlignment = Alignment.Start,
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(start = 24.dp, top = 24.dp) // 버튼 영역 확보
+                    .padding(start = 24.dp, top = 24.dp)
             ) {
                 GwangSanSubTopBar(
                     startIcon = { DownArrowIcon(modifier = Modifier.GwanGsanClickable { }) },
@@ -52,14 +52,15 @@ private fun MainScreen(
                     stateOn = GwangSanSwitchState.NEED,
                     stateOff = GwangSanSwitchState.REQUEST,
                     initialValue = GwangSanSwitchState.NEED,
-                    switchOffBackground = colors.subYellow500,
+                    switchOffBackground = colors.subYellow500,// 여기 상태에 따라 다른 data를 받고 item에 반영할 예정이에요.
                     switchOnBackground = colors.subYellow500,
-                ) {
-                    when (it) {
-                        GwangSanSwitchState.REQUEST -> println("현재 상태: 해주세요")
-                        GwangSanSwitchState.NEED -> println("현재 상태: 필요해요")// 여기 상태에 따라 다른 data를 받고 item에 반영할 예정이에요.
+                    onCheckedChanged = {
+                        when (it) {
+                            GwangSanSwitchState.REQUEST -> println("현재 상태: 해주세요")
+                            GwangSanSwitchState.NEED -> println("현재 상태: 필요해요")
+                        }
                     }
-                }
+                )
 
                 Spacer(modifier = Modifier.height(24.dp))
 
