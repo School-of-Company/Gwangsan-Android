@@ -30,3 +30,14 @@ fun SearchIcon(
         modifier = modifier,
     )
 }
+
+@Composable
+fun PostWriteIcon(
+    modifier: Modifier = Modifier,
+) {
+    Icon(
+        painter = painterResource(id = R.drawable.add_post_icon),
+        contentDescription = "게시글 작성",
+        modifier = modifier,
+    )
+}
