@@ -27,6 +27,7 @@ import com.school_of_company.main.componet.MainList
 @Composable
 private fun MainScreen(
     modifier: Modifier = Modifier,
+    navigationToPostService: () -> Unit,
 ) {
     GwangSanTheme { colors, _ ->
 
@@ -72,7 +73,7 @@ private fun MainScreen(
                     .align(Alignment.BottomEnd)
                     .padding(24.dp) // 버튼 여백
             ) {
-
+                navigationToPostService()
             }
         }
     }
@@ -95,5 +96,7 @@ val dummyItems = listOf(
 @Composable
 fun  MainScreenPreview(
 ){
-    MainScreen()
+    MainScreen(
+        navigationToPostService = {}
+    )
 }
