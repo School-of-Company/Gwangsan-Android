@@ -93,7 +93,7 @@ val dummyItems = listOf(
 
 @Preview
 @Composable
-fun  NeighborhoodSignupScreenPreview(
+fun  MainScreenPreview(
 ){
     MainScreen()
 }
