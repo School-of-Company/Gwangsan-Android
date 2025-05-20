@@ -31,7 +31,7 @@ import com.school_of_company.design_system.theme.GwangSanTheme
 @Composable
 fun MainListItem(
     modifier: Modifier = Modifier,
-    coverImage: String,
+    coverImage: String?,
     title: String,
     price: String
 ) {
@@ -43,7 +43,7 @@ fun MainListItem(
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if (coverImage.isNotEmpty()) {
+            if (coverImage.isNullOrEmpty()) {
                 Box(
                     modifier = Modifier
                         .size(80.dp)
