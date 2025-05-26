@@ -19,7 +19,8 @@ import com.school_of_company.design_system.theme.color.GwangSanColor
 
 @Composable
 fun RowScope.NavigationBarItem(
-    modifier: Modifier = Modifier,selected: Boolean,
+    modifier: Modifier = Modifier,
+    selected: Boolean,
     enabled: Boolean = true,
     label: @Composable () -> Unit,
     onClick: () -> Unit,
@@ -28,7 +29,6 @@ fun RowScope.NavigationBarItem(
     selectedIcon: @Composable () -> Unit = icon,
 ){
     NavigationBarItem(
-        modifier = modifier,
         enabled = enabled,
         selected = selected,
         label = label,
@@ -41,14 +41,15 @@ fun RowScope.NavigationBarItem(
             selectedTextColor = GwangSanColor.main500,
             unselectedTextColor = GwangSanColor.gray500,
             indicatorColor = GwangSanColor.white
-        )
+        ) ,
+        modifier = modifier
     )
 }
 
 @Composable
 fun GwangSanNavigationBar(
     modifier: Modifier = Modifier,
-    content: @Composable RowScope.() -> Unit
+    content: @Composable RowScope.() -> Unit,
 ) {
     GwangSanTheme { colors, _ ->
         Column {
@@ -86,7 +87,7 @@ fun ExpoNavigationPreview() {
         R.drawable.person,
     )
     GwangSanTheme { colors, typography ->
-        NavigationBar {
+        GwangSanNavigationBar {
             items.forEachIndexed { index, item ->
                 NavigationBarItem(
                     icon = {
