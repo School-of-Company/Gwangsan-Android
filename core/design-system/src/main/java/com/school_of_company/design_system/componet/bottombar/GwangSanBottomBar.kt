@@ -18,7 +18,7 @@ import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.design_system.theme.color.GwangSanColor
 
 @Composable
-fun RowScope.NavigationBarItem(
+fun RowScope. GwangSanNavigationBarItem(
     modifier: Modifier = Modifier,
     selected: Boolean,
     enabled: Boolean = true,
@@ -89,7 +89,7 @@ fun ExpoNavigationPreview() {
     GwangSanTheme { colors, typography ->
         GwangSanNavigationBar {
             items.forEachIndexed { index, item ->
-                NavigationBarItem(
+                GwangSanNavigationBarItem(
                     icon = {
                         Icon(
                             painter = painterResource(id = icons[index]),
