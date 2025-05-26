@@ -33,7 +33,7 @@ fun GwanGsanText(
             modifier = modifier,
             text = subjectText,
             color = colors.black,
-            style = typography.body2,
+            style = typography.body1,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
