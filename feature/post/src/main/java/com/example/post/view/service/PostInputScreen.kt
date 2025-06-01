@@ -29,6 +29,7 @@ import com.yourpackage.design_system.component.textField.GwangSanTextField
 
 @Composable
 fun PostInputScreen(
+    modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
     onNextClick: () -> Unit,
@@ -38,8 +39,7 @@ fun PostInputScreen(
     GwangSanTheme { colors, typography ->
 
         Column(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = modifier.fillMaxSize()
         ) {
             Spacer(modifier = Modifier.height(52.dp))
 
