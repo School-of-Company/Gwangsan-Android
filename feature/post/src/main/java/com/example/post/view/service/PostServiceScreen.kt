@@ -21,6 +21,7 @@ import com.school_of_company.design_system.theme.color.GwangSanColor
 
 @Composable
 fun PostServiceScreen(
+    modifier: Modifier = Modifier,
     subject: String,
     content: String,
     onSubjectChange: (String) -> Unit,
@@ -34,8 +35,7 @@ fun PostServiceScreen(
 
     GwangSanTheme { colors, typography ->
         Column(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = modifier.fillMaxSize()
         ) {
             Spacer(modifier = Modifier.height(52.dp))
 
@@ -96,7 +96,11 @@ fun PostServiceScreen(
 
                 Spacer(modifier = Modifier.height(32.dp))
 
-                Text(text = "사진첨부", style = typography.body5, color = colors.black)
+                Text(
+                    text = "사진첨부",
+                    style = typography.body5,
+                    color = colors.black
+                )
 
                 Spacer(modifier = Modifier.height(12.dp))
 
