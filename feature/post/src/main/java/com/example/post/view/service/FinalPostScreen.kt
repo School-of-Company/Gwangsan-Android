@@ -23,6 +23,7 @@ import com.school_of_company.design_system.theme.color.GwangSanColor
 
 @Composable
 fun FinalPostScreen(
+    modifier: Modifier = Modifier,
     subject: String,
     content: String,
     price: String,
@@ -33,11 +34,12 @@ fun FinalPostScreen(
     onCloseClick: () -> Unit
 ) {
     GwangSanTheme { colors, typography ->
-        Column(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = modifier.fillMaxSize()) {
             Spacer(modifier = Modifier.height(52.dp))
 
             GwangSanSubTopBar(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .padding(horizontal = 24.dp),
                 startIcon = {
                     DownArrowIcon(
@@ -75,7 +77,12 @@ fun FinalPostScreen(
 
                 Spacer(modifier = Modifier.height(28.dp))
 
-                Text(text = "주제", style = typography.body5, color = colors.black)
+                Text(
+                    text = "주제",
+                    style = typography.body5,
+                    color = colors.black
+                )
+
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -83,12 +90,20 @@ fun FinalPostScreen(
                         .border(1.dp, GwangSanColor.subYellow500, shape = RoundedCornerShape(8.dp))
                         .padding(16.dp)
                 ) {
-                    Text(text = subject, style = typography.body5, color = colors.black)
+                    Text(
+                        text = subject,
+                        style = typography.body5,
+                        color = colors.black
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Text(text = "내용", style = typography.body5, color = colors.black)
+                Text(
+                    text = "내용",
+                    style = typography.body5,
+                    color = colors.black)
+
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -96,18 +111,32 @@ fun FinalPostScreen(
                         .border(1.dp, GwangSanColor.subYellow500, shape = RoundedCornerShape(8.dp))
                         .padding(16.dp)
                 ) {
-                    Text(text = content, style = typography.body5, color = colors.black)
+                    Text(
+                        text = content,
+                        style = typography.body5,
+                        color = colors.black
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Text(text = "사진첨부", style = typography.body5, color = colors.black)
+                Text(
+                    text = "사진첨부",
+                    style = typography.body5,
+                    color = colors.black
+                )
                 Spacer(modifier = Modifier.height(12.dp))
+
                 Row { imageContent() }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Text(text = "광산", style = typography.body5, color = colors.black)
+                Text(
+                    text = "광산",
+                    style = typography.body5,
+                    color = colors.black
+                )
+
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -115,7 +144,11 @@ fun FinalPostScreen(
                         .border(1.dp, GwangSanColor.subYellow500, shape = RoundedCornerShape(8.dp))
                         .padding(16.dp)
                 ) {
-                    Text(text = price, style = typography.body5, color = colors.black)
+                    Text(
+                        text = price,
+                        style = typography.body5,
+                        color = colors.black
+                    )
                 }
 
                 Spacer(modifier = Modifier.weight(1f))
