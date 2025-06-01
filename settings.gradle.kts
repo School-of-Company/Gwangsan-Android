@@ -29,3 +29,4 @@ gradle.startParameter.excludedTaskNames.addAll(listOf(":build-logic:convention:t
 include(":feature:signup")
 include(":feature:signin")
 include(":feature:main")
+include(":feature:post")
