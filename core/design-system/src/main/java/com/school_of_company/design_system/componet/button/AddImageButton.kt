@@ -16,8 +16,6 @@ import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 fun AddImageButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    backgroundResId: Int = com.school_of_company.design_system.R.drawable.ellipse,
-    iconResId: Int = com.school_of_company.design_system.R.drawable.plus,
     iconSize: Dp = 24.dp,
     buttonSize: Dp = 50.dp,
     rippleColor: Color? = null
@@ -32,16 +30,8 @@ fun AddImageButton(
             ),
         contentAlignment = Alignment.Center
     ) {
-        Image(
-            painter = painterResource(id = backgroundResId),
-            contentDescription = null,
-            modifier = Modifier.size(buttonSize)
-        )
-
-        Image(
-            painter = painterResource(id = iconResId),
-            contentDescription = "추가 아이콘",
-            modifier = Modifier.size(iconSize)
-        )
+        EllipseIcon(modifier = Modifier.size(buttonSize))
+        PlusIcon(modifier = Modifier.size(iconSize))
     }
-} // 현재 이 버튼은 시각적으로 보이기만 가능합니다. 나중에 기능 추가 하겠습니다.
+}
+// 현재 이 버튼은 시각적으로 보이기만 가능합니다. 나중에 기능 추가 하겠습니다.
