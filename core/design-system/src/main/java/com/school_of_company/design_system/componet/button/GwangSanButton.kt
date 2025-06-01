@@ -18,11 +18,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.school_of_company.design_system.componet.button.state.ButtonState
-import com.school_of_company.design_system.componet.clickable.GwanGsanClickable
+import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.theme.GwangSanTheme
 
 @Composable
-fun GwAnGSanButton(
+fun GwangSanButton(
     modifier: Modifier = Modifier,
     text: String,
     color: Color,
@@ -38,7 +38,7 @@ fun GwAnGSanButton(
                     color = color,
                     shape = RoundedCornerShape(8.dp),
                 )
-                .GwanGsanClickable(
+                .GwangSanClickable(
                     onClick = onClick,
                     rippleColor = colors.white
                 )
