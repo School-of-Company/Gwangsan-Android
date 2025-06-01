@@ -32,7 +32,7 @@ import androidx.wear.compose.material.FractionalThreshold
 import androidx.wear.compose.material.Text
 import androidx.wear.compose.material.rememberSwipeableState
 import androidx.wear.compose.material.swipeable
-import com.school_of_company.design_system.componet.clickable.GwanGsanClickable
+import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.dropdown.state.GwangSanSwitchState
 import com.school_of_company.design_system.theme.color.GwangSanColor
 import kotlinx.coroutines.launch
@@ -74,7 +74,7 @@ fun GwangSanSwitchButton(
                     switchOnBackground
                 }
             )
-            .GwanGsanClickable(interval = 50L) {
+            .GwangSanClickable(interval = 50L) {
                 clickListener = !clickListener
                 scope.launch {
                     if (clickListener) {
