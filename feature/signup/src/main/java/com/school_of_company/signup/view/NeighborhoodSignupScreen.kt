@@ -28,9 +28,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.school_of_company.design_system.componet.button.GwangSanStateButton
 import com.school_of_company.design_system.componet.button.state.ButtonState
-import com.school_of_company.design_system.componet.clickable.GwanGsanClickable
+import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.icon.DownArrowIcon
-import com.school_of_company.design_system.componet.topbar.GwanGsanTopBar
+import com.school_of_company.design_system.componet.topbar.GwangSanTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.signup.componet.AreaList
 import com.yourpackage.design_system.component.textField.GwangSanSearchTextField
@@ -80,8 +80,8 @@ private fun NeighborhoodSignupScreen(
                         )
                     ,
                 ){
-                    GwanGsanTopBar(
-                        startIcon = { DownArrowIcon(modifier = Modifier.GwanGsanClickable {  }) },
+                    GwangSanTopBar(
+                        startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable {  }) },
                         betweenText = "뒤로"
                     )
                 }
