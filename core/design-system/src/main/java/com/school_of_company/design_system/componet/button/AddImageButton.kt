@@ -12,8 +12,8 @@ import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 
 @Composable
 fun AddImageButton(
-    onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    onClick: () -> Unit,
     iconSize: Dp = 24.dp,
     buttonSize: Dp = 50.dp,
     rippleColor: Color? = null
@@ -29,6 +29,7 @@ fun AddImageButton(
         contentAlignment = Alignment.Center
     ) {
         EllipseIcon(modifier = Modifier.size(buttonSize))
+
         PlusIcon(modifier = Modifier.size(iconSize))
     }
 }
