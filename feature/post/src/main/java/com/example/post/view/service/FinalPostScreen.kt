@@ -162,8 +162,6 @@ fun FinalPostScreenPreview() {
         imageContent = {
             AddImageButton(
                 onClick = {},
-                backgroundResId = R.drawable.ellipse,
-                iconResId = R.drawable.plus,
                 rippleColor = GwangSanColor.gray300
             )
         },
