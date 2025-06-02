@@ -1,6 +1,5 @@
 package com.example.post.view.service
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -16,11 +15,12 @@ import com.school_of_company.design_system.componet.icon.CloseIcon
 import com.school_of_company.design_system.componet.icon.DownArrowIcon
 import com.yourpackage.design_system.component.textField.GwangSanTextField
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
+import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.design_system.theme.color.GwangSanColor
 
 @Composable
-fun PostServiceScreen(
+private fun PostServiceScreen(
     modifier: Modifier = Modifier,
     subject: String,
     content: String,
@@ -48,7 +48,7 @@ fun PostServiceScreen(
                         modifier = Modifier
                             .width(8.dp)
                             .height(14.dp)
-                            .clickable(onClick = onBackClick)
+                            .GwangSanClickable(onClick = onBackClick)
                     )
                 },
                 betweenText = "해주세요",
@@ -56,7 +56,7 @@ fun PostServiceScreen(
                     CloseIcon(
                         modifier = Modifier
                             .size(24.dp)
-                            .clickable(onClick = onBackClick)
+                            .GwangSanClickable(onClick = onBackClick)
                     )
                 }
             )
