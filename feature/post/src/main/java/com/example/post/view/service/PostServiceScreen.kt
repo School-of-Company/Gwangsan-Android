@@ -40,9 +40,6 @@ private fun PostServiceScreen(
             Spacer(modifier = Modifier.height(52.dp))
 
             GwangSanSubTopBar(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp),
                 startIcon = {
                     DownArrowIcon(
                         modifier = Modifier
@@ -58,7 +55,10 @@ private fun PostServiceScreen(
                             .size(24.dp)
                             .GwangSanClickable(onClick = onBackClick)
                     )
-                }
+                },
+                        modifier = Modifier
+                        .fillMaxWidth()
+                    .padding(horizontal = 24.dp),
             )
 
             Spacer(modifier = Modifier.height(8.dp))
