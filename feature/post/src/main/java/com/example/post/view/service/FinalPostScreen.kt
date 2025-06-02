@@ -156,27 +156,27 @@ private fun FinalPostScreen(
                 Spacer(modifier = Modifier.weight(1f))
 
                 Row(
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     GwangSanEnableButton(
+                        text = "수정",
+                        textColor = GwangSanColor.main500,
+                        backgroundColor = GwangSanColor.white,
+                        onClick = onEditClick,
                         modifier = Modifier
                             .weight(1f)
                             .height(56.dp)
                             .border(1.dp, GwangSanColor.main500, shape = RoundedCornerShape(8.dp)),
-                        text = "수정",
-                        textColor = GwangSanColor.main500,
-                        backgroundColor = GwangSanColor.white,
-                        onClick = onEditClick
                     )
 
                     GwangSanStateButton(
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(56.dp),
                         text = "완료",
                         state = ButtonState.Enable,
-                        onClick = onSubmitClick
+                        onClick = onSubmitClick,
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(56.dp)
                     )
                 }
 
