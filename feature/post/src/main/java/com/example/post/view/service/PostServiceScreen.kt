@@ -64,10 +64,10 @@ private fun PostServiceScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             GwangSanTopBarProgress(
+                progressRatio = 0.3f,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 0.dp),
-                progressRatio = 0.3f
             )
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -87,11 +87,11 @@ private fun PostServiceScreen(
                     onTextChange = onContentChange,
                     label = "내용",
                     placeHolder = "내용을 작성해주세요",
+                    singleLine = false,
+                    maxLines = Int.MAX_VALUE,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(185.dp),
-                    singleLine = false,
-                    maxLines = Int.MAX_VALUE
+                        .height(185.dp)
                 )
 
                 Spacer(modifier = Modifier.height(32.dp))
@@ -111,12 +111,12 @@ private fun PostServiceScreen(
                 Spacer(modifier = Modifier.weight(1f, fill = true))
 
                 GwangSanStateButton(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp),
                     text = "다음",
                     state = if (isNextEnabled) ButtonState.Enable else ButtonState.Disable,
-                    onClick = onNextClick
+                    onClick = onNextClick,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp)
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
