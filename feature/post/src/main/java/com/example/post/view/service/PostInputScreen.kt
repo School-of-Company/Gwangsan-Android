@@ -68,10 +68,8 @@ private fun PostInputScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             GwangSanTopBarProgress(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 0.dp),
-                progressRatio = 0.6f
+                progressRatio = 0.6f,
+                modifier = Modifier.fillMaxWidth()
             )
 
             Spacer(modifier = Modifier.height(32.dp))
