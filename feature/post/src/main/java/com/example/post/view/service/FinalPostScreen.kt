@@ -14,6 +14,7 @@ import com.school_of_company.design_system.component.progress.GwangSanTopBarProg
 import com.school_of_company.design_system.componet.button.GwangSanEnableButton
 import com.school_of_company.design_system.componet.button.GwangSanStateButton
 import com.school_of_company.design_system.componet.button.state.ButtonState
+import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.icon.AddImageButton
 import com.school_of_company.design_system.componet.icon.CloseIcon
 import com.school_of_company.design_system.componet.icon.DownArrowIcon
@@ -22,7 +23,7 @@ import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.design_system.theme.color.GwangSanColor
 
 @Composable
-fun FinalPostScreen(
+private fun FinalPostScreen(
     modifier: Modifier = Modifier,
     subject: String,
     content: String,
@@ -34,7 +35,8 @@ fun FinalPostScreen(
     onCloseClick: () -> Unit
 ) {
     GwangSanTheme { colors, typography ->
-        Column(modifier = modifier.fillMaxSize()) {
+        Column(modifier = modifier.fillMaxSize())
+        {
             Spacer(modifier = Modifier.height(52.dp))
 
             GwangSanSubTopBar(
@@ -46,7 +48,7 @@ fun FinalPostScreen(
                         modifier = Modifier
                             .width(8.dp)
                             .height(14.dp)
-                            .clickable(onClick = onBackClick)
+                            .GwangSanClickable(onClick = onBackClick)
                     )
                 },
                 betweenText = "해주세요",
