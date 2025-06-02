@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.semantics.Role
 
-fun Modifier.GwanGsanClickable(
+fun Modifier.GwangSanClickable(
     enabled: Boolean = true,
     isIndication: Boolean = false,
     rippleColor: Color? = null,

@@ -8,12 +8,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.school_of_company.design_system.componet.text.GwanGsanSubText
+import com.school_of_company.design_system.componet.text.GwangSanSubText
 import com.school_of_company.design_system.theme.GwangSanTheme
 
 
 @Composable
-fun GwanGsanTopBar (
+fun GwangSanTopBar (
     modifier: Modifier = Modifier,
     startIcon: @Composable () -> Unit,
     betweenText: String = "",
@@ -28,7 +28,7 @@ fun GwanGsanTopBar (
 
             Spacer(modifier = Modifier.size(5.dp))
 
-            GwanGsanSubText(subjectText = betweenText)
+            GwangSanSubText(subjectText = betweenText)
             endIcon()
         }
     }

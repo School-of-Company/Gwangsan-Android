@@ -7,21 +7,22 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.school_of_company.design_system.componet.icon.SearchIcon
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.design_system.theme.color.GwangSanColor
@@ -40,10 +41,11 @@ fun GwangSanTextField(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     onTextChange: (String) -> Unit,
     icon: @Composable () -> Unit = {},
-    isReadOnly: Boolean = false
+    isReadOnly: Boolean = false,
+    maxLines: Int = Int.MAX_VALUE,
+    singleLine: Boolean = false
 ) {
-    var text by remember { mutableStateOf(value ?: "") }
-    val isFocused = remember { mutableStateOf(false)}
+    val isFocused = remember { mutableStateOf(false) }
 
     GwangSanTheme { colors, typography ->
 
@@ -58,17 +60,16 @@ fun GwangSanTextField(
             )
 
             BasicTextField(
-                value = text,
-                onValueChange = {
-                    text = it
-                    onTextChange(it)
-                },
+                value = value ?: "",
+                onValueChange = onTextChange,
                 visualTransformation = visualTransformation,
                 textStyle = typography.body5,
-                maxLines = 1,
                 keyboardOptions = keyboardOptions,
                 readOnly = isReadOnly,
                 enabled = !isDisabled,
+                maxLines = maxLines,
+                singleLine = singleLine,
+                cursorBrush = SolidColor(GwangSanColor.subYellow500),
                 modifier = Modifier
                     .fillMaxWidth()
                     .onFocusChanged { isFocused.value = it.isFocused }
@@ -77,19 +78,21 @@ fun GwangSanTextField(
                         color = when {
                             isError -> GwangSanColor.error
                             isFocused.value -> GwangSanColor.subYellow500
-                            text.isNotEmpty() -> GwangSanColor.subYellow500
+                            (value ?: "").isNotEmpty() -> GwangSanColor.subYellow500
                             else -> GwangSanColor.gray400
                         },
                         shape = RoundedCornerShape(8.dp)
                     )
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(Color.White)
                     .padding(16.dp),
                 decorationBox = { innerTextField ->
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Box {
-                            if (text.isEmpty()) {
+                        Box(Modifier.weight(1f)) {
+                            if ((value ?: "").isEmpty()) {
                                 Text(
                                     text = placeHolder,
                                     color = if (isError) GwangSanColor.error else GwangSanColor.gray400,
@@ -105,17 +108,16 @@ fun GwangSanTextField(
             )
 
             if (isError) {
-                Row(horizontalArrangement = Arrangement.Start) {
-                    Text(
-                        text = errorText,
-                        color = GwangSanColor.error,
-                        style = typography.label
-                    )
-                }
+                Text(
+                    text = errorText,
+                    color = GwangSanColor.error,
+                    style = typography.label
+                )
             }
         }
     }
 }
+
 @Composable
 fun GwangSanSearchTextField(
     modifier: Modifier = Modifier,
@@ -134,7 +136,6 @@ fun GwangSanSearchTextField(
     onValueChange: (String) -> Unit = {},
     onSearchTextChange: (String) -> Unit = {}
 ) {
-
     GwangSanTheme { colors, typography ->
         val isFocused = remember { mutableStateOf(false) }
 
@@ -153,8 +154,7 @@ fun GwangSanSearchTextField(
             TextField(
                 value = setText,
                 onValueChange = {
-                    val filteredText = it.filterNot { text -> text.isWhitespace() }
-                    onValueChange(filteredText)
+                    onValueChange(it)
                 },
                 keyboardOptions = keyboardOptions,
                 keyboardActions = keyboardActions,
@@ -209,33 +209,33 @@ fun GwangSanSearchTextField(
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
 fun GwangSanTextFieldPreview() {
-    var text by remember { mutableStateOf("") }
-
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        var defaultText by remember { mutableStateOf("") }
         GwangSanTextField(
             label = "이름",
-            value = text,
-            onTextChange = { text = it },
+            value = defaultText,
+            onTextChange = { defaultText = it },
             placeHolder = "이름을 입력하세요"
         )
 
+        var errorText by remember { mutableStateOf("") }
         GwangSanTextField(
             label = "이메일",
-            value = text,
-            onTextChange = { text = it },
+            value = errorText,
+            onTextChange = { errorText = it },
             placeHolder = "이메일을 입력하세요",
             isError = true,
             errorText = "유효하지 않은 이메일입니다"
         )
 
+        var focusText by remember { mutableStateOf("010-1234-5678") }
         GwangSanTextField(
             label = "전화번호",
-            value = "010-1234-5678",
-            onTextChange = {},
+            value = focusText,
+            onTextChange = { focusText = it },
             placeHolder = "전화번호를 입력하세요"
         )
     }

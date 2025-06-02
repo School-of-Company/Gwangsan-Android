@@ -14,11 +14,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.school_of_company.design_system.componet.button.gwangsanfloatingbutton.GwangSanFloatingButton
-import com.school_of_company.design_system.componet.clickable.GwanGsanClickable
+import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.dropdown.GwangSanSwitchButton
 import com.school_of_company.design_system.componet.dropdown.state.GwangSanSwitchState
 import com.school_of_company.design_system.componet.icon.DownArrowIcon
-import com.school_of_company.design_system.componet.topbar.GwanGsanTopBar
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.main.componet.MainItem
@@ -43,7 +42,7 @@ private fun MainScreen(
                     .padding(start = 24.dp, top = 24.dp)
             ) {
                 GwangSanSubTopBar(
-                    startIcon = { DownArrowIcon(modifier = Modifier.GwanGsanClickable { }) },
+                    startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { }) },
                     betweenText = "서비스"
                 )
 

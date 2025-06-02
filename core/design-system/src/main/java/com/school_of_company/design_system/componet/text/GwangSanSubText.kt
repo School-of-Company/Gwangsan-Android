@@ -7,7 +7,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import com.school_of_company.design_system.theme.GwangSanTheme
 
 @Composable
-fun GwanGsanSubText(
+fun GwangSanSubText(
     modifier: Modifier = Modifier,
     subjectText: String,
 ) {
@@ -24,7 +24,7 @@ fun GwanGsanSubText(
 }
 
 @Composable
-fun GwanGsanText(
+fun GwangSanText(
     modifier: Modifier = Modifier,
     subjectText: String,
 ) {
