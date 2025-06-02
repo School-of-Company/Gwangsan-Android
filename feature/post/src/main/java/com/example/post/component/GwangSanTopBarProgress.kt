@@ -14,14 +14,13 @@ import com.school_of_company.design_system.theme.color.GwangSanColor
 internal fun GwangSanTopBarProgress(
     modifier: Modifier = Modifier,
     progressRatio: Float,
-    height: Dp = 8.dp,
     backgroundColor: Color = GwangSanColor.gray200,
     progressColor: Color = GwangSanColor.subBlue300
 ) {
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(height)
+            .height(8.dp)
             .background(backgroundColor)
     ) {
         Box(
