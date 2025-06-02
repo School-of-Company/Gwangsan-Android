@@ -56,8 +56,8 @@ private fun PostServiceScreen(
                             .GwangSanClickable(onClick = onBackClick)
                     )
                 },
-                        modifier = Modifier
-                        .fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .padding(horizontal = 24.dp),
             )
 
