@@ -64,8 +64,8 @@ private fun FinalPostScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             GwangSanTopBarProgress(
-                modifier = Modifier.fillMaxWidth(),
-                progressRatio = 1.0f
+                progressRatio = 1.0f,
+                modifier = Modifier.fillMaxWidth()
             )
 
             Spacer(modifier = Modifier.height(32.dp))
