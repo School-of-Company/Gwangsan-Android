@@ -80,20 +80,20 @@ private fun PostInputScreen(
                     onTextChange = onValueChange,
                     label = "광산",
                     placeHolder = "광산을 입력해주세요",
+                    singleLine = true,
                     modifier = Modifier
                         .fillMaxWidth(),
-                    singleLine = true
                 )
 
                 Spacer(modifier = Modifier.weight(1f))
 
                 GwangSanStateButton(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp),
                     text = "다음",
                     state = if (value.isNotBlank()) ButtonState.Enable else ButtonState.Disable,
-                    onClick = onNextClick
+                    onClick = onNextClick,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp)
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
