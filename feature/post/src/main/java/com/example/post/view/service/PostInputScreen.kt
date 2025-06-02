@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.school_of_company.design_system.component.progress.GwangSanTopBarProgress
 import com.school_of_company.design_system.componet.button.GwangSanStateButton
 import com.school_of_company.design_system.componet.button.state.ButtonState
+import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.icon.CloseIcon
 import com.school_of_company.design_system.componet.icon.DownArrowIcon
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
@@ -28,7 +29,7 @@ import com.yourpackage.design_system.component.textField.GwangSanTextField
 
 
 @Composable
-fun PostInputScreen(
+private fun PostInputScreen(
     modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
@@ -44,14 +45,15 @@ fun PostInputScreen(
             Spacer(modifier = Modifier.height(52.dp))
 
             GwangSanSubTopBar(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .padding(horizontal = 24.dp),
                 startIcon = {
                     DownArrowIcon(
                         modifier = Modifier
                             .width(8.dp)
                             .height(14.dp)
-                            .clickable(onClick = onBackClick)
+                            .GwangSanClickable(onClick = onBackClick)
                     )
                 },
                 betweenText = "해주세요",
@@ -59,7 +61,7 @@ fun PostInputScreen(
                     CloseIcon(
                         modifier = Modifier
                             .size(24.dp)
-                            .clickable(onClick = onCloseClick)
+                            .GwangSanClickable(onClick = onCloseClick)
                     )
                 }
             )
@@ -72,7 +74,9 @@ fun PostInputScreen(
                     .padding(horizontal = 0.dp),
                 progressRatio = 0.6f
             )
+
             Spacer(modifier = Modifier.height(32.dp))
+
             Column(modifier = Modifier.padding(horizontal = 24.dp)) {
                 GwangSanTextField(
                     value = value,
