@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import com.school_of_company.design_system.theme.color.GwangSanColor
 
 @Composable
-fun GwangSanTopBarProgress(
+internal fun GwangSanTopBarProgress(
     modifier: Modifier = Modifier,
     progressRatio: Float,
     height: Dp = 8.dp,
