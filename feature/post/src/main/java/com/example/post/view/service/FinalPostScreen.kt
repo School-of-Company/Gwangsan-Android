@@ -15,9 +15,9 @@ import com.school_of_company.design_system.componet.button.GwangSanEnableButton
 import com.school_of_company.design_system.componet.button.GwangSanStateButton
 import com.school_of_company.design_system.componet.button.state.ButtonState
 import com.school_of_company.design_system.componet.clickable.GwangSanClickable
-import com.school_of_company.design_system.componet.icon.AddImageButton
-import com.school_of_company.design_system.componet.icon.CloseIcon
-import com.school_of_company.design_system.componet.icon.DownArrowIcon
+import com.school_of_company.design_system.componet.icons.AddImageButton
+import com.school_of_company.design_system.componet.icons.CloseIcon
+import com.school_of_company.design_system.componet.icons.DownArrowIcon
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.design_system.theme.color.GwangSanColor
