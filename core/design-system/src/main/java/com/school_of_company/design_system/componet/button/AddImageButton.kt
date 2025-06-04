@@ -1,4 +1,4 @@
-package com.school_of_company.design_system.componet.icon
+package  com.school_of_company.design_system.componet.button
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
