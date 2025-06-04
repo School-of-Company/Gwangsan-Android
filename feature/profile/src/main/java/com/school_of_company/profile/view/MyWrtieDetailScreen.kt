@@ -92,7 +92,6 @@ fun ReviewPostDetailScreen(
                             color = colors.main500,
                             shape = RoundedCornerShape(8.dp)
                         )
-
                 )
 
                 GwangSanStateButton(
