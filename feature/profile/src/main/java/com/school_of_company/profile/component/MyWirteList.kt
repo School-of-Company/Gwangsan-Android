@@ -98,7 +98,6 @@ internal fun MyWirteListItem(
                 Column(
                     horizontalAlignment = Alignment.Start,
                     modifier = Modifier.weight(1f),
-
                     ) {
                     Text(
                         text = title,
