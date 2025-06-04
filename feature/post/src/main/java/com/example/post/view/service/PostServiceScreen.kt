@@ -11,8 +11,8 @@ import com.school_of_company.design_system.component.progress.GwangSanTopBarProg
 import com.school_of_company.design_system.componet.button.GwangSanStateButton
 import com.school_of_company.design_system.componet.button.state.ButtonState
 import com.school_of_company.design_system.componet.icon.AddImageButton
-import com.school_of_company.design_system.componet.icon.CloseIcon
-import com.school_of_company.design_system.componet.icon.DownArrowIcon
+import com.school_of_company.design_system.componet.icons.CloseIcon
+import com.school_of_company.design_system.componet.icons.DownArrowIcon
 import com.yourpackage.design_system.component.textField.GwangSanTextField
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.componet.clickable.GwangSanClickable

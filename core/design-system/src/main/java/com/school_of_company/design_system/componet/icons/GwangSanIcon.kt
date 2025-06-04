@@ -1,4 +1,4 @@
-package com.school_of_company.design_system.componet.icon
+package com.school_of_company.design_system.componet.icons
 
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -6,7 +6,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import com.school_of_company.design_system.R
-import com.school_of_company.design_system.theme.color.GwangSanColor
 
 @Composable
 fun DownArrowIcon(
@@ -81,6 +80,45 @@ fun PlusIcon(
     Icon(
         painter = painterResource(id = R.drawable.plus),
         contentDescription = "plus",
+        modifier = modifier,
+        tint = tint
+    )
+}
+
+@Composable
+fun GwangSanIcon(
+    modifier: Modifier = Modifier,
+    tint: Color = Color.Unspecified
+) {
+    Icon(
+        painter = painterResource(id = R.drawable.gwangsan_icon),
+        contentDescription = "광산",
+        modifier = modifier,
+        tint = tint
+    )
+}
+
+@Composable
+fun LeftArrowIcon(
+    modifier: Modifier = Modifier,
+    tint: Color = Color.Unspecified
+){
+    Icon(
+        painter = painterResource(id = R.drawable.chevron_down),
+        contentDescription = "왼쪽 화살표",
+        modifier = modifier,
+        tint = tint
+    )
+}
+
+@Composable
+fun DropDownIcon(
+    modifier: Modifier = Modifier,
+    tint: Color = Color.Unspecified
+){
+    Icon(
+        painter = painterResource(id = R.drawable.chevron_down),
+        contentDescription = "드롭다운",
         modifier = modifier,
         tint = tint
     )
