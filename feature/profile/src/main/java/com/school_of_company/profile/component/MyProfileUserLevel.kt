@@ -47,7 +47,7 @@ internal fun MyProfileUserLevel(
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.ic_image),
-                        contentDescription = "바퀴벌레 이미지",
+                        contentDescription = "이미지",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
                     )
