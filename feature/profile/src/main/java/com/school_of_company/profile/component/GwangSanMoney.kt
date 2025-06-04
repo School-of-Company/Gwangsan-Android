@@ -66,6 +66,5 @@ internal fun GwangSanMoney(
 fun PreViewGwangSanMoney(){
     GwangSanMoney(
         miningAmount = 1000
-
     )
 }
