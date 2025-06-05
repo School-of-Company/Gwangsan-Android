@@ -119,7 +119,7 @@ internal fun MyProfileUserLevel(
                         modifier = Modifier.weight(1f)
                     ) {
                         Text(
-                            text = "${name}단계",
+                            text = name,
                             style = typography.body5,
                         )
 
@@ -142,7 +142,7 @@ internal fun MyProfileUserLevel(
 
 @Preview
 @Composable
-fun UserLevelCardPreview()
+private fun UserLevelCardPreview()
 {
     MyProfileUserLevel(
         name = "모태환",
