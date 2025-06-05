@@ -22,7 +22,7 @@ import com.school_of_company.profile.component.MyReviewItem
 import com.school_of_company.profile.component.MyReviewList
 
 @Composable
-fun MyReviewScreenScreen(
+private fun MyReviewScreen(
     modifier: Modifier = Modifier
 ) {
     GwangSanTheme { colors, typography ->
@@ -64,6 +64,6 @@ val ReViewDummyItems = listOf(
 
 @Preview
 @Composable
-fun PreViewMyReviewScreenScreen(){
-    MyReviewScreenScreen()
+private fun PreViewMyReviewScreen(){
+    MyReviewScreen()
 }
