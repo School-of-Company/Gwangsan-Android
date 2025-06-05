@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -45,7 +46,8 @@ internal fun TransactionHistoryListItem(
             if (coverImage.isNullOrEmpty()) {
                 Box(
                     modifier = Modifier
-                        .size(80.dp)
+                        .size(100.dp)
+                        .padding(horizontal = 24.dp, vertical = 16.dp)
                         .clip(RoundedCornerShape(10.dp))
                 ) {
                     Image(
@@ -81,7 +83,8 @@ internal fun TransactionHistoryListItem(
             else {
                 Box(
                     modifier = Modifier
-                        .size(80.dp)
+                        .padding(horizontal = 24.dp, vertical = 16.dp)
+                        .size(100.dp)
                         .clip(RoundedCornerShape(10.dp))
                 ) {
                     Image(
@@ -118,7 +121,7 @@ internal fun TransactionHistoryListItem(
 }
 
 @Composable
-fun TransactionHistoryList(
+internal fun TransactionHistoryList(
     modifier: Modifier = Modifier,
     items: List<DataTransactionHistoryItem>
 ) {
