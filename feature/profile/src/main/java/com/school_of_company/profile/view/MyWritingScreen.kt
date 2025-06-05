@@ -24,12 +24,12 @@ import com.school_of_company.design_system.componet.icons.CloseIcon
 import com.school_of_company.design_system.componet.icons.DownArrowIcon
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
-import com.school_of_company.profile.component.MyWirteItem
-import com.school_of_company.profile.component.MyWirteList
+import com.school_of_company.profile.component.MyWriteItem
+import com.school_of_company.profile.component.MyWriteList
 
 
 @Composable
-fun MyWritingScreen(
+private fun MyWritingScreen(
     modifier: Modifier = Modifier
 ) {
     var selectedType by remember { mutableStateOf("서비스") }
@@ -78,19 +78,19 @@ fun MyWritingScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                MyWirteList(items = filteredItems)
+                MyWriteList(items = filteredItems)
             }
         }
     }
 }
 
 val dummyItems = listOf(
-    MyWirteItem(
+    MyWriteItem(
         coverImage = "https://cdn.pixabay.com/photo/1.jpg",
         title = "바퀴벌레 좀 잡아주세요",
         price = "3000 광산"
     ),
-    MyWirteItem(
+    MyWriteItem(
         coverImage = "https://cdn.pixabay.com/photo/2.jpg",
         title = "집 청소좀 해주세요",
         price = "3000 광산"
