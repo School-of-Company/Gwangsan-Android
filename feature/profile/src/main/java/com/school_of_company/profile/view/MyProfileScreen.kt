@@ -151,7 +151,7 @@ private fun MyProfileScreen(
 
 @Preview
 @Composable
-fun MyProfileScreenPreview(){
+private fun MyProfileScreenPreview(){
     MyProfileScreen(
         brightnessLevel = 6,
         miningAmount = 0
