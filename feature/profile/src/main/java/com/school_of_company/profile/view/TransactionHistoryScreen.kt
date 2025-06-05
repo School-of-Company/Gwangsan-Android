@@ -29,7 +29,7 @@ import com.school_of_company.profile.component.TransactionHistoryList
 
 
 @Composable
-fun TransactionHistoryScreen(
+private fun TransactionHistoryScreen(
     modifier: Modifier = Modifier
 ) {
     // 현재 선택된 상위 카테고리입니다. ViewModel 연동 전까지 임시로 사용합니다.
@@ -101,9 +101,7 @@ val DummyItems = listOf(
 )
 @Preview
 @Composable
-fun PreviewTransactionHistoryScreen(
-
+private fun PreviewTransactionHistoryScreen(
 ){
-    TransactionHistoryScreen(
-    )
+    TransactionHistoryScreen()
 }
