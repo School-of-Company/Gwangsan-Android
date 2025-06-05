@@ -84,3 +84,42 @@ fun PlusIcon(
         tint = tint
     )
 }
+
+@Composable
+fun GwangSanIcon(
+    modifier: Modifier = Modifier,
+    tint: Color = Color.Unspecified
+) {
+    Icon(
+        painter = painterResource(id = R.drawable.gwangsan_icon),
+        contentDescription = "광산",
+        modifier = modifier,
+        tint = tint
+    )
+}
+
+@Composable
+fun LeftArrowIcon(
+    modifier: Modifier = Modifier,
+    tint: Color = Color.Unspecified
+){
+    Icon(
+        painter = painterResource(id = R.drawable.chevron_down),
+        contentDescription = "왼쪽 화살표",
+        modifier = modifier,
+        tint = tint
+    )
+}
+
+@Composable
+fun DropDownIcon(
+    modifier: Modifier = Modifier,
+    tint: Color = Color.Unspecified
+){
+    Icon(
+        painter = painterResource(id = R.drawable.chevron_down),
+        contentDescription = "드롭다운",
+        modifier = modifier,
+        tint = tint
+    )
+}

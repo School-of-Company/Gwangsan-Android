@@ -1,4 +1,4 @@
-package com.kim.main
+package com.school_of_company.main
 
 import org.junit.Test
 

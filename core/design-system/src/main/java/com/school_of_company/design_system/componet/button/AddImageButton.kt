@@ -1,4 +1,4 @@
-package com.school_of_company.design_system.componet.icons
+package com.school_of_company.design_system.componet.icon
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -7,8 +7,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.ElevatedSuggestionChip
 import androidx.compose.ui.graphics.Color
 import com.school_of_company.design_system.componet.clickable.GwangSanClickable
+import com.school_of_company.design_system.componet.icons.EllipseIcon
+import com.school_of_company.design_system.componet.icons.PlusIcon
 
 @Composable
 fun AddImageButton(
