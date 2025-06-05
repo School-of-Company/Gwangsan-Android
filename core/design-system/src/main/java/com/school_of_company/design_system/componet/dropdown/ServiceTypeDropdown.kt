@@ -52,7 +52,7 @@ fun ServiceTypeDropdown(
                 .padding(horizontal = 16.dp, vertical = 12.dp)
         ) {
             Row(
-                modifier =Modifier,
+                modifier = Modifier,
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
