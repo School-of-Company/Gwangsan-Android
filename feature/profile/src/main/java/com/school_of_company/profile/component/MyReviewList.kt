@@ -37,7 +37,8 @@ internal fun MyReviewListItem(
             if (coverImage.isNullOrEmpty()) {
                 Box(
                     modifier = Modifier
-                        .size(80.dp)
+                        .size(100.dp)
+                        .padding(horizontal = 24.dp, vertical = 16.dp)
                         .clip(RoundedCornerShape(10.dp))
                 ) {
                     Image(
@@ -51,7 +52,8 @@ internal fun MyReviewListItem(
             else {
                 Box(
                     modifier = Modifier
-                        .size(80.dp)
+                        .size(100.dp)
+                        .padding(horizontal = 24.dp, vertical = 16.dp)
                         .clip(RoundedCornerShape(10.dp))
                 ) {
                     Image(
@@ -88,7 +90,7 @@ internal fun MyReviewListItem(
 }
 
 @Composable
-fun MyReviewList(
+internal fun MyReviewList(
     modifier: Modifier = Modifier,
     items: List<MyReviewItem>
 ) {
@@ -112,9 +114,9 @@ fun MyReviewList(
 
 @Preview
 @Composable
-fun MyReviewListItemPreview() {
+private fun MyReviewListItemPreview() {
     MyReviewListItem(
-        coverImage = "https://image.dongascience.com/Photo/2019/12/fb4f7da04758d289a466f81478f5f488.jpg",
+        coverImage = null,
         title = "바퀴벌레 후기",
         price = "1000원"
     )
