@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -28,7 +29,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.school_of_company.design_system.theme.GwangSanTheme
 
 @Composable
-internal fun MyWirteListItem(
+internal fun MyWriteListItem(
     modifier: Modifier = Modifier,
     coverImage: String?,
     title: String,
@@ -45,7 +46,8 @@ internal fun MyWirteListItem(
             if (coverImage.isNullOrEmpty()) {
                 Box(
                     modifier = Modifier
-                        .size(80.dp)
+                        .size(100.dp)
+                        .padding(horizontal = 24.dp, vertical = 16.dp)
                         .clip(RoundedCornerShape(10.dp))
                 ) {
                     Image(
@@ -82,7 +84,8 @@ internal fun MyWirteListItem(
             else {
                 Box(
                     modifier = Modifier
-                        .size(80.dp)
+                        .size(100.dp)
+                        .padding(horizontal = 24.dp, vertical = 16.dp)
                         .clip(RoundedCornerShape(10.dp))
                 ) {
                     Image(
@@ -119,9 +122,9 @@ internal fun MyWirteListItem(
 }
 
 @Composable
-fun MyWirteList(
+internal fun MyWriteList(
     modifier: Modifier = Modifier,
-    items: List<MyWirteItem>
+    items: List<MyWriteItem>
 ) {
     GwangSanTheme { color, _ ->
 
@@ -131,7 +134,7 @@ fun MyWirteList(
                 .background(color.white),
         ) {
             items(items) { item ->
-                MyWirteListItem(
+                MyWriteListItem(
                     coverImage = item.coverImage,
                     title = item.title,
                     price = item.price
@@ -142,16 +145,16 @@ fun MyWirteList(
 }
 @Preview
 @Composable
-fun MainListItemPreview(){
-    MyWirteListItem(
+private fun MainListItemPreview(){
+    MyWriteListItem(
         coverImage = "https://image.dongascience.com/Photo/2019/12/fb4f7da04758d289a466f81478f5f488.jpg",
         title = "바퀴벌레",
         price = "1000원"
     )
 }
 
-data class MyWirteItem(
-    val coverImage: String,
+data class MyWriteItem(
+    val coverImage: String?,
     val title: String,
     val price: String
 )
