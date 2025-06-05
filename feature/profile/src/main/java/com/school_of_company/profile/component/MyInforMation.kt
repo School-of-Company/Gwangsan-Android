@@ -86,7 +86,7 @@ internal fun MyInformation(
 
 @Preview
 @Composable
-fun PreviewMyInformation(
+private fun PreviewMyInformation(
 
 ){
     MyInformation()
