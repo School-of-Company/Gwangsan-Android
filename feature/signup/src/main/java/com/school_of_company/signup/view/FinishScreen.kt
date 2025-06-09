@@ -34,9 +34,7 @@ fun FinishScreen(
         ) {
             Spacer(modifier = Modifier.height(40.dp))
 
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Image(
                     painter = painterResource(id = com.school_of_company.design_system.R.drawable.gwangsan),
                     contentDescription = "회원가입 완료 이미지",
