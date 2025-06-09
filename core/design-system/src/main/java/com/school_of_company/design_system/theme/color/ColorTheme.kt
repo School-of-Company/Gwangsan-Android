@@ -50,4 +50,8 @@ abstract class ColorTheme {
     // Black And White ColorTheme
     abstract val black: Color
     abstract val white: Color
+
+    // check background color
+    abstract val background: Color
+
 }
