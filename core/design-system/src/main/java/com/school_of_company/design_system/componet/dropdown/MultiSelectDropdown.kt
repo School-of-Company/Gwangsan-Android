@@ -35,6 +35,7 @@ fun MultiSelectDropdown(
     options: List<String>,
     selectedOptions: List<String>,
     onSelectionChange: (List<String>) -> Unit,
+    onDismissRequest: () -> Unit
 ) {
     GwangSanTheme { colors, typography ->
         Column(
