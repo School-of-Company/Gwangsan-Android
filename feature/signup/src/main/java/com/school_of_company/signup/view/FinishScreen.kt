@@ -24,6 +24,7 @@ fun FinishScreen(
     onClickGoToLogin: () -> Unit
 ) {
     GwangSanTheme { colors, typography ->
+
         Column(
             modifier = modifier
                 .fillMaxSize()
