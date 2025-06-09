@@ -32,6 +32,7 @@ fun RecommenderInputScreen(
     val focusManager = LocalFocusManager.current
 
     GwangSanTheme { colors, typography ->
+
         Box(
             modifier = modifier
                 .fillMaxSize()
@@ -48,10 +49,12 @@ fun RecommenderInputScreen(
                     .imePadding()
             ) {
                 Spacer(modifier = Modifier.height(24.dp))
+
                 GwangSanTopBar(
                     startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { }) },
                     betweenText = "뒤로"
                 )
+
                 Spacer(modifier = Modifier.height(32.dp))
 
                 Text(
