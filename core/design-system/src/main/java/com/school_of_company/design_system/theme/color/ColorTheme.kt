@@ -54,4 +54,6 @@ abstract class ColorTheme {
     // check background color
     abstract val background: Color
 
+    // focus dropdown color
+    abstract val focus: Color
 }
