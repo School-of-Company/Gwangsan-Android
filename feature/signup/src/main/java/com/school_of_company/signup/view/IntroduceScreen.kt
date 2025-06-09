@@ -45,6 +45,7 @@ private fun IntroduceScreen(
     val options = listOf("청소하기", "운전하기", "달리기", "빨래하기", "벌레잡기", "이삿짐 나르기")
 
     GwangSanTheme { colors, typography ->
+
         val backgroundColor = if (isDropdownVisible) GwangSanColor.gray300 else colors.white
 
         Box(
@@ -95,14 +96,11 @@ private fun IntroduceScreen(
 
                 if (isDropdownVisible) {
                     Spacer(modifier = Modifier.height(6.dp))
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                        ) {
+
+                    Column(modifier = Modifier.fillMaxWidth())
+                    {
+                        Box(modifier = Modifier.fillMaxWidth())
+                        {
                             GwangSanTextField(
                                 label = "소개",
                                 value = introduce.joinToString(", "),
