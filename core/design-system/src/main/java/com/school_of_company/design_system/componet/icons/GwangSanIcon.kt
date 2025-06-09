@@ -3,6 +3,7 @@ package com.school_of_company.design_system.componet.icons
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import com.school_of_company.design_system.R
@@ -119,6 +120,19 @@ fun DropDownIcon(
     Icon(
         painter = painterResource(id = R.drawable.chevron_down),
         contentDescription = "드롭다운",
+        modifier = modifier,
+        tint = tint
+    )
+}
+
+@Composable
+fun CheckIcon(
+    modifier: Modifier = Modifier,
+    tint: Color = Color.Unspecified
+) {
+    Icon(
+        painter = painterResource(id = R.drawable.check),
+        contentDescription = "체크",
         modifier = modifier,
         tint = tint
     )
