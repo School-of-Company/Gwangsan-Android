@@ -27,6 +27,7 @@ fun GwangSanButton(
     modifier: Modifier = Modifier,
     text: String,
     color: Color,
+    textColor: Color,
     onClick: () -> Unit,
 ) {
     GwangSanTheme { colors, typography ->
@@ -49,7 +50,7 @@ fun GwangSanButton(
                 text = text,
                 style = typography.body2,
                 fontWeight = FontWeight.SemiBold,
-                color = colors.white
+                color = textColor
             )
         }
     }

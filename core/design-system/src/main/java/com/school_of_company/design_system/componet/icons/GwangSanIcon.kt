@@ -123,3 +123,16 @@ fun DropDownIcon(
         tint = tint
     )
 }
+
+@Composable
+fun CheckIcon(
+    modifier: Modifier = Modifier,
+    tint: Color = Color.Unspecified
+) {
+    Icon(
+        painter = painterResource(id = R.drawable.check),
+        contentDescription = "체크",
+        modifier = modifier,
+        tint = tint
+    )
+}

@@ -113,6 +113,7 @@ private fun FinalPostScreen(
                         .background(color = colors.white, shape = RoundedCornerShape(8.dp))
                         .border(1.dp, GwangSanColor.subYellow500, shape = RoundedCornerShape(8.dp))
                         .padding(16.dp)
+                        .height(185.dp)
                 ) {
                     Text(
                         text = content,

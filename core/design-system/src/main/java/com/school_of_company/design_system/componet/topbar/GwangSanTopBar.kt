@@ -26,7 +26,7 @@ fun GwangSanTopBar (
         ) {
             startIcon()
 
-            Spacer(modifier = Modifier.size(5.dp))
+            Spacer(modifier = Modifier.size(8.dp))
 
             GwangSanSubText(subjectText = betweenText)
             endIcon()

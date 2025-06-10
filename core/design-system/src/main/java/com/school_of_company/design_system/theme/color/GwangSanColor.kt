@@ -53,4 +53,10 @@ object GwangSanColor : ColorTheme() {
     // Black And White Color
     override val black = Color(0xFF121212)
     override val white = Color(0xFFFFFFFF)
+
+    // check background Color
+    override val background = Color(0x66111111)
+
+    // focus dropdown Color
+    override val focus = Color(0xFFF1F5F9)
 }
