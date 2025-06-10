@@ -27,38 +27,42 @@ fun MultiSelectDropdown(
         Column(
             modifier = modifier
                 .clip(RoundedCornerShape(12.dp))
-                .background(GwangSanColor.white)
+                .background(colors.white)
         ) {
             options.forEach { option ->
-                val isSelected = selectedOptions.contains(option)
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(
-                            color = if (isSelected) colors.focus else colors.white,
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        .GwangSanClickable {
-                            val newSelection = if (isSelected) {
-                                selectedOptions - option
-                            } else {
-                                selectedOptions + option
+                key(option) {
+
+                    val isSelected = selectedOptions.contains(option)
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(
+                                color = if (isSelected) colors.focus else colors.white,
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                            .GwangSanClickable {
+                                val newSelection = if (isSelected) {
+                                    selectedOptions - option
+                                } else {
+                                    selectedOptions + option
+                                }
+                                onSelectionChange(newSelection)
                             }
-                            onSelectionChange(newSelection)
+                            .padding(horizontal = 16.dp, vertical = 12.dp)
+                    ) {
+                        if (isSelected) {
+                            CheckIcon(modifier = Modifier.padding(end = 8.dp))
+                        } else {
+                            Spacer(modifier = Modifier.width(24.dp))
                         }
-                        .padding(horizontal = 16.dp, vertical = 12.dp)
-                ) {
-                    if (isSelected) {
-                        CheckIcon(modifier = Modifier.padding(end = 8.dp))
-                    } else {
-                        Spacer(modifier = Modifier.width(24.dp))
+                        Text(
+                            text = option,
+                            style = typography.body5,
+                            color = if (isSelected) colors.black else colors.gray600
+                        )
                     }
-                    Text(
-                        text = option,
-                        style = typography.body5,
-                        color = if (isSelected) colors.black else colors.gray600
-                    )
                 }
             }
         }
