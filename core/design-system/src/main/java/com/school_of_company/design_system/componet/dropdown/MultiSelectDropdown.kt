@@ -11,7 +11,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.icons.CheckIcon
-import com.school_of_company.design_system.theme.color.GwangSanColor
 import com.school_of_company.design_system.theme.GwangSanTheme
 
 @Composable
