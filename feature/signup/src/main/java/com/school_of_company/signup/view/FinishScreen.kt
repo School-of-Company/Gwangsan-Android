@@ -17,6 +17,13 @@ import com.school_of_company.design_system.componet.button.GwangSanButton
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.design_system.theme.color.GwangSanColor
 import com.school_of_company.signup.R
+@Composable
+internal fun FinishRoute(
+    onClickGoToLogin: () -> Unit,
+){
+    FinishScreen(onClickGoToLogin = onClickGoToLogin)
+}
+
 
 @Composable
 fun FinishScreen(
