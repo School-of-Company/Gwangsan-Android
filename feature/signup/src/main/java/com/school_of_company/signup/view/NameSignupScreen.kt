@@ -36,7 +36,7 @@ import com.yourpackage.design_system.component.textField.GwangSanTextField
 internal fun NameSignupRoute(
     onBackClick: () -> Unit,
     onPasswordClick: ()-> Unit,
-){
+) {
     NameSignupScreen(
         onBackClick = onBackClick,
         onPasswordClick = onPasswordClick,
@@ -45,7 +45,6 @@ internal fun NameSignupRoute(
         signInCallBack = {},
         isEmailError = false
     )
-
 }
 
 @Composable
