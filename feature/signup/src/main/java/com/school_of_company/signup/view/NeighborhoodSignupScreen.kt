@@ -34,10 +34,26 @@ import com.school_of_company.design_system.componet.topbar.GwangSanTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.signup.componet.AreaList
 import com.yourpackage.design_system.component.textField.GwangSanSearchTextField
+@Composable
+internal fun  NeighborhoodSignupRoute(
+    onBackClick: () -> Unit,
+    onIntroduceClick: () -> Unit
+){
+    NeighborhoodSignupScreen(
+        studentSearch = "",
+        onStudentSearchChange = {},
+        studentSearchCallBack = {},
+        neighborhoodCallBack = {},
+        onBackClick = onBackClick,
+        onIntroduceClick = onIntroduceClick
+    )
+}
 
 @Composable
 private fun NeighborhoodSignupScreen(
     modifier: Modifier = Modifier,
+    onBackClick: () -> Unit,
+    onIntroduceClick: () -> Unit,
     studentSearch: String,
     neighborhoodCallBack: () -> Unit,
     focusManager: FocusManager = LocalFocusManager.current,
@@ -81,7 +97,7 @@ private fun NeighborhoodSignupScreen(
                     ,
                 ){
                     GwangSanTopBar(
-                        startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable {  }) },
+                        startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { onBackClick() }) },
                         betweenText = "뒤로"
                     )
                 }
@@ -137,6 +153,7 @@ private fun NeighborhoodSignupScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     neighborhoodCallBack()
+                    onIntroduceClick()
                 }
             }
         }
@@ -152,7 +169,9 @@ fun  NeighborhoodSignupScreenPreview(
         studentSearch = "",
         onStudentSearchChange = {},
         studentSearchCallBack = {},
-        neighborhoodCallBack = {}
+        neighborhoodCallBack = {},
+        onBackClick = {},
+        onIntroduceClick = {}
     )
 
 }
