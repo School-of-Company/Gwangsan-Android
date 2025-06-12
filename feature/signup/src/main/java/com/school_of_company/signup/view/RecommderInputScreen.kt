@@ -21,9 +21,21 @@ import com.school_of_company.design_system.componet.icons.DownArrowIcon
 import com.school_of_company.design_system.componet.topbar.GwangSanTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.yourpackage.design_system.component.textField.GwangSanTextField
-
+@Composable
+internal fun ReCommDerInputRoute(
+    onBackClick: () -> Unit,
+    onRecommenderClick: () -> Unit
+) {
+    RecommenderInputScreen(
+        onBackClick = onBackClick,
+        onRecommenderChange = {},
+        onNextClick = onRecommenderClick,
+        recommender = "",
+    )
+}
 @Composable
 fun RecommenderInputScreen(
+    onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
     recommender: String,
     onRecommenderChange: (String) -> Unit,
@@ -51,7 +63,7 @@ fun RecommenderInputScreen(
                 Spacer(modifier = Modifier.height(24.dp))
 
                 GwangSanTopBar(
-                    startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { }) },
+                    startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable {onBackClick()}) },
                     betweenText = "뒤로"
                 )
 
@@ -101,7 +113,8 @@ fun RecommenderInputScreenPreviewDisabled() {
     RecommenderInputScreen(
         recommender = "",
         onRecommenderChange = {},
-        onNextClick = {}
+        onNextClick = {},
+        onBackClick = {}
     )
 }
 
@@ -111,6 +124,7 @@ fun RecommenderInputScreenPreviewEnabled() {
     RecommenderInputScreen(
         recommender = "추천인",
         onRecommenderChange = {},
-        onNextClick = {}
+        onNextClick = {},
+        onBackClick = {}
     )
 }
