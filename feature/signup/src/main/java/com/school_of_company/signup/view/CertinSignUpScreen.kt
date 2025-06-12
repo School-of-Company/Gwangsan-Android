@@ -34,6 +34,25 @@ import com.school_of_company.design_system.componet.icons.DownArrowIcon
 import com.school_of_company.design_system.componet.topbar.GwangSanTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.yourpackage.design_system.component.textField.GwangSanTextField
+@Composable
+internal fun CertInSignUpRoute(
+    onBackClick: () -> Unit,
+    onNeighborhoodClick: () -> Unit
+){
+    CerTinSignUpScreen(
+        onBackClick = onBackClick,
+        onNeighborhoodClick = onNeighborhoodClick,
+        certificationCallBack = {},
+        sendCertificationCodeCallBack = {},
+        onPhoneNumberChange = {},
+        onCertificationNumberChange = {},
+        isCertificationCodeError = false,
+        password = "",
+        rePassword = "",
+        phoneNumber = "",
+        certificationNumber = ""
+    )
+}
 
 @Composable
 private fun CerTinSignUpScreen(
@@ -43,6 +62,8 @@ private fun CerTinSignUpScreen(
     rePassword: String,
     phoneNumber: String,
     certificationNumber: String,
+    onBackClick: () -> Unit,
+    onNeighborhoodClick: () -> Unit,
     focusManager: FocusManager = LocalFocusManager.current,
     scrollState: ScrollState = rememberScrollState(),
     certificationCallBack: () -> Unit,
@@ -66,7 +87,7 @@ private fun CerTinSignUpScreen(
                 }
         ) {
             GwangSanTopBar(
-                startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { }) },
+                startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable {onBackClick()}) },
                 betweenText = "뒤로"
             )
 
@@ -154,6 +175,7 @@ private fun CerTinSignUpScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 certificationCallBack()
+                onNeighborhoodClick()
             }
         }
     }
@@ -171,6 +193,9 @@ fun CerTinSignUpScreenPreview(){
         onPhoneNumberChange = {},
         onCertificationNumberChange = {},
         certificationCallBack = {},
-        sendCertificationCodeCallBack = {}
+        sendCertificationCodeCallBack = {},
+        onBackClick = {},
+        onNeighborhoodClick = {}
+
     )
 }
