@@ -27,10 +27,29 @@ import com.school_of_company.design_system.componet.topbar.GwangSanTopBar
 import com.school_of_company.design_system.theme.color.GwangSanColor
 import com.yourpackage.design_system.component.textField.GwangSanTextField
 import com.school_of_company.design_system.theme.GwangSanTheme
+@Composable
+internal fun IntroduceRoute(
+    onBackClick: () -> Unit,
+    onNextClick: () -> Unit,
+){
+    IntroduceScreen(
+        onBackClick = onBackClick,
+        onNextClick = onNextClick,
+        introduce = emptyList(),
+        onIntroduceChange = {},
+        buttonEnabled = false,
+        isDropdownVisible = false,
+        onDismissRequest = {},
+        showPlusIcon = true,
+        isFocused = false,
+    )
+
+}
 
 @Composable
 private fun IntroduceScreen(
     modifier: Modifier = Modifier,
+    onBackClick: () -> Unit,
     focusManager: androidx.compose.ui.focus.FocusManager = LocalFocusManager.current,
     scrollState: ScrollState = rememberScrollState(),
     introduce: List<String>,
@@ -72,7 +91,7 @@ private fun IntroduceScreen(
                     horizontalArrangement = Arrangement.Start
                 ) {
                     GwangSanTopBar(
-                        startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { }) },
+                        startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable {onBackClick() }) },
                         betweenText = "뒤로"
                     )
                 }
@@ -182,10 +201,18 @@ private fun IntroduceScreen(
 @Composable
 fun IntroduceScreenPreview1() {
     IntroduceScreen(
-        introduce = emptyList(),
+        introduce = listOf("빨래하기", "벌레잡기"),
         onIntroduceChange = {},
         onNextClick = {},
-        buttonEnabled = false
+        isDropdownVisible = true,
+        buttonEnabled = false,
+        onDismissRequest = {},
+        showPlusIcon = false,
+        isFocused = true,
+        focusManager = LocalFocusManager.current,
+        scrollState = rememberScrollState(),
+        modifier = Modifier.background(GwangSanColor.white),
+        onBackClick = {}
     )
 }
 
@@ -197,7 +224,14 @@ fun IntroduceScreenPreview2() {
         onIntroduceChange = {},
         onNextClick = {},
         isDropdownVisible = true,
-        buttonEnabled = false
+        buttonEnabled = false,
+        onDismissRequest = {},
+        showPlusIcon = false,
+        isFocused = true,
+        focusManager = LocalFocusManager.current,
+        scrollState = rememberScrollState(),
+        modifier = Modifier.background(GwangSanColor.white),
+        onBackClick = {}
     )
 }
 
@@ -208,7 +242,14 @@ fun IntroduceScreenPreview3() {
         introduce = listOf("빨래하기", "벌레잡기"),
         onIntroduceChange = {},
         onNextClick = {},
-        isDropdownVisible = false,
-        buttonEnabled = true
+        isDropdownVisible = true,
+        buttonEnabled = false,
+        onDismissRequest = {},
+        showPlusIcon = false,
+        isFocused = true,
+        focusManager = LocalFocusManager.current,
+        scrollState = rememberScrollState(),
+        modifier = Modifier.background(GwangSanColor.white),
+        onBackClick = {}
     )
 }

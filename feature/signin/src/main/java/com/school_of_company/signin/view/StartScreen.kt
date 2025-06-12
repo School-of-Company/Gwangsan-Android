@@ -19,9 +19,19 @@ import androidx.compose.ui.unit.dp
 import com.school_of_company.design_system.componet.button.GwangSanEnableButton
 import com.school_of_company.design_system.componet.button.GwangSanStateButton
 import com.school_of_company.design_system.theme.GwangSanTheme
+@Composable
+internal fun StartRoute(
+    onSignUpClick: () -> Unit,
+    onInputLoginClick: () -> Unit
+) {
+    StartScreen(
+        onSignUpClick = onSignUpClick,
+        onInputLoginClick = onInputLoginClick
+    )
+}
 
 @Composable
-private fun LoginScreen(
+private fun StartScreen(
     modifier: Modifier = Modifier,
     onSignUpClick: () -> Unit,
     onInputLoginClick: () -> Unit
@@ -70,7 +80,7 @@ private fun LoginScreen(
 @Preview
 @Composable
 private fun LoginInScreenPreview() {
-    LoginScreen(
+    StartScreen(
         onSignUpClick = {},
         onInputLoginClick = {}
     )
