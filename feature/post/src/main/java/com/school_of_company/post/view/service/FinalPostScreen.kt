@@ -1,4 +1,4 @@
-package com.example.post.view.service
+package com.school_of_company.post.view.service
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

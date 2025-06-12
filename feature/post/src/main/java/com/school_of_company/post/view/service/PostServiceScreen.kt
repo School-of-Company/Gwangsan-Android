@@ -1,4 +1,4 @@
-package com.example.post.view.service
+package com.school_of_company.post.view.service
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
