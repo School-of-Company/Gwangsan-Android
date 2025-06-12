@@ -33,11 +33,21 @@ import com.school_of_company.design_system.theme.GwangSanTheme
 import com.yourpackage.design_system.component.textField.GwangSanTextField
 
 @Composable
-internal fun  PasswordSignupRoute(
+internal fun PasswordSignupRoute(
     onBackClick: () -> Unit,
     onCerTinSignUpClick: () -> Unit
-){
-
+) {
+    PasswordSignupScreen(
+        onBackClick = onBackClick,
+        onCerTinSignUpClick = onCerTinSignUpClick,
+        isPasswordValidError = false,
+        isPasswordMismatchError = false,
+        password = "",
+        rePassword = "",
+        onPasswordChange = {},
+        onRePasswordChange = {},
+        signInCallBack = {}
+    )
 }
 
 @Composable
