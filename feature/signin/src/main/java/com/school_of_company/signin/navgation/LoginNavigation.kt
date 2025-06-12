@@ -34,15 +34,11 @@ fun NavController.navigateToSignIn(navOptions: NavOptions? = null) {
 fun NavGraphBuilder.signInScreen(
     onBackClick: () -> Unit,
     onMainClick: () -> Unit,
-    onRePasswordClick: () -> Unit,
-    onErrorToast: (throwable: Throwable?, message: Int?) -> Unit
 ) {
     composable(route = SignInRoute) {
         SignInRoute(
             onBackClick = onBackClick,
             onMainClick = onMainClick,
-            onRePasswordClick = onRePasswordClick,
-            onErrorToast = onErrorToast
         )
     }
 }
