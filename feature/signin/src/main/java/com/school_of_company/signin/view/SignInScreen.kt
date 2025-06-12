@@ -36,14 +36,10 @@ import com.yourpackage.design_system.component.textField.GwangSanTextField
 internal fun SignInRoute(
     onBackClick: () -> Unit,
     onMainClick: () -> Unit,
-    onRePasswordClick: () -> Unit,
-    onErrorToast: (throwable: Throwable?, message: Int?) -> Unit
 ){
     SignInScreen(
         onBackClick = onBackClick,
         onMainClick = onMainClick,
-        onRePasswordClick = onRePasswordClick,
-        onErrorToast = onErrorToast,
         id = "",
         password = "",
         onIdChange = {},
@@ -60,8 +56,6 @@ private fun SignInScreen(
     isPasswordError: Boolean,
     onBackClick: () -> Unit,
     onMainClick: () -> Unit,
-    onRePasswordClick: () -> Unit,
-    onErrorToast: (throwable: Throwable?, message: Int?) -> Unit,
     id: String,
     password: String,
     focusManager: FocusManager = LocalFocusManager.current,
@@ -178,7 +172,5 @@ private fun SignInScreenPreview() {
         isPasswordError = false,
         onBackClick = {},
         onMainClick = {},
-        onRePasswordClick = {},
-        onErrorToast = { _, _ -> }
     )
 }
