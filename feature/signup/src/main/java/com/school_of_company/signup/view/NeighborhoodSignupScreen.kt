@@ -38,7 +38,7 @@ import com.yourpackage.design_system.component.textField.GwangSanSearchTextField
 internal fun  NeighborhoodSignupRoute(
     onBackClick: () -> Unit,
     onIntroduceClick: () -> Unit
-){
+) {
     NeighborhoodSignupScreen(
         studentSearch = "",
         onStudentSearchChange = {},
