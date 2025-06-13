@@ -52,9 +52,9 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
 
                 // Add necessary dependencies using Version Catalog bundles
                 dependencies {
-                    add("implementation",libs.findBundle("kotlinx-coroutines").get())
-                    add("implementation",libs.findBundle("compose").get())
-                }
+                    add("implementation", libs.findLibrary("androidx-lifecycle-runtimeCompose").get())
+                    add("implementation", libs.findLibrary("androidx-lifecycle-viewModelCompose").get())
+                    add("implementation", libs.findLibrary("androidx-activity-compose").get()) }
             }
         }
     }
