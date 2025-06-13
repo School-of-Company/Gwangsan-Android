@@ -20,8 +20,8 @@ import com.school_of_company.design_system.componet.dropdown.state.GwangSanSwitc
 import com.school_of_company.design_system.componet.icons.DownArrowIcon
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
-import com.school_of_company.main.componet.MainItem
-import com.school_of_company.main.componet.MainList
+import com.school_of_company.main.component.MainItem
+import com.school_of_company.main.component.MainList
 
 @Composable
 private fun MainScreen(
