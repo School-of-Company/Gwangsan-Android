@@ -33,10 +33,27 @@ import com.school_of_company.design_system.theme.GwangSanTheme
 import com.yourpackage.design_system.component.textField.GwangSanTextField
 
 @Composable
+internal fun NameSignupRoute(
+    onBackClick: () -> Unit,
+    onPasswordClick: ()-> Unit,
+) {
+    NameSignupScreen(
+        onBackClick = onBackClick,
+        onPasswordClick = onPasswordClick,
+        id = "",
+        onIdChange = {},
+        signInCallBack = {},
+        isEmailError = false
+    )
+}
+
+@Composable
 private fun NameSignupScreen(
     modifier: Modifier = Modifier,
     isEmailError: Boolean,
     id: String,
+    onBackClick: () -> Unit,
+    onPasswordClick: ()-> Unit,
     focusManager: FocusManager = LocalFocusManager.current,
     scrollState: ScrollState = rememberScrollState(),
     signInCallBack: () -> Unit,
@@ -77,7 +94,7 @@ private fun NameSignupScreen(
                         ),
                 ){
                     GwangSanTopBar(
-                        startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable {  }) },
+                        startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable {onBackClick()}) },
                         betweenText = "뒤로"
                     )
                 }
@@ -122,6 +139,7 @@ private fun NameSignupScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     signInCallBack()
+                    onPasswordClick()
                 }
             }
         }
@@ -137,6 +155,8 @@ fun  NameSignupScreenPreview(
         id = "",
         onIdChange = {},
         signInCallBack = {},
-        isEmailError = false
+        isEmailError = false,
+        onBackClick = {},
+        onPasswordClick = {}
     )
 }
