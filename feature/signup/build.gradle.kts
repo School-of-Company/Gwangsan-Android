@@ -10,4 +10,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.navigation.common)
+    implementation(libs.androidx.navigation.runtime)
+    implementation(libs.androidx.navigation.compose)
 }
