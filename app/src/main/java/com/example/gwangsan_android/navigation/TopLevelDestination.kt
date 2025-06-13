@@ -1,7 +1,5 @@
 package com.example.gwangsan_android.navigation
 
-import com.school_of_company.gwangsan_android.R
-
 enum class TopLevelDestination(
     val unSelectedIcon: Int,
     val iconText: String,
