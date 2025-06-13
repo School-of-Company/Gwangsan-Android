@@ -1,4 +1,4 @@
-package com.example.gwangsan_android.ui
+package com.school_of_company.gwangsan_android.ui
 
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
