@@ -1,9 +1,9 @@
-package com.example.gwangsan_android.navigation
+package com.school_of_company.gwangsan_android.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
-import com.example.gwangsan_android.ui.GwangSanAppState
+import com.school_of_company.gwangsan_android.ui.GwangSanAppState
 
 
 @Composable

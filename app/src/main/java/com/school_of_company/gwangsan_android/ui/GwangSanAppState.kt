@@ -14,7 +14,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
-import com.example.gwangsan_android.navigation.TopLevelDestination
+import com.school_of_company.gwangsan_android.navigation.TopLevelDestination
 import kotlinx.coroutines.CoroutineScope
 
 @Composable

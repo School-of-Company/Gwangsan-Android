@@ -1,4 +1,4 @@
-package com.example.gwangsan_android.ui
+package com.school_of_company.gwangsan_android.ui
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.WindowInsets
@@ -15,8 +15,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.gwangsan_android.navigation.GwangsanNavHost
-import com.example.gwangsan_android.navigation.TopLevelDestination
+import com.school_of_company.gwangsan_android.navigation.GwangsanNavHost
+import com.school_of_company.gwangsan_android.navigation.TopLevelDestination
 import com.school_of_company.design_system.componet.bottombar.GwangSanNavigationBar
 import com.school_of_company.design_system.componet.bottombar.GwangSanNavigationBarItem
 import com.school_of_company.design_system.theme.GwangSanTheme
