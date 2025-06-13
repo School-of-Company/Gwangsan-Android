@@ -36,13 +36,35 @@ import com.school_of_company.design_system.theme.GwangSanTheme
 import com.yourpackage.design_system.component.textField.GwangSanTextField
 
 @Composable
-private fun CerTinSignUpScreen(
+internal fun CertinSignUpRoute(
+    onBackClick: () -> Unit,
+    onNeighborhoodClick: () -> Unit
+){
+    CertinSignUpScreen(
+        onBackClick = onBackClick,
+        onNeighborhoodClick = onNeighborhoodClick,
+        certificationCallBack = {},
+        sendCertificationCodeCallBack = {},
+        onPhoneNumberChange = {},
+        onCertificationNumberChange = {},
+        isCertificationCodeError = false,
+        password = "",
+        rePassword = "",
+        phoneNumber = "",
+        certificationNumber = ""
+    )
+}
+
+@Composable
+private fun CertinSignUpScreen(
     modifier: Modifier = Modifier,
     isCertificationCodeError: Boolean,
     password: String,
     rePassword: String,
     phoneNumber: String,
     certificationNumber: String,
+    onBackClick: () -> Unit,
+    onNeighborhoodClick: () -> Unit,
     focusManager: FocusManager = LocalFocusManager.current,
     scrollState: ScrollState = rememberScrollState(),
     certificationCallBack: () -> Unit,
@@ -66,7 +88,7 @@ private fun CerTinSignUpScreen(
                 }
         ) {
             GwangSanTopBar(
-                startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { }) },
+                startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable {onBackClick()}) },
                 betweenText = "뒤로"
             )
 
@@ -154,6 +176,7 @@ private fun CerTinSignUpScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 certificationCallBack()
+                onNeighborhoodClick()
             }
         }
     }
@@ -162,7 +185,7 @@ private fun CerTinSignUpScreen(
 @Preview
 @Composable
 fun CerTinSignUpScreenPreview(){
-    CerTinSignUpScreen(
+    CertinSignUpScreen(
         isCertificationCodeError = false,
         password = "",
         rePassword = "",
@@ -171,6 +194,9 @@ fun CerTinSignUpScreenPreview(){
         onPhoneNumberChange = {},
         onCertificationNumberChange = {},
         certificationCallBack = {},
-        sendCertificationCodeCallBack = {}
+        sendCertificationCodeCallBack = {},
+        onBackClick = {},
+        onNeighborhoodClick = {}
+
     )
 }
