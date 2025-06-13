@@ -1,62 +1,53 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
+    id("gwangsan.android.application")
+    id("gwangsan.android.hilt")
 }
 
 android {
-    namespace = "com.example.gwangsan_android"
-    compileSdk = 35
 
-    defaultConfig {
-        applicationId = "com.example.gwangsan_android"
-        minSdk = 24
-        targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-        composeOptions {
-            kotlinCompilerExtensionVersion = "1.5.8"
-        }
-
-    }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
+
+    defaultConfig {
+        buildConfigField (
+            "String",
+            "BASE_URL",
+            "\"https://api.example.com\""
+        )
+    }
+
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "META-INF/DEPENDENCIES"
+        }
+    }
+
+    namespace = "com.school_of_company.gwangsan_android"
 }
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
+    implementation(project(":core:ui"))
+    implementation(project(":core:model"))
+    implementation(project(":core:common"))
+    implementation(project(":core:datastore"))
+    implementation(project(":core:design-system"))
+
+    implementation(project(":feature:signin"))
+    implementation(project(":feature:signup"))
+    implementation(project(":feature:profile"))
+    implementation(project(":feature:post"))
+    implementation(project(":feature:main"))
+    implementation(libs.androidx.material3.window.size.class1.android)
+    implementation(libs.androidx.navigation.runtime.android)
+    implementation(libs.androidx.navigation.compose.jvmstubs)
+    implementation(libs.androidx.material3.android)
+
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
+    androidTestImplementation(libs.androidx.test.ext)
+
+
 }
