@@ -1,11 +1,10 @@
-package com.school_of_company.signup.navgation
+package com.school_of_company.signup.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.school_of_company.signup.view.*
-
 
 const val SignUpNameRoute = "signup_name"
 const val SignUpPasswordRoute = "signup_password"
@@ -14,7 +13,6 @@ const val SignUpNeighborhoodRoute = "signup_neighborhood"
 const val SignUpIntroduceRoute = "signup_introduce"
 const val SignUpRecommenderRoute = "signup_recommender"
 const val SignUpFinishRoute = "signup_finish"
-
 
 fun NavController.navigateToSignUpStart(navOptions: NavOptions? = null) {
     this.navigate(SignUpNameRoute, navOptions)
@@ -43,7 +41,6 @@ fun NavController.navigateToSignUpRecommender(navOptions: NavOptions? = null) {
 fun NavController.navigateToSignUpFinish(navOptions: NavOptions? = null) {
     this.navigate(SignUpFinishRoute)
 }
-
 
 fun NavGraphBuilder.signUpNameScreen(
     onBackClick: () -> Unit,
@@ -74,7 +71,7 @@ fun NavGraphBuilder.signUpPhoneScreen(
     onNeighborhoodClick: () -> Unit
 ){
     composable(route = SignUpPhoneRoute) {
-        CertinSignUpRoute(
+        CertInSignUpRoute(
             onBackClick = onBackClick,
             onNeighborhoodClick = onNeighborhoodClick
         )
@@ -110,7 +107,7 @@ fun NavGraphBuilder.signUpRecommenderScreen(
     onRecommenderClick: () -> Unit
 ) {
     composable(route = SignUpRecommenderRoute) {
-        RecommenderInputRoute(
+        ReCommDerInputRoute(
             onBackClick = onBackClick,
             onRecommenderClick = onRecommenderClick
         )
