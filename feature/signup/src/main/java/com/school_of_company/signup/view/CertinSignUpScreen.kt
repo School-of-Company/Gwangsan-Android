@@ -36,7 +36,7 @@ import com.school_of_company.design_system.theme.GwangSanTheme
 import com.yourpackage.design_system.component.textField.GwangSanTextField
 
 @Composable
-internal fun CertinSignUpRoute(
+internal fun CertInSignUpRoute(
     onBackClick: () -> Unit,
     onNeighborhoodClick: () -> Unit
 ){

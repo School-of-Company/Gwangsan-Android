@@ -22,7 +22,7 @@ import com.school_of_company.design_system.componet.topbar.GwangSanTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.yourpackage.design_system.component.textField.GwangSanTextField
 @Composable
-internal fun RecommenderInputRoute(
+internal fun ReCommDerInputRoute(
     onBackClick: () -> Unit,
     onRecommenderClick: () -> Unit
 ) {

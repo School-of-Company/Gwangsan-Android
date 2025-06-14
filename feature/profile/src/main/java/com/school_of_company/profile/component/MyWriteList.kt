@@ -26,6 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.theme.GwangSanTheme
 
 @Composable
@@ -33,6 +34,7 @@ internal fun MyWriteListItem(
     modifier: Modifier = Modifier,
     coverImage: String?,
     title: String,
+    onClick: () -> Unit,
     price: String
 ) {
     GwangSanTheme { color, typography ->
@@ -62,7 +64,9 @@ internal fun MyWriteListItem(
 
                 Column(
                     horizontalAlignment = Alignment.Start,
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .GwangSanClickable { onClick() }
+                        .fillMaxWidth(),
 
                     ) {
                     Text(
@@ -101,7 +105,7 @@ internal fun MyWriteListItem(
                 Column(
                     horizontalAlignment = Alignment.Start,
                     modifier = Modifier.weight(1f),
-                    ) {
+                ) {
                     Text(
                         text = title,
                         style = typography.body3,
@@ -124,7 +128,8 @@ internal fun MyWriteListItem(
 @Composable
 internal fun MyWriteList(
     modifier: Modifier = Modifier,
-    items: List<MyWriteItem>
+    items: List<MyWriteItem>,
+    onClick: () -> Unit
 ) {
     GwangSanTheme { color, _ ->
 
@@ -137,7 +142,8 @@ internal fun MyWriteList(
                 MyWriteListItem(
                     coverImage = item.coverImage,
                     title = item.title,
-                    price = item.price
+                    price = item.price,
+                    onClick = onClick
                 )
             }
         }
@@ -149,7 +155,8 @@ private fun MainListItemPreview(){
     MyWriteListItem(
         coverImage = "https://image.dongascience.com/Photo/2019/12/fb4f7da04758d289a466f81478f5f488.jpg",
         title = "바퀴벌레",
-        price = "1000원"
+        price = "1000원",
+        onClick = {}
     )
 }
 
