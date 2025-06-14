@@ -26,11 +26,25 @@ import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.profile.component.MyWriteItem
 import com.school_of_company.profile.component.MyWriteList
-
+@Composable
+internal fun MyWritingRoute(
+    onBackClick: () -> Unit,
+    onMyProfileClick: () -> Unit,
+    onReviewPostDetailClick: () -> Unit,
+){
+    MyWritingScreen(
+        onBackClick = onBackClick,
+        onMyProfileClick = onMyProfileClick,
+        onReviewPostDetailClick = onReviewPostDetailClick
+    )
+}
 
 @Composable
 private fun MyWritingScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onReviewPostDetailClick: () -> Unit,
+    onBackClick: () -> Unit,
+    onMyProfileClick: () -> Unit
 ) {
     var selectedType by remember { mutableStateOf("서비스") }
     var selectedDetail by remember { mutableStateOf("해주세요") }
@@ -48,9 +62,9 @@ private fun MyWritingScreen(
                 .padding(30.dp)
         ) {
             GwangSanSubTopBar(
-                startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { /* 뒤로 가기 */ }) },
+                startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { onBackClick() }) },
                 betweenText = "내 글",
-                endIcon = { CloseIcon(modifier = Modifier.GwangSanClickable { /* 닫기 */ }) }
+                endIcon = { CloseIcon(modifier = Modifier.GwangSanClickable { onMyProfileClick() }) }
             )
 
             Column(modifier = Modifier.padding(vertical = 28.dp)) {
@@ -78,7 +92,10 @@ private fun MyWritingScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                MyWriteList(items = filteredItems)
+                MyWriteList(
+                    onClick = { onReviewPostDetailClick() },
+                    items = filteredItems
+                )
             }
         }
     }
@@ -99,7 +116,11 @@ val dummyItems = listOf(
 
 @Composable
 @Preview
-fun MyWirteSrceenPreview(){
-    MyWritingScreen()
+private fun MyWritingScreenPreview(){
+    MyWritingScreen(
+        onBackClick = {},
+        onMyProfileClick = {},
+        onReviewPostDetailClick = {}
+    )
 
 }
