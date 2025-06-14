@@ -74,7 +74,7 @@ fun NavGraphBuilder.signUpPhoneScreen(
     onNeighborhoodClick: () -> Unit
 ){
     composable(route = SignUpPhoneRoute) {
-        CertInSignUpRoute(
+        CertinSignUpRoute(
             onBackClick = onBackClick,
             onNeighborhoodClick = onNeighborhoodClick
         )
@@ -110,7 +110,7 @@ fun NavGraphBuilder.signUpRecommenderScreen(
     onRecommenderClick: () -> Unit
 ) {
     composable(route = SignUpRecommenderRoute) {
-        ReCommDerInputRoute(
+        RecommenderInputRoute(
             onBackClick = onBackClick,
             onRecommenderClick = onRecommenderClick
         )

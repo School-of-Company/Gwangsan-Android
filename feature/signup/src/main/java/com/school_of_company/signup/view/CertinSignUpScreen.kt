@@ -34,12 +34,13 @@ import com.school_of_company.design_system.componet.icons.DownArrowIcon
 import com.school_of_company.design_system.componet.topbar.GwangSanTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.yourpackage.design_system.component.textField.GwangSanTextField
+
 @Composable
-internal fun CertInSignUpRoute(
+internal fun CertinSignUpRoute(
     onBackClick: () -> Unit,
     onNeighborhoodClick: () -> Unit
 ){
-    CerTinSignUpScreen(
+    CertinSignUpScreen(
         onBackClick = onBackClick,
         onNeighborhoodClick = onNeighborhoodClick,
         certificationCallBack = {},
@@ -55,7 +56,7 @@ internal fun CertInSignUpRoute(
 }
 
 @Composable
-private fun CerTinSignUpScreen(
+private fun CertinSignUpScreen(
     modifier: Modifier = Modifier,
     isCertificationCodeError: Boolean,
     password: String,
@@ -184,7 +185,7 @@ private fun CerTinSignUpScreen(
 @Preview
 @Composable
 fun CerTinSignUpScreenPreview(){
-    CerTinSignUpScreen(
+    CertinSignUpScreen(
         isCertificationCodeError = false,
         password = "",
         rePassword = "",
