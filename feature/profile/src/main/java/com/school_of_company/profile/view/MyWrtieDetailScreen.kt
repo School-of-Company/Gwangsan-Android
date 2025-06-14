@@ -24,9 +24,31 @@ import com.school_of_company.profile.component.CleaningRequestCard
 import com.school_of_company.profile.component.MyProfileUserLevel
 
 @Composable
+internal fun ReviewPostDetailRoute(
+    onBackClick: () -> Unit,
+    onMyProfileClick: () -> Unit,
+    onCompleteClick: () -> Unit,//
+){
+    ReviewPostDetailScreen(
+        onBackClick = onBackClick,
+        onMyProfileClick = onMyProfileClick,
+        coverImage = "https://example.com/cover_image.jpg",
+        name = "사용자 이름",
+        description = "사용자 설명",
+        level = 3,
+        postTitle = "게시글 제목",
+        postLocationAndPrice = "위치 및 가격",
+        postDescription = "게시글 설명",
+        onEditClick = { /* 수정 클릭 시 동작 */ },
+        onCompleteClick = onCompleteClick
+    )
+}
+@Composable
 fun ReviewPostDetailScreen(
     modifier: Modifier = Modifier,
     coverImage: String?,
+    onBackClick: () -> Unit,
+    onMyProfileClick: () -> Unit,
     name: String,
     description: String,
     level: Int,
@@ -49,9 +71,9 @@ fun ReviewPostDetailScreen(
                     .padding(24.dp)
             ) {
                 GwangSanSubTopBar(
-                    startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { /* 뒤로 가기 */ }) },
+                    startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { onBackClick() }) },
                     betweenText = "내 글",
-                    endIcon = { CloseIcon(modifier = Modifier.GwangSanClickable { /* 닫기 */ }) }
+                    endIcon = { CloseIcon(modifier = Modifier.GwangSanClickable {onMyProfileClick()}) }
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
@@ -124,6 +146,8 @@ fun PreViewReviewPostDetailScreen(
         postLocationAndPrice = "위치 및 가격",
         postDescription = "게시글 설명",
         onEditClick = { /* 수정 클릭 시 동작 */ },
-        onCompleteClick = { /* 거래완료 클릭 시 동작 */ }
+        onCompleteClick = { /* 거래완료 클릭 시 동작 */ },
+        onBackClick = {},
+        onMyProfileClick = {}
     )
 }
