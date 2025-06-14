@@ -32,9 +32,27 @@ import com.school_of_company.profile.component.GwangSanMoney
 import com.school_of_company.profile.component.MyInformation
 
 @Composable
+internal fun MyProfileRoute(
+    onMyWritingClick: () -> Unit,
+    onMyReviewClick: () -> Unit,
+    onTransactionHistoryClick: () -> Unit
+){
+    MyProfileScreen(
+        brightnessLevel = 6,
+        miningAmount = 0,
+        onMyWritingClick = onMyWritingClick,
+        onMyReviewClick = onMyReviewClick,
+        onTransactionHistoryClick = onTransactionHistoryClick,
+    )
+}
+
+@Composable
 private fun MyProfileScreen(
     modifier: Modifier = Modifier,
     brightnessLevel: Int,
+    onMyWritingClick: () -> Unit,
+    onMyReviewClick: () -> Unit,
+    onTransactionHistoryClick: () -> Unit,
     miningAmount: Int,
 ) {
     GwangSanTheme { colors, typography ->
@@ -100,6 +118,7 @@ private fun MyProfileScreen(
                     backgroundColor = backgroundColor,
                     onClick = {
                         backgroundColor = colors.main500
+                        onMyWritingClick()
                     },
                     modifier = Modifier
                         .weight(1f)
@@ -117,6 +136,7 @@ private fun MyProfileScreen(
                     backgroundColor = backgroundColor,
                     onClick = {
                         backgroundColor = colors.main500
+                        onTransactionHistoryClick()
                     },
                     modifier = Modifier
                         .weight(1f)
@@ -135,6 +155,7 @@ private fun MyProfileScreen(
                     backgroundColor = backgroundColor,
                     onClick = {
                         backgroundColor = colors.main500
+                        onMyReviewClick()
                     },
                     modifier = Modifier
                         .weight(1f)
@@ -154,6 +175,9 @@ private fun MyProfileScreen(
 private fun MyProfileScreenPreview(){
     MyProfileScreen(
         brightnessLevel = 6,
-        miningAmount = 0
+        miningAmount = 0,
+        onMyWritingClick = {},
+        onMyReviewClick = {},
+        onTransactionHistoryClick = {},
     )
 }
