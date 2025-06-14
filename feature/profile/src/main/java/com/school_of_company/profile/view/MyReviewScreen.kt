@@ -20,10 +20,22 @@ import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.profile.component.MyReviewItem
 import com.school_of_company.profile.component.MyReviewList
+@Composable
+internal fun MyReviewRoute(
+    onBackClick: () -> Unit,
+    onMyProfileClick: () -> Unit
+) {
+    MyReviewScreen(
+        onBackClick = onBackClick,
+        onMyProfileClick = onMyProfileClick
+    )
+}
 
 @Composable
 private fun MyReviewScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onBackClick: () -> Unit,
+    onMyProfileClick: () -> Unit
 ) {
     GwangSanTheme { colors, typography ->
 
@@ -36,9 +48,9 @@ private fun MyReviewScreen(
                 .padding(30.dp)
         ) {
             GwangSanSubTopBar(
-                startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { /* 뒤로 가기 */ }) },
+                startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { onBackClick()}) },
                 betweenText = "거래내역",
-                endIcon = { CloseIcon(modifier = Modifier.GwangSanClickable { /* 닫기 */ }) }
+                endIcon = { CloseIcon(modifier = Modifier.GwangSanClickable { onMyProfileClick()}) }
             )
 
             Column(modifier = Modifier.padding(vertical = 28.dp)) {
@@ -65,5 +77,8 @@ val ReViewDummyItems = listOf(
 @Preview
 @Composable
 private fun PreViewMyReviewScreen(){
-    MyReviewScreen()
+    MyReviewScreen(
+        onBackClick = {},
+        onMyProfileClick = {}
+    )
 }
