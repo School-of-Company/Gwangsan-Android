@@ -26,11 +26,23 @@ import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.profile.component.DataTransactionHistoryItem
 import com.school_of_company.profile.component.TransactionHistoryList
+@Composable
+internal fun TransactionHistoryRoute(
+    onBackClick: () -> Unit,
+    onMyProfileClick: () -> Unit,
+){
+    TransactionHistoryScreen(
+        onBackClick = onBackClick,
+        onMyProfileClick = onMyProfileClick
+    )
+}
 
 
 @Composable
 private fun TransactionHistoryScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onBackClick: () -> Unit,
+    onMyProfileClick: () -> Unit,
 ) {
     // 현재 선택된 상위 카테고리입니다. ViewModel 연동 전까지 임시로 사용합니다.
     var selectedType by remember { mutableStateOf("서비스") }
@@ -51,9 +63,9 @@ private fun TransactionHistoryScreen(
                 .padding(30.dp)
         ) {
             GwangSanSubTopBar(
-                startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { /* 뒤로 가기 */ }) },
-                betweenText = "거래내역",
-                endIcon = { CloseIcon(modifier = Modifier.GwangSanClickable { /* 닫기 */ }) }
+                startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { onBackClick() }) },
+                betweenText = "내 글",
+                endIcon = { CloseIcon(modifier = Modifier.GwangSanClickable {onMyProfileClick()}) }
             )
 
             Column(modifier = Modifier.padding(vertical = 28.dp)) {
@@ -103,5 +115,8 @@ val DummyItems = listOf(
 @Composable
 private fun PreviewTransactionHistoryScreen(
 ){
-    TransactionHistoryScreen()
+    TransactionHistoryScreen(
+        onBackClick = {},
+        onMyProfileClick = {}
+    )
 }
