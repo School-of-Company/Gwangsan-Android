@@ -24,6 +24,7 @@ import com.school_of_company.design_system.theme.GwangSanTheme
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun GwangSanApp(
+    startDestination: String,
     windowSizeClass: WindowSizeClass,
     appState: GwangSanAppState = rememberGwangSanAppState(windowSizeClass = windowSizeClass)
 ) {
@@ -54,7 +55,10 @@ fun GwangSanApp(
                 }
             }
         ) { _ ->
-            GwangsanNavHost(appState = appState)
+            GwangsanNavHost(
+                appState = appState,
+                startDestination = startDestination
+            )
         }
     }
 }
