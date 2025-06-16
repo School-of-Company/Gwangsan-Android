@@ -13,9 +13,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
@@ -37,11 +42,13 @@ internal fun NameSignupRoute(
     onBackClick: () -> Unit,
     onPasswordClick: ()-> Unit,
 ) {
+    var id by remember { mutableStateOf("") }
+
     NameSignupScreen(
         onBackClick = onBackClick,
         onPasswordClick = onPasswordClick,
-        id = "",
-        onIdChange = {},
+        id = id,
+        onIdChange = {id = it},
         signInCallBack = {},
         isEmailError = false
     )
@@ -119,11 +126,14 @@ private fun NameSignupScreen(
 
                 GwangSanTextField(
                     placeHolder = "별칭",
+                    value = id,
                     onTextChange = onIdChange,
                     label = "별칭을 입력해주세요",
+                    isDisabled = false,
+
                     isError = isEmailError,
                     errorText = "유효하지 않은 별칭입니다",
-                    modifier = modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
 
