@@ -9,6 +9,7 @@ import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.CompositionLocalProvider
 import com.school_of_company.gwangsan_android.ui.GwangSanApp
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.signin.navigation.StartRoute
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -21,9 +22,12 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
+            val startDestination = StartRoute
             CompositionLocalProvider {
                 GwangSanTheme { _, _ ->
-                    GwangSanApp(windowSizeClass = calculateWindowSizeClass(activity = this))
+                    GwangSanApp(
+                        startDestination = startDestination,
+                        windowSizeClass = calculateWindowSizeClass(activity = this))
                 }
             }
         }
