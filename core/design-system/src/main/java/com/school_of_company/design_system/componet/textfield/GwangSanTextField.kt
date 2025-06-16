@@ -2,6 +2,7 @@ package com.yourpackage.design_system.component.textField
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -71,6 +72,7 @@ fun GwangSanTextField(
                 singleLine = singleLine,
                 cursorBrush = SolidColor(GwangSanColor.subYellow500),
                 modifier = Modifier
+                    .focusable(true)
                     .fillMaxWidth()
                     .onFocusChanged { isFocused.value = it.isFocused }
                     .border(
