@@ -8,10 +8,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusManager
@@ -21,9 +23,12 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.school_of_company.design_system.R
+import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.icons.SearchIcon
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.design_system.theme.color.GwangSanColor
@@ -206,6 +211,55 @@ fun GwangSanSearchTextField(
                 },
                 readOnly = readOnly,
                 visualTransformation = visualTransformation
+            )
+        }
+    }
+}
+
+@Composable
+fun ChatInputTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    onImageClick: () -> Unit = {},
+    modifier: Modifier = Modifier
+) {
+    GwangSanTheme { colors, typography ->
+        Row(
+            modifier = modifier
+                .background(color = colors.gray200, shape = RoundedCornerShape(24.dp))
+                .padding(horizontal = 16.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            BasicTextField(
+                value = value,
+                onValueChange = onValueChange,
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(end = 8.dp),
+                singleLine = true,
+                cursorBrush = SolidColor(colors.main500),
+                textStyle = typography.label.copy(color = colors.black),
+                decorationBox = { innerTextField ->
+                    Box {
+                        if (value.isBlank()) {
+                            Text(
+                                text = "채팅을 입력해주세요",
+                                style = typography.label,
+                                color = colors.gray400
+                            )
+                        }
+                        innerTextField()
+                    }
+                }
+            )
+
+            Icon(
+                painter = painterResource(id = R.drawable.ic_image),
+                contentDescription = "이미지 첨부",
+                modifier = Modifier
+                    .size(24.dp)
+                    .GwangSanClickable { onImageClick() },
+                tint = colors.black
             )
         }
     }
