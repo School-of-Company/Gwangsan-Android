@@ -1,4 +1,4 @@
-package com.school_of_company.common
+package com.kim.common
 
 import org.junit.Test
 

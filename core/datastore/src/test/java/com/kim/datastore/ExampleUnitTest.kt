@@ -1,4 +1,4 @@
-package com.school_of_company.datastore
+package com.kim.datastore
 
 import org.junit.Test
 

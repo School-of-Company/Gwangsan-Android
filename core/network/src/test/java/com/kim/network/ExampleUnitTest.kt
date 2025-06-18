@@ -1,4 +1,4 @@
-package com.school_of_company.network
+package com.kim.network
 
 import org.junit.Test
 
