@@ -13,8 +13,10 @@ class AuthDataSourceImpl @Inject constructor(
     override suspend fun signUp(body: SignUpRequest) = performApiRequest { authAPI.signUp(body) }
 
     override suspend fun login(body: LoginRequest) = performApiRequest { authAPI.login(body) }
+
     override suspend fun tokenRefresh(refreshToken: String) = performApiRequest { authAPI.tokenRefresh(refreshToken) }
 
     override suspend fun sIgnLogout() = performApiRequest { authAPI.sIgnLogout() }
+
     override suspend fun logout() = performApiRequest { authAPI.logout() }
 }

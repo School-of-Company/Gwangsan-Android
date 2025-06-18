@@ -1,7 +1,7 @@
 package com.school_of_company.network.mapper.auth.request
 
 import com.school_of_company.model.auth.request.SignUpRequestModelBody
-import com.kim.network.dto.auth.requset.SignUpRequest
+import com.school_of_company.network.dto.auth.requset.SignUpRequest
 
 fun SignUpRequestModelBody.toDto(): SignUpRequest =
     SignUpRequest(
