@@ -42,9 +42,11 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }
+
 fun getApiKey(propertyKey: String): String {
     val propFile = rootProject.file("./local.properties")
     val properties = Properties()
     properties.load(FileInputStream(propFile))
     return properties.getProperty(propertyKey)
+        ?: throw IllegalArgumentException("Property $propertyKey not found in local.properties")
 }
