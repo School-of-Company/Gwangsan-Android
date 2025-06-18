@@ -1,7 +1,6 @@
 package com.school_of_company.network.di
 
 import android.util.Log
-import com.school_of_company.network.util.TokenAuthenticator
 import com.school_of_company.network.BuildConfig
 import com.school_of_company.network.api.AuthAPI
 import com.school_of_company.network.util.AuthInterceptor
