@@ -44,16 +44,9 @@ dependencies {
 }
 
 fun getApiKey(propertyKey: String): String {
-    val env = System.getenv(propertyKey)
-    if (env != null) return env
-
-    val propFile = rootProject.file("local.properties")
-    if (propFile.exists()) {
-        val properties = Properties()
-        properties.load(FileInputStream(propFile))
-        return properties.getProperty(propertyKey)
-            ?: throw IllegalStateException("Property $propertyKey not found in local.properties")
-    }
-
-    throw IllegalStateException("Property $propertyKey not found in environment variables or local.properties")
+    val propFile = rootProject.file("./local.properties")
+    val properties = Properties()
+    properties.load(FileInputStream(propFile))
+    return properties.getProperty(propertyKey)
+        ?: throw IllegalArgumentException("Property $propertyKey not found in local.properties")
 }
