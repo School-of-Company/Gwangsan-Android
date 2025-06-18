@@ -1,9 +1,9 @@
-package com.kim.network.datasource.auth
+package com.school_of_company.network.datasource.auth
 
 import com.school_of_company.network.api.AuthAPI
 import com.school_of_company.network.datasource.auth.AuthDataSource
-import com.kim.network.dto.auth.requset.LoginRequest
-import com.kim.network.dto.auth.requset.SignUpRequest
+import com.school_of_company.network.dto.auth.requset.LoginRequest
+import com.school_of_company.network.dto.auth.requset.SignUpRequest
 import com.school_of_company.network.util.performApiRequest
 import javax.inject.Inject
 

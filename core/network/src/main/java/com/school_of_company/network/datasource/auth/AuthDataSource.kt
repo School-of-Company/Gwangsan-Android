@@ -1,8 +1,8 @@
 package com.school_of_company.network.datasource.auth
 
+import com.school_of_company.network.dto.auth.requset.LoginRequest
+import com.school_of_company.network.dto.auth.requset.SignUpRequest
 import com.school_of_company.network.dto.reponse.LoginResponse
-import com.kim.network.dto.auth.requset.LoginRequest
-import com.kim.network.dto.auth.requset.SignUpRequest
 import kotlinx.coroutines.flow.Flow
 
 interface AuthDataSource {

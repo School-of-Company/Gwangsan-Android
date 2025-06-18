@@ -1,8 +1,8 @@
 package com.school_of_company.network.api
 
 import com.school_of_company.network.dto.reponse.LoginResponse
-import com.kim.network.dto.auth.requset.LoginRequest
-import com.kim.network.dto.auth.requset.SignUpRequest
+import com.school_of_company.network.dto.auth.requset.LoginRequest
+import com.school_of_company.network.dto.auth.requset.SignUpRequest
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.Header
