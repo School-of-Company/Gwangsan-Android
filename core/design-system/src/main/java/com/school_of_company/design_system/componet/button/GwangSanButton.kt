@@ -3,21 +3,27 @@ package com.school_of_company.design_system.componet.button
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.school_of_company.design_system.R
 import com.school_of_company.design_system.componet.button.state.ButtonState
 import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.theme.GwangSanTheme
@@ -132,6 +138,29 @@ fun GwangSanEnableButton(
         }
     }
 }
+
+@Composable
+fun ChatSendButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    GwangSanTheme { colors, _ ->
+        Box(
+            modifier = modifier
+                .size(44.dp)
+                .background(color = colors.subYellow500, shape = CircleShape)
+                .GwangSanClickable { onClick() },
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.arrow_down),
+                contentDescription = "메시지 전송",
+                tint = colors.white
+            )
+        }
+    }
+}
+
 @Preview
 @Composable
 fun ButtonPreView(){
