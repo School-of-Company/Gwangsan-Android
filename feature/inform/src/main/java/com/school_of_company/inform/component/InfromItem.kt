@@ -6,7 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -48,11 +47,17 @@ internal fun InformItem(
                     style = typography.body3
                 )
                 Spacer(modifier = Modifier.height(12.dp))
+
+                val trimmedDescription = if (description.length > 22) {
+                    description.take(22) + "..."
+                } else {
+                    description
+                }
+
                 Text(
-                    text = description,
+                    text = trimmedDescription,
                     style = typography.body5,
-                    color = colors.gray400,
-                    maxLines = 1
+                    color = colors.gray400
                 )
             }
         }
