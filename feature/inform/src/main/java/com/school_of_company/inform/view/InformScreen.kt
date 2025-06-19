@@ -3,6 +3,7 @@ package com.school_of_company.inform.view
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -64,13 +65,13 @@ private fun InformScreen(
                     items.forEachIndexed { index, item ->
                         GwangSanNavigationBarItem(
                             icon = {
-                                androidx.compose.material3.Icon(
+                                Icon(
                                     painter = painterResource(id = icons[index]),
                                     contentDescription = item
                                 )
                             },
                             selectedIcon = {
-                                androidx.compose.material3.Icon(
+                                Icon(
                                     painter = painterResource(id = icons[index]),
                                     contentDescription = item,
                                     tint = colors.main500
@@ -102,7 +103,7 @@ private fun InformScreen(
                     modifier = Modifier.padding(horizontal = 20.dp)
                 )
 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
                     text = "본점",
