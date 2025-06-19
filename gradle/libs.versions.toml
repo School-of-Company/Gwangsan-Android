@@ -7,6 +7,7 @@ coreKtx = "1.12.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 navigationCommonAndroid = "2.9.0"
+protobufPlugin = "0.9.4"
 androidxWearCompose = "1.2.0"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
@@ -29,8 +30,28 @@ navigation = "2.9.0"
 hilt = "2.48"
 navigationRuntimeAndroid = "2.9.0"
 navigationComposeAndroid = "2.9.0"
-
+kotlinxSerializationJson = "1.7.3"
+retrofit = "2.9.0"
+okhttp = "4.11.0"
+retrofitKotlinxSerializableJson = "1.0.0"
+runtime = "1.6.1"
+moshi = "1.15.2"
+androidxDataStore = "1.0.0"
+protobuf = "3.25.3"
+converter-moshi = "2.9.0"
+transportRuntime = "4.0.0"
 [libraries]
+protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
+protobuf-kotlin-lite = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobuf" }
+androidx-dataStore-core = { group = "androidx.datastore", name = "datastore", version.ref = "androidxDataStore" }
+androidx-runtime-v161 = { module = "androidx.compose.runtime:runtime", version.ref = "runtime" }
+retrofit-moshi-codegen = { group = "com.squareup.moshi", name = "moshi-kotlin-codegen", version.ref = "moshi" }
+moshi = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi" }
+retrofit-moshi-converter = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "converter-moshi" }
+retrofit-kotlin-serialization = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "retrofitKotlinxSerializableJson" }
+retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -73,8 +94,10 @@ androidx-navigation-common = { group = "androidx.navigation", name = "navigation
 androidx-navigation-runtime = { group = "androidx.navigation", name = "navigation-runtime", version.ref = "navigation" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 androidx-navigation-runtime-android = { group = "androidx.navigation", name = "navigation-runtime-android", version.ref = "navigationRuntimeAndroid" }
+transport-runtime = { group = "com.google.android.datatransport", name = "transport-runtime", version.ref = "transportRuntime" }
 
 [plugins]
+protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }

@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option java_package = "com.school_of_company.datastore";
+option java_multiple_files = true;
+
+message AuthToken {
+  string accessToken = 1;
+  string accessExpiresIn = 2;
+  string refreshToken = 3;
+  string refreshExpiresIn= 4;
+}

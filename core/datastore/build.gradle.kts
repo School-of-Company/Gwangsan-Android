@@ -1,43 +1,46 @@
+import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
+
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
+    id("gwangsan.android.core")
+    id("gwangsan.android.hilt")
+    alias(libs.plugins.protobuf)
 }
 
 android {
-    namespace = "com.example.datastore"
-    compileSdk = 35
+    namespace = "com.school_of_company.datastore"
+}
+androidComponents {
+    onVariants(selector().all()) { variant ->
+        afterEvaluate {
+            val capName = variant.name.capitalize()
 
-    defaultConfig {
-        minSdk = 24
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            tasks.getByName<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>("ksp${capName}Kotlin") {
+                setSource(
+                    tasks.getByName("generate${capName}Proto").outputs
+                )
+            }
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+}
+protobuf {
+    protoc {
+        artifact = libs.protobuf.protoc.get().toString()
     }
-    kotlinOptions {
-        jvmTarget = "11"
+    generateProtoTasks {
+        all().forEach { task ->
+            task.builtins {
+                register("java") {
+                    option("lite")
+                }
+                register("kotlin") {
+                    option("lite")
+                }
+            }
+        }
     }
 }
 
 dependencies {
-
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    implementation(libs.androidx.dataStore.core)
+    implementation(libs.protobuf.kotlin.lite)
 }

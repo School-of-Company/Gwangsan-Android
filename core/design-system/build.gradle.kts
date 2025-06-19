@@ -18,6 +18,11 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     implementation(libs.coil.kt)
     implementation(libs.androidx.material3)
+    implementation(project(":core:common"))
+    implementation(project(":core:model"))
+
+    implementation(libs.androidx.dataStore.core)
+    implementation(libs.protobuf.kotlin.lite)
     debugImplementation(libs.androidx.ui.tooling)
     implementation(libs.androidx.material.ripple)
     implementation(libs.androidx.material.ripple)
