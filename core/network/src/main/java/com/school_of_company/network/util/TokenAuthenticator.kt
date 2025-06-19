@@ -1,6 +1,6 @@
 package com.school_of_company.network.util
 
-import com.kim.datastore.datasource.AuthTokenDataSource
+import com.school_of_company.datastore.datasource.AuthTokenDataSource
 import com.school_of_company.network.BuildConfig
 import com.school_of_company.network.api.AuthAPI
 import kotlinx.coroutines.flow.first

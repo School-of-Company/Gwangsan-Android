@@ -1,9 +1,9 @@
-package com.kim.datastore.serializer
+package com.school_of_company.datastore.serializer
 
 import androidx.datastore.core.CorruptionException
 import androidx.datastore.core.Serializer
 import com.google.protobuf.InvalidProtocolBufferException
-import com.kim.datastore.AuthToken
+import com.school_of_company.datastore.AuthToken
 import java.io.InputStream
 import java.io.OutputStream
 import javax.inject.Inject

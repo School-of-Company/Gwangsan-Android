@@ -1,7 +1,7 @@
-package com.kim.datastore.di
+package com.school_of_company.datastore.di
 
-import com.kim.datastore.datasource.AuthTokenDataSource
-import com.kim.datastore.datasource.AuthTokenDataSourceImpl
+import com.school_of_company.datastore.datasource.AuthTokenDataSource
+import com.school_of_company.datastore.datasource.AuthTokenDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

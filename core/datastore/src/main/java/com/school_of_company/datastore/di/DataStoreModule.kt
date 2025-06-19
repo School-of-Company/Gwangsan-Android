@@ -1,11 +1,11 @@
-package com.kim.datastore.di
+package com.school_of_company.datastore.di
 
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.dataStoreFile
-import com.kim.datastore.AuthToken
-import com.kim.datastore.serializer.AuthTokenSerializer
+import com.school_of_company.datastore.AuthToken
+import com.school_of_company.datastore.serializer.AuthTokenSerializer
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

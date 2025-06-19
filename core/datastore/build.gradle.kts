@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.kim.datastore"
+    namespace = "com.school_of_company.datastore"
 }
 androidComponents {
     onVariants(selector().all()) { variant ->

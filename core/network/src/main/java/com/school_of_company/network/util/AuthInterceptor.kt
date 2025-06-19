@@ -1,7 +1,7 @@
 package com.school_of_company.network.util
 
 
-import com.kim.datastore.datasource.AuthTokenDataSource
+import com.school_of_company.datastore.datasource.AuthTokenDataSource
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor

@@ -1,7 +1,7 @@
-package com.kim.datastore.datasource
+package com.school_of_company.datastore.datasource
 
 import androidx.datastore.core.DataStore
-import com.kim.datastore.AuthToken
+import com.school_of_company.datastore.AuthToken
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
