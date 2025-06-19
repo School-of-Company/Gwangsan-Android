@@ -2,7 +2,6 @@ package com.kim.datastore.serializer
 
 import androidx.datastore.core.CorruptionException
 import androidx.datastore.core.Serializer
-
 import com.google.protobuf.InvalidProtocolBufferException
 import com.kim.datastore.AuthToken
 import java.io.InputStream
