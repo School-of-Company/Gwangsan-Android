@@ -32,7 +32,6 @@ dependencies {
 
     implementation(project(":core:ui"))
     implementation(project(":core:design-system"))
-
     implementation(project(":feature:signin"))
     implementation(project(":feature:signup"))
     implementation(project(":feature:profile"))
