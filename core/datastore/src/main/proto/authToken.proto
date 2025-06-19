@@ -5,7 +5,7 @@ option java_multiple_files = true;
 
 message AuthToken {
   string accessToken = 1;
-  string accessExp = 2;
+  string accessExpiresIn = 2;
   string refreshToken = 3;
-  string refreshExp = 4;
+  string refreshExpiresIn= 4;
 }
