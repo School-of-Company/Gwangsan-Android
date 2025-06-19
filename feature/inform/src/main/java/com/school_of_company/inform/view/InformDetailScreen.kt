@@ -73,10 +73,10 @@ private fun InformDetailScreen(
                         placeholder = painterResource(id = R.drawable.gwangsan),
                         error = painterResource(id = R.drawable.gwangsan),
                         fallback = painterResource(id = R.drawable.gwangsan),
+                        contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(280.dp),
-                        contentScale = ContentScale.Crop
+                            .height(280.dp)
                     )
                 }
 
