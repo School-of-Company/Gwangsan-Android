@@ -3,17 +3,11 @@ package com.school_of_company.inform.view
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.school_of_company.design_system.R
-import com.school_of_company.design_system.componet.bottombar.GwangSanNavigationBar
-import com.school_of_company.design_system.componet.bottombar.GwangSanNavigationBarItem
 import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.icons.CloseIcon
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
@@ -29,99 +23,60 @@ data class Inform(
 
 @Composable
 private fun InformScreen(
+    modifier: Modifier,
     informList: List<Inform>,
     onBackClick: () -> Unit = {},
     onNextClick: () -> Unit
 ) {
     GwangSanTheme { colors, typography ->
-        Scaffold(
-            containerColor = colors.white,
-            topBar = {
-                GwangSanSubTopBar(
-                    modifier = Modifier.padding(top = 56.dp),
-                    startIcon = { Spacer(modifier = Modifier.size(24.dp)) },
-                    betweenText = "공지",
-                    endIcon = {
-                        Box(modifier = Modifier.padding(end = 24.dp)) {
-                            CloseIcon(
-                                modifier = Modifier
-                                    .size(24.dp)
-                                    .GwangSanClickable { onBackClick() }
-                            )
-                        }
-                    }
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(
+                    top = 56.dp,
+                    bottom = 20.dp
                 )
-            },
-            bottomBar = {
-                GwangSanNavigationBar {
-                    val items = listOf("홈", "게시글", "채팅", "공지", "프로필")
-                    val icons = listOf(
-                        R.drawable.home,
-                        R.drawable.copy,
-                        R.drawable.chat,
-                        R.drawable.horn,
-                        R.drawable.person
-                    )
-                    items.forEachIndexed { index, item ->
-                        GwangSanNavigationBarItem(
-                            icon = {
-                                Icon(
-                                    painter = painterResource(id = icons[index]),
-                                    contentDescription = item
-                                )
-                            },
-                            selectedIcon = {
-                                Icon(
-                                    painter = painterResource(id = icons[index]),
-                                    contentDescription = item,
-                                    tint = colors.main500
-                                )
-                            },
-                            label = {
-                                Text(
-                                    text = item,
-                                    style = typography.label
-                                )
-                            },
-                            selected = index == 3,
-                            onClick = {}
+        ) {
+            GwangSanSubTopBar(
+                startIcon = { Spacer(modifier = Modifier.size(24.dp)) },
+                betweenText = "공지",
+                endIcon = {
+                    Box(modifier = Modifier.padding(end = 24.dp)) {
+                        CloseIcon(
+                            modifier = Modifier
+                                .size(24.dp)
+                                .GwangSanClickable { onBackClick() }
                         )
                     }
-                }
-            }
-        ) { padding ->
-            Column(
-                modifier = Modifier
-                    .padding(padding)
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
-                    .padding(vertical = 20.dp)
-            ) {
-                Text(
-                    text = "지점명 공지입니다",
-                    style = typography.titleMedium2,
-                    modifier = Modifier.padding(horizontal = 20.dp)
+                },
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+
+            Text(
+                text = "지점명 공지입니다",
+                style = typography.titleMedium2,
+                modifier = Modifier.padding(horizontal = 20.dp)
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = "본점",
+                style = typography.body5,
+                color = colors.gray400,
+                modifier = Modifier.padding(horizontal = 20.dp)
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            informList.forEach {
+                InformItem(
+                    title = it.title,
+                    description = it.description,
+                    imageUrl = it.imageUrl,
+                    onClick = onNextClick
                 )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Text(
-                    text = "본점",
-                    style = typography.body5,
-                    color = colors.gray400,
-                    modifier = Modifier.padding(horizontal = 20.dp)
-                )
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-                informList.forEach {
-                    InformItem(
-                        title = it.title,
-                        description = it.description,
-                        imageUrl = it.imageUrl,
-                        onClick = onNextClick
-                    )
-                }
             }
         }
     }
@@ -146,6 +101,7 @@ private fun InformScreenPreview() {
     InformScreen(
         informList = dummyList,
         onBackClick = {},
-        onNextClick = {}
+        onNextClick = {},
+        modifier = Modifier
     )
 }
