@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -14,7 +15,7 @@ import com.school_of_company.design_system.R
 import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 
 @Composable
-fun InformItem(
+internal fun InformItem(
     modifier: Modifier = Modifier,
     title: String,
     description: String,
@@ -28,7 +29,7 @@ fun InformItem(
                 .fillMaxWidth()
                 .height(112.dp)
                 .GwangSanClickable { onClick() }
-                .padding(horizontal = 16.dp, vertical = 12.dp)
+                .padding(horizontal = 16.dp, vertical = 24.dp)
         ) {
             AsyncImage(
                 model = imageUrl,
@@ -60,7 +61,7 @@ fun InformItem(
 
 @Preview
 @Composable
-fun InformItemPreviewWithImage() {
+private fun InformItemPreviewWithImage() {
     InformItem(
         title = "거래 중지 안내",
         description = "관리자 업로드 이미지가 있는 경우",
@@ -71,7 +72,7 @@ fun InformItemPreviewWithImage() {
 
 @Preview
 @Composable
-fun InformItemPreviewWithoutImage() {
+private fun InformItemPreviewWithoutImage() {
     InformItem(
         title = "거래 중지 안내",
         description = "이미지가 없는 경우 기본 이미지 노출",

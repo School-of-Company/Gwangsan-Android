@@ -27,7 +27,7 @@ data class Inform(
 )
 
 @Composable
-fun InformScreen(
+private fun InformScreen(
     informList: List<Inform>,
     onBackClick: () -> Unit = {},
     onNextClick: () -> Unit
@@ -128,7 +128,7 @@ fun InformScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun InformScreenPreview() {
+private fun InformScreenPreview() {
     val dummyList = listOf(
         Inform(
             title = "당분간 거래중지입니다",

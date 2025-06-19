@@ -21,7 +21,7 @@ import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 
 @Composable
-fun InformDetailScreen(
+private fun InformDetailScreen(
     title: String,
     branchName: String,
     description: String,
