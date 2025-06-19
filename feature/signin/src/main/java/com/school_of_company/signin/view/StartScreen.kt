@@ -1,24 +1,20 @@
-package com.school_of_company.signin.view
-
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.school_of_company.design_system.R
 import com.school_of_company.design_system.componet.button.GwangSanEnableButton
 import com.school_of_company.design_system.componet.button.GwangSanStateButton
 import com.school_of_company.design_system.theme.GwangSanTheme
+
 @Composable
 internal fun StartRoute(
     onSignUpClick: () -> Unit,
@@ -38,50 +34,93 @@ private fun StartScreen(
 ) {
     GwangSanTheme { colors, _ ->
 
+        val imageList = listOf(
+            R.drawable.start1,
+            R.drawable.start2,
+            R.drawable.start3
+        )
+
+        val pagerState = rememberPagerState(
+            initialPage = 0,
+            pageCount = { imageList.size }
+        )
+
         Box(
             modifier = modifier
                 .fillMaxSize()
                 .background(colors.white)
                 .imePadding()
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(24.dp)
-            ) {
-                GwangSanEnableButton(
-                    text = "회원가입",
-                    textColor = colors.main500,
-                    backgroundColor = colors.white,
+            Column(modifier = Modifier.fillMaxSize()) {
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .border(
-                            width = 1.dp,
-                            color = colors.main500,
-                            shape = RoundedCornerShape(8.dp)
-                        )
+                        .padding(top = 60.dp)
+                        .weight(1f)
                 ) {
-                    onSignUpClick()
+                    HorizontalPager(
+                        state = pagerState,
+                        modifier = Modifier.fillMaxSize()
+                    ) { page ->
+                        Image(
+                            painter = painterResource(id = imageList[page]),
+                            contentDescription = null,
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
+                    Row(
+                        horizontalArrangement = Arrangement.Center,
+                        modifier = Modifier
+                            .align(Alignment.BottomCenter)
+                            .padding(bottom = 30.dp),
+                    ) {
+                        repeat(imageList.size) { index ->
+                            val isSelected = pagerState.currentPage == index
+                            Box(
+                                modifier = Modifier
+                                    .padding(horizontal = 3.dp)
+                                    .size(if (isSelected) 12.dp else 6.dp)
+                                    .background(
+                                        color = if (isSelected) colors.main500 else colors.gray300,
+                                        shape = RoundedCornerShape(50)
+                                    )
+                            )
+                        }
+                    }
                 }
 
-                Spacer(modifier = Modifier.height(12.dp))
-
-                GwangSanStateButton(
-                    text = "로그인",
-                    modifier = Modifier.fillMaxWidth()
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.padding(
+                        horizontal = 24.dp
+                        , vertical = 12.dp
+                    )
                 ) {
-                    onInputLoginClick()
+                    GwangSanEnableButton(
+                        text = "회원가입",
+                        textColor = colors.main500,
+                        backgroundColor = colors.white,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .border(
+                                width = 1.dp,
+                                color = colors.main500,
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                    ) {
+                        onSignUpClick()
+                    }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    GwangSanStateButton(
+                        text = "로그인",
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        onInputLoginClick()
+                    }
                 }
             }
         }
     }
-}
-@Preview
-@Composable
-private fun LoginInScreenPreview() {
-    StartScreen(
-        onSignUpClick = {},
-        onInputLoginClick = {}
-    )
 }
