@@ -28,7 +28,10 @@ internal fun InformItem(
                 .fillMaxWidth()
                 .height(112.dp)
                 .GwangSanClickable { onClick() }
-                .padding(horizontal = 16.dp, vertical = 24.dp)
+                .padding(
+                    horizontal = 16.dp,
+                    vertical = 24.dp
+                )
         ) {
             AsyncImage(
                 model = imageUrl,
