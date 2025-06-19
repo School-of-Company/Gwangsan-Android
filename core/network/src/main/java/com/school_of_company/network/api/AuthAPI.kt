@@ -29,5 +29,5 @@ interface AuthAPI {
     suspend fun logout()
 
     @DELETE("/api/auth/out")
-    suspend fun sIgnLogout()
+    suspend fun signLogout()
 }

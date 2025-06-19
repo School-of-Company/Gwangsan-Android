@@ -71,7 +71,7 @@ class AuthTokenDataSourceImpl @Inject constructor(
     }
 
     override fun getRefreshTokenExp(): Flow<String> = authToken.data.map {
-        it.refreshExpiresIn
+        it.refreshExpiresIn ?: ""
     }
 
     override suspend fun setRefreshTokenExp(refreshTokenExp: String) {

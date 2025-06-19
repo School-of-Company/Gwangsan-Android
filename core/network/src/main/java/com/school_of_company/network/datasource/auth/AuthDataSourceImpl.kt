@@ -16,7 +16,7 @@ class AuthDataSourceImpl @Inject constructor(
 
     override suspend fun tokenRefresh(refreshToken: String) = performApiRequest { authAPI.tokenRefresh(refreshToken) }
 
-    override suspend fun sIgnLogout() = performApiRequest { authAPI.sIgnLogout() }
+    override suspend fun signLogout() = performApiRequest { authAPI.signLogout() }
 
     override suspend fun logout() = performApiRequest { authAPI.logout() }
 }

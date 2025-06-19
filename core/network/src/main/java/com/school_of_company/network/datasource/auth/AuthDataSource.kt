@@ -12,7 +12,7 @@ interface AuthDataSource {
 
     suspend fun tokenRefresh(refreshToken: String): Flow<LoginResponse>
 
-    suspend fun sIgnLogout(): Flow<Unit>
+    suspend fun signLogout(): Flow<Unit>
 
     suspend fun logout(): Flow<Unit>
 }
