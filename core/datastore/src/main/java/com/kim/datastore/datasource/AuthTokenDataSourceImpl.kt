@@ -31,13 +31,13 @@ class AuthTokenDataSourceImpl @Inject constructor(
     }
 
     override fun getAccessTokenExp(): Flow<String> = authToken.data.map {
-        it.accessExp ?: ""
+        it.accessExpiresIn ?: ""
     }
 
     override suspend fun setAccessTokenExp(accessTokenExp: String) {
         authToken.updateData {
             it.toBuilder()
-                .setAccessExp(accessTokenExp)
+                .setAccessExpiresIn(accessTokenExp)
                 .build()
         }
     }
@@ -45,7 +45,7 @@ class AuthTokenDataSourceImpl @Inject constructor(
     override suspend fun removeAccessTokenExp() {
         authToken.updateData {
             it.toBuilder()
-                .clearAccessExp()
+                .clearAccessExpiresIn()
                 .build()
         }
     }
@@ -71,13 +71,13 @@ class AuthTokenDataSourceImpl @Inject constructor(
     }
 
     override fun getRefreshTokenExp(): Flow<String> = authToken.data.map {
-        it.refreshExp ?: ""
+        it.refreshExpiresIn
     }
 
     override suspend fun setRefreshTokenExp(refreshTokenExp: String) {
         authToken.updateData {
             it.toBuilder()
-                .setRefreshExp(refreshTokenExp)
+                .setRefreshExpiresIn(refreshTokenExp)
                 .build()
         }
     }
@@ -85,7 +85,7 @@ class AuthTokenDataSourceImpl @Inject constructor(
     override suspend fun removeRefreshTokenExp() {
         authToken.updateData {
             it.toBuilder()
-                .clearRefreshExp()
+                .clearRefreshExpiresIn()
                 .build()
         }
     }
