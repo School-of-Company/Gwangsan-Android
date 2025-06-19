@@ -37,7 +37,7 @@ retrofitKotlinxSerializableJson = "1.0.0"
 runtime = "1.6.1"
 moshi = "1.15.2"
 androidxDataStore = "1.0.0"
-protobuf = "3.24.0"
+protobuf = "3.25.3"
 converter-moshi = "2.9.0"
 transportRuntime = "4.0.0"
 [libraries]
