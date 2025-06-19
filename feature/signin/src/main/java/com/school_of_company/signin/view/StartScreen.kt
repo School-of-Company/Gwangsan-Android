@@ -92,8 +92,8 @@ private fun StartScreen(
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.padding(
-                        horizontal = 24.dp
-                        , vertical = 12.dp
+                        horizontal = 24.dp,
+                        vertical = 12.dp
                     )
                 ) {
                     GwangSanEnableButton(
@@ -115,7 +115,13 @@ private fun StartScreen(
 
                     GwangSanStateButton(
                         text = "로그인",
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .border(
+                                width = 1.dp,
+                                color = colors.main500,
+                                shape = RoundedCornerShape(8.dp)
+                            )
                     ) {
                         onInputLoginClick()
                     }
