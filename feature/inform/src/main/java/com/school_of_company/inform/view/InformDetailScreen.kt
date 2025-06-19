@@ -80,7 +80,12 @@ private fun InformDetailScreen(
                     )
                 }
 
-                Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 24.dp)) {
+                Column(
+                    modifier = Modifier.padding(
+                    horizontal = 20.dp,
+                    vertical = 24.dp
+                    )
+                ) {
                     Text(
                         text = title,
                         style = typography.titleMedium2
