@@ -1,20 +1,21 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id("gwangsan.android.application")
     id("gwangsan.android.hilt")
 }
 
 android {
-
     buildFeatures {
-        compose = true
         buildConfig = true
     }
 
     defaultConfig {
-        buildConfigField (
+        buildConfigField(
             "String",
-            "BASE_URL",
-            "\"https://api.example.com\""
+            "NATIVE_APP_KEY",
+            getApiKey("NATIVE_APP_KEY")
         )
     }
 
@@ -24,6 +25,7 @@ android {
             excludes += "META-INF/DEPENDENCIES"
         }
     }
+
 
     namespace = "com.school_of_company.gwangsan_android"
 }
@@ -35,6 +37,8 @@ dependencies {
     implementation(project(":feature:signin"))
     implementation(project(":feature:signup"))
     implementation(project(":feature:profile"))
+    implementation(project(":core:common"))
+
     implementation(project(":feature:post"))
     implementation(project(":feature:main"))
     implementation(libs.androidx.window.size)
@@ -46,4 +50,10 @@ dependencies {
     androidTestImplementation(libs.androidx.test.ext)
 
 
+}
+fun getApiKey(propertyKey: String) : String {
+    val propFile = rootProject.file("./local.properties")
+    val properties = Properties()
+    properties.load(FileInputStream(propFile))
+    return properties.getProperty(propertyKey) ?: throw IllegalArgumentException("Property $propertyKey not found in local.properties")
 }
