@@ -13,5 +13,6 @@ fun SignUpRequestModel.toDto(): SignUpRequest =
         specialty = specialty,
         recommender = recommender,
         introduction = introduction,
-        branch = branch
+        branch = branch,
+        nickname = nickname
     )
