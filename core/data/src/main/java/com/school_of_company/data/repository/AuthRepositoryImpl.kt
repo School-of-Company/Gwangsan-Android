@@ -10,7 +10,6 @@ import com.school_of_company.network.mapper.auth.request.toDto
 import com.school_of_company.network.mapper.auth.response.toModel
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.transform
-
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
@@ -25,11 +24,8 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-
     override fun signUp(body: SignUpRequestModel): Flow<Unit> {
         return remoteDatasource.signUp(body = body.toDto())
-
-
     }
 
     override fun logout(): Flow<Unit> {
@@ -41,7 +37,6 @@ class AuthRepositoryImpl @Inject constructor(
             emit(response.toModel())
         }
     }
-
 
     override fun signLogout(): Flow<Unit> {
         return remoteDatasource.signLogout()
