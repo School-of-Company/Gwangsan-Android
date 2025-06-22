@@ -70,7 +70,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideAuthAPI(retrofit: Retrofit): AuthAPI {
-        return retrofit.create(AuthAPI::class.java)
-    }
+    fun provideAuthAPI(retrofit: Retrofit): AuthAPI =
+        retrofit.create(AuthAPI::class.java)
+
 }

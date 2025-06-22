@@ -14,6 +14,7 @@ data class SignUpRequest(
     @Json(name = "verificationCode") val verificationCode: String,
     @Json(name = "dong") val dong: Dong,
     @Json(name = "branch") val branch: Branch,
+    @Json(name = "nickname") val nickname: String,
     @Json(name = "recommender") val recommender: String,
     @Json(name = "specialty") val specialty: Specialty,
     @Json(name = "introduction") val introduction: String

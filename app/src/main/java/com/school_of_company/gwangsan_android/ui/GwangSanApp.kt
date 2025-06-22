@@ -32,12 +32,17 @@ fun GwangSanApp(
 
     val navBackStackEntry by appState.navController.currentBackStackEntryAsState()
 
-    val topLevelDestinationRoute = arrayOf(
+    // 여기에 보여주고 싶은 탑 레벨 목적지만 넣으세요.
+    val topLevelDestinations = listOf(
         TopLevelDestination.HOME
+        // 필요 시 여기에 추가
     )
 
-    navBackStackEntry?.destination?.route?.let {
-        isBottomBarVisible.value =  topLevelDestinationRoute.contains(TopLevelDestination.HOME)
+    // 현재 화면의 라우트와 topLevelDestination을 비교해서 BottomBar 표시 여부 결정
+    navBackStackEntry?.destination?.route?.let { currentRoute ->
+        isBottomBarVisible.value = topLevelDestinations.any { destination ->
+            currentRoute.contains(destination.name, ignoreCase = true)
+        }
     }
 
     GwangSanTheme { colors, _ ->
@@ -47,7 +52,7 @@ fun GwangSanApp(
             contentWindowInsets = WindowInsets(0, 0, 0, 0),
             bottomBar = {
                 if (isBottomBarVisible.value) {
-                    GwangSanBottomBar (
+                    GwangSanBottomBar(
                         destinations = appState.topLevelDestinations,
                         onNavigateToDestination = appState::navigateToTopLevelDestination,
                         currentDestination = appState.currentDestination
@@ -70,7 +75,7 @@ fun GwangSanBottomBar(
     currentDestination: NavDestination?
 ) {
     GwangSanTheme { _, typography ->
-       GwangSanNavigationBar {
+        GwangSanNavigationBar {
             destinations.forEach { destination ->
                 val selected = currentDestination.isTopLevelDestinationInHierarchy(destination)
 
@@ -103,5 +108,5 @@ fun GwangSanBottomBar(
 
 private fun NavDestination?.isTopLevelDestinationInHierarchy(destination: TopLevelDestination) =
     this?.hierarchy?.any {
-        it.route?.contains(destination.name, true) ?: false
+        it.route?.contains(destination.name, ignoreCase = true) ?: false
     } ?: false

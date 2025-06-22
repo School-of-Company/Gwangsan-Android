@@ -6,13 +6,13 @@ import com.school_of_company.network.dto.reponse.LoginResponse
 import kotlinx.coroutines.flow.Flow
 
 interface AuthDataSource {
-    suspend fun signUp(body: SignUpRequest): Flow<Unit>
+    fun signUp(body: SignUpRequest): Flow<Unit>
 
-    suspend fun login(body: LoginRequest): Flow<LoginResponse>
+    fun login(body: LoginRequest): Flow<LoginResponse>
 
-    suspend fun tokenRefresh(refreshToken: String): Flow<LoginResponse>
+    fun tokenRefresh(refreshToken: String): Flow<LoginResponse>
 
-    suspend fun signLogout(): Flow<Unit>
+    fun signLogout(): Flow<Unit>
 
-    suspend fun logout(): Flow<Unit>
+    fun logout(): Flow<Unit>
 }

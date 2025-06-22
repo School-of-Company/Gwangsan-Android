@@ -1,10 +1,13 @@
 package com.school_of_company.signin.view
 
+import android.util.Log
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +19,12 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
@@ -24,45 +33,112 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.school_of_company.design_system.R
 import com.school_of_company.design_system.componet.button.GwangSanStateButton
 import com.school_of_company.design_system.componet.button.state.ButtonState
 import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.icons.DownArrowIcon
 import com.school_of_company.design_system.componet.topbar.GwangSanTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.model.auth.request.LoginRequestModel
+import com.school_of_company.signin.viewmodel.SignInViewModel
+import com.school_of_company.signin.viewmodel.uistate.SaveTokenUiState
+import com.school_of_company.signin.viewmodel.uistate.SignInUiState
 import com.yourpackage.design_system.component.textField.GwangSanTextField
 
 @Composable
 internal fun SignInRoute(
     onBackClick: () -> Unit,
     onMainClick: () -> Unit,
+    onErrorToast: (throwable: Throwable?, message: Int?) -> Unit,
+    viewModel: SignInViewModel = hiltViewModel(),
 ){
+    val signInUiState by viewModel.signInUiState.collectAsStateWithLifecycle()
+    val saveTokenUiState by viewModel.saveTokenUiState.collectAsStateWithLifecycle()
+    val id by viewModel.id.collectAsStateWithLifecycle()
+    val password by viewModel.password.collectAsStateWithLifecycle()
+
     SignInScreen(
         onBackClick = onBackClick,
         onMainClick = onMainClick,
-        id = "",
-        password = "",
-        onIdChange = {},
-        signInCallBack = {},
-        isEmailError = false,
-        isPasswordError = false
+        id = id,
+        signInUiState = signInUiState,
+        saveTokenUiState = saveTokenUiState,
+        password = password,
+        onIdChange = viewModel::onIdChange,
+        onPasswordChange = viewModel::onPasswordChange,
+        onErrorToast = onErrorToast,
+        signInCallBack = {
+            Log.d("SignInRoute", "로그인 요청 시작: id=${viewModel.id.value}, password=${viewModel.password.value}")
+            viewModel.login(
+                body = LoginRequestModel(
+                    viewModel.id.value,
+                    viewModel.password.value
+                )
+            )
+        }
     )
 }
 
 @Composable
 private fun SignInScreen(
     modifier: Modifier = Modifier,
-    isEmailError: Boolean,
-    isPasswordError: Boolean,
     onBackClick: () -> Unit,
     onMainClick: () -> Unit,
     id: String,
     password: String,
+    onErrorToast: (throwable: Throwable?, message: Int?) -> Unit,
+    signInUiState: SignInUiState,
+    saveTokenUiState: SaveTokenUiState,
     focusManager: FocusManager = LocalFocusManager.current,
     scrollState: ScrollState = rememberScrollState(),
     signInCallBack: () -> Unit,
     onIdChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
 ) {
+    var idIsError by remember { mutableStateOf(false) }
+    var isError by remember { mutableStateOf(false) }
+
+    LaunchedEffect(signInUiState, saveTokenUiState) {
+        Log.d("SignInScreen", "signInUiState: $signInUiState, saveTokenUiState: $saveTokenUiState")
+        when (signInUiState) {
+            is SignInUiState.Loading -> {
+                isError = false
+                idIsError = false
+            }
+            is SignInUiState.Success -> {
+                when (saveTokenUiState) {
+                    is SaveTokenUiState.Loading -> Unit
+                    is SaveTokenUiState.Success -> onMainClick()
+                    is SaveTokenUiState.Error -> {
+                        isError = true
+                        onErrorToast(saveTokenUiState.exception, R.string.R_string_error_password_mismatch)
+                    }
+                }
+            }
+            is SignInUiState.BadRequest -> {
+                isError = true
+                idIsError = true
+                onErrorToast(null, R.string.R_string_error_password_mismatch)
+            }
+            is SignInUiState.NotFound -> {
+                isError = true
+                idIsError = true
+                onErrorToast(null, R.string.R_string_error_user_missing)
+            }
+            is SignInUiState.IdNotValid -> {
+                idIsError = true
+                onErrorToast(null, R.string.R_string_error_id_not_valid)
+            }
+            is SignInUiState.Error -> {
+                isError = true
+                idIsError = true
+                onErrorToast(signInUiState.exception, R.string.R_string_error_login)
+            }
+        }
+    }
+
     GwangSanTheme { colors, typography ->
 
         Column(
@@ -123,9 +199,10 @@ private fun SignInScreen(
 
                 GwangSanTextField(
                     placeHolder = "별칭",
+                    value = id,
                     onTextChange = onIdChange,
+                    isError =  idIsError ,
                     label = "별칭을 입력해주세요",
-                    isError = isEmailError,
                     errorText = "유효하지 않은 별칭입니다",
                     modifier = modifier.fillMaxWidth()
                 )
@@ -134,9 +211,10 @@ private fun SignInScreen(
 
                 GwangSanTextField(
                     placeHolder = "비밀번호",
-                    onTextChange = onIdChange,
+                    onTextChange = onPasswordChange,
+                    value = password,
+                    isError = isError,
                     label = "비밀번호를 입력해주세요",
-                    isError = isPasswordError,
                     errorText = "유효하지 않은 비밀번호입니다",
                     modifier = modifier.fillMaxWidth(),
                 )
@@ -154,23 +232,8 @@ private fun SignInScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     signInCallBack()
-                    onMainClick()
                 }
             }
         }
     }
-}
-@Preview
-@Composable
-private fun SignInScreenPreview() {
-    SignInScreen(
-        id = "",
-        password = "",
-        onIdChange = {},
-        signInCallBack = {},
-        isEmailError = false,
-        isPasswordError = false,
-        onBackClick = {},
-        onMainClick = {},
-    )
 }
