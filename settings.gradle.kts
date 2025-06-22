@@ -19,7 +19,6 @@ dependencyResolutionManagement {
 rootProject.name = "Gwangsan-Android"
 include(":app")
 include(":core")
-include(":core:data")
 include(":core:design-system")
 include(":core:common")
 include(":core:network")
@@ -33,4 +32,4 @@ include(":feature:signin")
 include(":feature:main")
 include(":feature:post")
 include(":feature:profile")
-
+include(":core:data")
