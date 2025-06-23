@@ -126,15 +126,14 @@ private fun CertinSignUpScreen(
                     errorText = "",
                     onTextChange = onPhoneNumberChange,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(60.dp),
+                    modifier = Modifier.weight(1f)
                 )
 
                 GwangSanStateButton(
                     text = "인증",
                     state = if (phoneNumber.isNotBlank()) ButtonState.Enable else ButtonState.Disable,
                     modifier = Modifier
+                        .align(Alignment.Bottom)
                         .height(54.dp)
                 ) {
                     sendCertificationCodeCallBack()
@@ -145,7 +144,7 @@ private fun CertinSignUpScreen(
 
             GwangSanTextField(
                 value = certificationNumber,
-                placeHolder = "전화번호 인증",
+                placeHolder = "인증번호를 입력해주세요",
                 isError = isCertificationCodeError,
                 isDisabled = false,
                 errorText = "인증번호가 틀립니다..",
@@ -153,7 +152,7 @@ private fun CertinSignUpScreen(
                     if (it.length <= 6 && it.all { char -> char.isDigit() }) onCertificationNumberChange(it)
                 },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                label = "비밀번호 확인",
+                label = "전화번호 인증",
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(90.dp),
