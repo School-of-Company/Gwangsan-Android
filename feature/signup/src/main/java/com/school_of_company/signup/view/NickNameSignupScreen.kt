@@ -46,12 +46,12 @@ internal fun NickNameSignupRoute(
     onPasswordClick: ()-> Unit,
     viewModel: SignUpViewModel = hiltViewModel(),
 ) {
-    val nicKName by viewModel.nickname.collectAsStateWithLifecycle()
+    val nickName by viewModel.nickname.collectAsStateWithLifecycle()
 
     NickNameSignupScreen(
         onBackClick = onBackClick,
         onPasswordClick = onPasswordClick,
-        id = nicKName,
+        id = nickName,
         onIdChange = viewModel::onNicknameChange,
     )
 }
