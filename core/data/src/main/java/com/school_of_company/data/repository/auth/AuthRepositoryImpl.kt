@@ -1,14 +1,14 @@
-package com.school_of_company.data.repository
+package com.school_of_company.data.repository.auth
 
 import com.school_of_company.datastore.datasource.AuthTokenDataSource
 import com.school_of_company.model.auth.request.LoginRequestModel
+import com.school_of_company.model.auth.request.SignUpCertificationNumberSendRequestModel
 import com.school_of_company.model.auth.request.SignUpRequestModel
 import com.school_of_company.model.auth.response.LoginResponseModel
 import com.school_of_company.network.datasource.auth.AuthDataSource
 import kotlinx.coroutines.flow.Flow
 import com.school_of_company.network.mapper.auth.request.toDto
 import com.school_of_company.network.mapper.auth.response.toModel
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.transform
 import javax.inject.Inject
 
@@ -58,5 +58,19 @@ class AuthRepositoryImpl @Inject constructor(
         localDataSource.removeRefreshToken()
         localDataSource.removeAccessTokenExp()
         localDataSource.removeRefreshTokenExp()
+    }
+
+    override fun signUpCertificationNumberSend(body: SignUpCertificationNumberSendRequestModel): Flow<Unit> {
+        return remoteDatasource.signUpCertificationNumberSend(body = body.toDto())
+    }
+
+    override fun signUpCertificationNumberCertification(
+        phoneNumber: String,
+        code: String
+    ): Flow<Unit> {
+        return remoteDatasource.signUpCertificationNumberCertification(
+            phoneNumber = phoneNumber,
+            code = code
+        )
     }
 }
