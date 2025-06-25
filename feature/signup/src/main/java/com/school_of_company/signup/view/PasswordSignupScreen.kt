@@ -113,7 +113,10 @@ private fun PasswordSignupScreen(
                     horizontalArrangement = Arrangement.Start,
                     modifier = modifier
                         .fillMaxWidth()
-                        .padding(top = 18.dp, bottom = 32.dp),
+                        .padding(
+                            top = 18.dp,
+                            bottom = 32.dp
+                        ),
                 ) {
                     GwangSanTopBar(
                         startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { onBackClick() }) },
@@ -140,9 +143,6 @@ private fun PasswordSignupScreen(
                 Spacer(modifier = Modifier.height(48.dp))
 
                 GwangSanTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(90.dp),
                     value = password,
                     label = "비밀번호",
                     placeHolder = "비밀번호",
@@ -150,21 +150,20 @@ private fun PasswordSignupScreen(
                     isDisabled = false,
                     errorText = "영문과 숫자를 포함한 8자 이상 입력해주세요.",
                     onTextChange = onPasswordChange,
+                    modifier = Modifier.fillMaxWidth(),
                 )
 
                 Spacer(modifier = Modifier.padding(16.dp))
 
                 GwangSanTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(90.dp),
                     value = rePassword,
                     placeHolder = "비밀번호 재입력",
                     isError = isPasswordMismatchError,
                     isDisabled = false,
                     errorText = "비밀번호가 일치하지 않습니다.",
                     onTextChange = onRePasswordChange,
-                    label = "비밀번호를 다시 입력해주세요"
+                    label = "비밀번호를 다시 입력해주세요",
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
 
