@@ -5,5 +5,5 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class SignUpCertificationNumberSendRequest(
-    @Json(name = "phoneNumber")val phoneNumber: String,
+    @Json(name = "phoneNumber") val phoneNumber: String,
 )
