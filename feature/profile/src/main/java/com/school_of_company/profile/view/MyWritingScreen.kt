@@ -24,8 +24,9 @@ import com.school_of_company.design_system.componet.icons.CloseIcon
 import com.school_of_company.design_system.componet.icons.DownArrowIcon
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
-import com.school_of_company.profile.component.MyWriteItem
-import com.school_of_company.profile.component.MyWriteList
+import com.school_of_company.design_system.componet.recycle.MyWriteItem
+import com.school_of_company.design_system.componet.recycle.MyWriteList
+
 @Composable
 internal fun MyWritingRoute(
     onBackClick: () -> Unit,
