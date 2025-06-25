@@ -2,12 +2,15 @@ package com.school_of_company.network.api
 
 import com.school_of_company.network.dto.reponse.LoginResponse
 import com.school_of_company.network.dto.auth.requset.LoginRequest
+import com.school_of_company.network.dto.auth.requset.SignUpCertificationNumberSendRequest
 import com.school_of_company.network.dto.auth.requset.SignUpRequest
 import retrofit2.http.Body
 import retrofit2.http.DELETE
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface AuthAPI {
     @POST("/api/auth/signup")
@@ -30,4 +33,15 @@ interface AuthAPI {
 
     @DELETE("/api/auth/out")
     suspend fun signLogout()
+
+    @POST("/api/auth/send")
+    suspend fun signUpCertificationNumberSend(
+        @Body body: SignUpCertificationNumberSendRequest
+    )
+
+    @GET("/api/auth/send")
+    suspend fun signUpCertificationNumberCertification(
+        @Query("phoneNumber") phoneNumber: String,
+        @Query("code") code: String
+    )
 }

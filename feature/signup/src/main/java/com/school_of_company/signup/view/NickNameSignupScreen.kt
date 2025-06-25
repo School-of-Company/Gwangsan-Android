@@ -12,13 +12,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
@@ -35,38 +37,34 @@ import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.icons.DownArrowIcon
 import com.school_of_company.design_system.componet.topbar.GwangSanTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
-import com.school_of_company.signup.componet.AreaList
 import com.school_of_company.signup.viewmodel.SignUpViewModel
-import com.yourpackage.design_system.component.textField.GwangSanSearchTextField
-@Composable
-internal fun NeighborhoodSignupRoute(
-    onBackClick: () -> Unit,
-    onIntroduceClick: () -> Unit,
-    viewModel: SignUpViewModel = hiltViewModel()
-) {
-    val studentSearch by viewModel.dong.collectAsStateWithLifecycle()
-    val filteredAreas by viewModel.filteredAreas.collectAsStateWithLifecycle()
+import com.yourpackage.design_system.component.textField.GwangSanTextField
 
-    NeighborhoodSignupScreen(
-        studentSearch = studentSearch,
-        filteredAreas = filteredAreas,
-        onStudentSearchChange = viewModel::onDongChange,
-        onAreaClick = viewModel::onAreaSelected,
+@Composable
+internal fun NickNameSignupRoute(
+    onBackClick: () -> Unit,
+    onPasswordClick: ()-> Unit,
+    viewModel: SignUpViewModel = hiltViewModel(),
+) {
+    val nickName by viewModel.nickname.collectAsStateWithLifecycle()
+
+    NickNameSignupScreen(
         onBackClick = onBackClick,
-        onIntroduceClick = onIntroduceClick
+        onPasswordClick = onPasswordClick,
+        id = nickName,
+        onIdChange = viewModel::onNicknameChange,
     )
 }
+
 @Composable
-private fun NeighborhoodSignupScreen(
+private fun NickNameSignupScreen(
     modifier: Modifier = Modifier,
+    id: String,
     onBackClick: () -> Unit,
-    onIntroduceClick: () -> Unit,
-    studentSearch: String,
-    filteredAreas: List<String>,
+    onPasswordClick: ()-> Unit,
     focusManager: FocusManager = LocalFocusManager.current,
     scrollState: ScrollState = rememberScrollState(),
-    onStudentSearchChange: (String) -> Unit,
-    onAreaClick: (String) -> Unit,
+    onIdChange: (String) -> Unit,
 ) {
     GwangSanTheme { colors, typography ->
 
@@ -76,10 +74,16 @@ private fun NeighborhoodSignupScreen(
             modifier = modifier
                 .fillMaxSize()
                 .background(color = colors.white)
+                .padding(
+                    top = 24.dp,
+                    start = 24.dp,
+                    end = 24.dp
+                )
                 .verticalScroll(scrollState)
-                .padding(top = 24.dp, start = 24.dp, end = 24.dp)
                 .pointerInput(Unit) {
-                    detectTapGestures { focusManager.clearFocus() }
+                    detectTapGestures {
+                        focusManager.clearFocus()
+                    }
                 }
         ) {
             Column(
@@ -91,12 +95,12 @@ private fun NeighborhoodSignupScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            top = 18.dp,
+                            top =18.dp,
                             bottom = 32.dp
                         ),
-                ) {
+                ){
                     GwangSanTopBar(
-                        startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { onBackClick() }) },
+                        startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable {onBackClick()}) },
                         betweenText = "뒤로"
                     )
                 }
@@ -111,7 +115,7 @@ private fun NeighborhoodSignupScreen(
                 Spacer(modifier = Modifier.height(6.dp))
 
                 Text(
-                    text = "동네를 선택해주세요",
+                    text = "별칭을 입력해주세요",
                     style = typography.label,
                     color = colors.black.copy(alpha = 0.5f),
                     fontWeight = FontWeight.Normal
@@ -119,25 +123,16 @@ private fun NeighborhoodSignupScreen(
 
                 Spacer(modifier = Modifier.height(48.dp))
 
-                GwangSanSearchTextField(
-                    placeHolder = "동네를 검색해주세요",
-                    setText = studentSearch,
-                    onValueChange = onStudentSearchChange,
-                    onSearchTextChange = onStudentSearchChange,
-                    singleLine = true,
+                GwangSanTextField(
+                    placeHolder = "별칭",
+                    value = id,
+                    onTextChange = onIdChange,
+                    label = "별칭을 입력해주세요",
+                    isDisabled = false,
+                    keyboardOptions = KeyboardOptions.Default,
+                    isError = false,
+                    errorText = "유효하지 않은 별칭입니다",
                     modifier = Modifier.fillMaxWidth()
-                )
-
-                Divider(
-                    color = colors.gray200,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 20.dp),
-                )
-
-                AreaList(
-                    areaList = filteredAreas,
-                    onItemClick = onAreaClick
                 )
             }
 
@@ -149,12 +144,14 @@ private fun NeighborhoodSignupScreen(
             ) {
                 GwangSanStateButton(
                     text = "다음",
-                    state = if (studentSearch.isNotBlank()) ButtonState.Enable else ButtonState.Disable,
+                    state = if (id.isNotBlank()) ButtonState.Enable else ButtonState.Disable,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    onIntroduceClick()
+                    onPasswordClick()
                 }
             }
         }
     }
 }
+
+

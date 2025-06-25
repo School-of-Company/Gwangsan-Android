@@ -1,10 +1,9 @@
-package com.school_of_company.data.repository
+package com.school_of_company.data.repository.auth
 
 import com.school_of_company.model.auth.request.LoginRequestModel
+import com.school_of_company.model.auth.request.SignUpCertificationNumberSendRequestModel
 import com.school_of_company.model.auth.request.SignUpRequestModel
 import com.school_of_company.model.auth.response.LoginResponseModel
-import com.school_of_company.network.dto.auth.requset.LoginRequest
-import com.school_of_company.network.dto.auth.requset.SignUpRequest
 import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
@@ -23,4 +22,8 @@ interface AuthRepository {
     suspend fun saveToken(token: LoginResponseModel)
 
     suspend fun deleteTokenData()
+
+    fun signUpCertificationNumberCertification(phoneNumber: String, code: String) : Flow<Unit>
+
+    fun signUpCertificationNumberSend(body: SignUpCertificationNumberSendRequestModel) : Flow<Unit>
 }
