@@ -76,7 +76,6 @@ private fun NeighborhoodSignupScreen(
             modifier = modifier
                 .fillMaxSize()
                 .background(color = colors.white)
-                .imePadding()
                 .verticalScroll(scrollState)
                 .padding(top = 24.dp, start = 24.dp, end = 24.dp)
                 .pointerInput(Unit) {

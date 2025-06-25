@@ -1,13 +1,20 @@
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusManager
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.school_of_company.design_system.R
@@ -30,7 +37,8 @@ internal fun StartRoute(
 private fun StartScreen(
     modifier: Modifier = Modifier,
     onSignUpClick: () -> Unit,
-    onInputLoginClick: () -> Unit
+    onInputLoginClick: () -> Unit,
+    focusManager: FocusManager = LocalFocusManager.current,
 ) {
     GwangSanTheme { colors, _ ->
 
@@ -54,8 +62,12 @@ private fun StartScreen(
             Column(modifier = Modifier.fillMaxSize()) {
                 Box(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 60.dp)
+                        .fillMaxSize()
+                        .imePadding()
+                        .pointerInput(Unit) {
+                            detectTapGestures { focusManager.clearFocus() }
+                        }
+                        .padding(top = 10.dp)
                         .weight(1f)
                 ) {
                     HorizontalPager(
@@ -93,7 +105,7 @@ private fun StartScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.padding(
                         horizontal = 24.dp,
-                        vertical = 12.dp
+                        vertical = 4.dp
                     )
                 ) {
                     GwangSanEnableButton(

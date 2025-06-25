@@ -93,7 +93,6 @@ private fun PasswordSignupScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .background(color = colors.white)
-                .imePadding()
                 .padding(
                     top = 24.dp,
                     start = 24.dp,

@@ -74,7 +74,6 @@ private fun NickNameSignupScreen(
             modifier = modifier
                 .fillMaxSize()
                 .background(color = colors.white)
-                .imePadding()
                 .padding(
                     top = 24.dp,
                     start = 24.dp,
