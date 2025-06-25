@@ -18,6 +18,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
@@ -26,6 +27,8 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.school_of_company.design_system.componet.button.GwangSanStateButton
 import com.school_of_company.design_system.componet.button.state.ButtonState
 import com.school_of_company.design_system.componet.clickable.GwangSanClickable
@@ -33,33 +36,37 @@ import com.school_of_company.design_system.componet.icons.DownArrowIcon
 import com.school_of_company.design_system.componet.topbar.GwangSanTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.signup.componet.AreaList
+import com.school_of_company.signup.viewmodel.SignUpViewModel
 import com.yourpackage.design_system.component.textField.GwangSanSearchTextField
 @Composable
-internal fun  NeighborhoodSignupRoute(
+internal fun NeighborhoodSignupRoute(
     onBackClick: () -> Unit,
-    onIntroduceClick: () -> Unit
+    onIntroduceClick: () -> Unit,
+    viewModel: SignUpViewModel = hiltViewModel()
 ) {
+    val studentSearch by viewModel.dong.collectAsStateWithLifecycle()
+    val filteredAreas by viewModel.filteredAreas.collectAsStateWithLifecycle()
+
     NeighborhoodSignupScreen(
-        studentSearch = "",
-        onStudentSearchChange = {},
-        studentSearchCallBack = {},
-        neighborhoodCallBack = {},
+        studentSearch = studentSearch,
+        filteredAreas = filteredAreas,
+        onStudentSearchChange = viewModel::onDongChange,
+        onAreaClick = viewModel::onAreaSelected,
         onBackClick = onBackClick,
         onIntroduceClick = onIntroduceClick
     )
 }
-
 @Composable
 private fun NeighborhoodSignupScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
     onIntroduceClick: () -> Unit,
     studentSearch: String,
-    neighborhoodCallBack: () -> Unit,
+    filteredAreas: List<String>,
     focusManager: FocusManager = LocalFocusManager.current,
     scrollState: ScrollState = rememberScrollState(),
     onStudentSearchChange: (String) -> Unit,
-    studentSearchCallBack: (String) -> Unit,
+    onAreaClick: (String) -> Unit,
 ) {
     GwangSanTheme { colors, typography ->
 
@@ -71,15 +78,9 @@ private fun NeighborhoodSignupScreen(
                 .background(color = colors.white)
                 .imePadding()
                 .verticalScroll(scrollState)
-                .padding(
-                    top = 24.dp,
-                    start = 24.dp,
-                    end = 24.dp
-                )
+                .padding(top = 24.dp, start = 24.dp, end = 24.dp)
                 .pointerInput(Unit) {
-                    detectTapGestures {
-                        focusManager.clearFocus()
-                    }
+                    detectTapGestures { focusManager.clearFocus() }
                 }
         ) {
             Column(
@@ -90,17 +91,14 @@ private fun NeighborhoodSignupScreen(
                     horizontalArrangement = Arrangement.Start,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(
-                            top =18.dp,
-                            bottom = 32.dp
-                        )
-                    ,
-                ){
+                        .padding(top = 18.dp, bottom = 32.dp),
+                ) {
                     GwangSanTopBar(
                         startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { onBackClick() }) },
                         betweenText = "뒤로"
                     )
                 }
+
                 Text(
                     text = "회원가입",
                     style = typography.titleMedium2,
@@ -123,7 +121,7 @@ private fun NeighborhoodSignupScreen(
                     placeHolder = "동네를 검색해주세요",
                     setText = studentSearch,
                     onValueChange = onStudentSearchChange,
-                    onSearchTextChange = studentSearchCallBack,
+                    onSearchTextChange = onStudentSearchChange,
                     singleLine = true,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -138,9 +136,11 @@ private fun NeighborhoodSignupScreen(
                 )
 
                 AreaList(
-                    areaList = listOf("첨단 1동", "첨단 2동")
+                    areaList = filteredAreas,
+                    onItemClick = onAreaClick
                 )
             }
+
             Column(
                 verticalArrangement = Arrangement.Bottom,
                 modifier = Modifier
@@ -152,26 +152,9 @@ private fun NeighborhoodSignupScreen(
                     state = if (studentSearch.isNotBlank()) ButtonState.Enable else ButtonState.Disable,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    neighborhoodCallBack()
                     onIntroduceClick()
                 }
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun  NeighborhoodSignupScreenPreview(
-
-){
-    NeighborhoodSignupScreen(
-        studentSearch = "",
-        onStudentSearchChange = {},
-        studentSearchCallBack = {},
-        neighborhoodCallBack = {},
-        onBackClick = {},
-        onIntroduceClick = {}
-    )
-
 }
