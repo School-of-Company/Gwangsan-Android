@@ -43,8 +43,6 @@ import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.signup.viewmodel.SignUpViewModel
 import com.yourpackage.design_system.component.textField.GwangSanTextField
 
-
-
 @Composable
 internal fun PasswordSignupRoute(
     onBackClick: () -> Unit,
