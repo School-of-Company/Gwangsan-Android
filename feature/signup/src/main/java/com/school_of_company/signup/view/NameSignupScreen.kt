@@ -29,41 +29,41 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.school_of_company.design_system.componet.button.GwangSanStateButton
 import com.school_of_company.design_system.componet.button.state.ButtonState
 import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.icons.DownArrowIcon
 import com.school_of_company.design_system.componet.topbar.GwangSanTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.signup.viewmodel.SignUpViewModel
 import com.yourpackage.design_system.component.textField.GwangSanTextField
 
 @Composable
 internal fun NameSignupRoute(
     onBackClick: () -> Unit,
-    onPasswordClick: ()-> Unit,
+    onNicknameClick: ()-> Unit,
+    viewModel: SignUpViewModel = hiltViewModel(),
 ) {
-    var id by remember { mutableStateOf("") }
+    val name by viewModel.name.collectAsStateWithLifecycle()
 
     NameSignupScreen(
         onBackClick = onBackClick,
-        onPasswordClick = onPasswordClick,
-        id = id,
-        onIdChange = {id = it},
-        signInCallBack = {},
-        isEmailError = false
+        onPasswordClick = onNicknameClick,
+        id = name,
+        onIdChange = viewModel::onNameChange,
     )
 }
 
 @Composable
 private fun NameSignupScreen(
     modifier: Modifier = Modifier,
-    isEmailError: Boolean,
     id: String,
     onBackClick: () -> Unit,
     onPasswordClick: ()-> Unit,
     focusManager: FocusManager = LocalFocusManager.current,
     scrollState: ScrollState = rememberScrollState(),
-    signInCallBack: () -> Unit,
     onIdChange: (String) -> Unit,
 ) {
     GwangSanTheme { colors, typography ->
@@ -116,7 +116,7 @@ private fun NameSignupScreen(
                 Spacer(modifier = Modifier.height(6.dp))
 
                 Text(
-                    text = "별칭을 입력해주세요",
+                    text = "이름을 입력해주세요",
                     style = typography.label,
                     color = colors.black.copy(alpha = 0.5f),
                     fontWeight = FontWeight.Normal
@@ -125,14 +125,14 @@ private fun NameSignupScreen(
                 Spacer(modifier = Modifier.height(48.dp))
 
                 GwangSanTextField(
-                    placeHolder = "별칭",
+                    placeHolder = "이름",
                     value = id,
                     onTextChange = onIdChange,
-                    label = "별칭을 입력해주세요",
+                    label = "이름을 입력해주세요",
                     isDisabled = false,
-
-                    isError = isEmailError,
-                    errorText = "유효하지 않은 별칭입니다",
+                    keyboardOptions = KeyboardOptions.Default,
+                    isError = false,
+                    errorText = "유효하지 않은 이름입니다",
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -148,7 +148,6 @@ private fun NameSignupScreen(
                     state = if (id.isNotBlank()) ButtonState.Enable else ButtonState.Disable,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    signInCallBack()
                     onPasswordClick()
                 }
             }
@@ -164,8 +163,6 @@ fun  NameSignupScreenPreview(
     NameSignupScreen(
         id = "",
         onIdChange = {},
-        signInCallBack = {},
-        isEmailError = false,
         onBackClick = {},
         onPasswordClick = {}
     )
