@@ -243,9 +243,7 @@ private fun CertinSignUpScreen(
                 },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 label = "전화번호 인증",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(90.dp),
+                modifier = Modifier.fillMaxWidth()
             )
         }
         Column(
