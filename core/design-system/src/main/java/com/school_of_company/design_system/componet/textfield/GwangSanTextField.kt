@@ -192,7 +192,7 @@ fun GwangSanSearchTextField(
                     },
                 maxLines = maxLines,
                 singleLine = singleLine,
-                textStyle = typography.titleMedium2,
+                textStyle = typography.body5,
                 colors = TextFieldDefaults.colors(
                     focusedTextColor = GwangSanColor.black,
                     unfocusedTextColor = GwangSanColor.black,
