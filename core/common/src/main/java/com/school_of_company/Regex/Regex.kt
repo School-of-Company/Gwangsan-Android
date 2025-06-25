@@ -13,3 +13,8 @@ fun isValidPassword(password: String): Boolean {
 fun isValidId(id: String): Boolean {
     return com.school_of_company.Regex.Regex.Id.toRegex().matches(id)
 }
+
+fun isValidPhoneNumber(phone: String): Boolean {
+    val regex = Regex("^01[016789][0-9]{7,8}$")
+    return regex.matches(phone)
+}
