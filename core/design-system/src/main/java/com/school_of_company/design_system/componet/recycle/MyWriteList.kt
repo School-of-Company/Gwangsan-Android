@@ -1,4 +1,4 @@
-package com.school_of_company.profile.component
+package com.school_of_company.design_system.componet.recycle
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -30,7 +30,7 @@ import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.theme.GwangSanTheme
 
 @Composable
-internal fun MyWriteListItem(
+fun MyWriteListItem(
     modifier: Modifier = Modifier,
     coverImage: String?,
     title: String,
@@ -126,7 +126,7 @@ internal fun MyWriteListItem(
 }
 
 @Composable
-internal fun MyWriteList(
+fun MyWriteList(
     modifier: Modifier = Modifier,
     items: List<MyWriteItem>,
     onClick: () -> Unit
