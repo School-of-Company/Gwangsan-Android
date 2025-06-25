@@ -79,8 +79,7 @@ fun GwangsanNavHost(
 
         signUpNameScreen(
             onBackClick = { navController.popBackStack() },
-            onNicknameClick = { navController.navigateToSignUpName() },
-            onErrorToast = onErrorToast
+            onNicknameClick = { navController.navigateToSignUpName() }
         )
 
         signUpNickNameScreen(
