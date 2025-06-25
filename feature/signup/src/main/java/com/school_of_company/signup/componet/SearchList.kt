@@ -14,12 +14,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.theme.GwangSanTheme
 
 @Composable
 fun AreaListItem(
     modifier: Modifier = Modifier,
-    areaName: String
+    areaName: String,
+    onClick: () -> Unit = {}
 ) {
     GwangSanTheme { colors, typography ->
 
@@ -27,6 +29,7 @@ fun AreaListItem(
             horizontalAlignment = Alignment.Start,
             modifier = modifier
                 .fillMaxWidth()
+                .GwangSanClickable { onClick() }
                 .padding(top = 24.dp, bottom = 24.dp),
         ) {
             Text(
@@ -45,7 +48,8 @@ fun AreaListItem(
 @Composable
 fun AreaList(
     modifier: Modifier = Modifier,//더 자세한 api 명세서가 나오면 수정하겠습니다.
-    areaList: List<String>
+    areaList: List<String>,
+    onItemClick: (String) -> Unit
 ) {
     GwangSanTheme { colors, _ ->
 
@@ -59,8 +63,10 @@ fun AreaList(
                 key = { areaName -> areaName }// 더 자세한 api명세서가 나오면 수정하겠습니다.
             ) { areaName ->
                 Column(modifier = Modifier.fillMaxWidth()) {
-                    AreaListItem(areaName = areaName)
-
+                    AreaListItem(
+                        onClick = { onItemClick(areaName) },
+                        areaName = areaName
+                    )
                     Divider(
                         color = colors.white,
                         modifier = Modifier.fillMaxWidth(),
