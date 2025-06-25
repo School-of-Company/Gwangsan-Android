@@ -13,6 +13,7 @@ const val SignUpNeighborhoodRoute = "signup_neighborhood"
 const val SignUpIntroduceRoute = "signup_introduce"
 const val SignUpRecommenderRoute = "signup_recommender"
 const val SignUpFinishRoute = "signup_finish"
+const val SignUpNickNameRoute = "signup_nickname"
 
 fun NavController.navigateToSignUpStart(navOptions: NavOptions? = null) {
     this.navigate(SignUpNameRoute, navOptions)
@@ -30,6 +31,10 @@ fun NavController.navigateToSignUpNeighborhood(navOptions: NavOptions? = null) {
     this.navigate(SignUpNeighborhoodRoute)
 }
 
+fun NavController.navigateToSignUpName(navOptions: NavOptions? = null) {
+    this.navigate(SignUpNickNameRoute)
+}
+
 fun NavController.navigateToSignUpIntroduce(navOptions: NavOptions? = null) {
     this.navigate(SignUpIntroduceRoute)
 }
@@ -44,12 +49,25 @@ fun NavController.navigateToSignUpFinish(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.signUpNameScreen(
     onBackClick: () -> Unit,
-    onPasswordClick: ()-> Unit,
+    onNicknameClick: ()-> Unit,
 ) {
     composable(route = SignUpNameRoute) {
         NameSignupRoute(
             onBackClick = onBackClick,
-            onPasswordClick = onPasswordClick
+            onNicknameClick = onNicknameClick,
+        )
+    }
+}
+
+fun NavGraphBuilder.signUpNickNameScreen(
+    onBackClick: () -> Unit,
+    onPasswordClick: ()-> Unit,
+    onErrorToast: (throwable: Throwable?, message: Int?) -> Unit
+){
+    composable(route = SignUpNickNameRoute) {
+        NickNameSignupRoute(
+            onBackClick = onBackClick,
+            onPasswordClick = onPasswordClick,
         )
     }
 }
@@ -68,12 +86,14 @@ fun NavGraphBuilder.signUpPasswordScreen(
 
 fun NavGraphBuilder.signUpPhoneScreen(
     onBackClick: () -> Unit,
-    onNeighborhoodClick: () -> Unit
+    onNeighborhoodClick: () -> Unit,
+    onErrorToast: (throwable: Throwable?, message: Int?) -> Unit
 ){
     composable(route = SignUpPhoneRoute) {
         CertInSignUpRoute(
             onBackClick = onBackClick,
-            onNeighborhoodClick = onNeighborhoodClick
+            onNeighborhoodClick = onNeighborhoodClick,
+            onErrorToast = onErrorToast
         )
     }
 }
