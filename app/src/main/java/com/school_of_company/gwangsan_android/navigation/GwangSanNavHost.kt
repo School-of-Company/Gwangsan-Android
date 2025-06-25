@@ -13,8 +13,6 @@ import com.school_of_company.common.TimeOutException
 import com.school_of_company.common.UnKnownException
 import com.school_of_company.design_system.componet.toast.makeToast
 import com.school_of_company.gwangsan_android.ui.GwangSanAppState
-import com.school_of_company.main.navgation.mainScreen
-import com.school_of_company.main.navgation.navigateToMain
 import com.school_of_company.signin.navigation.StartRoute
 import com.school_of_company.signin.navigation.navigateToSignIn
 import com.school_of_company.signin.navigation.signInScreen
