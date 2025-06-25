@@ -76,7 +76,7 @@ fun GwangSanTextField(
                 maxLines = maxLines,
                 singleLine = singleLine,
                 cursorBrush = SolidColor(GwangSanColor.subYellow500),
-                modifier = Modifier
+                modifier = modifier
                     .focusable(true)
                     .fillMaxWidth()
                     .onFocusChanged { isFocused.value = it.isFocused }
