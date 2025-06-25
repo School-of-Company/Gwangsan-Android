@@ -7,9 +7,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.school_of_company.design_system.R
-import com.school_of_company.design_system.componet.bottombar.GwangSanNavigationBar
-import com.school_of_company.design_system.componet.bottombar.GwangSanNavigationBarItem
 import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.dropdown.ServiceTypeDropdown
 import com.school_of_company.design_system.componet.icons.CloseIcon
