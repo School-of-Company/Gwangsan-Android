@@ -91,7 +91,10 @@ private fun NeighborhoodSignupScreen(
                     horizontalArrangement = Arrangement.Start,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 18.dp, bottom = 32.dp),
+                        .padding(
+                            top = 18.dp,
+                            bottom = 32.dp
+                        ),
                 ) {
                     GwangSanTopBar(
                         startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { onBackClick() }) },
@@ -123,9 +126,7 @@ private fun NeighborhoodSignupScreen(
                     onValueChange = onStudentSearchChange,
                     onSearchTextChange = onStudentSearchChange,
                     singleLine = true,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(54.dp),
+                    modifier = Modifier.fillMaxWidth()
                 )
 
                 Divider(
