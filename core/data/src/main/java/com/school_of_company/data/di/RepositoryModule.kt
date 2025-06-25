@@ -1,7 +1,7 @@
 package com.school_of_company.data.di
 
-import com.school_of_company.data.repository.AuthRepository
-import com.school_of_company.data.repository.AuthRepositoryImpl
+import com.school_of_company.data.repository.auth.AuthRepository
+import com.school_of_company.data.repository.auth.AuthRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
