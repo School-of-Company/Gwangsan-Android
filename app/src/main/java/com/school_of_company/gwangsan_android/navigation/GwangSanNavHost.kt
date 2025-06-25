@@ -13,12 +13,15 @@ import com.school_of_company.common.TimeOutException
 import com.school_of_company.common.UnKnownException
 import com.school_of_company.design_system.componet.toast.makeToast
 import com.school_of_company.gwangsan_android.ui.GwangSanAppState
+import com.school_of_company.main.navgation.mainScreen
+import com.school_of_company.main.navgation.navigateToMain
 import com.school_of_company.signin.navigation.StartRoute
 import com.school_of_company.signin.navigation.navigateToSignIn
 import com.school_of_company.signin.navigation.signInScreen
 import com.school_of_company.signin.navigation.startScreen
 import com.school_of_company.signup.navigation.navigateToSignUpFinish
 import com.school_of_company.signup.navigation.navigateToSignUpIntroduce
+import com.school_of_company.signup.navigation.navigateToSignUpName
 import com.school_of_company.signup.navigation.navigateToSignUpNeighborhood
 import com.school_of_company.signup.navigation.navigateToSignUpPassword
 import com.school_of_company.signup.navigation.navigateToSignUpPhone
@@ -28,6 +31,7 @@ import com.school_of_company.signup.navigation.signUpFinishScreen
 import com.school_of_company.signup.navigation.signUpIntroduceScreen
 import com.school_of_company.signup.navigation.signUpNameScreen
 import com.school_of_company.signup.navigation.signUpNeighborhoodScreen
+import com.school_of_company.signup.navigation.signUpNickNameScreen
 import com.school_of_company.signup.navigation.signUpPasswordScreen
 import com.school_of_company.signup.navigation.signUpPhoneScreen
 import com.school_of_company.signup.navigation.signUpRecommenderScreen
@@ -75,8 +79,14 @@ fun GwangsanNavHost(
 
         signUpNameScreen(
             onBackClick = { navController.popBackStack() },
-            onPasswordClick = { navController.navigateToSignUpPassword() }
+            onNicknameClick = { navController.navigateToSignUpName() },
+            onErrorToast = onErrorToast
+        )
 
+        signUpNickNameScreen(
+            onBackClick = {navController.popBackStack() },
+            onPasswordClick = { navController.navigateToSignUpPassword() },
+            onErrorToast = onErrorToast
         )
 
         signUpPasswordScreen(
@@ -86,7 +96,8 @@ fun GwangsanNavHost(
 
         signUpPhoneScreen(
             onBackClick = { navController.popBackStack() },
-            onNeighborhoodClick = { navController.navigateToSignUpNeighborhood() }
+            onNeighborhoodClick = { navController.navigateToSignUpNeighborhood() },
+            onErrorToast = onErrorToast
         )
 
         signUpNeighborhoodScreen(
