@@ -4,10 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.school_of_company.Regex.isValidId
-import com.school_of_company.Regex.isValidPassword
-import com.school_of_company.data.repository.AuthRepository
+import com.school_of_company.data.repository.auth.AuthRepository
 import com.school_of_company.model.auth.request.LoginRequestModel
-import com.school_of_company.model.auth.response.LoginResponseModel
 import com.school_of_company.network.errorHandling
 import com.school_of_company.result.asResult
 import com.school_of_company.result.Result
