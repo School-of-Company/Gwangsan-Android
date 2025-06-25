@@ -95,45 +95,10 @@ private fun ContentScreen(
                     )
                 }
             }
-
-            GwangSanNavigationBar {
-                val items = listOf(
-                    "홈" to R.drawable.home,
-                    "게시글" to R.drawable.copy,
-                    "채팅" to R.drawable.chat,
-                    "공지" to R.drawable.horn,
-                    "프로필" to R.drawable.person
-                )
-
-                items.forEachIndexed { index, (label, iconRes) ->
-                    GwangSanNavigationBarItem(
-                        icon = {
-                            androidx.compose.material3.Icon(
-                                painter = androidx.compose.ui.res.painterResource(id = iconRes),
-                                contentDescription = label
-                            )
-                        },
-                        selectedIcon = {
-                            androidx.compose.material3.Icon(
-                                painter = androidx.compose.ui.res.painterResource(id = iconRes),
-                                contentDescription = label,
-                                tint = colors.main500
-                            )
-                        },
-                        label = {
-                            androidx.compose.material3.Text(
-                                text = label,
-                                style = typography.label
-                            )
-                        },
-                        selected = index == 1,
-                        onClick = {}
-                    )
-                }
-            }
         }
     }
 }
+
 val dummyItems = listOf(
     MyWriteItem(
         coverImage = "https://cdn.pixabay.com/photo/1.jpg",
