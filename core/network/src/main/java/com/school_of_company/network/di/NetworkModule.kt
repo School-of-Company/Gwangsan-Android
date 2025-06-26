@@ -1,10 +1,16 @@
 package com.school_of_company.network.di
 
 import android.util.Log
+import com.school_of_company.model.enum.Mode
+import com.school_of_company.model.enum.Type
 import com.school_of_company.network.BuildConfig
 import com.school_of_company.network.api.AuthAPI
+import com.school_of_company.network.api.MainAPI
 import com.school_of_company.network.util.AuthInterceptor
+import com.squareup.moshi.JsonReader
+import com.squareup.moshi.JsonWriter
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -46,7 +52,9 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideMoshiInstance(): Moshi {
-        return Moshi.Builder().build()
+        return Moshi.Builder()
+            .add(KotlinJsonAdapterFactory())
+            .build()
     }
 
     @Provides
@@ -73,4 +81,10 @@ object NetworkModule {
     fun provideAuthAPI(retrofit: Retrofit): AuthAPI =
         retrofit.create(AuthAPI::class.java)
 
+    @Provides
+    @Singleton
+    fun provideMainAPI(retrofit: Retrofit): MainAPI =
+        retrofit.create(MainAPI::class.java)
+
 }
+

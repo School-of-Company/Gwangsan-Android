@@ -26,13 +26,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.model.main.response.MainListResponseModel
 
 @Composable
 fun MainListItem(
     modifier: Modifier = Modifier,
-    coverImage: String?,
-    title: String,
-    price: String
+    data: MainListResponseModel
 ) {
     GwangSanTheme { color, typography ->
 
@@ -42,7 +41,7 @@ fun MainListItem(
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if (coverImage.isNullOrEmpty()) {
+            if (data.imageUrls.isNullOrEmpty()) {
                 Box(
                     modifier = Modifier
                         .size(80.dp)
@@ -64,7 +63,7 @@ fun MainListItem(
 
                 ) {
                     Text(
-                        text = title,
+                        text = data.title,
                         style = typography.body3,
                         color = color.black
                     )
@@ -72,7 +71,7 @@ fun MainListItem(
                     Spacer(modifier = Modifier.height(12.dp))
 
                     Text(
-                        text = price,
+                        text = "${data.gwangsan}",
                         style = typography.body5,
                         color = color.black
                     )
@@ -86,7 +85,7 @@ fun MainListItem(
                         .clip(RoundedCornerShape(10.dp))
                 ) {
                     Image(
-                        painter = rememberAsyncImagePainter(model = coverImage), // 이미지 리소스 추가 필요
+                        painter = rememberAsyncImagePainter(model = data.imageUrls), // 이미지 리소스 추가 필요
                         contentDescription = "바퀴벌레 이미지",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
@@ -101,7 +100,7 @@ fun MainListItem(
 
                 ) {
                     Text(
-                        text = title,
+                        text = data.title,
                         style = typography.body3,
                         color = color.black
                     )
@@ -109,7 +108,7 @@ fun MainListItem(
                     Spacer(modifier = Modifier.height(12.dp))
 
                     Text(
-                        text = price,
+                        text = "${data.gwangsan}",
                         style = typography.body5,
                         color = color.black
                     )
@@ -124,7 +123,7 @@ fun MainListItem(
 @Composable
 fun MainList(
     modifier: Modifier = Modifier,
-    items: List<MainItem>
+    items: List<MainListResponseModel>
 ) {
     GwangSanTheme { color, _ ->
 
@@ -135,26 +134,9 @@ fun MainList(
         ) {
             items(items) { item ->
                 MainListItem(
-                    coverImage = item.coverImage,
-                    title = item.title,
-                    price = item.price
+                    data = item
                 )
             }
         }
     }
 }
-@Preview
-@Composable
-fun MainListItemPreview(){
-    MainListItem(
-        coverImage = "https://image.dongascience.com/Photo/2019/12/fb4f7da04758d289a466f81478f5f488.jpg",
-        title = "바퀴벌레",
-        price = "1000원"
-    )
-}
-
-data class MainItem(
-    val coverImage: String,
-    val title: String,
-    val price: String
-)

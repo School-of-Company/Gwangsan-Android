@@ -13,6 +13,10 @@ import com.school_of_company.common.TimeOutException
 import com.school_of_company.common.UnKnownException
 import com.school_of_company.design_system.componet.toast.makeToast
 import com.school_of_company.gwangsan_android.ui.GwangSanAppState
+import com.school_of_company.main.navgation.mainScreen
+import com.school_of_company.main.navgation.mainStartScreen
+import com.school_of_company.main.navgation.navigateToMain
+import com.school_of_company.main.navgation.navigateToMainStart
 import com.school_of_company.signin.navigation.StartRoute
 import com.school_of_company.signin.navigation.navigateToSignIn
 import com.school_of_company.signin.navigation.signInScreen
@@ -71,7 +75,7 @@ fun GwangsanNavHost(
 
         signInScreen(
             onBackClick = { navController.popBackStack() },
-            onMainClick = { navController.popBackStack() },
+            onMainClick = { navController.navigateToMainStart() },
             onErrorToast = onErrorToast
         )
 
@@ -100,6 +104,16 @@ fun GwangsanNavHost(
         signUpNeighborhoodScreen(
             onBackClick = { navController.popBackStack() },
             onIntroduceClick = { navController.navigateToSignUpIntroduce() }
+        )
+
+        mainScreen(
+            navigationToPostService = { navController.popBackStack()},
+            onErrorToast = onErrorToast
+        )
+
+        mainStartScreen(
+            navigationToService = { navController.navigateToMain("SERVICE") },
+            navigationToObject = { navController.navigateToMain("OBJECT") }
         )
 
         signUpIntroduceScreen(
