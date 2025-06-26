@@ -4,47 +4,60 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.school_of_company.design_system.componet.button.GwangSanStateButton
 import com.school_of_company.design_system.componet.button.state.ButtonState
 import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.icons.DownArrowIcon
 import com.school_of_company.design_system.componet.topbar.GwangSanTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.signup.viewmodel.SignUpViewModel
 import com.yourpackage.design_system.component.textField.GwangSanTextField
+
 @Composable
-internal fun ReCommDerInputRoute(
+internal fun ReCommenDerInputRoute(
     onBackClick: () -> Unit,
-    onRecommenderClick: () -> Unit
+    onRecommenderClick: () -> Unit,
+    viewModel: SignUpViewModel = hiltViewModel()
 ) {
+    val recommender by viewModel.recommender.collectAsStateWithLifecycle()
+    val isNextEnabled = recommender.isNotBlank()
+
     RecommenderInputScreen(
+        recommender = recommender,
+        isNextEnabled = isNextEnabled,
+        onRecommenderChange = viewModel::onRecommenderChange,
         onBackClick = onBackClick,
-        onRecommenderChange = {},
-        onNextClick = onRecommenderClick,
-        recommender = "",
+        onNextClick = onRecommenderClick
     )
 }
+
 @Composable
 fun RecommenderInputScreen(
     onBackClick: () -> Unit,
-    modifier: Modifier = Modifier,
     recommender: String,
+    isNextEnabled: Boolean,
     onRecommenderChange: (String) -> Unit,
-    onNextClick: () -> Unit
+    onNextClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val focusManager = LocalFocusManager.current
 
     GwangSanTheme { colors, typography ->
-
         Box(
             modifier = modifier
                 .fillMaxSize()
@@ -63,7 +76,9 @@ fun RecommenderInputScreen(
                 Spacer(modifier = Modifier.height(24.dp))
 
                 GwangSanTopBar(
-                    startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable {onBackClick()}) },
+                    startIcon = {
+                        DownArrowIcon(modifier = Modifier.GwangSanClickable { onBackClick() })
+                    },
                     betweenText = "뒤로"
                 )
 
@@ -96,35 +111,13 @@ fun RecommenderInputScreen(
 
             GwangSanStateButton(
                 text = "다음",
-                state = if (recommender.isNotBlank()) ButtonState.Enable else ButtonState.Disable,
+                state = if (isNextEnabled) ButtonState.Enable else ButtonState.Disable,
                 onClick = onNextClick,
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .padding(start = 24.dp, end = 24.dp, bottom = 30.dp)
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
             )
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun RecommenderInputScreenPreviewDisabled() {
-    RecommenderInputScreen(
-        recommender = "",
-        onRecommenderChange = {},
-        onNextClick = {},
-        onBackClick = {}
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun RecommenderInputScreenPreviewEnabled() {
-    RecommenderInputScreen(
-        recommender = "추천인",
-        onRecommenderChange = {},
-        onNextClick = {},
-        onBackClick = {}
-    )
 }
