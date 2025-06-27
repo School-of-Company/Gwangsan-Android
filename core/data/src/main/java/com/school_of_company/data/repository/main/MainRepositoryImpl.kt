@@ -17,7 +17,7 @@ import javax.inject.Inject
 class MainRepositoryImpl @Inject constructor(
     private val mainDataSource: MainDataSource,
 ) : MainRepository {
-    override fun allPostGeT(
+    override fun allPostGet(
         type: Type,
         mode: Mode
     ): Flow<List<MainListResponseModel>> {

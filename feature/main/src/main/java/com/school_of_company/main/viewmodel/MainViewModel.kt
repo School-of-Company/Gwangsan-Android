@@ -33,7 +33,7 @@ internal class MainViewModel @Inject constructor(
         mode: Mode,
     ) = viewModelScope.launch {
         _swipeRefreshLoading.value = true
-        mainRepository.allPostGeT(
+        mainRepository.allPostGet(
             type = type,
             mode = mode
         )
@@ -58,5 +58,4 @@ internal class MainViewModel @Inject constructor(
                 }
             }
     }
-
 }
