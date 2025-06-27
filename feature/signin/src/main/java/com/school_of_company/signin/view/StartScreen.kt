@@ -57,12 +57,11 @@ private fun StartScreen(
             modifier = modifier
                 .fillMaxSize()
                 .background(colors.white)
-                .imePadding()
+                .navigationBarsPadding()
         ) {
-            Column(modifier = Modifier.fillMaxSize()) {
+            Column {
                 Box(
                     modifier = Modifier
-                        .fillMaxSize()
                         .imePadding()
                         .pointerInput(Unit) {
                             detectTapGestures { focusManager.clearFocus() }
@@ -72,7 +71,6 @@ private fun StartScreen(
                 ) {
                     HorizontalPager(
                         state = pagerState,
-                        modifier = Modifier.fillMaxSize()
                     ) { page ->
                         Image(
                             painter = painterResource(id = imageList[page]),
@@ -132,7 +130,7 @@ private fun StartScreen(
                             .border(
                                 width = 1.dp,
                                 color = colors.main500,
-                                shape = RoundedCornerShape(8.dp)
+                                shape = RoundedCornerShape(12.dp)
                             )
                     ) {
                         onInputLoginClick()
