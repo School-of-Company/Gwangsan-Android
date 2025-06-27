@@ -6,7 +6,7 @@ import com.school_of_company.model.main.response.MainListResponseModel
 import kotlinx.coroutines.flow.Flow
 
 interface MainRepository {
-    fun allPostGeT(
+    fun allPostGet(
         type: Type,
         mode: Mode,
     ): Flow<List<MainListResponseModel>>
