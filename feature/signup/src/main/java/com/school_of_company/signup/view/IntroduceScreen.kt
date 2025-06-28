@@ -39,9 +39,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @Composable
 internal fun IntroduceRoute(
     onBackClick: () -> Unit,
-    onNextClick: () -> Unit
+    onNextClick: () -> Unit,
+    viewModel: SignUpViewModel = hiltViewModel()
 ) {
-    val viewModel: SignUpViewModel = hiltViewModel()
     val specialty by viewModel.specialty.collectAsStateWithLifecycle()
     val isDropdownVisible by viewModel.specialtyDropdownVisible.collectAsStateWithLifecycle()
     val signUpUiState by viewModel.signUpUiState.collectAsStateWithLifecycle()
