@@ -126,12 +126,14 @@ fun NavGraphBuilder.signUpIntroduceScreen(
 
 fun NavGraphBuilder.signUpRecommenderScreen(
     onBackClick: () -> Unit,
-    onRecommenderClick: () -> Unit
+    onRecommenderClick: () -> Unit,
+    onErrorToast: (throwable: Throwable?, message: Int?) -> Unit
 ) {
     composable(route = SignUpRecommenderRoute) {
         ReCommenDerInputRoute(
             onBackClick = onBackClick,
-            onRecommenderClick = onRecommenderClick
+            onRecommenderClick = onRecommenderClick,
+            onErrorToast = onErrorToast
         )
     }
 }
