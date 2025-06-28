@@ -1,11 +1,10 @@
-package com.school_of_company.post.view.service
+package com.school_of_company.post.view
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.school_of_company.design_system.component.progress.GwangSanTopBarProgress
 import com.school_of_company.design_system.componet.button.GwangSanStateButton
@@ -18,16 +17,45 @@ import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.icon.AddImageButton
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.design_system.theme.color.GwangSanColor
+import com.school_of_company.model.enum.Mode
+import com.school_of_company.model.enum.Type
 
 @Composable
-private fun PostServiceScreen(
+internal fun PostWriteRoute(
+    type: Type,
+    mode: Mode,
+    onBackClick: () -> Unit,
+    onNextClick: (String, String) -> Unit,
+) {
+    var subject by remember { mutableStateOf("") }
+    var content by remember { mutableStateOf("") }
+
+    PostWriteScreen(
+        subject = subject,
+        content = content,
+        onSubjectChange = { subject = it },
+        onContentChange = { content = it },
+        onImageAdd = {},
+        onNextClick = onNextClick,
+        onBackClick = onBackClick,
+        imageContent = { isEnabled ->
+            AddImageButton(
+                onClick = {},
+                rippleColor = if (isEnabled) GwangSanColor.main100 else GwangSanColor.gray300
+            )
+        }
+    )
+}
+
+@Composable
+private fun PostWriteScreen(
     modifier: Modifier = Modifier,
     subject: String,
     content: String,
     onSubjectChange: (String) -> Unit,
     onContentChange: (String) -> Unit,
     onImageAdd: () -> Unit,
-    onNextClick: () -> Unit,
+    onNextClick: (String, String) -> Unit,
     onBackClick: () -> Unit,
     imageContent: @Composable (Boolean) -> Unit
 ) {
@@ -113,7 +141,7 @@ private fun PostServiceScreen(
                 GwangSanStateButton(
                     text = "다음",
                     state = if (isNextEnabled) ButtonState.Enable else ButtonState.Disable,
-                    onClick = onNextClick,
+                    onClick = { onNextClick(subject, content) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp)
@@ -123,58 +151,4 @@ private fun PostServiceScreen(
             }
         }
     }
-}
-
-@Preview(name = "비활성화 상태", showBackground = true)
-@Composable
-fun PostServiceScreenPreviewDisabled() {
-    var subject by remember { mutableStateOf("") }
-    var content by remember { mutableStateOf("") }
-
-    PostServiceScreen(
-        subject = subject,
-        content = content,
-        onSubjectChange = { subject = it },
-        onContentChange = { content = it },
-        onImageAdd = {},
-        onNextClick = {},
-        onBackClick = {},
-        imageContent = { isEnabled ->
-            if (!isEnabled) {
-                AddImageButton(
-                    onClick = {},
-                    rippleColor = GwangSanColor.gray300
-                )
-            }
-        }
-    )
-}
-
-@Preview(name = "활성화 상태", showBackground = true)
-@Composable
-fun PostServiceScreenPreviewEnabled() {
-    var subject by remember { mutableStateOf("디자인 작업 도와주실 분 찾습니다") }
-    var content by remember {
-        mutableStateOf(
-            "간단한 포스터 디자인이나 카드뉴스 제작 도와주실 분을 찾고 있어요."
-        )
-    }
-
-    PostServiceScreen(
-        subject = subject,
-        content = content,
-        onSubjectChange = { subject = it },
-        onContentChange = { content = it },
-        onImageAdd = {},
-        onNextClick = {},
-        onBackClick = {},
-        imageContent = { isEnabled ->
-            if (isEnabled) {
-                AddImageButton(
-                    onClick = {},
-                    rippleColor = GwangSanColor.main100
-                )
-            }
-        }
-    )
 }
