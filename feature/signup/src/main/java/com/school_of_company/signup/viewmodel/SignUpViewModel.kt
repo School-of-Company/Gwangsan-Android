@@ -42,8 +42,7 @@ class SignUpViewModel @Inject constructor(
     private val _sendNumberUiState = MutableStateFlow<SendNumberUiState>(SendNumberUiState.Loading)
     internal val sendNumberUiState = _sendNumberUiState.asStateFlow()
 
-    private val _verifyNumberUiState =
-        MutableStateFlow<VerifyNumberUiState>(VerifyNumberUiState.Loading)
+    private val _verifyNumberUiState = MutableStateFlow<VerifyNumberUiState>(VerifyNumberUiState.Loading)
     internal val verifyNumberUiState = _verifyNumberUiState.asStateFlow()
 
     private val _specialtyDropdownVisible = MutableStateFlow(false)
