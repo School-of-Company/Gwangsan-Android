@@ -53,22 +53,63 @@ internal fun SignInRoute(
     onMainClick: () -> Unit,
     onErrorToast: (throwable: Throwable?, message: Int?) -> Unit,
     viewModel: SignInViewModel = hiltViewModel(),
-){
+) {
     val signInUiState by viewModel.signInUiState.collectAsStateWithLifecycle()
     val saveTokenUiState by viewModel.saveTokenUiState.collectAsStateWithLifecycle()
     val id by viewModel.id.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
 
+    var idIsError by remember { mutableStateOf(false) }
+    var passwordIsError by remember { mutableStateOf(false) }
+
+    LaunchedEffect(signInUiState, saveTokenUiState) {
+        when (signInUiState) {
+            is SignInUiState.Loading -> {
+                idIsError = false
+                passwordIsError = false
+            }
+            is SignInUiState.Success -> {
+                when (saveTokenUiState) {
+                    is SaveTokenUiState.Loading -> Unit
+                    is SaveTokenUiState.Success -> onMainClick()
+                    is SaveTokenUiState.Error -> {
+                        val saveTokenUiStateError= saveTokenUiState as SaveTokenUiState.Error
+                        passwordIsError = true
+                        onErrorToast(saveTokenUiStateError.exception, R.string.error_password_mismatch)
+                    }
+                }
+            }
+            is SignInUiState.BadRequest -> {
+                idIsError = true
+                passwordIsError = true
+                onErrorToast(null, R.string.error_password_mismatch)
+            }
+            is SignInUiState.NotFound -> {
+                idIsError = true
+                passwordIsError = true
+                onErrorToast(null, R.string.error_user_missing)
+            }
+            is SignInUiState.IdNotValid -> {
+                idIsError = true
+                onErrorToast(null, R.string.error_id_not_valid)
+            }
+            is SignInUiState.Error -> {
+                val signInUiStateError= signInUiState as SignInUiState.Error
+                idIsError = true
+                passwordIsError = true
+                onErrorToast(signInUiStateError.exception, R.string.error_login)
+            }
+        }
+    }
+
     SignInScreen(
-        onBackClick = onBackClick,
-        onMainClick = onMainClick,
         id = id,
-        signInUiState = signInUiState,
-        saveTokenUiState = saveTokenUiState,
         password = password,
+        idIsError = idIsError,
+        passwordIsError = passwordIsError,
         onIdChange = viewModel::onIdChange,
         onPasswordChange = viewModel::onPasswordChange,
-        onErrorToast = onErrorToast,
+        onBackClick = onBackClick,
         signInCallBack = {
             Log.d("SignInRoute", "로그인 요청 시작: id=${viewModel.id.value}, password=${viewModel.password.value}")
             viewModel.login(
@@ -81,84 +122,32 @@ internal fun SignInRoute(
     )
 }
 
+
 @Composable
 private fun SignInScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
-    onMainClick: () -> Unit,
+    signInCallBack: () -> Unit,
     id: String,
     password: String,
-    onErrorToast: (throwable: Throwable?, message: Int?) -> Unit,
-    signInUiState: SignInUiState,
-    saveTokenUiState: SaveTokenUiState,
-    focusManager: FocusManager = LocalFocusManager.current,
-    scrollState: ScrollState = rememberScrollState(),
-    signInCallBack: () -> Unit,
     onIdChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
+    idIsError: Boolean = false,
+    passwordIsError: Boolean = false
 ) {
-    var idIsError by remember { mutableStateOf(false) }
-    var isError by remember { mutableStateOf(false) }
-
-    LaunchedEffect(signInUiState, saveTokenUiState) {
-        Log.d("SignInScreen", "signInUiState: $signInUiState, saveTokenUiState: $saveTokenUiState")
-        when (signInUiState) {
-            is SignInUiState.Loading -> {
-                isError = false
-                idIsError = false
-            }
-            is SignInUiState.Success -> {
-                when (saveTokenUiState) {
-                    is SaveTokenUiState.Loading -> Unit
-                    is SaveTokenUiState.Success -> onMainClick()
-                    is SaveTokenUiState.Error -> {
-                        isError = true
-                        onErrorToast(saveTokenUiState.exception, R.string.error_password_mismatch)
-                    }
-                }
-            }
-            is SignInUiState.BadRequest -> {
-                isError = true
-                idIsError = true
-                onErrorToast(null, R.string.error_password_mismatch)
-            }
-            is SignInUiState.NotFound -> {
-                isError = true
-                idIsError = true
-                onErrorToast(null, R.string.error_user_missing)
-            }
-            is SignInUiState.IdNotValid -> {
-                idIsError = true
-                onErrorToast(null, R.string.error_id_not_valid)
-            }
-            is SignInUiState.Error -> {
-                isError = true
-                idIsError = true
-                onErrorToast(signInUiState.exception, R.string.error_login)
-            }
-        }
-    }
+    val focusManager = LocalFocusManager.current
+    val scrollState = rememberScrollState()
 
     GwangSanTheme { colors, typography ->
-
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween,
             modifier = modifier
                 .fillMaxSize()
                 .background(color = colors.white)
-                .imePadding()
-                .padding(
-                    top = 24.dp,
-                    start = 24.dp,
-                    end = 24.dp
-                )
+                .padding(top = 24.dp, start = 24.dp, end = 24.dp)
                 .verticalScroll(scrollState)
-                .pointerInput(Unit) {
-                    detectTapGestures {
-                        focusManager.clearFocus()
-                    }
-                }
+                .pointerInput(Unit) { detectTapGestures { focusManager.clearFocus() } }
         ) {
             Column(
                 horizontalAlignment = Alignment.Start,
@@ -169,16 +158,16 @@ private fun SignInScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            top =18.dp,
+                            top = 18.dp,
                             bottom = 32.dp
                         )
-                    ,
-                ){
+                ) {
                     GwangSanTopBar(
                         startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { onBackClick() }) },
                         betweenText = "뒤로"
                     )
                 }
+
                 Text(
                     text = "로그인",
                     style = typography.titleMedium2,
@@ -191,8 +180,7 @@ private fun SignInScreen(
                 Text(
                     text = "별칭을 입력해주세요",
                     style = typography.label,
-                    color = colors.black.copy(alpha = 0.5f),
-                    fontWeight = FontWeight.Normal
+                    color = colors.black.copy(alpha = 0.5f)
                 )
 
                 Spacer(modifier = Modifier.height(48.dp))
@@ -201,22 +189,22 @@ private fun SignInScreen(
                     placeHolder = "별칭",
                     value = id,
                     onTextChange = onIdChange,
-                    isError =  idIsError ,
+                    isError = idIsError,
                     label = "별칭을 입력해주세요",
                     errorText = "유효하지 않은 별칭입니다",
-                    modifier = modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth()
                 )
 
                 Spacer(modifier = Modifier.padding(15.dp))
 
                 GwangSanTextField(
                     placeHolder = "비밀번호",
-                    onTextChange = onPasswordChange,
                     value = password,
-                    isError = isError,
+                    onTextChange = onPasswordChange,
+                    isError = passwordIsError,
                     label = "비밀번호를 입력해주세요",
                     errorText = "유효하지 않은 비밀번호입니다",
-                    modifier = modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
 
@@ -229,11 +217,9 @@ private fun SignInScreen(
                 GwangSanStateButton(
                     text = "로그인",
                     state = if (id.isNotBlank() && password.isNotBlank()) ButtonState.Enable else ButtonState.Disable,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    signInCallBack()
-                    onMainClick()
-                }
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = signInCallBack
+                )
             }
         }
     }
