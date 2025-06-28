@@ -124,7 +124,8 @@ fun GwangsanNavHost(
 
         signUpRecommenderScreen(
             onBackClick = { navController.popBackStack() },
-            onRecommenderClick = { navController.navigateToSignUpFinish() }
+            onRecommenderClick = { navController.navigateToSignUpFinish() },
+            onErrorToast = onErrorToast
         )
 
         signUpFinishScreen(
