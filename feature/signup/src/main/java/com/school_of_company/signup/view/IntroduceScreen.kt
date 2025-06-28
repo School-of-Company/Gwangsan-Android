@@ -47,9 +47,35 @@ internal fun IntroduceRoute(
     val signUpUiState by viewModel.signUpUiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(signUpUiState) {
-        if (signUpUiState is SignUpUiState.Success) {
-            Log.d("IntroduceRoute", "회원가입 성공 → RecommenderScreen으로 이동")
-            onNextClick()
+        when (signUpUiState) {
+            is SignUpUiState.Success -> {
+                Log.d("IntroduceRoute", "회원가입 성공 → RecommenderScreen으로 이동")
+                onNextClick()
+            }
+            is SignUpUiState.Error -> {
+                Log.e("IntroduceRoute", "회원가입 실패: ${(signUpUiState as SignUpUiState.Error).exception}")
+            }
+            is SignUpUiState.Loading -> {
+                Log.d("IntroduceRoute", "회원가입 진행 중...")
+            }
+            is SignUpUiState.Conflict -> {
+                Log.e("IntroduceRoute", "회원가입 충돌: 사용자 이미 존재")
+            }
+            is SignUpUiState.PasswordMismatch -> {
+                Log.e("IntroduceRoute", "비밀번호 불일치")
+            }
+            is SignUpUiState.PasswordNotValid -> {
+                Log.e("IntroduceRoute", "비밀번호 유효하지 않음")
+            }
+            is SignUpUiState.BadRequest -> {
+                Log.e("IntroduceRoute", "잘못된 요청")
+            }
+            is SignUpUiState.NotFound -> {
+                Log.e("IntroduceRoute", "리소스 없음")
+            }
+            is SignUpUiState.TooManyRequest -> {
+                Log.e("IntroduceRoute", "요청이 너무 많음")
+            }
         }
     }
 
