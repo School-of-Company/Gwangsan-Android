@@ -1,6 +1,6 @@
 package com.school_of_company.signup.view
 
-import androidx.compose.foundation.ScrollState
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
@@ -8,73 +8,140 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.school_of_company.design_system.componet.button.GwangSanStateButton
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.school_of_company.design_system.componet.button.GwangSanButton
+import com.school_of_company.design_system.componet.button.GwangSanStateButton
 import com.school_of_company.design_system.componet.button.state.ButtonState
 import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.icons.DownArrowIcon
-import com.school_of_company.design_system.componet.icons.PlusIcon
 import com.school_of_company.design_system.componet.topbar.GwangSanTopBar
-import com.school_of_company.design_system.theme.color.GwangSanColor
-import com.yourpackage.design_system.component.textField.GwangSanTextField
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.design_system.theme.color.GwangSanColor
+import com.school_of_company.model.auth.request.SignUpRequestModel
+import com.school_of_company.model.enum.Branch
+import com.school_of_company.model.enum.Dong
+import com.school_of_company.model.enum.Specialty
+import com.school_of_company.signup.viewmodel.SignUpViewModel
+import com.school_of_company.signup.viewmodel.uistate.SignUpUiState
+import com.yourpackage.design_system.component.textField.GwangSanSelectTextField
+import androidx.hilt.navigation.compose.hiltViewModel
+
 @Composable
 internal fun IntroduceRoute(
     onBackClick: () -> Unit,
     onNextClick: () -> Unit,
-){
+    viewModel: SignUpViewModel = hiltViewModel()
+) {
+    val specialty by viewModel.specialty.collectAsStateWithLifecycle()
+    val isDropdownVisible by viewModel.specialtyDropdownVisible.collectAsStateWithLifecycle()
+    val signUpUiState by viewModel.signUpUiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(signUpUiState) {
+        when (signUpUiState) {
+            is SignUpUiState.Success -> {
+                Log.d("IntroduceRoute", "회원가입 성공 → RecommenderScreen으로 이동")
+                onNextClick()
+            }
+            is SignUpUiState.Error -> {
+                Log.e("IntroduceRoute", "회원가입 실패: ${(signUpUiState as SignUpUiState.Error).exception}")
+            }
+            is SignUpUiState.Loading -> {
+                Log.d("IntroduceRoute", "회원가입 진행 중...")
+            }
+            is SignUpUiState.Conflict -> {
+                Log.e("IntroduceRoute", "회원가입 충돌: 사용자 이미 존재")
+            }
+            is SignUpUiState.PasswordMismatch -> {
+                Log.e("IntroduceRoute", "비밀번호 불일치")
+            }
+            is SignUpUiState.PasswordNotValid -> {
+                Log.e("IntroduceRoute", "비밀번호 유효하지 않음")
+            }
+            is SignUpUiState.BadRequest -> {
+                Log.e("IntroduceRoute", "잘못된 요청")
+            }
+            is SignUpUiState.NotFound -> {
+                Log.e("IntroduceRoute", "리소스 없음")
+            }
+            is SignUpUiState.TooManyRequest -> {
+                Log.e("IntroduceRoute", "요청이 너무 많음")
+            }
+        }
+    }
+
     IntroduceScreen(
+        specialty = specialty,
+        isDropdownVisible = isDropdownVisible,
         onBackClick = onBackClick,
         onNextClick = onNextClick,
-        introduce = emptyList(),
-        onIntroduceChange = {},
-        buttonEnabled = false,
-        isDropdownVisible = false,
-        onDismissRequest = {},
-        showPlusIcon = true,
-        isFocused = false,
-    )
+        onToggleDropdown = viewModel::toggleSpecialtyDropdown,
+        onCloseDropdown = viewModel::closeSpecialtyDropdown,
+        onSpecialtyChange = viewModel::onSpecialtyChange,
+        callBack = {
 
+            val branchEnum = Branch.from(viewModel.branch.value)
+            val dongEnum = Dong.from(viewModel.dong.value)
+            val specialtyEnum = Specialty.from(viewModel.specialty.value)
+
+            viewModel.signUp(
+                SignUpRequestModel(
+                    name = viewModel.name.value,
+                    nickname = viewModel.nickname.value,
+                    password = viewModel.password.value,
+                    phoneNumber = viewModel.number.value,
+                    verificationCode = viewModel.certificationNumber.value,
+                    dong = dongEnum,
+                    branch = branchEnum,
+                    recommender = viewModel.recommender.value,
+                    introduction = viewModel.specialty.value,
+                    specialty = specialtyEnum
+                )
+            )
+        }
+    )
 }
 
 @Composable
 private fun IntroduceScreen(
     modifier: Modifier = Modifier,
+    specialty: String,
+    isDropdownVisible: Boolean,
     onBackClick: () -> Unit,
-    focusManager: androidx.compose.ui.focus.FocusManager = LocalFocusManager.current,
-    scrollState: ScrollState = rememberScrollState(),
-    introduce: List<String>,
-    onIntroduceChange: (List<String>) -> Unit,
     onNextClick: () -> Unit,
-    showPlusIcon: Boolean = true,
-    isFocused: Boolean = false,
-    buttonEnabled: Boolean = false,
-    isDropdownVisible: Boolean = false,
-    onDismissRequest: () -> Unit = {}
+    onToggleDropdown: () -> Unit,
+    onCloseDropdown: () -> Unit,
+    callBack: () -> Unit,
+    onSpecialtyChange: (String) -> Unit
 ) {
-    val options = listOf("청소하기", "운전하기", "달리기", "빨래하기", "벌레잡기", "이삿짐 나르기")
+    val introduce = specialty.split(", ").filter { it.isNotBlank() }
+    val backgroundColor = if (isDropdownVisible) GwangSanColor.gray300 else GwangSanColor.white
+    val focusManager = LocalFocusManager.current
+    val scrollState = rememberScrollState()
 
     GwangSanTheme { colors, typography ->
-
-        val backgroundColor = if (isDropdownVisible) GwangSanColor.gray300 else colors.white
-
         Box(
             modifier = modifier
                 .fillMaxSize()
-                .background(colors.background)
                 .background(backgroundColor)
                 .imePadding()
-                .pointerInput(Unit) {
-                    detectTapGestures { focusManager.clearFocus() }
+                .pointerInput(isDropdownVisible) {
+                    detectTapGestures {
+                        if (isDropdownVisible) {
+                            onCloseDropdown()
+                        } else {
+                            focusManager.clearFocus()
+                        }
+                    }
                 }
         ) {
             Column(
@@ -91,7 +158,7 @@ private fun IntroduceScreen(
                     horizontalArrangement = Arrangement.Start
                 ) {
                     GwangSanTopBar(
-                        startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable {onBackClick() }) },
+                        startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { onBackClick() }) },
                         betweenText = "뒤로"
                     )
                 }
@@ -113,46 +180,25 @@ private fun IntroduceScreen(
 
                 Spacer(modifier = Modifier.height(32.dp))
 
+                GwangSanSelectTextField(
+                    label = "특기",
+                    value = introduce.joinToString(", "),
+                    placeHolder = "특기 추가",
+                    onClick = onToggleDropdown,
+                    onTextChange = {}
+                )
+
                 if (isDropdownVisible) {
-                    Spacer(modifier = Modifier.height(6.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
 
-                    Column(modifier = Modifier.fillMaxWidth())
-                    {
-                        Box(modifier = Modifier.fillMaxWidth())
-                        {
-                            GwangSanTextField(
-                                label = "소개",
-                                value = introduce.joinToString(", "),
-                                placeHolder = "소개 추가",
-                                onTextChange = {},
-                                icon = { if (showPlusIcon) PlusIcon() },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .GwangSanClickable { onIntroduceChange(introduce) }
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        MultiSelectDropdown(
-                            options = options,
-                            selectedOptions = introduce,
-                            onSelectionChange = onIntroduceChange,
-                            onDismissRequest = onDismissRequest,
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    }
-                } else {
-                    GwangSanTextField(
-                        label = "소개",
-                        value = introduce.joinToString(", "),
-                        placeHolder = "소개 추가",
-                        onTextChange = {},
-                        icon = { if (showPlusIcon) PlusIcon() },
-                        isReadOnly = true,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .GwangSanClickable { onIntroduceChange(introduce) }
+                    MultiSelectDropdown(
+                        options = listOf("청소하기", "운전하기", "달리기", "빨래하기", "벌레잡기", "이삿짐 나르기"),
+                        selectedOptions = introduce,
+                        onSelectionChange = {
+                            onSpecialtyChange(it.joinToString(", "))
+                        },
+                        onDismissRequest = onCloseDropdown,
+                        modifier = Modifier.fillMaxWidth()
                     )
                 }
 
@@ -169,9 +215,7 @@ private fun IntroduceScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(12.dp))
-                        .background(
-                            if (isDropdownVisible) colors.gray200 else colors.background
-                        )
+                        .background(if (isDropdownVisible) colors.gray200 else colors.background)
                 ) {
                     if (isDropdownVisible) {
                         GwangSanButton(
@@ -181,13 +225,16 @@ private fun IntroduceScreen(
                             onClick = {},
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(52.dp),
+                                .height(52.dp)
                         )
                     } else {
                         GwangSanStateButton(
                             text = "다음",
-                            state = if (buttonEnabled) ButtonState.Enable else ButtonState.Disable,
-                            onClick = onNextClick,
+                            state = if (specialty.isNotBlank()) ButtonState.Enable else ButtonState.Disable,
+                            onClick = {
+                                callBack()
+                                onNextClick()
+                            },
                             modifier = Modifier.fillMaxWidth()
                         )
                     }
@@ -195,61 +242,4 @@ private fun IntroduceScreen(
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun IntroduceScreenPreview1() {
-    IntroduceScreen(
-        introduce = listOf("빨래하기", "벌레잡기"),
-        onIntroduceChange = {},
-        onNextClick = {},
-        isDropdownVisible = true,
-        buttonEnabled = false,
-        onDismissRequest = {},
-        showPlusIcon = false,
-        isFocused = true,
-        focusManager = LocalFocusManager.current,
-        scrollState = rememberScrollState(),
-        modifier = Modifier.background(GwangSanColor.white),
-        onBackClick = {}
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun IntroduceScreenPreview2() {
-    IntroduceScreen(
-        introduce = listOf("빨래하기", "벌레잡기"),
-        onIntroduceChange = {},
-        onNextClick = {},
-        isDropdownVisible = true,
-        buttonEnabled = false,
-        onDismissRequest = {},
-        showPlusIcon = false,
-        isFocused = true,
-        focusManager = LocalFocusManager.current,
-        scrollState = rememberScrollState(),
-        modifier = Modifier.background(GwangSanColor.white),
-        onBackClick = {}
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun IntroduceScreenPreview3() {
-    IntroduceScreen(
-        introduce = listOf("빨래하기", "벌레잡기"),
-        onIntroduceChange = {},
-        onNextClick = {},
-        isDropdownVisible = true,
-        buttonEnabled = false,
-        onDismissRequest = {},
-        showPlusIcon = false,
-        isFocused = true,
-        focusManager = LocalFocusManager.current,
-        scrollState = rememberScrollState(),
-        modifier = Modifier.background(GwangSanColor.white),
-        onBackClick = {}
-    )
 }

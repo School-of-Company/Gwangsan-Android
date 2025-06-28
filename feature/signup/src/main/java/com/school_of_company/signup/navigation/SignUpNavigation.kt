@@ -127,7 +127,7 @@ fun NavGraphBuilder.signUpRecommenderScreen(
     onRecommenderClick: () -> Unit
 ) {
     composable(route = SignUpRecommenderRoute) {
-        ReCommDerInputRoute(
+        ReCommenDerInputRoute(
             onBackClick = onBackClick,
             onRecommenderClick = onRecommenderClick
         )

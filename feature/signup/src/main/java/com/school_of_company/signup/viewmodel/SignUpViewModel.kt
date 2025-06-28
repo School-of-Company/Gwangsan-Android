@@ -14,12 +14,7 @@ import com.school_of_company.signup.viewmodel.uistate.SendNumberUiState
 import com.school_of_company.signup.viewmodel.uistate.SignUpUiState
 import com.school_of_company.signup.viewmodel.uistate.VerifyNumberUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,7 +22,7 @@ import javax.inject.Inject
 class SignUpViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val savedStateHandle: SavedStateHandle,
-): ViewModel() {
+) : ViewModel() {
     companion object {
         private const val NAME = "name"
         private const val NICKNAME = "nickname"
@@ -41,7 +36,6 @@ class SignUpViewModel @Inject constructor(
         private const val SPECIALTY = "specialty"
     }
 
-
     private val _signUpUiState = MutableStateFlow<SignUpUiState>(SignUpUiState.Loading)
     internal val signUpUiState = _signUpUiState.asStateFlow()
 
@@ -51,16 +45,22 @@ class SignUpViewModel @Inject constructor(
     private val _verifyNumberUiState = MutableStateFlow<VerifyNumberUiState>(VerifyNumberUiState.Loading)
     internal val verifyNumberUiState = _verifyNumberUiState.asStateFlow()
 
-    internal var name = savedStateHandle.getStateFlow(key = NAME, initialValue = "")
-    internal var nickname = savedStateHandle.getStateFlow(key = NICKNAME, initialValue = "")
-    internal var certificationNumber = savedStateHandle.getStateFlow(key = CERTIFICATION_NUMBER,initialValue =  "")
-    internal var number = savedStateHandle.getStateFlow(key = PHONE_NUMBER, initialValue =  "")
-    internal var password = savedStateHandle.getStateFlow(key = PASSWORD, initialValue =  "")
-    internal var checkPassword = savedStateHandle.getStateFlow(key = RE_PASSWORD, initialValue = "")
-    internal var dong = savedStateHandle.getStateFlow(key = DONG, initialValue = "")
-    internal var branch = savedStateHandle.getStateFlow(key = BRANCH,initialValue =  "")
-    internal var recommender = savedStateHandle.getStateFlow(key = RECOMMENDER, initialValue =  "")
-    internal var specialty = savedStateHandle.getStateFlow(key = SPECIALTY, initialValue =  "")
+    private val _specialtyDropdownVisible = MutableStateFlow(false)
+    val specialtyDropdownVisible = _specialtyDropdownVisible.asStateFlow()
+
+    private val _branchDropdownVisible = MutableStateFlow(false)
+    val branchDropdownVisible = _branchDropdownVisible.asStateFlow()
+
+    internal var name = savedStateHandle.getStateFlow(NAME, "")
+    internal var nickname = savedStateHandle.getStateFlow(NICKNAME, "")
+    internal var certificationNumber = savedStateHandle.getStateFlow(CERTIFICATION_NUMBER, "")
+    internal var number = savedStateHandle.getStateFlow(PHONE_NUMBER, "")
+    internal var password = savedStateHandle.getStateFlow(PASSWORD, "")
+    internal var checkPassword = savedStateHandle.getStateFlow(RE_PASSWORD, "")
+    internal var dong = savedStateHandle.getStateFlow(DONG, "")
+    internal var branch = savedStateHandle.getStateFlow(BRANCH, "")
+    internal var recommender = savedStateHandle.getStateFlow(RECOMMENDER, "")
+    internal var specialty = savedStateHandle.getStateFlow(SPECIALTY, "")
 
     internal fun signUp(body: SignUpRequestModel) = viewModelScope.launch {
         _signUpUiState.value = SignUpUiState.Loading
@@ -92,7 +92,8 @@ class SignUpViewModel @Inject constructor(
                                 )
                             }
 
-                            is com.school_of_company.result.Result.Loading -> _signUpUiState.value = SignUpUiState.Loading
+                            is com.school_of_company.result.Result.Loading -> _signUpUiState.value =
+                                SignUpUiState.Loading
                         }
                     }
             }
@@ -102,13 +103,21 @@ class SignUpViewModel @Inject constructor(
     internal fun verifyNumber(phoneNumber: String, code: String) =
         viewModelScope.launch {
             _verifyNumberUiState.value = VerifyNumberUiState.Loading
-            authRepository.signUpCertificationNumberCertification(phoneNumber = phoneNumber, code = code)
+            authRepository.signUpCertificationNumberCertification(
+                phoneNumber = phoneNumber,
+                code = code
+            )
                 .asResult()
                 .collectLatest { result ->
                     when (result) {
-                        is com.school_of_company.result.Result.Loading -> _verifyNumberUiState.value = VerifyNumberUiState.Loading
-                        is com.school_of_company.result.Result.Success -> _verifyNumberUiState.value = VerifyNumberUiState.Success
-                        is com.school_of_company.result.Result.Error ->{ _verifyNumberUiState.value =  VerifyNumberUiState.Error(result.exception)
+                        is com.school_of_company.result.Result.Loading -> _verifyNumberUiState.value =
+                            VerifyNumberUiState.Loading
+
+                        is com.school_of_company.result.Result.Success -> _verifyNumberUiState.value =
+                            VerifyNumberUiState.Success
+
+                        is com.school_of_company.result.Result.Error -> {
+                            _verifyNumberUiState.value = VerifyNumberUiState.Error(result.exception)
                             result.exception.errorHandling(
                                 badRequestAction = { SignUpUiState.BadRequest },
                                 notFoundAction = { SignUpUiState.NotFound },
@@ -162,7 +171,7 @@ class SignUpViewModel @Inject constructor(
         savedStateHandle[DONG] = value
     }
 
-    internal fun onNameChange(value: String) {
+    fun onNameChange(value: String) {
         savedStateHandle[NAME] = value
     }
 
@@ -200,5 +209,13 @@ class SignUpViewModel @Inject constructor(
 
     internal fun onSpecialtyChange(value: String) {
         savedStateHandle[SPECIALTY] = value
+    }
+
+    internal fun toggleSpecialtyDropdown() {
+        _specialtyDropdownVisible.value = !_specialtyDropdownVisible.value
+    }
+
+    internal fun closeSpecialtyDropdown() {
+        _specialtyDropdownVisible.value = false
     }
 }

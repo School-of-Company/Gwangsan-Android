@@ -29,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.school_of_company.design_system.R
 import com.school_of_company.design_system.componet.clickable.GwangSanClickable
+import com.school_of_company.design_system.componet.icons.PlusIcon
 import com.school_of_company.design_system.componet.icons.SearchIcon
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.design_system.theme.color.GwangSanColor
@@ -218,10 +219,10 @@ fun GwangSanSearchTextField(
 
 @Composable
 fun ChatInputTextField(
+    modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
     onImageClick: () -> Unit = {},
-    modifier: Modifier = Modifier
 ) {
     GwangSanTheme { colors, typography ->
         Row(
@@ -261,6 +262,103 @@ fun ChatInputTextField(
                     .GwangSanClickable { onImageClick() },
                 tint = colors.black
             )
+        }
+    }
+}
+
+@Composable
+fun GwangSanSelectTextField(
+    modifier: Modifier = Modifier,
+    value: String,
+    onTextChange: (String) -> Unit,
+    label: String,
+    placeHolder: String,
+    onClick: () -> Unit,
+    isError: Boolean = false,
+    errorText: String = "",
+    isDisabled: Boolean = false,
+    readOnly: Boolean = false
+) {
+    GwangSanTheme { colors, typography ->
+        Column(
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+            modifier = modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = label,
+                color = if (isError) GwangSanColor.error else GwangSanColor.black,
+                style = typography.body5
+            )
+
+            val shape = RoundedCornerShape(8.dp)
+            val borderColor = when {
+                isError -> GwangSanColor.error
+                value.isNotEmpty() -> GwangSanColor.subYellow500
+                else -> GwangSanColor.gray400
+            }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+                    .clip(shape)
+                    .background(colors.white)
+                    .border(1.dp, borderColor, shape)
+                    .padding(horizontal = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(24.dp)
+                        .GwangSanClickable(enabled = !isDisabled) {
+                            onClick()
+                        }
+                ) {
+                    PlusIcon()
+                }
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                TextField(
+                    value = value,
+                    onValueChange = { if (!isDisabled && !readOnly) onTextChange(it) },
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    placeholder = {
+                        Text(
+                            text = placeHolder,
+                            style = typography.body5,
+                            color = GwangSanColor.gray400
+                        )
+                    },
+                    singleLine = true,
+                    readOnly = readOnly,
+                    enabled = !isDisabled,
+                    colors = TextFieldDefaults.colors(
+                        focusedTextColor = GwangSanColor.black,
+                        unfocusedTextColor = GwangSanColor.black,
+                        disabledTextColor = GwangSanColor.gray400,
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        disabledContainerColor = Color.Transparent,
+                        cursorColor = GwangSanColor.subYellow500,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        disabledIndicatorColor = Color.Transparent,
+                        focusedPlaceholderColor = GwangSanColor.gray400,
+                        unfocusedPlaceholderColor = GwangSanColor.gray400
+                    )
+                )
+            }
+
+            if (isError) {
+                Text(
+                    text = errorText,
+                    color = GwangSanColor.error,
+                    style = typography.label
+                )
+            }
         }
     }
 }
