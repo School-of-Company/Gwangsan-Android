@@ -29,6 +29,7 @@ import com.yourpackage.design_system.component.textField.GwangSanTextField
 internal fun ReCommenDerInputRoute(
     onBackClick: () -> Unit,
     onRecommenderClick: () -> Unit,
+    onErrorToast: (Throwable?, Int?) -> Unit,
     viewModel: SignUpViewModel = hiltViewModel()
 ) {
     val recommender by viewModel.recommender.collectAsStateWithLifecycle()

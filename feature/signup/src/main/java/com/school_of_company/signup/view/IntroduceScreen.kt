@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.school_of_company.design_system.R
 import com.school_of_company.design_system.componet.button.GwangSanButton
 import com.school_of_company.design_system.componet.button.GwangSanStateButton
 import com.school_of_company.design_system.componet.button.state.ButtonState
@@ -40,6 +41,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 internal fun IntroduceRoute(
     onBackClick: () -> Unit,
     onNextClick: () -> Unit,
+    onErrorToast: (throwable: Throwable?, message: Int?) -> Unit,
     viewModel: SignUpViewModel = hiltViewModel()
 ) {
     val specialty by viewModel.specialty.collectAsStateWithLifecycle()
@@ -54,27 +56,34 @@ internal fun IntroduceRoute(
             }
             is SignUpUiState.Error -> {
                 Log.e("IntroduceRoute", "회원가입 실패: ${(signUpUiState as SignUpUiState.Error).exception}")
+                onErrorToast((signUpUiState as SignUpUiState.Error).exception, R.string.error_generic)
             }
             is SignUpUiState.Loading -> {
                 Log.d("IntroduceRoute", "회원가입 진행 중...")
             }
             is SignUpUiState.Conflict -> {
                 Log.e("IntroduceRoute", "회원가입 충돌: 사용자 이미 존재")
+                onErrorToast(null, R.string.error_user_exists)
             }
             is SignUpUiState.PasswordMismatch -> {
                 Log.e("IntroduceRoute", "비밀번호 불일치")
+                onErrorToast(null, R.string.error_password_mismatch)
             }
             is SignUpUiState.PasswordNotValid -> {
                 Log.e("IntroduceRoute", "비밀번호 유효하지 않음")
+                onErrorToast(null, R.string.error_invalid_password)
             }
             is SignUpUiState.BadRequest -> {
                 Log.e("IntroduceRoute", "잘못된 요청")
+                onErrorToast(null, R.string.error_bad_request)
             }
             is SignUpUiState.NotFound -> {
                 Log.e("IntroduceRoute", "리소스 없음")
+                onErrorToast(null, R.string.error_resource_not_found)
             }
             is SignUpUiState.TooManyRequest -> {
                 Log.e("IntroduceRoute", "요청이 너무 많음")
+                onErrorToast(null, R.string.error_too_many_requests)
             }
         }
     }

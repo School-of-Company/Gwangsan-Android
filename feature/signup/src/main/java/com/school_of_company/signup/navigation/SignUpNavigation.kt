@@ -113,23 +113,27 @@ fun NavGraphBuilder.signUpNeighborhoodScreen(
 fun NavGraphBuilder.signUpIntroduceScreen(
     onBackClick: () -> Unit,
     onNextClick: () -> Unit,
+    onErrorToast: (throwable: Throwable?, message: Int?) -> Unit
 ) {
     composable(route = SignUpIntroduceRoute) {
         IntroduceRoute(
             onBackClick = onBackClick,
-            onNextClick = onNextClick
+            onNextClick = onNextClick,
+            onErrorToast = onErrorToast
         )
     }
 }
 
 fun NavGraphBuilder.signUpRecommenderScreen(
     onBackClick: () -> Unit,
-    onRecommenderClick: () -> Unit
+    onRecommenderClick: () -> Unit,
+    onErrorToast: (throwable: Throwable?, message: Int?) -> Unit
 ) {
     composable(route = SignUpRecommenderRoute) {
         ReCommenDerInputRoute(
             onBackClick = onBackClick,
-            onRecommenderClick = onRecommenderClick
+            onRecommenderClick = onRecommenderClick,
+            onErrorToast = onErrorToast
         )
     }
 }
