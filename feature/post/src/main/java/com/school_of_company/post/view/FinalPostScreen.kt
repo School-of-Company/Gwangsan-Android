@@ -1,4 +1,4 @@
-package com.school_of_company.post.view.service
+package com.school_of_company.post.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -22,6 +22,37 @@ import com.school_of_company.design_system.componet.icons.DownArrowIcon
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.design_system.theme.color.GwangSanColor
+import com.school_of_company.model.enum.Mode
+import com.school_of_company.model.enum.Type
+
+@Composable
+internal fun FinalPostRoute(
+    type: Type,
+    mode: Mode,
+    subject: String,
+    content: String,
+    price: String,
+    onEditClick: () -> Unit,
+    onSubmitClick: () -> Unit,
+    onBackClick: () -> Unit,
+    onCloseClick: () -> Unit,
+) {
+    FinalPostScreen(
+        subject = subject,
+        content = content,
+        price = price,
+        imageContent = {
+            AddImageButton(
+                onClick = {},
+                rippleColor = GwangSanColor.main100
+            )
+        },
+        onEditClick = onEditClick,
+        onSubmitClick = onSubmitClick,
+        onBackClick = onBackClick,
+        onCloseClick = onCloseClick
+    )
+}
 
 @Composable
 private fun FinalPostScreen(
