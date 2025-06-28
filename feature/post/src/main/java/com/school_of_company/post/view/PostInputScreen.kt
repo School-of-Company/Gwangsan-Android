@@ -1,4 +1,4 @@
-package com.school_of_company.post.view.service
+package com.school_of_company.post.view
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -24,7 +24,28 @@ import com.school_of_company.design_system.componet.icons.CloseIcon
 import com.school_of_company.design_system.componet.icons.DownArrowIcon
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.model.enum.Mode
+import com.school_of_company.model.enum.Type
 import com.yourpackage.design_system.component.textField.GwangSanTextField
+
+@Composable
+internal fun PostInputRoute(
+    type: Type,
+    mode: Mode,
+    onBackClick: () -> Unit,
+    onNextClick: () -> Unit,
+    onCloseClick: () -> Unit,
+) {
+    var value by remember { mutableStateOf("") }
+
+    PostInputScreen(
+        value = value,
+        onValueChange = { value = it },
+        onNextClick = onNextClick,
+        onBackClick = onBackClick,
+        onCloseClick = onCloseClick
+    )
+}
 
 
 @Composable
@@ -81,8 +102,7 @@ private fun PostInputScreen(
                     label = "광산",
                     placeHolder = "광산을 입력해주세요",
                     singleLine = true,
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth()
                 )
 
                 Spacer(modifier = Modifier.weight(1f))
