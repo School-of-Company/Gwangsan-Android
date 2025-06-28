@@ -32,6 +32,7 @@ navigationRuntimeAndroid = "2.9.0"
 navigationComposeAndroid = "2.9.0"
 kotlinxSerializationJson = "1.7.3"
 retrofit = "2.9.0"
+swiperefresh = "0.27.0"
 okhttp = "4.11.0"
 retrofitKotlinxSerializableJson = "1.0.0"
 runtime = "1.6.1"
@@ -41,6 +42,7 @@ protobuf = "3.25.3"
 converter-moshi = "2.9.0"
 transportRuntime = "4.0.0"
 [libraries]
+swiperefresh = { group = "com.google.accompanist", name = "accompanist-swiperefresh", version.ref = "swiperefresh" }
 androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version = "1.1.0" }
 protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
 protobuf-kotlin-lite = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobuf" }

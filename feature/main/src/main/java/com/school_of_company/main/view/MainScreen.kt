@@ -1,18 +1,33 @@
 package com.school_of_company.main.view
 
 
+import android.util.Log
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
+import com.google.accompanist.swiperefresh.SwipeRefreshState
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import com.school_of_company.design_system.R
 import com.school_of_company.design_system.componet.button.gwangsanfloatingbutton.GwangSanFloatingButton
 import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.dropdown.GwangSanSwitchButton
@@ -20,16 +35,73 @@ import com.school_of_company.design_system.componet.dropdown.state.GwangSanSwitc
 import com.school_of_company.design_system.componet.icons.DownArrowIcon
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
-import com.school_of_company.main.component.MainItem
 import com.school_of_company.main.component.MainList
+import com.school_of_company.main.viewmodel.MainViewModel
+import com.school_of_company.main.viewmodel.uistate.GetMainListUiState
+import com.school_of_company.model.enum.Mode
+import com.school_of_company.model.enum.Type
+
+
+@Composable
+internal fun MainRoute(
+    navigationToPostService: () -> Unit,
+    onErrorToast: (throwable: Throwable?, message: Int?) -> Unit,
+    moDeselectedType: Type,
+    viewModel: MainViewModel = hiltViewModel()
+) {
+    val getMainListUiState by viewModel.getMainListUiState.collectAsStateWithLifecycle()
+    val swipeRefreshLoading by viewModel.swipeRefreshLoading.collectAsStateWithLifecycle(initialValue = false)
+    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = swipeRefreshLoading)
+
+    var switchState by remember { mutableStateOf(GwangSanSwitchState.NEED) }
+
+    val selectedType = when (switchState) {
+        GwangSanSwitchState.NEED -> Mode.RECEIVER
+        GwangSanSwitchState.REQUEST -> Mode.GIVER
+    }
+
+    val betweenText = when (moDeselectedType) {
+        Type.OBJECT -> "물건"
+        Type.SERVICE -> "서비스"
+    }
+
+    LaunchedEffect(selectedType, moDeselectedType) {
+        viewModel.getMainList(
+            mode = selectedType,
+            type = moDeselectedType
+        )
+    }
+
+    MainScreen(
+        navigationToPostService = navigationToPostService,
+        mainCallBack = {
+            viewModel.getMainList(
+                type = moDeselectedType,
+                mode = selectedType
+            )
+        },
+        onErrorToast = onErrorToast,
+        getMainListUiState = getMainListUiState,
+        switchState = switchState,
+        onSwitchStateChange = { switchState = it },
+        swipeRefreshState = swipeRefreshState,
+        betweenText = betweenText // ✅ 추가
+    )
+}
 
 @Composable
 private fun MainScreen(
     modifier: Modifier = Modifier,
     navigationToPostService: () -> Unit,
+    mainCallBack: () -> Unit,
+    onErrorToast: (throwable: Throwable?, message: Int?) -> Unit,
+    getMainListUiState: GetMainListUiState,
+    switchState: GwangSanSwitchState,
+    swipeRefreshState: SwipeRefreshState,
+    onSwitchStateChange: (GwangSanSwitchState) -> Unit,
+    betweenText: String
 ) {
     GwangSanTheme { colors, _ ->
-
         Box(
             modifier = modifier
                 .fillMaxSize()
@@ -43,7 +115,7 @@ private fun MainScreen(
             ) {
                 GwangSanSubTopBar(
                     startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { }) },
-                    betweenText = "서비스"
+                    betweenText = betweenText
                 )
 
                 Spacer(modifier = Modifier.height(38.dp))
@@ -51,51 +123,77 @@ private fun MainScreen(
                 GwangSanSwitchButton(
                     stateOn = GwangSanSwitchState.NEED,
                     stateOff = GwangSanSwitchState.REQUEST,
-                    initialValue = GwangSanSwitchState.NEED,
-                    switchOffBackground = colors.subYellow500,// 여기 상태에 따라 다른 data를 받고 item에 반영할 예정이에요.
+                    initialValue = switchState,
+                    switchOffBackground = colors.subYellow500,
                     switchOnBackground = colors.subYellow500,
                     onCheckedChanged = {
-                        when (it) {
-                            GwangSanSwitchState.REQUEST -> println("현재 상태: 해주세요")
-                            GwangSanSwitchState.NEED -> println("현재 상태: 필요해요")
-                        }
+                        onSwitchStateChange(it)
+                        mainCallBack()
                     }
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                MainList(items = dummyItems)
+                SwipeRefresh(
+                    state = swipeRefreshState,
+                    onRefresh = { mainCallBack() },
+                    indicator = { state, refreshTrigger ->
+                        SwipeRefreshIndicator(
+                            state = state,
+                            refreshTriggerDistance = refreshTrigger,
+                            contentColor = colors.main500
+                        )
+                    }
+                ) {
+                    when (getMainListUiState) {
+                        is GetMainListUiState.Success -> {
+                            MainList(
+                                items = getMainListUiState.getMainListResponse,
+                            )
+                        }
+
+                        is GetMainListUiState.Empty -> {
+                            MainList(items = emptyList())
+                        }
+
+                        is GetMainListUiState.Loading -> {
+                            Column(
+                                modifier = Modifier
+                                    .background(
+                                        color = colors.white,
+                                        shape = RoundedCornerShape(8.dp)
+                                    )
+                                    .fillMaxSize()
+                            ) {
+                                repeat(10) {
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(135.dp)
+                                            .padding(vertical = 10.dp)
+                                            .background(
+                                                color = colors.white,
+                                                shape = RoundedCornerShape(8.dp)
+                                            )
+                                    )
+                                }
+                            }
+                        }
+
+                        is GetMainListUiState.Error -> {
+                            onErrorToast(getMainListUiState.exception, R.string.main_error)
+                        }
+                    }
+                }
             }
 
             GwangSanFloatingButton(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .padding(24.dp) // 버튼 여백
+                    .padding(24.dp)
             ) {
                 navigationToPostService()
             }
         }
     }
-}
-
-val dummyItems = listOf(
-    MainItem(
-        coverImage = "https://example.com/image1.jpg",
-        title = "전시회 1",
-        price = "무료"
-    ),
-    MainItem(
-        coverImage = "https://example.com/image2.jpg",
-        title = "전시회 2",
-        price = "1000원"
-    )
-)
-
-@Preview
-@Composable
-fun  MainScreenPreview(
-){
-    MainScreen(
-        navigationToPostService = {}
-    )
 }

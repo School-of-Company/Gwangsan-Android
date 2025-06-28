@@ -136,3 +136,31 @@ fun CheckIcon(
         tint = tint
     )
 }
+
+@Composable
+fun BellIcon(
+    modifier: Modifier = Modifier,
+    tint: Color = Color.Unspecified
+){
+    Icon(
+        painter = painterResource(id = R.drawable.mdi_bell_outline,),
+        contentDescription = "알림",
+        modifier = modifier,
+        tint = tint
+    )
+
+}
+
+@Composable
+fun MainTitle(
+    modifier: Modifier = Modifier,
+    tint: Color = Color.Unspecified
+){
+    Icon(
+        painter = painterResource(id = R.drawable.name),
+        contentDescription = "메인 타이틀",
+        modifier = modifier,
+        tint = tint
+    )
+
+}

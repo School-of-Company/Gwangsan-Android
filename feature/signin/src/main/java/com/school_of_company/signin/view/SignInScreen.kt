@@ -232,6 +232,7 @@ private fun SignInScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     signInCallBack()
+                    onMainClick()
                 }
             }
         }
