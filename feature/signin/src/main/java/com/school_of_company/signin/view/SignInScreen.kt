@@ -113,28 +113,28 @@ private fun SignInScreen(
                     is SaveTokenUiState.Success -> onMainClick()
                     is SaveTokenUiState.Error -> {
                         isError = true
-                        onErrorToast(saveTokenUiState.exception, R.string.R_string_error_password_mismatch)
+                        onErrorToast(saveTokenUiState.exception, R.string.error_password_mismatch)
                     }
                 }
             }
             is SignInUiState.BadRequest -> {
                 isError = true
                 idIsError = true
-                onErrorToast(null, R.string.R_string_error_password_mismatch)
+                onErrorToast(null, R.string.error_password_mismatch)
             }
             is SignInUiState.NotFound -> {
                 isError = true
                 idIsError = true
-                onErrorToast(null, R.string.R_string_error_user_missing)
+                onErrorToast(null, R.string.error_user_missing)
             }
             is SignInUiState.IdNotValid -> {
                 idIsError = true
-                onErrorToast(null, R.string.R_string_error_id_not_valid)
+                onErrorToast(null, R.string.error_id_not_valid)
             }
             is SignInUiState.Error -> {
                 isError = true
                 idIsError = true
-                onErrorToast(signInUiState.exception, R.string.R_string_error_login)
+                onErrorToast(signInUiState.exception, R.string.error_login)
             }
         }
     }
