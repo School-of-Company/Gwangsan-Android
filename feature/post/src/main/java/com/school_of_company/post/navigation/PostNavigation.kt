@@ -32,7 +32,7 @@ fun NavController.navigateToPostInput(
     this.navigate("$PostInputRoute/${type.name}/${mode.name}", navOptions)
 }
 
-fun NavController.navigateToPostFinish(
+fun NavController.navigateToPostFinal(
     type: Type,
     mode: Mode,
     navOptions: NavOptions? = null
@@ -116,9 +116,6 @@ fun NavGraphBuilder.postFinalScreen(
        PostFinalRoute(
             type = type,
             mode = mode,
-            subject = subject,
-            content = content,
-            price = price,
             onEditClick = onEditClick,
             onSubmitClick = onSubmitClick,
             onBackClick = onBackClick,

@@ -27,7 +27,7 @@ internal fun PostWriteRoute(
     type: Type,
     mode: Mode,
     onBackClick: () -> Unit,
-    onNextClick: () -> Unit,
+    onNextClick: (String, String) -> Unit,
     viewModel: PostViewModel = hiltViewModel(),
 ) {
     val subject by viewModel.title.collectAsState()
@@ -58,7 +58,7 @@ private fun PostWriteScreen(
     onSubjectChange: (String) -> Unit,
     onContentChange: (String) -> Unit,
     onImageAdd: () -> Unit,
-    onNextClick: () -> Unit,
+    onNextClick: (String, String) -> Unit,
     onBackClick: () -> Unit,
     imageContent: @Composable (Boolean) -> Unit
 ) {
@@ -144,7 +144,7 @@ private fun PostWriteScreen(
                 GwangSanStateButton(
                     text = "다음",
                     state = if (isNextEnabled) ButtonState.Enable else ButtonState.Disable,
-                    onClick = onNextClick,
+                    onClick = { onNextClick(subject, content) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp)
