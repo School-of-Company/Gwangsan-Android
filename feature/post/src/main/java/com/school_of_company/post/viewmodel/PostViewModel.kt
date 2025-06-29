@@ -58,7 +58,9 @@ class PostViewModel @Inject constructor(
                 gwangsan = gwangsan.value.toIntOrNull() ?: 0,
                 imageIds = imageIds.value.map { it.toIntOrNull() ?: 0 }
             )
-        ).asResult().collectLatest { result ->
+        )
+            .asResult()
+            .collectLatest { result ->
             when (result) {
                 is com.school_of_company.result.Result.Success -> _postUiState.value = PostUiState.Success
                 is com.school_of_company.result.Result.Error -> {
