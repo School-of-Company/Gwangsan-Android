@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -16,6 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.school_of_company.design_system.component.progress.GwangSanTopBarProgress
 import com.school_of_company.design_system.componet.button.GwangSanStateButton
 import com.school_of_company.design_system.componet.button.state.ButtonState
@@ -26,6 +28,7 @@ import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.model.enum.Mode
 import com.school_of_company.model.enum.Type
+import com.school_of_company.post.viewmodel.PostViewModel
 import com.yourpackage.design_system.component.textField.GwangSanTextField
 
 @Composable
@@ -35,18 +38,18 @@ internal fun PostInputRoute(
     onBackClick: () -> Unit,
     onNextClick: () -> Unit,
     onCloseClick: () -> Unit,
+    viewModel: PostViewModel = hiltViewModel(),
 ) {
-    var value by remember { mutableStateOf("") }
+    val gwangsan by viewModel.gwangsan.collectAsState()
 
     PostInputScreen(
-        value = value,
-        onValueChange = { value = it },
+        value = gwangsan,
+        onValueChange = viewModel::onGwangsanChange,
         onNextClick = onNextClick,
         onBackClick = onBackClick,
         onCloseClick = onCloseClick
     )
 }
-
 
 @Composable
 private fun PostInputScreen(
@@ -120,32 +123,4 @@ private fun PostInputScreen(
             }
         }
     }
-}
-
-@Preview(showBackground = true, name = "비활성화 상태")
-@Composable
-fun PreviewPostInputScreenDisabled() {
-    var text by remember { mutableStateOf("") }
-
-    PostInputScreen(
-        value = text,
-        onValueChange = { text = it },
-        onNextClick = { println("다음 클릭됨") },
-        onBackClick = { println("뒤로가기 클릭됨") },
-        onCloseClick = { println("닫기 클릭됨") }
-    )
-}
-
-@Preview(showBackground = true, name = "활성화 상태")
-@Composable
-fun PreviewRePostInputEnabled() {
-    var text by remember { mutableStateOf("4000") }
-
-    PostInputScreen(
-        value = text,
-        onValueChange = { text = it },
-        onNextClick = { println("다음 클릭됨") },
-        onBackClick = { println("뒤로가기 클릭됨") },
-        onCloseClick = { println("닫기 클릭됨") }
-    )
 }
