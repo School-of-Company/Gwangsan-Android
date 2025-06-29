@@ -164,3 +164,27 @@ fun MainTitle(
     )
 
 }
+@Composable
+fun ServiceIcon(
+    modifier: Modifier = Modifier,
+    tint: Color = Color.Unspecified
+){
+    Icon(
+        painter = painterResource(id = R.drawable.service),
+        contentDescription = "서비스",
+        modifier = modifier,
+        tint = tint
+    )
+}
+@Composable
+fun ObjectIcon(
+    modifier: Modifier = Modifier,
+    tint: Color = Color.Unspecified
+) {
+    Icon(
+        painter = painterResource(id = R.drawable.`object`),
+        contentDescription = "물건",
+        modifier = modifier,
+        tint = tint
+    )
+}
