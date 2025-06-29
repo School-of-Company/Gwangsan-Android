@@ -217,8 +217,8 @@ private fun SignInScreen(
                 GwangSanStateButton(
                     text = "로그인",
                     state = if (id.isNotBlank() && password.isNotBlank()) ButtonState.Enable else ButtonState.Disable,
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = signInCallBack
+                    onClick = signInCallBack,
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
         }
