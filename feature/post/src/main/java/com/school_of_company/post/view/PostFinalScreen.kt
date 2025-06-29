@@ -26,7 +26,7 @@ import com.school_of_company.model.enum.Mode
 import com.school_of_company.model.enum.Type
 
 @Composable
-internal fun FinalPostRoute(
+internal fun PostFinalRoute(
     type: Type,
     mode: Mode,
     subject: String,
@@ -37,7 +37,7 @@ internal fun FinalPostRoute(
     onBackClick: () -> Unit,
     onCloseClick: () -> Unit,
 ) {
-    FinalPostScreen(
+    PostFinalScreen(
         subject = subject,
         content = content,
         price = price,
@@ -55,7 +55,7 @@ internal fun FinalPostRoute(
 }
 
 @Composable
-private fun FinalPostScreen(
+private fun PostFinalScreen(
     modifier: Modifier = Modifier,
     subject: String,
     content: String,
@@ -221,8 +221,8 @@ private fun FinalPostScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun FinalPostScreenPreview() {
-    FinalPostScreen(
+fun PostFinalScreenPreview() {
+    PostFinalScreen(
         subject = "디자인 작업 도와주실 분 찾습니다",
         content = "간단한 포스터 디자인이나 카드뉴스 제작 도와주실 분을 찾고 있어요.",
         price = "4000",
