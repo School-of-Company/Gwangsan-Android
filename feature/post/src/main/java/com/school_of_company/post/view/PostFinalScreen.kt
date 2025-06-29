@@ -6,12 +6,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.school_of_company.design_system.component.progress.GwangSanTopBarProgress
-
 import com.school_of_company.design_system.componet.button.GwangSanEnableButton
 import com.school_of_company.design_system.componet.button.GwangSanStateButton
 import com.school_of_company.design_system.componet.button.state.ButtonState
@@ -24,19 +24,30 @@ import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.design_system.theme.color.GwangSanColor
 import com.school_of_company.model.enum.Mode
 import com.school_of_company.model.enum.Type
+import com.school_of_company.post.viewmodel.PostViewModel
+import com.school_of_company.post.viewmodel.uiState.PostUiState
 
 @Composable
 internal fun PostFinalRoute(
     type: Type,
     mode: Mode,
-    subject: String,
-    content: String,
-    price: String,
     onEditClick: () -> Unit,
     onSubmitClick: () -> Unit,
     onBackClick: () -> Unit,
     onCloseClick: () -> Unit,
+    viewModel: PostViewModel = hiltViewModel(),
 ) {
+    val subject by viewModel.title.collectAsState()
+    val content by viewModel.content.collectAsState()
+    val price by viewModel.gwangsan.collectAsState()
+    val postUiState by viewModel.postUiState.collectAsState()
+
+    LaunchedEffect(postUiState) {
+        if (postUiState is PostUiState.Success) {
+            onSubmitClick()
+        }
+    }
+
     PostFinalScreen(
         subject = subject,
         content = content,
@@ -48,7 +59,7 @@ internal fun PostFinalRoute(
             )
         },
         onEditClick = onEditClick,
-        onSubmitClick = onSubmitClick,
+        onSubmitClick = { viewModel.writePost() },
         onBackClick = onBackClick,
         onCloseClick = onCloseClick
     )
@@ -67,8 +78,7 @@ private fun PostFinalScreen(
     onCloseClick: () -> Unit
 ) {
     GwangSanTheme { colors, typography ->
-        Column(modifier = modifier.fillMaxSize())
-        {
+        Column(modifier = modifier.fillMaxSize()) {
             Spacer(modifier = Modifier.height(52.dp))
 
             GwangSanSubTopBar(
@@ -136,7 +146,8 @@ private fun PostFinalScreen(
                 Text(
                     text = "내용",
                     style = typography.body5,
-                    color = colors.black)
+                    color = colors.black
+                )
 
                 Box(
                     modifier = Modifier
@@ -217,24 +228,4 @@ private fun PostFinalScreen(
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PostFinalScreenPreview() {
-    PostFinalScreen(
-        subject = "디자인 작업 도와주실 분 찾습니다",
-        content = "간단한 포스터 디자인이나 카드뉴스 제작 도와주실 분을 찾고 있어요.",
-        price = "4000",
-        imageContent = {
-            AddImageButton(
-                onClick = {},
-                rippleColor = GwangSanColor.gray300
-            )
-        },
-        onEditClick = { println("수정 클릭") },
-        onSubmitClick = { println("완료 클릭") },
-        onBackClick = { println("뒤로가기 클릭") },
-        onCloseClick = { println("닫기 클릭") }
-    )
 }
