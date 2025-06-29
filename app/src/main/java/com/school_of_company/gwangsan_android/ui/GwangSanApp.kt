@@ -20,6 +20,10 @@ import com.school_of_company.gwangsan_android.navigation.TopLevelDestination
 import com.school_of_company.design_system.componet.bottombar.GwangSanNavigationBar
 import com.school_of_company.design_system.componet.bottombar.GwangSanNavigationBarItem
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.main.navgation.MainRoute
+import com.school_of_company.main.navgation.MainStartRoute
+import com.school_of_company.profile.navigation.MyProfileRoute
+import com.school_of_company.profile.navigation.MyReviewRoute
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -33,16 +37,16 @@ fun GwangSanApp(
     val navBackStackEntry by appState.navController.currentBackStackEntryAsState()
 
     // 여기에 보여주고 싶은 탑 레벨 목적지만 넣으세요.
-    val topLevelDestinations = listOf(
-        TopLevelDestination.HOME
+    val topLevelDestinationRoute = listOf(
+        MainStartRoute,
+        MainRoute,
+        MyProfileRoute
         // 필요 시 여기에 추가
     )
 
     // 현재 화면의 라우트와 topLevelDestination을 비교해서 BottomBar 표시 여부 결정
-    navBackStackEntry?.destination?.route?.let { currentRoute ->
-        isBottomBarVisible.value = topLevelDestinations.any { destination ->
-            currentRoute.contains(destination.name, ignoreCase = true)
-        }
+    navBackStackEntry?.destination?.route?.let {
+        isBottomBarVisible.value = topLevelDestinationRoute.contains(it)
     }
 
     GwangSanTheme { colors, _ ->
