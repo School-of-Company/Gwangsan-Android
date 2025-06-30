@@ -79,6 +79,7 @@ private fun StartScreen(
                     }
                     Row(
                         horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .align(Alignment.BottomCenter)
                             .padding(bottom = 39.dp)
