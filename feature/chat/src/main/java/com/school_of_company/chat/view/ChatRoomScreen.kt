@@ -24,14 +24,14 @@ import com.school_of_company.design_system.componet.topbar.GwangSanTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.yourpackage.design_system.component.textField.ChatInputTextField
 
-data class ChatMessage(
+internal data class ChatMessage(
     val id: String,
     val text: String,
     val isMine: Boolean
 )
 
 @Composable
-fun ChatRoomScreen(
+private fun ChatRoomScreen(
     userName: String,
     lastSeenTime: String,
     onBackClick: () -> Unit,

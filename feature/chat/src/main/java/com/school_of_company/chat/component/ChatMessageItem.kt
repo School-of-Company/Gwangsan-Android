@@ -19,7 +19,7 @@ import com.school_of_company.design_system.R
 import com.school_of_company.design_system.theme.GwangSanTheme
 
 @Composable
-fun ChatMessageItem(
+internal fun ChatMessageItem(
     message: ChatMessage,
     modifier: Modifier = Modifier
 ) {
