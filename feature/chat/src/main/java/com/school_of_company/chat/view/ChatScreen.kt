@@ -28,6 +28,46 @@ internal data class ChatRoom(
 )
 
 @Composable
+internal fun ChatRoute(
+    onCloseClick: () -> Unit,
+    onChatClick: (ChatRoom) -> Unit
+) {
+    ChatScreen(
+        chatList = listOf(
+            ChatRoom(
+                id = "string_id",
+                name = "김치라",
+                lastMessage = "안녕하세욤",
+                unreadCount = 1
+            ),
+            ChatRoom(
+                id = "string_id",
+                name = "김치라",
+                lastMessage = "안녕하세욤",
+                unreadCount = 1
+            ),ChatRoom(
+                id = "string_id",
+                name = "김치라",
+                lastMessage = "안녕하세욤",
+                unreadCount = 1
+            ),ChatRoom(
+                id = "string_id",
+                name = "김치라",
+                lastMessage = "안녕하세욤",
+                unreadCount = 1
+            ),ChatRoom(
+                id = "string_id",
+                name = "김치라",
+                lastMessage = "안녕하세욤",
+                unreadCount = 1
+            )
+        ),
+        onCloseClick = onCloseClick,
+        onChatClick = onChatClick
+    )
+}
+
+@Composable
 private fun ChatScreen(
     chatList: List<ChatRoom>,
     onCloseClick: () -> Unit,

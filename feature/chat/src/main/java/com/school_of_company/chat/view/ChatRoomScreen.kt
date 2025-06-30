@@ -31,6 +31,19 @@ internal data class ChatMessage(
 )
 
 @Composable
+internal fun ChatRoomRoute(
+    onBackClick: () -> Unit,
+    onSendClick: (String) -> Unit
+) {
+    ChatRoomScreen(
+        userName = "",
+        lastSeenTime = "",
+        onBackClick = onBackClick,
+        onSendClick = onSendClick
+    )
+}
+
+@Composable
 private fun ChatRoomScreen(
     modifier: Modifier = Modifier,
     userName: String,
