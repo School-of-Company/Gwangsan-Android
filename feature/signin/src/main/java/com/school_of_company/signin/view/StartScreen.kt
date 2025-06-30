@@ -16,6 +16,7 @@ import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.school_of_company.design_system.R
 import com.school_of_company.design_system.componet.button.GwangSanEnableButton
@@ -62,11 +63,9 @@ private fun StartScreen(
             Column {
                 Box(
                     modifier = Modifier
-                        .imePadding()
                         .pointerInput(Unit) {
                             detectTapGestures { focusManager.clearFocus() }
                         }
-                        .padding(top = 10.dp)
                         .weight(1f)
                 ) {
                     HorizontalPager(
@@ -74,7 +73,7 @@ private fun StartScreen(
                     ) { page ->
                         Image(
                             painter = painterResource(id = imageList[page]),
-                            contentDescription = null,
+                            contentDescription = "Gwangsan Start Images",
                             modifier = Modifier.fillMaxSize()
                         )
                     }
@@ -82,7 +81,7 @@ private fun StartScreen(
                         horizontalArrangement = Arrangement.Center,
                         modifier = Modifier
                             .align(Alignment.BottomCenter)
-                            .padding(bottom = 30.dp),
+                            .padding(bottom = 39.dp)
                     ) {
                         repeat(imageList.size) { index ->
                             val isSelected = pagerState.currentPage == index
@@ -101,10 +100,7 @@ private fun StartScreen(
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.padding(
-                        horizontal = 24.dp,
-                        vertical = 4.dp
-                    )
+                    modifier = Modifier.padding(horizontal = 25.dp,)
                 ) {
                     GwangSanEnableButton(
                         text = "회원가입",
@@ -130,13 +126,24 @@ private fun StartScreen(
                             .border(
                                 width = 1.dp,
                                 color = colors.main500,
-                                shape = RoundedCornerShape(12.dp)
+                                shape = RoundedCornerShape(8.dp)
                             )
                     ) {
                         onInputLoginClick()
                     }
+
+                    Spacer(modifier = Modifier.height(24.dp))
                 }
             }
         }
     }
+}
+
+@Preview
+@Composable
+private fun StartScreenPreview() {
+    StartScreen(
+        onInputLoginClick = {},
+        onSignUpClick = {}
+    )
 }
