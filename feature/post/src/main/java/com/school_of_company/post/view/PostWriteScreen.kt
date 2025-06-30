@@ -6,19 +6,21 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.school_of_company.design_system.component.progress.GwangSanTopBarProgress
 import com.school_of_company.design_system.componet.button.GwangSanStateButton
 import com.school_of_company.design_system.componet.button.state.ButtonState
+import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.icons.CloseIcon
 import com.school_of_company.design_system.componet.icons.DownArrowIcon
-import com.yourpackage.design_system.component.textField.GwangSanTextField
-import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
-import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.icon.AddImageButton
+import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.design_system.theme.color.GwangSanColor
 import com.school_of_company.model.enum.Mode
 import com.school_of_company.model.enum.Type
+import com.school_of_company.post.viewmodel.PostViewModel
+import com.yourpackage.design_system.component.textField.GwangSanTextField
 
 @Composable
 internal fun PostWriteRoute(
@@ -26,15 +28,16 @@ internal fun PostWriteRoute(
     mode: Mode,
     onBackClick: () -> Unit,
     onNextClick: (String, String) -> Unit,
+    viewModel: PostViewModel = hiltViewModel(),
 ) {
-    var subject by remember { mutableStateOf("") }
-    var content by remember { mutableStateOf("") }
+    val subject by viewModel.title.collectAsState()
+    val content by viewModel.content.collectAsState()
 
     PostWriteScreen(
         subject = subject,
         content = content,
-        onSubjectChange = { subject = it },
-        onContentChange = { content = it },
+        onSubjectChange = viewModel::onTitleChange,
+        onContentChange = viewModel::onContentChange,
         onImageAdd = {},
         onNextClick = onNextClick,
         onBackClick = onBackClick,
