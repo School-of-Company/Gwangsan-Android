@@ -24,19 +24,32 @@ import com.school_of_company.design_system.componet.topbar.GwangSanTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.yourpackage.design_system.component.textField.ChatInputTextField
 
-data class ChatMessage(
+internal data class ChatMessage(
     val id: String,
     val text: String,
     val isMine: Boolean
 )
 
 @Composable
-fun ChatRoomScreen(
+internal fun ChatRoomRoute(
+    onBackClick: () -> Unit,
+    onSendClick: (String) -> Unit
+) {
+    ChatRoomScreen(
+        userName = "",
+        lastSeenTime = "",
+        onBackClick = onBackClick,
+        onSendClick = onSendClick
+    )
+}
+
+@Composable
+private fun ChatRoomScreen(
+    modifier: Modifier = Modifier,
     userName: String,
     lastSeenTime: String,
     onBackClick: () -> Unit,
     onSendClick: (String) -> Unit,
-    modifier: Modifier = Modifier
 ) {
     var text by remember { mutableStateOf("") }
 
@@ -59,19 +72,17 @@ fun ChatRoomScreen(
             Spacer(modifier = Modifier.height(60.dp))
 
             GwangSanTopBar(
-                startIcon = {
-                    DownArrowIcon(modifier = Modifier.GwangSanClickable { onBackClick() })
-                },
+                startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { onBackClick() }) },
                 betweenText = "뒤로"
             )
 
             Spacer(modifier = Modifier.height(12.dp))
 
             Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 12.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .padding(top = 12.dp)
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.rectangle),
@@ -80,11 +91,16 @@ fun ChatRoomScreen(
                         .size(100.dp)
                         .clip(CircleShape)
                 )
+
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Text(text = userName, style = typography.titleSmall)
+                Text(
+                    text = userName,
+                    style = typography.titleSmall
+                )
 
                 Spacer(modifier = Modifier.height(34.dp))
+
                 Text(
                     text = lastSeenTime,
                     style = typography.label,
@@ -101,7 +117,10 @@ fun ChatRoomScreen(
                     .weight(1f)
                     .fillMaxWidth()
             ) {
-                items(messages) { message ->
+                items(
+                    items = messages,
+                    key = { it.id }
+                ) { message ->
                     ChatMessageItem(message = message)
                 }
             }
@@ -109,10 +128,10 @@ fun ChatRoomScreen(
             Spacer(modifier = Modifier.height(12.dp))
 
             Row(
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 24.dp),
-                verticalAlignment = Alignment.CenterVertically
             ) {
                 ChatInputTextField(
                     value = text,
@@ -123,7 +142,8 @@ fun ChatRoomScreen(
 
                 Spacer(modifier = Modifier.width(8.dp))
 
-                ChatSendButton(onClick = {
+                ChatSendButton(
+                    onClick = {
                     onSendClick(text)
                     text = ""
                 })
@@ -134,7 +154,7 @@ fun ChatRoomScreen(
 
 @Preview
 @Composable
-fun ChatRoomScreenPreview() {
+private fun ChatRoomScreenPreview() {
     ChatRoomScreen(
         userName = "모태환",
         lastSeenTime = "오전 10:51",

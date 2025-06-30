@@ -19,17 +19,17 @@ import com.school_of_company.design_system.R
 import com.school_of_company.design_system.theme.GwangSanTheme
 
 @Composable
-fun ChatMessageItem(
+internal fun ChatMessageItem(
     message: ChatMessage,
     modifier: Modifier = Modifier
 ) {
     GwangSanTheme { colors, typography ->
         Row(
+            horizontalArrangement = if (message.isMine) Arrangement.End else Arrangement.Start,
+            verticalAlignment = Alignment.Bottom,
             modifier = modifier
                 .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 6.dp),
-            horizontalArrangement = if (message.isMine) Arrangement.End else Arrangement.Start,
-            verticalAlignment = Alignment.Bottom
+                .padding(horizontal = 12.dp, vertical = 6.dp)
         ) {
             if (!message.isMine) {
                 Image(
@@ -66,12 +66,12 @@ fun ChatMessageItem(
 
 @Preview
 @Composable
-fun MyMessagePreview() {
+private fun MyMessagePreview() {
     ChatMessageItem(message = ChatMessage("1", "지금 거래 가능하나요?", true))
 }
 
 @Preview
 @Composable
-fun OpponentMessagePreview() {
+private fun OpponentMessagePreview() {
     ChatMessageItem(message = ChatMessage("2", "네 거래 가능합니다", false))
 }

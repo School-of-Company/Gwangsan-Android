@@ -20,7 +20,7 @@ import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 
 // 임시 모델 (API 나오면 model 패키지로 이동)
-data class ChatRoom(
+internal data class ChatRoom(
     val id: String,
     val name: String,
     val lastMessage: String,
@@ -28,22 +28,61 @@ data class ChatRoom(
 )
 
 @Composable
-fun ChatScreen(
+internal fun ChatRoute(
+    onCloseClick: () -> Unit,
+    onChatClick: (ChatRoom) -> Unit
+) {
+    ChatScreen(
+        chatList = listOf(
+            ChatRoom(
+                id = "string_id",
+                name = "김치라",
+                lastMessage = "안녕하세욤",
+                unreadCount = 1
+            ),
+            ChatRoom(
+                id = "string_id",
+                name = "김치라",
+                lastMessage = "안녕하세욤",
+                unreadCount = 1
+            ),ChatRoom(
+                id = "string_id",
+                name = "김치라",
+                lastMessage = "안녕하세욤",
+                unreadCount = 1
+            ),ChatRoom(
+                id = "string_id",
+                name = "김치라",
+                lastMessage = "안녕하세욤",
+                unreadCount = 1
+            ),ChatRoom(
+                id = "string_id",
+                name = "김치라",
+                lastMessage = "안녕하세욤",
+                unreadCount = 1
+            )
+        ),
+        onCloseClick = onCloseClick,
+        onChatClick = onChatClick
+    )
+}
+
+@Composable
+private fun ChatScreen(
     chatList: List<ChatRoom>,
-    currentTab: Int,
-    onTabClick: (Int) -> Unit,
     onCloseClick: () -> Unit,
     onChatClick: (ChatRoom) -> Unit = {},
 ) {
-    GwangSanTheme { colors, typography ->
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(bottom = 56.dp)) {
+    GwangSanTheme { _, _ ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = 56.dp)
+        ) {
 
             Spacer(modifier = Modifier.height(43.dp))
 
             GwangSanSubTopBar(
-                modifier = Modifier.padding(horizontal = 24.dp, vertical = 24.dp),
                 startIcon = { Spacer(modifier = Modifier.size(24.dp)) },
                 betweenText = "채팅",
                 endIcon = {
@@ -54,55 +93,18 @@ fun ChatScreen(
                             .size(24.dp)
                             .GwangSanClickable { onCloseClick() }
                     )
-                }
+                },
+                modifier = Modifier.padding(all = 24.dp),
             )
 
             LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(chatList) { item ->
+                items(
+                    items = chatList,
+                    key = { it.id }
+                ) { item ->
                     ChatListItem(
                         item = item,
-                        modifier = Modifier.GwangSanClickable {
-                            onChatClick(item)
-                        }
-                    )
-                }
-            }
-        }
-
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.BottomCenter)
-        {
-            GwangSanNavigationBar {
-                val items = listOf("홈", "게시글", "채팅", "공지", "프로필")
-                val icons = listOf(
-                    R.drawable.home,
-                    R.drawable.copy,
-                    R.drawable.chat,
-                    R.drawable.horn,
-                    R.drawable.person,
-                )
-
-                items.forEachIndexed { index, item ->
-                    GwangSanNavigationBarItem(
-                        icon = {
-                            Icon(
-                                painter = painterResource(id = icons[index]),
-                                contentDescription = item
-                            )
-                        },
-                        selectedIcon = {
-                            Icon(
-                                painter = painterResource(id = icons[index]),
-                                contentDescription = item,
-                                tint = colors.main500
-                            )
-                        },
-                        label = {
-                            Text(text = item, style = typography.label)
-                        },
-                        selected = index == currentTab,
-                        onClick = { onTabClick(index) }
+                        modifier = Modifier.GwangSanClickable { onChatClick(item) }
                     )
                 }
             }
@@ -112,7 +114,7 @@ fun ChatScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun ChatScreenPreview() {
+private fun ChatScreenPreview() {
     val dummyList = listOf(
         ChatRoom("1", "모태환", "안녕하세요 ~.~^^", 1),
         ChatRoom("2", "모태환", "안녕하세요 ~.~^^", 1),
@@ -122,8 +124,6 @@ fun ChatScreenPreview() {
 
     ChatScreen(
         chatList = dummyList,
-        currentTab = 2,
-        onTabClick = {},
         onCloseClick = {}
     )
 }
