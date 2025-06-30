@@ -99,7 +99,8 @@ fun NavGraphBuilder.postFinalScreen(
     onEditClick: () -> Unit,
     onSubmitClick: () -> Unit,
     onBackClick: () -> Unit,
-    onCloseClick: () -> Unit
+    onCloseClick: () -> Unit,
+    onErrorToast: (throwable: Throwable?, message: Int?) -> Unit
 ) {
     composable(
         route = "$PostFinalRoute/{type}/{mode}",
@@ -119,7 +120,8 @@ fun NavGraphBuilder.postFinalScreen(
             onEditClick = onEditClick,
             onSubmitClick = onSubmitClick,
             onBackClick = onBackClick,
-            onCloseClick = onCloseClick
-        )
+            onCloseClick = onCloseClick,
+            onErrorToast = onErrorToast
+       )
     }
 }
