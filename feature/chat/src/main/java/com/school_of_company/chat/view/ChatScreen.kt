@@ -33,7 +33,7 @@ private fun ChatScreen(
     onCloseClick: () -> Unit,
     onChatClick: (ChatRoom) -> Unit = {},
 ) {
-    GwangSanTheme { colors, typography ->
+    GwangSanTheme { _, _ ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -58,7 +58,10 @@ private fun ChatScreen(
             )
 
             LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(chatList) { item ->
+                items(
+                    items = chatList,
+                    key = { it.id }
+                ) { item ->
                     ChatListItem(
                         item = item,
                         modifier = Modifier.GwangSanClickable { onChatClick(item) }

@@ -104,7 +104,10 @@ private fun ChatRoomScreen(
                     .weight(1f)
                     .fillMaxWidth()
             ) {
-                items(messages) { message ->
+                items(
+                    items = messages,
+                    key = { it.id }
+                ) { message ->
                     ChatMessageItem(message = message)
                 }
             }
