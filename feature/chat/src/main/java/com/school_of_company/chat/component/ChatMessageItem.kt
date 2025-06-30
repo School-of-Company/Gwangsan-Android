@@ -25,11 +25,11 @@ internal fun ChatMessageItem(
 ) {
     GwangSanTheme { colors, typography ->
         Row(
+            horizontalArrangement = if (message.isMine) Arrangement.End else Arrangement.Start,
+            verticalAlignment = Alignment.Bottom,
             modifier = modifier
                 .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 6.dp),
-            horizontalArrangement = if (message.isMine) Arrangement.End else Arrangement.Start,
-            verticalAlignment = Alignment.Bottom
+                .padding(horizontal = 12.dp, vertical = 6.dp)
         ) {
             if (!message.isMine) {
                 Image(

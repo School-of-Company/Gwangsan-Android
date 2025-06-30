@@ -16,8 +16,8 @@ import com.school_of_company.design_system.theme.GwangSanTheme
 
 @Composable
 internal fun ChatListItem(
+    modifier: Modifier = Modifier,
     item: ChatRoom,
-    modifier: Modifier = Modifier
 ) {
     GwangSanTheme { colors, typography ->
         Row(
@@ -37,11 +37,12 @@ internal fun ChatListItem(
             Spacer(modifier = Modifier.width(12.dp))
 
             Column(modifier = Modifier.weight(1f)) {
-                Text (
+                Text(
                     text = item.name,
                     style = typography.label,
                     color = if (item.unreadCount > 0) colors.black else colors.gray400
                 )
+
                 Text(
                     text = item.lastMessage,
                     style = typography.label,

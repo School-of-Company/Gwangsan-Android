@@ -32,11 +32,11 @@ internal data class ChatMessage(
 
 @Composable
 private fun ChatRoomScreen(
+    modifier: Modifier = Modifier,
     userName: String,
     lastSeenTime: String,
     onBackClick: () -> Unit,
     onSendClick: (String) -> Unit,
-    modifier: Modifier = Modifier
 ) {
     var text by remember { mutableStateOf("") }
 
@@ -59,19 +59,17 @@ private fun ChatRoomScreen(
             Spacer(modifier = Modifier.height(60.dp))
 
             GwangSanTopBar(
-                startIcon = {
-                    DownArrowIcon(modifier = Modifier.GwangSanClickable { onBackClick() })
-                },
+                startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { onBackClick() }) },
                 betweenText = "뒤로"
             )
 
             Spacer(modifier = Modifier.height(12.dp))
 
             Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 12.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .padding(top = 12.dp)
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.rectangle),
@@ -80,11 +78,16 @@ private fun ChatRoomScreen(
                         .size(100.dp)
                         .clip(CircleShape)
                 )
+
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Text(text = userName, style = typography.titleSmall)
+                Text(
+                    text = userName,
+                    style = typography.titleSmall
+                )
 
                 Spacer(modifier = Modifier.height(34.dp))
+
                 Text(
                     text = lastSeenTime,
                     style = typography.label,
@@ -109,10 +112,10 @@ private fun ChatRoomScreen(
             Spacer(modifier = Modifier.height(12.dp))
 
             Row(
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 24.dp),
-                verticalAlignment = Alignment.CenterVertically
             ) {
                 ChatInputTextField(
                     value = text,
@@ -123,7 +126,8 @@ private fun ChatRoomScreen(
 
                 Spacer(modifier = Modifier.width(8.dp))
 
-                ChatSendButton(onClick = {
+                ChatSendButton(
+                    onClick = {
                     onSendClick(text)
                     text = ""
                 })
