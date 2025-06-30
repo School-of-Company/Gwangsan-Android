@@ -15,7 +15,7 @@ import com.school_of_company.design_system.R
 import com.school_of_company.design_system.theme.GwangSanTheme
 
 @Composable
-fun ChatListItem(
+internal fun ChatListItem(
     item: ChatRoom,
     modifier: Modifier = Modifier
 ) {

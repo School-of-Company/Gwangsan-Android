@@ -20,7 +20,7 @@ import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 
 // 임시 모델 (API 나오면 model 패키지로 이동)
-data class ChatRoom(
+internal data class ChatRoom(
     val id: String,
     val name: String,
     val lastMessage: String,
@@ -28,7 +28,7 @@ data class ChatRoom(
 )
 
 @Composable
-fun ChatScreen(
+private fun ChatScreen(
     chatList: List<ChatRoom>,
     currentTab: Int,
     onTabClick: (Int) -> Unit,
