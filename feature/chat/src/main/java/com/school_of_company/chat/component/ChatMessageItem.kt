@@ -66,12 +66,12 @@ internal fun ChatMessageItem(
 
 @Preview
 @Composable
-fun MyMessagePreview() {
+private fun MyMessagePreview() {
     ChatMessageItem(message = ChatMessage("1", "지금 거래 가능하나요?", true))
 }
 
 @Preview
 @Composable
-fun OpponentMessagePreview() {
+private fun OpponentMessagePreview() {
     ChatMessageItem(message = ChatMessage("2", "네 거래 가능합니다", false))
 }
