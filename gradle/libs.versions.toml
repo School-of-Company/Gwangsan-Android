@@ -1,5 +1,5 @@
 [versions]
-firebaseBom = "33.16.0"
+firebaseBom = "32.7.3"
 kotlin = "1.9.22"
 agp = "8.6.0"
 androidxComposeCompiler = "1.5.8"
@@ -42,6 +42,7 @@ androidxDataStore = "1.0.0"
 protobuf = "3.25.3"
 converter-moshi = "2.9.0"
 transportRuntime = "4.0.0"
+firebaseMessaging = "23.4.1"
 
 [libraries]
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
@@ -100,6 +101,7 @@ androidx-navigation-runtime = { group = "androidx.navigation", name = "navigatio
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 androidx-navigation-runtime-android = { group = "androidx.navigation", name = "navigation-runtime-android", version.ref = "navigationRuntimeAndroid" }
 transport-runtime = { group = "com.google.android.datatransport", name = "transport-runtime", version.ref = "transportRuntime" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebaseMessaging" }
 
 [plugins]
 protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
