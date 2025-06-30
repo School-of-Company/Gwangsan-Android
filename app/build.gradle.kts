@@ -44,6 +44,7 @@ dependencies {
     implementation(project(":feature:main"))
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
+    implementation(libs.firebase.messaging)
     implementation(libs.androidx.window.size)
     implementation(libs.androidx.navigation.runtime)
     implementation(libs.androidx.navigation.compose)
