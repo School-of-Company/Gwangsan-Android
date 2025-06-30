@@ -68,45 +68,6 @@ private fun ChatScreen(
                 }
             }
         }
-
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.BottomCenter
-        ) {
-            GwangSanNavigationBar {
-                val items = listOf("홈", "게시글", "채팅", "공지", "프로필")
-                val icons = listOf(
-                    R.drawable.home,
-                    R.drawable.copy,
-                    R.drawable.chat,
-                    R.drawable.horn,
-                    R.drawable.person,
-                )
-
-                items.forEachIndexed { index, item ->
-                    GwangSanNavigationBarItem(
-                        icon = {
-                            Icon(
-                                painter = painterResource(id = icons[index]),
-                                contentDescription = item
-                            )
-                        },
-                        selectedIcon = {
-                            Icon(
-                                painter = painterResource(id = icons[index]),
-                                contentDescription = item,
-                                tint = colors.main500
-                            )
-                        },
-                        label = {
-                            Text(text = item, style = typography.label)
-                        },
-                        selected = index == currentTab,
-                        onClick = { onTabClick(index) }
-                    )
-                }
-            }
-        }
     }
 }
 
