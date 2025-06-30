@@ -52,9 +52,6 @@ internal fun PostFinalRoute(
                 Log.d("PostFinalRoute", "게시글 작성 성공!")
                 onSubmitClick()
             }
-            is PostUiState.Conflict -> {
-                Log.e("PostFinalRoute", "중복된 게시글 요청")
-            }
             is PostUiState.BadRequest -> {
                 Log.e("PostFinalRoute", "잘못된 요청")
                 onErrorToast(null, R.string.error_bad_request)
