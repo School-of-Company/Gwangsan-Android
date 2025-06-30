@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "1065140057234",
-    "project_id": "gwangsan-82fcd",
-    "storage_bucket": "gwangsan-82fcd.firebasestorage.app"
+    "project_number": "676283284059",
+    "project_id": "gwangsan-39f80",
+    "storage_bucket": "gwangsan-39f80.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1065140057234:android:e0d3e3720ebede181be24b",
+        "mobilesdk_app_id": "1:676283284059:android:1e982e89df9534f9081d7e",
         "android_client_info": {
-          "package_name": "gwangsan.android.application"
+          "package_name": "com.school_of_company.gwangsan_android"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyC1BRYASTUUThWvn_9GfHnZJsSvAtY-F04"
+          "current_key": "AIzaSyAR3AfsrBkgUGONBiH2KVEWcDhsLXcMAno"
         }
       ],
       "services": {
