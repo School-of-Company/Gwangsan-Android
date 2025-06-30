@@ -68,7 +68,6 @@ class PostViewModel @Inject constructor(
                     result.exception.errorHandling(
                         badRequestAction = { PostUiState.BadRequest },
                         notFoundAction = { PostUiState.NotFound },
-                        conflictAction = { PostUiState.Conflict }
                     )
                 }
                 is com.school_of_company.result.Result.Loading -> _postUiState.value = PostUiState.Loading
