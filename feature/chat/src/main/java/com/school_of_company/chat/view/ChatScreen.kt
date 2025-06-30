@@ -36,14 +36,15 @@ private fun ChatScreen(
     onChatClick: (ChatRoom) -> Unit = {},
 ) {
     GwangSanTheme { colors, typography ->
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(bottom = 56.dp)) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = 56.dp)
+        ) {
 
             Spacer(modifier = Modifier.height(43.dp))
 
             GwangSanSubTopBar(
-                modifier = Modifier.padding(horizontal = 24.dp, vertical = 24.dp),
                 startIcon = { Spacer(modifier = Modifier.size(24.dp)) },
                 betweenText = "채팅",
                 endIcon = {
@@ -54,16 +55,15 @@ private fun ChatScreen(
                             .size(24.dp)
                             .GwangSanClickable { onCloseClick() }
                     )
-                }
-            )
+                },
+                modifier = Modifier.padding(all = 24.dp),
+                )
 
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 items(chatList) { item ->
                     ChatListItem(
                         item = item,
-                        modifier = Modifier.GwangSanClickable {
-                            onChatClick(item)
-                        }
+                        modifier = Modifier.GwangSanClickable { onChatClick(item) }
                     )
                 }
             }
@@ -71,8 +71,8 @@ private fun ChatScreen(
 
         Box(
             modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.BottomCenter)
-        {
+            contentAlignment = Alignment.BottomCenter
+        ) {
             GwangSanNavigationBar {
                 val items = listOf("홈", "게시글", "채팅", "공지", "프로필")
                 val icons = listOf(

@@ -14,13 +14,13 @@ import com.school_of_company.design_system.theme.GwangSanTheme
 
 @Composable
 internal fun UnreadBadge() {
-    GwangSanTheme { colors, typography ->
+    GwangSanTheme { colors, _ ->
         Box(
+            contentAlignment = Alignment.Center,
             modifier = Modifier
                 .size(16.dp)
                 .clip(CircleShape)
                 .background(colors.subYellow500),
-            contentAlignment = Alignment.Center
         ) {
             Text(
                 text = "1",
