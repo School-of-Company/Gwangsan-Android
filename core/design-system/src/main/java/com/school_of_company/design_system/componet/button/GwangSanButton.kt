@@ -91,8 +91,8 @@ fun GwangSanStateButton(
                 disabledContainerColor = colors.gray200,
                 disabledContentColor = colors.gray400
             ),
-            contentPadding = PaddingValues(horizontal=22.dp, vertical = 13.dp),
-            shape = RoundedCornerShape(12.dp),
+            contentPadding = PaddingValues(vertical = 13.dp),
+            shape = RoundedCornerShape(8.dp),
             onClick = onClick
         ) {
             Text(
@@ -122,7 +122,7 @@ fun GwangSanEnableButton(
         Button(
             modifier = modifier,
             interactionSource = interactionSource,
-            contentPadding = PaddingValues(horizontal=22.dp, vertical = 13.dp),
+            contentPadding = PaddingValues(vertical = 13.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = backgroundColor,
                 contentColor = colors.white,
