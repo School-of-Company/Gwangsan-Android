@@ -37,6 +37,8 @@ dependencies {
     implementation(project(":feature:signin"))
     implementation(project(":feature:signup"))
     implementation(project(":feature:profile"))
+    implementation(project(":core:data"))
+    implementation(project(":core:network"))
     implementation(project(":core:common"))
 
     implementation(project(":feature:post"))
@@ -45,6 +47,7 @@ dependencies {
     implementation(libs.androidx.navigation.runtime)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.material3)
+    implementation(libs.firebase.messaging.ktx)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext)
