@@ -38,10 +38,13 @@ retrofitKotlinxSerializableJson = "1.0.0"
 runtime = "1.6.1"
 moshi = "1.15.2"
 androidxDataStore = "1.0.0"
+firebaseMessaging = "23.2.1"
 protobuf = "3.25.3"
 converter-moshi = "2.9.0"
 transportRuntime = "4.0.0"
+firebaseMessagingKtx = "24.1.2"
 [libraries]
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebaseMessaging" }
 swiperefresh = { group = "com.google.accompanist", name = "accompanist-swiperefresh", version.ref = "swiperefresh" }
 androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version = "1.1.0" }
 protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
@@ -98,6 +101,7 @@ androidx-navigation-runtime = { group = "androidx.navigation", name = "navigatio
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 androidx-navigation-runtime-android = { group = "androidx.navigation", name = "navigation-runtime-android", version.ref = "navigationRuntimeAndroid" }
 transport-runtime = { group = "com.google.android.datatransport", name = "transport-runtime", version.ref = "transportRuntime" }
+firebase-messaging-ktx = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebaseMessagingKtx" }
 
 [plugins]
 protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
