@@ -30,8 +30,6 @@ internal data class ChatRoom(
 @Composable
 private fun ChatScreen(
     chatList: List<ChatRoom>,
-    currentTab: Int,
-    onTabClick: (Int) -> Unit,
     onCloseClick: () -> Unit,
     onChatClick: (ChatRoom) -> Unit = {},
 ) {
@@ -83,8 +81,6 @@ fun ChatScreenPreview() {
 
     ChatScreen(
         chatList = dummyList,
-        currentTab = 2,
-        onTabClick = {},
         onCloseClick = {}
     )
 }
