@@ -138,7 +138,7 @@ private fun ChatRoomScreen(
 
 @Preview
 @Composable
-fun ChatRoomScreenPreview() {
+private fun ChatRoomScreenPreview() {
     ChatRoomScreen(
         userName = "모태환",
         lastSeenTime = "오전 10:51",

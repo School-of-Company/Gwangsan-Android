@@ -55,7 +55,7 @@ private fun ChatScreen(
                     )
                 },
                 modifier = Modifier.padding(all = 24.dp),
-                )
+            )
 
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 items(chatList) { item ->
@@ -71,7 +71,7 @@ private fun ChatScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun ChatScreenPreview() {
+private fun ChatScreenPreview() {
     val dummyList = listOf(
         ChatRoom("1", "모태환", "안녕하세요 ~.~^^", 1),
         ChatRoom("2", "모태환", "안녕하세요 ~.~^^", 1),
