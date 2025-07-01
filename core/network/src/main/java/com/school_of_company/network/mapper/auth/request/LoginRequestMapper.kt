@@ -6,5 +6,9 @@ import com.school_of_company.network.dto.auth.requset.LoginRequest
 fun LoginRequestModel.toDto(): LoginRequest =
     LoginRequest(
         nickname = nickname,
-        password = password
+        password = password,
+        deviceToken = deviceToken,
+        deviceId = deviceId,
+        osType = osType
     )
+
