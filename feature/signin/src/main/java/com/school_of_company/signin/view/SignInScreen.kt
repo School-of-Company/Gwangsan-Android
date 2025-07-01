@@ -1,5 +1,6 @@
 package com.school_of_company.signin.view
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.ScrollState
@@ -29,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -54,6 +56,7 @@ internal fun SignInRoute(
     onErrorToast: (throwable: Throwable?, message: Int?) -> Unit,
     viewModel: SignInViewModel = hiltViewModel(),
 ) {
+    val context = LocalContext.current
     val signInUiState by viewModel.signInUiState.collectAsStateWithLifecycle()
     val saveTokenUiState by viewModel.saveTokenUiState.collectAsStateWithLifecycle()
     val id by viewModel.id.collectAsStateWithLifecycle()
@@ -68,6 +71,7 @@ internal fun SignInRoute(
                 idIsError = false
                 passwordIsError = false
             }
+
             is SignInUiState.Success -> {
                 when (saveTokenUiState) {
                     is SaveTokenUiState.Loading -> Unit
@@ -79,20 +83,24 @@ internal fun SignInRoute(
                     }
                 }
             }
+
             is SignInUiState.BadRequest -> {
                 idIsError = true
                 passwordIsError = true
                 onErrorToast(null, R.string.error_password_mismatch)
             }
+
             is SignInUiState.NotFound -> {
                 idIsError = true
                 passwordIsError = true
                 onErrorToast(null, R.string.error_user_missing)
             }
+
             is SignInUiState.IdNotValid -> {
                 idIsError = true
                 onErrorToast(null, R.string.error_id_not_valid)
             }
+
             is SignInUiState.Error -> {
                 val signInUiStateError= signInUiState as SignInUiState.Error
                 idIsError = true
@@ -111,17 +119,10 @@ internal fun SignInRoute(
         onPasswordChange = viewModel::onPasswordChange,
         onBackClick = onBackClick,
         signInCallBack = {
-            Log.d("SignInRoute", "로그인 요청 시작: id=${viewModel.id.value}, password=${viewModel.password.value}")
-            viewModel.login(
-                body = LoginRequestModel(
-                    viewModel.id.value,
-                    viewModel.password.value
-                )
-            )
+            viewModel.login(context = context)
         }
     )
 }
-
 
 @Composable
 private fun SignInScreen(
