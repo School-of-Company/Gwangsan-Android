@@ -64,7 +64,6 @@ internal fun SignInRoute(
     val password by viewModel.password.collectAsStateWithLifecycle()
     val deviceId = remember { DeviceIdManager.getDeviceId(context) }
 
-
     var idIsError by remember { mutableStateOf(false) }
     var passwordIsError by remember { mutableStateOf(false) }
 
