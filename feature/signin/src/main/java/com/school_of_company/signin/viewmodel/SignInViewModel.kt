@@ -64,27 +64,17 @@ internal class SignInViewModel @Inject constructor(
             .collectLatest { result ->
                 when (result) {
                     is Result.Loading -> {
-                        Log.d(TAG, "로그인 요청 중...")
                         _signInUiState.value = SignInUiState.Loading
                     }
                     is Result.Success -> {
-                        Log.d(TAG, "로그인 성공")
                         _signInUiState.value = SignInUiState.Success
                         authRepository.saveToken(result.data)
-                        Log.d(TAG, "토큰 저장 완료")
                     }
                     is Result.Error -> {
-                        Log.d(TAG, "로그인 실패: ${result.exception.message}")
                         _signInUiState.value = SignInUiState.Error(result.exception)
                         result.exception.errorHandling(
-                            badRequestAction = {
-                                Log.d(TAG, "400 BadRequest")
-                                _signInUiState.value = SignInUiState.BadRequest
-                            },
-                            notFoundAction = {
-                                Log.d(TAG, "404 NotFound")
-                                _signInUiState.value = SignInUiState.NotFound
-                            }
+                            badRequestAction = { _signInUiState.value = SignInUiState.BadRequest },
+                            notFoundAction = { _signInUiState.value = SignInUiState.NotFound }
                         )
                     }
                 }
