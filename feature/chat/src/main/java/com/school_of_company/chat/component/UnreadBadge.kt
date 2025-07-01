@@ -13,14 +13,14 @@ import androidx.compose.foundation.shape.CircleShape
 import com.school_of_company.design_system.theme.GwangSanTheme
 
 @Composable
-fun UnreadBadge() {
-    GwangSanTheme { colors, typography ->
+internal fun UnreadBadge() {
+    GwangSanTheme { colors, _ ->
         Box(
+            contentAlignment = Alignment.Center,
             modifier = Modifier
                 .size(16.dp)
                 .clip(CircleShape)
                 .background(colors.subYellow500),
-            contentAlignment = Alignment.Center
         ) {
             Text(
                 text = "1",

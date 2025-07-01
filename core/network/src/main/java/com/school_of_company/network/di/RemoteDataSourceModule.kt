@@ -5,6 +5,8 @@ import com.school_of_company.network.datasource.auth.AuthDataSource
 import com.school_of_company.network.datasource.auth.AuthDataSourceImpl
 import com.school_of_company.network.datasource.main.MainDataSource
 import com.school_of_company.network.datasource.main.MainDataSourceImpl
+import com.school_of_company.network.datasource.post.PostDataSource
+import com.school_of_company.network.datasource.post.PostDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -22,4 +24,9 @@ abstract class RemoteDataSourceModule {
     abstract fun bindMainDataSource(
         mainDataSourceImpl: MainDataSourceImpl
     ): MainDataSource
+
+    @Binds
+    abstract fun bindPostDataSource(
+        postDataSourceImpl: PostDataSourceImpl
+    ): PostDataSource
 }

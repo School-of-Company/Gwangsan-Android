@@ -8,13 +8,13 @@ import androidx.navigation.navArgument
 import androidx.navigation.NavType
 import com.school_of_company.model.enum.Mode
 import com.school_of_company.model.enum.Type
-import com.school_of_company.post.view.FinalPostRoute
+import com.school_of_company.post.view.PostFinalRoute
 import com.school_of_company.post.view.PostInputRoute
 import com.school_of_company.post.view.PostWriteRoute
 
 const val PostWriteRoute = "post_write"
 const val PostInputRoute = "post_input"
-const val PostFinishRoute = "post_finish"
+const val PostFinalRoute = "post_final"
 
 fun NavController.navigateToPostWrite(
     type: Type,
@@ -32,12 +32,12 @@ fun NavController.navigateToPostInput(
     this.navigate("$PostInputRoute/${type.name}/${mode.name}", navOptions)
 }
 
-fun NavController.navigateToPostFinish(
+fun NavController.navigateToPostFinal(
     type: Type,
     mode: Mode,
     navOptions: NavOptions? = null
 ) {
-    this.navigate("$PostFinishRoute/${type.name}/${mode.name}", navOptions)
+    this.navigate("$PostFinalRoute/${type.name}/${mode.name}", navOptions)
 }
 
 fun NavGraphBuilder.postWriteScreen(
@@ -92,17 +92,18 @@ fun NavGraphBuilder.postInputScreen(
     }
 }
 
-fun NavGraphBuilder.postFinishScreen(
+fun NavGraphBuilder.postFinalScreen(
     subject: String,
     content: String,
     price: String,
     onEditClick: () -> Unit,
     onSubmitClick: () -> Unit,
     onBackClick: () -> Unit,
-    onCloseClick: () -> Unit
+    onCloseClick: () -> Unit,
+    onErrorToast: (throwable: Throwable?, message: Int?) -> Unit
 ) {
     composable(
-        route = "$PostFinishRoute/{type}/{mode}",
+        route = "$PostFinalRoute/{type}/{mode}",
         arguments = listOf(
             navArgument("type") { type = NavType.StringType },
             navArgument("mode") { type = NavType.StringType }
@@ -113,16 +114,14 @@ fun NavGraphBuilder.postFinishScreen(
         val type = Type.valueOf(typeStr)
         val mode = Mode.valueOf(modeStr)
 
-        FinalPostRoute(
+       PostFinalRoute(
             type = type,
             mode = mode,
-            subject = subject,
-            content = content,
-            price = price,
             onEditClick = onEditClick,
             onSubmitClick = onSubmitClick,
             onBackClick = onBackClick,
-            onCloseClick = onCloseClick
-        )
+            onCloseClick = onCloseClick,
+            onErrorToast = onErrorToast
+       )
     }
 }

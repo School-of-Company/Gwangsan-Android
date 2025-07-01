@@ -4,6 +4,8 @@ import com.school_of_company.data.repository.auth.AuthRepository
 import com.school_of_company.data.repository.auth.AuthRepositoryImpl
 import com.school_of_company.data.repository.main.MainRepository
 import com.school_of_company.data.repository.main.MainRepositoryImpl
+import com.school_of_company.data.repository.post.PostRepository
+import com.school_of_company.data.repository.post.PostRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -22,4 +24,8 @@ abstract class RepositoryModule {
         mainRepositoryImpl: MainRepositoryImpl
     ): MainRepository
 
+    @Binds
+    abstract fun bindPostRepository(
+        postRepositoryImpl: PostRepositoryImpl
+    ): PostRepository
 }

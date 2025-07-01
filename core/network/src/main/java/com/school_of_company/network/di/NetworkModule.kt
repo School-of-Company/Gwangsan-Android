@@ -6,6 +6,7 @@ import com.school_of_company.model.enum.Type
 import com.school_of_company.network.BuildConfig
 import com.school_of_company.network.api.AuthAPI
 import com.school_of_company.network.api.MainAPI
+import com.school_of_company.network.api.PostAPI
 import com.school_of_company.network.util.AuthInterceptor
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
@@ -86,5 +87,9 @@ object NetworkModule {
     fun provideMainAPI(retrofit: Retrofit): MainAPI =
         retrofit.create(MainAPI::class.java)
 
+    @Provides
+    @Singleton
+    fun providePostAPI(retrofit: Retrofit): PostAPI =
+        retrofit.create(PostAPI::class.java)
 }
 
