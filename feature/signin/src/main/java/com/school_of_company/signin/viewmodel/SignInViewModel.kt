@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -41,7 +42,7 @@ internal class SignInViewModel @Inject constructor(
     internal var id = savedStateHandle.getStateFlow(key = ID, initialValue = "")
     internal var password = savedStateHandle.getStateFlow(key = PASSWORD, initialValue = "")
 
-    internal fun login(context: Context) = viewModelScope.launch {
+    internal fun login(deviceId: UUID) = viewModelScope.launch {
         val nicknameValue = id.value
         val passwordValue = password.value
 
@@ -49,8 +50,6 @@ internal class SignInViewModel @Inject constructor(
             _signInUiState.value = SignInUiState.IdNotValid
             return@launch
         }
-
-        val deviceId = DeviceIdManager.getDeviceId(context) // suspend로 호출
 
         val body = LoginRequestModel(
             nickname = nicknameValue,
@@ -81,7 +80,7 @@ internal class SignInViewModel @Inject constructor(
             }
     }
 
-        internal fun onIdChange(value: String) {
+    internal fun onIdChange(value: String) {
         savedStateHandle[ID] = value
     }
 

@@ -44,6 +44,7 @@ import com.school_of_company.design_system.componet.icons.DownArrowIcon
 import com.school_of_company.design_system.componet.topbar.GwangSanTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.model.auth.request.LoginRequestModel
+import com.school_of_company.network.util.DeviceIdManager
 import com.school_of_company.signin.viewmodel.SignInViewModel
 import com.school_of_company.signin.viewmodel.uistate.SaveTokenUiState
 import com.school_of_company.signin.viewmodel.uistate.SignInUiState
@@ -61,6 +62,8 @@ internal fun SignInRoute(
     val saveTokenUiState by viewModel.saveTokenUiState.collectAsStateWithLifecycle()
     val id by viewModel.id.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
+    val deviceId = remember { DeviceIdManager.getDeviceId(context) }
+
 
     var idIsError by remember { mutableStateOf(false) }
     var passwordIsError by remember { mutableStateOf(false) }
@@ -119,7 +122,7 @@ internal fun SignInRoute(
         onPasswordChange = viewModel::onPasswordChange,
         onBackClick = onBackClick,
         signInCallBack = {
-            viewModel.login(context = context)
+            viewModel.login(deviceId = deviceId)
         }
     )
 }
