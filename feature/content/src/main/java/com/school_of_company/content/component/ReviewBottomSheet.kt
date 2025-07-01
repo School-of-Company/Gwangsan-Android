@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -13,7 +12,7 @@ import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.icons.CloseIcon
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
-import com.school_of_company.design_system.component.slider.RatingSlider
+import com.school_of_company.content.component.RatingSlider
 import com.yourpackage.design_system.component.textField.GwangSanTextField
 import androidx.compose.material3.Surface
 
@@ -21,10 +20,10 @@ import androidx.compose.material3.Surface
 fun ReviewBottomSheet(
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit = {},
-    onSubmit: (Float, String) -> Unit = { _, _ -> }
+    onSubmit: (Int, String) -> Unit = { _, _ -> }
 ) {
     GwangSanTheme { colors, typography ->
-        var rating by remember { mutableStateOf(3f) }
+        var rating by remember { mutableIntStateOf(1) }
         var reviewText by remember { mutableStateOf("") }
         val isButtonEnabled = reviewText.isNotBlank()
 
