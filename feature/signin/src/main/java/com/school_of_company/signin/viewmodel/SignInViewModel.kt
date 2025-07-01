@@ -1,5 +1,8 @@
 package com.school_of_company.signin.viewmodel
 
+import android.content.ContentValues.TAG
+import android.content.Context
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,6 +10,7 @@ import com.school_of_company.Regex.isValidId
 import com.school_of_company.data.repository.auth.AuthRepository
 import com.school_of_company.model.auth.request.LoginRequestModel
 import com.school_of_company.network.errorHandling
+import com.school_of_company.network.util.DeviceIdManager
 import com.school_of_company.result.asResult
 import com.school_of_company.result.Result
 import com.school_of_company.signin.viewmodel.uistate.SaveTokenUiState
@@ -37,32 +41,57 @@ internal class SignInViewModel @Inject constructor(
     internal var id = savedStateHandle.getStateFlow(key = ID, initialValue = "")
     internal var password = savedStateHandle.getStateFlow(key = PASSWORD, initialValue = "")
 
-    internal fun login(body: LoginRequestModel) = viewModelScope.launch {
-        if (!isValidId(body.nickname)) {
+    internal fun login(context: Context) = viewModelScope.launch {
+        val nicknameValue = id.value
+        val passwordValue = password.value
+
+        if (!isValidId(nicknameValue)) {
             _signInUiState.value = SignInUiState.IdNotValid
-        } else {
-            authRepository.signIn(body = body)
-                .asResult()
-                .collectLatest { result ->
-                    when (result) {
-                        is Result.Loading -> _signInUiState.value = SignInUiState.Loading
-                        is Result.Success -> {
-                            _signInUiState.value = SignInUiState.Success
-                            authRepository.saveToken(result.data)
-                        }
-                        is Result.Error -> {
-                            _signInUiState.value = SignInUiState.Error(result.exception)
-                            result.exception.errorHandling(
-                                badRequestAction = { _signInUiState.value = SignInUiState.BadRequest },
-                                notFoundAction = { _signInUiState.value = SignInUiState.NotFound }
-                            )
-                        }
+            return@launch
+        }
+
+        val deviceId = DeviceIdManager.getDeviceId(context) // suspend로 호출
+
+        val body = LoginRequestModel(
+            nickname = nicknameValue,
+            password = passwordValue,
+            deviceToken = "",
+            deviceId = deviceId.toString()
+        )
+
+        authRepository.signIn(body)
+            .asResult()
+            .collectLatest { result ->
+                when (result) {
+                    is Result.Loading -> {
+                        Log.d(TAG, "로그인 요청 중...")
+                        _signInUiState.value = SignInUiState.Loading
+                    }
+                    is Result.Success -> {
+                        Log.d(TAG, "로그인 성공")
+                        _signInUiState.value = SignInUiState.Success
+                        authRepository.saveToken(result.data)
+                        Log.d(TAG, "토큰 저장 완료")
+                    }
+                    is Result.Error -> {
+                        Log.d(TAG, "로그인 실패: ${result.exception.message}")
+                        _signInUiState.value = SignInUiState.Error(result.exception)
+                        result.exception.errorHandling(
+                            badRequestAction = {
+                                Log.d(TAG, "400 BadRequest")
+                                _signInUiState.value = SignInUiState.BadRequest
+                            },
+                            notFoundAction = {
+                                Log.d(TAG, "404 NotFound")
+                                _signInUiState.value = SignInUiState.NotFound
+                            }
+                        )
                     }
                 }
-        }
+            }
     }
 
-    internal fun onIdChange(value: String) {
+        internal fun onIdChange(value: String) {
         savedStateHandle[ID] = value
     }
 
