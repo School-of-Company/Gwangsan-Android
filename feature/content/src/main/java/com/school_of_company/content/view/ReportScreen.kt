@@ -1,7 +1,6 @@
 package com.school_of_company.content.view
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -11,16 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.school_of_company.design_system.componet.button.GwangSanEnableButton
-import com.school_of_company.design_system.componet.button.GwangSanStateButton
-import com.school_of_company.design_system.componet.clickable.GwangSanClickable
-import com.school_of_company.design_system.componet.icons.CloseIcon
-import com.school_of_company.design_system.componet.icons.DownArrowIcon
-import com.school_of_company.design_system.componet.recycle.CleaningRequestCard
-import com.school_of_company.design_system.componet.recycle.MyProfileUserLevel
-import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
-import com.school_of_company.design_system.theme.color.GwangSanColor
 
 @Composable
 private fun ReportScreenContent(
@@ -80,7 +70,7 @@ private fun ReportScreenContent(
 @Composable
 fun ReviewScreenContent(
     onDismiss: () -> Unit = {},
-    onSubmit: (Float, String) -> Unit = { _, _ -> }
+    onSubmit: (Int, String) -> Unit = { _, _ -> }
 ) {
     GwangSanTheme { colors, typography ->
         Box(modifier = Modifier.fillMaxSize()) {
