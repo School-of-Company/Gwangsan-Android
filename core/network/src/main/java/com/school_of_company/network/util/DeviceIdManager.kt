@@ -9,7 +9,6 @@ object DeviceIdManager {
     private const val KEY_DEVICE_ID = "device_id"
 
     fun getDeviceId(context: Context): UUID {
-        // SharedPreferences 객체를 가져옴 (PREF_NAME은 SharedPreferences의 이름)
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         val savedId = prefs.getString(KEY_DEVICE_ID, null)
 
