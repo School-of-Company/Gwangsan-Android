@@ -1,13 +1,15 @@
 package com.school_of_company.gwangsan_android
 
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
 import com.school_of_company.gwangsan_android.ui.GwangSanApp
 import com.school_of_company.design_system.theme.GwangSanTheme
@@ -27,6 +29,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        checkNotificationPermission()
+
         enableEdgeToEdge()
 
         setContent {
@@ -44,4 +48,22 @@ class MainActivity : ComponentActivity() {
             deviceTokenManager.fetchDeviceToken()
         }
     }
+
+    private fun checkNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val isGranted = ActivityCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.POST_NOTIFICATIONS
+            ) == PackageManager.PERMISSION_GRANTED
+
+            if (!isGranted) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
+                    1001
+                )
+            }
+        }
+    }
+
 }
