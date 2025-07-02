@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -22,16 +23,13 @@ internal fun InformItem(
     onClick: () -> Unit
 ) {
     GwangSanTheme { colors, typography ->
+
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = modifier
                 .fillMaxWidth()
-                .height(112.dp)
                 .GwangSanClickable { onClick() }
-                .padding(
-                    horizontal = 16.dp,
-                    vertical = 24.dp
-                )
+                .padding(bottom = 16.dp)
         ) {
             AsyncImage(
                 model = imageUrl,
@@ -47,20 +45,18 @@ internal fun InformItem(
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = title,
-                    style = typography.body3
+                    style = typography.body3,
+                    color = colors.black
                 )
+
                 Spacer(modifier = Modifier.height(12.dp))
 
-                val trimmedDescription = if (description.length > 22) {
-                    description.take(22) + "..."
-                } else {
-                    description
-                }
-
                 Text(
-                    text = trimmedDescription,
+                    text = description,
                     style = typography.body5,
-                    color = colors.gray400
+                    color = colors.gray400,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
         }
@@ -72,7 +68,7 @@ internal fun InformItem(
 private fun InformItemPreviewWithImage() {
     InformItem(
         title = "거래 중지 안내",
-        description = "관리자 업로드 이미지가 있는 경우",
+        description = "관리자 업로드 이미지가 있는 경우 우우우우우우ㅜ우우우우ㅜ우우",
         imageUrl = "https://your.cdn.com/image.jpg",
         onClick = {}
     )

@@ -15,15 +15,34 @@ import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.inform.component.InformItem
 
 // 임시 모델 (API 나오면 model 패키지로 이동)
-data class Inform(
+private data class Inform(
     val title: String,
     val description: String,
     val imageUrl: String? = null
 )
 
 @Composable
+internal fun InformRoute(
+    onBackClick: () -> Unit,
+    onNextClick: () -> Unit
+) {
+
+    InformScreen(
+        informList = listOf(
+            Inform(
+                title = "당분간 거래중지입니다",
+                description = "어떤 이의 거래 중지 의사로 인해 요청사항...",
+                imageUrl = null
+            )
+        ),
+        onBackClick = onBackClick,
+        onNextClick = onNextClick
+    )
+}
+
+@Composable
 private fun InformScreen(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     informList: List<Inform>,
     onBackClick: () -> Unit = {},
     onNextClick: () -> Unit
@@ -34,8 +53,10 @@ private fun InformScreen(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .padding(
-                    top = 56.dp,
-                    bottom = 20.dp
+                    top = 24.dp,
+                    bottom = 20.dp,
+                    start = 24.dp,
+                    end = 24.dp
                 )
         ) {
             GwangSanSubTopBar(
@@ -56,7 +77,7 @@ private fun InformScreen(
             Text(
                 text = "지점명 공지입니다",
                 style = typography.titleMedium2,
-                modifier = Modifier.padding(horizontal = 20.dp)
+                color = colors.black
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -65,7 +86,6 @@ private fun InformScreen(
                 text = "본점",
                 style = typography.body5,
                 color = colors.gray400,
-                modifier = Modifier.padding(horizontal = 20.dp)
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -94,7 +114,7 @@ private fun InformScreenPreview() {
         Inform(
             title = "시스템 점검 안내",
             description = "6월 20일 오전 10시부터 오후 3시까지 점검 예정입니다.",
-            imageUrl = "https://your.cdn.com/image1.png"
+            imageUrl = null
         )
     )
 
