@@ -86,7 +86,7 @@ internal fun RatingSlider(
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewRatingSlider() {
+private fun PreviewRatingSlider() {
     var rating by remember { mutableIntStateOf(1) }
 
     Column(
