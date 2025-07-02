@@ -1,5 +1,6 @@
 package com.school_of_company.inform.view
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -51,6 +52,7 @@ private fun InformScreen(
         Column(
             modifier = modifier
                 .fillMaxSize()
+                .background(color = colors.white)
                 .verticalScroll(rememberScrollState())
                 .padding(
                     top = 24.dp,
