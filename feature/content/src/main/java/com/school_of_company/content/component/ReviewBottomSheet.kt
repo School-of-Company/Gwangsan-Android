@@ -107,6 +107,6 @@ internal fun ReviewBottomSheet(
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
-fun PreviewReviewBottomSheet() {
+private fun PreviewReviewBottomSheet() {
     ReviewBottomSheet()
 }

@@ -24,7 +24,7 @@ import com.school_of_company.design_system.theme.GwangSanTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RatingSlider(
+internal fun RatingSlider(
     modifier: Modifier = Modifier,
     value: Int,
     onValueChange: (Int) -> Unit
