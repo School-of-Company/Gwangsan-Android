@@ -8,6 +8,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:design-system"))
+    implementation(project(":core:data"))
+
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.messaging)
 }
