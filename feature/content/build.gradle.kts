@@ -1,8 +1,6 @@
 plugins {
     id("gwangsan.android.feature")
     id("gwangsan.android.hilt")
-    id("gwangsan.android.compose")
-
 }
 
 android {
