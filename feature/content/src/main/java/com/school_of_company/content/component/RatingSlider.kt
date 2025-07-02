@@ -1,99 +1,111 @@
-package com.school_of_company.design_system.component.slider
+package com.school_of_company.content.component
 
-import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.school_of_company.design_system.theme.GwangSanTheme
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.graphics.drawscope.Stroke
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RatingSlider(
-    value: Float,
-    onValueChange: (Float) -> Unit,
+internal fun RatingSlider(
     modifier: Modifier = Modifier,
-    trackHeight: Dp = 6.dp,
-    thumbRadius: Dp = 10.dp
+    value: Int,
+    onValueChange: (Int) -> Unit
 ) {
+    require(value in 1..100)
+
     GwangSanTheme { colors, _ ->
-        val trackHeightPx = with(LocalDensity.current) { trackHeight.toPx() }
-        val thumbRadiusPx = with(LocalDensity.current) { thumbRadius.toPx() }
 
-        var sliderWidth by remember { mutableStateOf(1f) }
+        Slider(
+            value = value.toFloat(),
+            onValueChange = { onValueChange(it.toInt().coerceIn(1, 100)) },
+            valueRange = 1f..100f,
+            thumb = {
+                Canvas(modifier = Modifier.size(16.5.dp)) {
+                    drawCircle(color = colors.subYellow500)
 
-        Box(
-            modifier = modifier
-                .height(thumbRadius * 2)
-                .pointerInput(Unit) {
-                    detectTapGestures { offset ->
-                        val percent = offset.x / sliderWidth
-                        val newValue = 1f + (4f * percent).coerceIn(0f, 1f)
-                        onValueChange(newValue)
-                    }
-                }
-                .drawBehind {
-                    sliderWidth = size.width
-
-                    val fraction = ((value - 1f) / 4f).coerceIn(0f, 1f)
-                    val activeWidth = size.width * fraction
-                    val trackY = center.y - trackHeightPx / 2
-
-                    // draw focus (inactive track after thumb)
-                    drawRoundRect(
-                        color = colors.focus,
-                        topLeft = Offset(activeWidth, trackY),
-                        size = Size(size.width - activeWidth, trackHeightPx),
-                        cornerRadius = CornerRadius(trackHeightPx / 2)
-                    )
-
-                    // draw active track
-                    drawRoundRect(
-                        color = colors.subYellow500,
-                        topLeft = Offset(0f, trackY),
-                        size = Size(activeWidth, trackHeightPx),
-                        cornerRadius = CornerRadius(trackHeightPx / 2)
-                    )
-
-                    // draw thumb (white fill, yellow border)
-                    val thumbX = activeWidth
                     drawCircle(
                         color = Color.White,
-                        radius = thumbRadiusPx,
-                        center = Offset(thumbX, center.y)
-                    )
-                    drawCircle(
-                        color = colors.subYellow500,
-                        radius = thumbRadiusPx,
-                        center = Offset(thumbX, center.y),
-                        style = Stroke(width = 2.dp.toPx())
+                        radius = size.minDimension / 1.85f * 0.7f
                     )
                 }
+            },
+            track = { sliderState ->
+                val fraction by remember {
+                    derivedStateOf {
+                        (sliderState.value - sliderState.valueRange.start) / (sliderState.valueRange.endInclusive - sliderState.valueRange.start)
+                    }
+                }
+
+                Box(Modifier.fillMaxWidth()) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth(fraction)
+                            .align(Alignment.CenterStart)
+                            .height(6.dp)
+                            .padding(end = 16.dp)
+                            .background(
+                                color = colors.subYellow500,
+                                shape = CircleShape
+                            )
+                    )
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth(1f - fraction)
+                            .align(Alignment.CenterEnd)
+                            .height(6.dp)
+                            .padding(start = 16.dp)
+                            .background(
+                                color = colors.gray100,
+                                shape = CircleShape
+                            )
+                    )
+                }
+            }
         )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewRatingSlider() {
-    val (rating, setRating) = remember { mutableStateOf(3f) }
+private fun PreviewRatingSlider() {
+    var rating by remember { mutableIntStateOf(1) }
 
-    RatingSlider(
-        value = rating,
-        onValueChange = setRating,
+    Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .height(40.dp)
-    )
+            .fillMaxSize()
+            .background(Color.White)
+    ) {
+        Text(
+            text = "Rating: $rating",
+            modifier = Modifier.padding(bottom = 8.dp),
+            style = MaterialTheme.typography.bodyLarge
+        )
+
+        RatingSlider(
+            value = rating,
+            onValueChange = { rating = it },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(40.dp)
+        )
+    }
 }

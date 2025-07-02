@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -28,113 +29,44 @@ import com.school_of_company.design_system.theme.GwangSanTheme
 fun MyProfileUserLevel(
     modifier: Modifier = Modifier,
     name: String,
-    coverImage: String?,
     description: String,
     level: Int,
 ) {
     GwangSanTheme { colors, typography ->
 
-        Column(
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = modifier
                 .fillMaxWidth()
                 .background(colors.white)
+                .padding(vertical = 8.dp)
         ) {
-            if (coverImage.isNullOrEmpty()) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(1.5f)
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_image),
-                        contentDescription = "이미지",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxSize()
-                    )
-                }
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .aspectRatio(1.5f)
-                    ) {
-                        EllipseIcon()
-                    }
-
-                    Spacer(modifier = Modifier.width(12.dp))
-
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = "${name}단계",
-                            style = typography.body5,
-                        )
-
-                        Text(
-                            text = description,
-                            color = colors.gray500,
-                            style = typography.body5
-                        )
-                    }
-
-                    Text(
-                        text = "${level}단계",
-                        color = colors.subYellow500,
-                        style = typography.body5,
-                    )
-                }
+            Box(modifier = Modifier.size(40.dp)) {
+                EllipseIcon()
             }
-            else {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(1.5f)
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_image),
-                        contentDescription = "바퀴벌레 이미지",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxSize()
-                    )
-                }
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ) {
-                    Box(modifier = Modifier.size(40.dp)) {
-                        EllipseIcon()
-                    }
 
-                    Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(12.dp))
 
-                    Column(
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Text(
-                            text = name,
-                            style = typography.body5,
-                        )
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = name,
+                    style = typography.body5,
+                )
 
-                        Spacer(modifier = Modifier.padding(5.dp))
+                Spacer(modifier = Modifier.height(5.dp))
 
-                        Text(text = description, color = colors.gray500, style = typography.body5)
-                    }
-
-
-                    Text(
-                        text = "${level}단계",
-                        color = colors.subYellow500,
-                        style = typography.body5,
-                    )
-                }
+                Text(
+                    text = description,
+                    color = colors.gray500,
+                    style = typography.body5
+                )
             }
+
+            Text(
+                text = "${level}단계",
+                color = colors.subYellow500,
+                style = typography.body5,
+            )
         }
     }
 }
@@ -145,7 +77,6 @@ private fun UserLevelCardPreview()
 {
     MyProfileUserLevel(
         name = "모태환",
-        coverImage = "https://image.dongascience.com/Photo/2019/12/fb4f7da04758d289a466f81478f5f488.jpg",
         description = "바퀴벌레",
         level = 1
     )
