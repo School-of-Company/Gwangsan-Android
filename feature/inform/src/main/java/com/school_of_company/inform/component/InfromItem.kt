@@ -32,7 +32,7 @@ internal fun InformItem(
                 .padding(bottom = 16.dp)
         ) {
             AsyncImage(
-                model = imageUrl ?: R.drawable.gwangsan,
+                model = imageUrl,
                 contentDescription = "공지 아이콘",
                 placeholder = painterResource(id = R.drawable.gwangsan),
                 error = painterResource(id = R.drawable.gwangsan),
