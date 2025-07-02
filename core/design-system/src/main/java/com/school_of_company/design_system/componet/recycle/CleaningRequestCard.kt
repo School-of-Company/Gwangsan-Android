@@ -20,11 +20,7 @@ fun CleaningRequestCard(
 ) {
     GwangSanTheme { colors, typography ->
 
-        Column(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        ) {
+        Column(modifier = modifier.fillMaxWidth()) {
             Text(
                 text = title,
                 style = typography.titleSmall,
