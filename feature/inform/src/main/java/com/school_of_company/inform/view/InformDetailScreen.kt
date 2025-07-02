@@ -21,6 +21,19 @@ import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 
 @Composable
+internal fun InformDetailRoute(
+    onBackClick: () -> Unit
+) {
+
+    InformDetailScreen(
+        title = "당분간 거래중지입니다",
+        branchName = "첨단 1동",
+        description = "어떤 이의 거래 중지 의사로 인해 요청사항을 받아들이다",
+        onBackClick = onBackClick
+    )
+}
+
+@Composable
 private fun InformDetailScreen(
     title: String,
     branchName: String,
@@ -29,19 +42,22 @@ private fun InformDetailScreen(
     onBackClick: () -> Unit = {},
 ) {
     GwangSanTheme { colors, typography ->
+
         Scaffold(
             containerColor = colors.white,
             topBar = {
                 GwangSanSubTopBar(
-                    modifier = Modifier.padding(top = 56.dp),
                     startIcon = {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Spacer(modifier = Modifier.width(24.dp))
                             DownArrowIcon(
                                 modifier = Modifier
                                     .padding(start = 16.dp)
-                                    .size(width = 8.dp, height = 14.dp)
                                     .GwangSanClickable { onBackClick() }
+                                    .size(
+                                        width = 8.dp,
+                                        height = 14.dp
+                                    )
                             )
                         }
                     },
@@ -56,7 +72,8 @@ private fun InformDetailScreen(
                                     .GwangSanClickable { onBackClick() }
                             )
                         }
-                    }
+                    },
+                    modifier = Modifier.padding(top = 56.dp),
                 )
             }
         ) { padding ->
@@ -82,13 +99,14 @@ private fun InformDetailScreen(
 
                 Column(
                     modifier = Modifier.padding(
-                    horizontal = 20.dp,
-                    vertical = 24.dp
+                        horizontal = 20.dp,
+                        vertical = 24.dp
                     )
                 ) {
                     Text(
                         text = title,
-                        style = typography.titleMedium2
+                        style = typography.titleMedium2,
+                        color = colors.black
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -114,7 +132,7 @@ private fun InformDetailScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun InformDetailScreenPreviewWithImage() {
+private fun InformDetailScreenPreviewWithImage() {
     InformDetailScreen(
         title = "당분간 거래중지입니다",
         branchName = "첨단 1동",
@@ -125,7 +143,7 @@ fun InformDetailScreenPreviewWithImage() {
 
 @Preview(showBackground = true)
 @Composable
-fun InformDetailScreenPreviewWithoutImage() {
+private fun InformDetailScreenPreviewWithoutImage() {
     InformDetailScreen(
         title = "당분간 거래중지입니다",
         branchName = "첨단 1동",
