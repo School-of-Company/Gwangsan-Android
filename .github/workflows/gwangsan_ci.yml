@@ -44,7 +44,7 @@ jobs:
       - name: Create google-service-properties
         env:
           DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
-        run: echo $Data > /home/runner/work/Gwangsan-Android/Gwangsan-Android/app/google-services.json
+        run: echo $DATA > /home/runner/work/Gwangsan-Android/Gwangsan-Android/app/google-services.json
 
       - name: Build with Gradle (incremental)
         run: ./gradlew assembleDebug --no-daemon
