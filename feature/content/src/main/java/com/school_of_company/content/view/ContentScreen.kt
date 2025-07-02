@@ -1,4 +1,4 @@
-package com.school_of_company.post.view
+package com.school_of_company.content.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -14,6 +14,22 @@ import com.school_of_company.design_system.componet.recycle.MyWriteItem
 import com.school_of_company.design_system.componet.recycle.MyWriteList
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
+
+@Composable
+internal fun ContentRoute(
+    onMyProfileClick: () -> Unit,
+    onItemClick: () -> Unit
+) {
+
+    ContentScreen(
+        onMyProfileClick = onMyProfileClick,
+        onItemClick = onItemClick,
+        onTypeSelected = {},
+        onDetailSelected = {},
+        selectedType = "",
+        selectedDetail = ""
+    )
+}
 
 @Composable
 private fun ContentScreen(
@@ -42,7 +58,7 @@ private fun ContentScreen(
         }
     }
 
-    GwangSanTheme { colors, typography ->
+    GwangSanTheme { colors, _ ->
         Column(
             modifier = modifier
                 .fillMaxSize()
