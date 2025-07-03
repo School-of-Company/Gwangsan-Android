@@ -4,8 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -22,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -41,10 +44,8 @@ import kotlin.math.roundToInt
 @OptIn(ExperimentalWearMaterialApi::class)
 @Composable
 fun GwangSanSwitchButton(
+    modifier: Modifier = Modifier,
     height: Dp = 45.dp,
-    width: Dp = 345.dp,
-    switchOnBackground: Color = Color(0xFFEAC96D),
-    switchOffBackground: Color = Color(0xFFEAC96D),
     stateOn: GwangSanSwitchState,
     stateOff: GwangSanSwitchState,
     initialValue: GwangSanSwitchState,
@@ -52,51 +53,41 @@ fun GwangSanSwitchButton(
 ) {
     var clickListener by remember { mutableStateOf(false) }
 
-    val sizePx = with(LocalDensity.current) { (width / 2).toPx() }
-    val anchors = mapOf(0f to stateOff, sizePx to stateOn)
+    BoxWithConstraints(modifier = modifier.fillMaxWidth()) {
+        val containerWidth = maxWidth
+        val sizePx = with(LocalDensity.current) { (containerWidth / 2).toPx() }
+        val anchors = mapOf(0f to stateOff, sizePx to stateOn)
 
-    val swipeableState = rememberSwipeableState(initialValue = initialValue)
-    val scope = rememberCoroutineScope()
+        val swipeableState = rememberSwipeableState(initialValue = initialValue)
+        val scope = rememberCoroutineScope()
 
-    LaunchedEffect(swipeableState.currentValue) {
-        onCheckedChanged(swipeableState.currentValue)
-    }
+        LaunchedEffect(swipeableState.currentValue) {
+            onCheckedChanged(swipeableState.currentValue)
+        }
 
-    Box(
-        modifier = Modifier
-            .width(width)
-            .height(height)
-            .clip(RoundedCornerShape(50))
-            .background(
-                if (swipeableState.currentValue == stateOff) {
-                    switchOffBackground
-                } else {
-                    switchOnBackground
-                }
-            )
-            .GwangSanClickable(interval = 50L) {
-                clickListener = !clickListener
-                scope.launch {
-                    if (clickListener) {
-                        swipeableState.animateTo(stateOn)
-                    } else {
-                        swipeableState.animateTo(stateOff)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(height)
+                .clip(RoundedCornerShape(50))
+                .background(color = GwangSanColor.subYellow300)
+                .GwangSanClickable(interval = 50L) {
+                    clickListener = !clickListener
+                    scope.launch {
+                        if (clickListener) {
+                            swipeableState.animateTo(stateOn)
+                        } else {
+                            swipeableState.animateTo(stateOff)
+                        }
                     }
                 }
-            }
-    ) {
-        // 흰색 스위치 동그라미
-        Row(
-            modifier = Modifier.fillMaxSize(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Box(
                 modifier = Modifier
                     .offset {
                         IntOffset(swipeableState.offset.value.roundToInt(), 0)
                     }
-                    .width(width / 2)
+                    .width(containerWidth / 2)
                     .padding(horizontal = 8.dp, vertical = 7.dp)
                     .height(height)
                     .clip(RoundedCornerShape(50))
@@ -108,45 +99,41 @@ fun GwangSanSwitchButton(
                         orientation = Orientation.Horizontal
                     )
             )
-        }
 
-        // 텍스트
-        Row(
-            modifier = Modifier.fillMaxSize(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Box(
-                modifier = Modifier.weight(1f),
-                contentAlignment = Alignment.Center
+            Row(
+                modifier = Modifier.fillMaxSize(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(
-                    text = "해주세요",
-                    color = if (swipeableState.currentValue == GwangSanSwitchState.REQUEST) Color.Black else Color.Gray
-                )
-            }
-            Box(
-                modifier = Modifier.weight(1f),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "필요해요",
-                    color = if (swipeableState.currentValue == GwangSanSwitchState.NEED) Color.Black else Color.Gray
-                )
+                Box(
+                    modifier = Modifier.weight(1f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "해주세요",
+                        color = if (swipeableState.currentValue == GwangSanSwitchState.REQUEST) Color.Black else Color.Gray
+                    )
+                }
+                Box(
+                    modifier = Modifier.weight(1f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "필요해요",
+                        color = if (swipeableState.currentValue == GwangSanSwitchState.NEED) Color.Black else Color.Gray
+                    )
+                }
             }
         }
     }
 }
-
 @Preview
 @Composable
 fun GwangSanSwitchButtonPreview() {
     GwangSanSwitchButton(
         stateOn = GwangSanSwitchState.NEED,
         stateOff = GwangSanSwitchState.REQUEST,
-        initialValue = GwangSanSwitchState.REQUEST,
-        switchOffBackground = GwangSanColor.subYellow500,
-        switchOnBackground = GwangSanColor.gray500,
+        initialValue = GwangSanSwitchState.REQUEST
     ) {
         when (it) {
             GwangSanSwitchState.REQUEST -> println("현재 상태: 해주세요")
