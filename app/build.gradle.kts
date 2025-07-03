@@ -44,6 +44,8 @@ dependencies {
     implementation(project(":feature:post"))
     implementation(project(":feature:main"))
     implementation(project(":feature:content"))
+    implementation(project(":core:device"))
+    implementation(project(":core:local"))
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.messaging)

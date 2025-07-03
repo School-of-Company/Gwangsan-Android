@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.school_of_company.Regex.isValidId
 import com.school_of_company.data.repository.auth.AuthRepository
+import com.school_of_company.data.repository.local.LocalRepository
 import com.school_of_company.model.auth.request.LoginRequestModel
 import com.school_of_company.network.errorHandling
 import com.school_of_company.network.util.DeviceIdManager
@@ -27,6 +28,7 @@ import javax.inject.Inject
 internal class SignInViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val savedStateHandle: SavedStateHandle,
+    private val localRepository: LocalRepository
 ) : ViewModel() {
     companion object {
         private const val ID = "id"
@@ -46,6 +48,8 @@ internal class SignInViewModel @Inject constructor(
         val nicknameValue = id.value
         val passwordValue = password.value
 
+        val deviceToken = localRepository.getDeviceToken()
+
         if (!isValidId(nicknameValue)) {
             _signInUiState.value = SignInUiState.IdNotValid
             return@launch
@@ -54,7 +58,7 @@ internal class SignInViewModel @Inject constructor(
         val body = LoginRequestModel(
             nickname = nicknameValue,
             password = passwordValue,
-            deviceToken = "",
+            deviceToken = deviceToken,
             deviceId = deviceId.toString()
         )
 
