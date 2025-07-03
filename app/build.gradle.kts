@@ -12,21 +12,12 @@ android {
         buildConfig = true
     }
 
-    defaultConfig {
-        buildConfigField(
-            "String",
-            "NATIVE_APP_KEY",
-            getApiKey("NATIVE_APP_KEY")
-        )
-    }
-
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
             excludes += "META-INF/DEPENDENCIES"
         }
     }
-
 
     namespace = "com.school_of_company.gwangsan_android"
 }

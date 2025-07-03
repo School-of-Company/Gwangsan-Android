@@ -170,7 +170,7 @@ fun ServiceIcon(
     tint: Color = Color.Unspecified
 ){
     Icon(
-        painter = painterResource(id = R.drawable.service),
+        painter = painterResource(id = R.drawable.mdi_shopping_outline),
         contentDescription = "서비스",
         modifier = modifier,
         tint = tint
@@ -182,7 +182,7 @@ fun ObjectIcon(
     tint: Color = Color.Unspecified
 ) {
     Icon(
-        painter = painterResource(id = R.drawable.`object`),
+        painter = painterResource(id = R.drawable.mingcute_service_line),
         contentDescription = "물건",
         modifier = modifier,
         tint = tint

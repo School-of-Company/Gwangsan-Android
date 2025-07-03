@@ -1,8 +1,5 @@
 package com.school_of_company.main.view
 
-
-import android.util.Log
-import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -40,7 +38,6 @@ import com.school_of_company.main.viewmodel.MainViewModel
 import com.school_of_company.main.viewmodel.uistate.GetMainListUiState
 import com.school_of_company.model.enum.Mode
 import com.school_of_company.model.enum.Type
-
 
 @Composable
 internal fun MainRoute(
@@ -85,7 +82,7 @@ internal fun MainRoute(
         switchState = switchState,
         onSwitchStateChange = { switchState = it },
         swipeRefreshState = swipeRefreshState,
-        betweenText = betweenText // ✅ 추가
+        betweenText = betweenText
     )
 }
 
@@ -111,7 +108,11 @@ private fun MainScreen(
                 horizontalAlignment = Alignment.Start,
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(start = 24.dp, top = 24.dp)
+                    .padding(
+                        start = 24.dp,
+                        end = 24.dp,
+                        top = 24.dp
+                    )
             ) {
                 GwangSanSubTopBar(
                     startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { }) },
@@ -124,8 +125,6 @@ private fun MainScreen(
                     stateOn = GwangSanSwitchState.NEED,
                     stateOff = GwangSanSwitchState.REQUEST,
                     initialValue = switchState,
-                    switchOffBackground = colors.subYellow500,
-                    switchOnBackground = colors.subYellow500,
                     onCheckedChanged = {
                         onSwitchStateChange(it)
                         mainCallBack()
@@ -196,4 +195,21 @@ private fun MainScreen(
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun MainScreenPreview() {
+    val dummyState = rememberSwipeRefreshState(isRefreshing = false)
+
+    MainScreen(
+        navigationToPostService = {},
+        mainCallBack = {},
+        onErrorToast = { _, _ -> },
+        getMainListUiState = GetMainListUiState.Loading,
+        switchState = GwangSanSwitchState.NEED,
+        onSwitchStateChange = {},
+        swipeRefreshState = dummyState,
+        betweenText = "물건"
+    )
 }

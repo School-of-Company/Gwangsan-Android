@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -61,6 +62,9 @@ private fun StartScreen(
                 .navigationBarsPadding()
         ) {
             Column {
+
+                Spacer(modifier = Modifier.height(68.dp))
+
                 Box(
                     modifier = Modifier
                         .pointerInput(Unit) {
@@ -70,32 +74,37 @@ private fun StartScreen(
                 ) {
                     HorizontalPager(
                         state = pagerState,
+                        modifier = Modifier.fillMaxWidth()
                     ) { page ->
                         Image(
                             painter = painterResource(id = imageList[page]),
                             contentDescription = "Gwangsan Start Images",
-                            modifier = Modifier.fillMaxSize()
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.fillMaxWidth()
                         )
                     }
-                    Row(
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .align(Alignment.BottomCenter)
-                            .padding(bottom = 39.dp)
-                    ) {
-                        repeat(imageList.size) { index ->
-                            val isSelected = pagerState.currentPage == index
-                            Box(
-                                modifier = Modifier
-                                    .padding(horizontal = 3.dp)
-                                    .size(if (isSelected) 12.dp else 6.dp)
-                                    .background(
-                                        color = if (isSelected) colors.main500 else colors.gray300,
-                                        shape = RoundedCornerShape(50)
-                                    )
-                            )
-                        }
+                }
+
+                Spacer(modifier = Modifier.padding(top = 12.dp))
+
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 39.dp)
+                ) {
+                    repeat(imageList.size) { index ->
+                        val isSelected = pagerState.currentPage == index
+                        Box(
+                            modifier = Modifier
+                                .padding(horizontal = 3.dp)
+                                .size(if (isSelected) 12.dp else 6.dp)
+                                .background(
+                                    color = if (isSelected) colors.main500 else colors.gray300,
+                                    shape = RoundedCornerShape(50)
+                                )
+                        )
                     }
                 }
 
@@ -133,7 +142,7 @@ private fun StartScreen(
                         onInputLoginClick()
                     }
 
-                    Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = Modifier.padding(bottom = 55.dp))
                 }
             }
         }
