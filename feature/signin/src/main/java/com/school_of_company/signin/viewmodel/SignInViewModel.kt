@@ -75,10 +75,7 @@ internal class SignInViewModel @Inject constructor(
                     }
                     is Result.Error -> {
                         _signInUiState.value = SignInUiState.Error(result.exception)
-                        result.exception.errorHandling(
-                            badRequestAction = { _signInUiState.value = SignInUiState.BadRequest },
-                            notFoundAction = { _signInUiState.value = SignInUiState.NotFound }
-                        )
+                        result.exception.errorHandling(notFoundAction = { _signInUiState.value = SignInUiState.NotFound })
                     }
                 }
             }
