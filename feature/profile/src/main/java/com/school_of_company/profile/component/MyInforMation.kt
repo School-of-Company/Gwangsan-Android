@@ -23,11 +23,13 @@ import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.icons.EllipseIcon
 import com.school_of_company.design_system.componet.icons.LeftArrowIcon
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.profile.view.MyProfileRoute
 
 
 @Composable
 internal fun MyInformation(
     modifier: Modifier = Modifier,
+    onModifyClick: () -> Unit
 ) {
     GwangSanTheme { colors, typography ->
 
@@ -67,18 +69,8 @@ internal fun MyInformation(
                 }
             }
 
-            GwangSanEnableButton(
-                text = "내 정보 수정",
-                textColor = colors.main500,
-                backgroundColor = colors.white,
-                onClick = { // 내 정보 수정 클릭 시 동작
-                },
-                modifier = Modifier
-                    .border(
-                        width = 1.dp,
-                        color = colors.main500,
-                        shape = RoundedCornerShape(30.dp)
-                    )
+            MyProfileModifyButton(
+                onClick = onModifyClick
             )
         }
     }
@@ -89,5 +81,7 @@ internal fun MyInformation(
 private fun PreviewMyInformation(
 
 ){
-    MyInformation()
+    MyInformation(
+        onModifyClick = {}
+    )
 }
