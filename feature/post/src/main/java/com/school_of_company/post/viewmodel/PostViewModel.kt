@@ -11,9 +11,12 @@ import com.school_of_company.result.asResult
 import com.school_of_company.data.repository.post.PostRepository
 import com.school_of_company.post.viewmodel.uiState.PostUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.school_of_company.result.Result
 
 @HiltViewModel
 class PostViewModel @Inject constructor(
@@ -62,37 +65,15 @@ class PostViewModel @Inject constructor(
             .asResult()
             .collectLatest { result ->
             when (result) {
-                is com.school_of_company.result.Result.Success -> _postUiState.value = PostUiState.Success
-                is com.school_of_company.result.Result.Error -> {
+                is Result.Success -> _postUiState.value = PostUiState.Success
+                is Result.Error -> {
                     _postUiState.value = PostUiState.Error(result.exception)
                     result.exception.errorHandling(
                         badRequestAction = { PostUiState.BadRequest },
                         notFoundAction = { PostUiState.NotFound },
                     )
                 }
-                is com.school_of_company.result.Result.Loading -> _postUiState.value = PostUiState.Loading
-            }
-        }
-    }
-
-    internal fun modifyPost() = viewModelScope.launch {
-        _postUiState.value = PostUiState.Loading
-        postRepository.modifyPostInformation(
-            type = type.value,
-            mode = mode.value,
-            request = PostWriteRequest(
-                type = type.value,
-                mode = mode.value,
-                title = title.value,
-                content = content.value,
-                gwangsan = gwangsan.value.toIntOrNull() ?: 0,
-                imageIds = imageIds.value.map { it.toIntOrNull() ?: 0 }
-            )
-        ).asResult().collectLatest { result ->
-            when (result) {
-                is com.school_of_company.result.Result.Success -> _postUiState.value = PostUiState.Success
-                is com.school_of_company.result.Result.Error -> _postUiState.value = PostUiState.Error(result.exception)
-                is com.school_of_company.result.Result.Loading -> _postUiState.value = PostUiState.Loading
+                is Result.Loading -> _postUiState.value = PostUiState.Loading
             }
         }
     }
