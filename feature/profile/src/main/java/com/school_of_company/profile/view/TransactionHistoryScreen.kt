@@ -37,7 +37,6 @@ internal fun TransactionHistoryRoute(
     )
 }
 
-
 @Composable
 private fun TransactionHistoryScreen(
     modifier: Modifier = Modifier,
@@ -77,12 +76,14 @@ private fun TransactionHistoryScreen(
                 Spacer(modifier = Modifier.height(12.dp))
 
                 Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+
                     ServiceTypeDropdown(
                         modifier = Modifier.weight(1f),
                         selected = selectedType,
                         items = listOf("서비스", "물건"),
                         onItemSelected = { selectedType = it }
                     )
+
                     ServiceTypeDropdown(
                         modifier = Modifier.weight(1f),
                         selected = selectedDetail,
@@ -99,7 +100,7 @@ private fun TransactionHistoryScreen(
     }
 }
 
-val DummyItems = listOf(
+private val DummyItems = listOf(
     DataTransactionHistoryItem(
         coverImage = "https://cdn.pixabay.com/photo/1.jpg",
         title = "바퀴벌레 좀 잡아주세요",

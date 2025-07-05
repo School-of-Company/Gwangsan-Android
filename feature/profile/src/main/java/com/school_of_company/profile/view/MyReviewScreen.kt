@@ -37,7 +37,7 @@ private fun MyReviewScreen(
     onBackClick: () -> Unit,
     onMyProfileClick: () -> Unit
 ) {
-    GwangSanTheme { colors, typography ->
+    GwangSanTheme { colors, _ ->
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -61,7 +61,7 @@ private fun MyReviewScreen(
         }
     }
 }
-val ReViewDummyItems = listOf(
+private val ReViewDummyItems = listOf(
     MyReviewItem(
         coverImage = "https://cdn.pixabay.com/photo/1.jpg",
         title = "바퀴벌레 좀 잡아주세요",
