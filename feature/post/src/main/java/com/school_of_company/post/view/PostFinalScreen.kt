@@ -4,7 +4,9 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -49,7 +51,7 @@ internal fun PostFinalRoute(
                 Log.d("PostFinalRoute", "게시글 작성 중...")
             }
             is PostUiState.Success -> {
-                onErrorToast(null, R.string)
+                onErrorToast(null, R.string.success_post)
                 onSubmitClick()
             }
             is PostUiState.BadRequest -> {
@@ -88,8 +90,16 @@ private fun PostFinalScreen(
     onSubmitClick: () -> Unit,
     onBackClick: () -> Unit,
 ) {
+    val scrollState = rememberScrollState()
+
     GwangSanTheme { colors, typography ->
-        Column(modifier = modifier.fillMaxSize()) {
+
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .verticalScroll(scrollState)
+        ) {
+
             Spacer(modifier = Modifier.height(52.dp))
 
             GwangSanSubTopBar(
