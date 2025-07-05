@@ -11,7 +11,7 @@ fun isValidPassword(password: String): Boolean {
     return com.school_of_company.Regex.Regex.PASSWORD.toRegex().matches(password)
 }
 fun isValidId(id: String): Boolean {
-    return com.school_of_company.Regex.Regex.Id.toRegex().matches(id)
+    return com.school_of_company.Regex.Regex.ID.toRegex().matches(id)
 }
 
 fun isValidPhoneNumber(phone: String): Boolean {
