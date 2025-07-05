@@ -3,7 +3,7 @@ package com.school_of_company.Regex
 import kotlin.text.Regex
 
 object Regex {
-    const val Id =  "^[a-zA-Z]+$"
+    const val ID = "^[가-힣]+$"
     const val PASSWORD = "^(?=.*[a-zA-Z])(?=.*[!@#\\\$%^*+=-?<>])(?=.*[0-9]).{6,}\$"
 }
 
