@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.school_of_company.design_system.component.progress.GwangSanTopBarProgress
@@ -33,17 +34,16 @@ internal fun PostInputRoute(
     mode: Mode,
     onBackClick: () -> Unit,
     onNextClick: () -> Unit,
-    onCloseClick: () -> Unit,
-    viewModel: PostViewModel = hiltViewModel(),
+    viewModel: PostViewModel? = null,
 ) {
-    val gwangsan by viewModel.gwangsan.collectAsState()
+    val actualViewModel = viewModel ?: hiltViewModel()
+    val gwangsan by actualViewModel.gwangsan.collectAsState()
 
     PostInputScreen(
         value = gwangsan,
-        onValueChange = viewModel::onGwangsanChange,
+        onValueChange = actualViewModel::onGwangsanChange,
         onNextClick = onNextClick,
         onBackClick = onBackClick,
-        onCloseClick = onCloseClick
     )
 }
 
@@ -54,7 +54,6 @@ private fun PostInputScreen(
     onValueChange: (String) -> Unit,
     onNextClick: () -> Unit,
     onBackClick: () -> Unit,
-    onCloseClick: () -> Unit
 ) {
     GwangSanTheme { colors, typography ->
 
@@ -73,13 +72,7 @@ private fun PostInputScreen(
                     )
                 },
                 betweenText = "해주세요",
-                endIcon = {
-                    CloseIcon(
-                        modifier = Modifier
-                            .size(24.dp)
-                            .GwangSanClickable(onClick = onCloseClick)
-                    )
-                },
+
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp)
@@ -119,4 +112,15 @@ private fun PostInputScreen(
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PostInputPreview() {
+    PostInputScreen(
+        value = "1000",
+        onValueChange = {},
+        onNextClick = {},
+        onBackClick = {},
+    )
 }

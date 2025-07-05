@@ -5,6 +5,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.school_of_company.design_system.component.progress.GwangSanTopBarProgress
@@ -28,16 +29,17 @@ internal fun PostWriteRoute(
     mode: Mode,
     onBackClick: () -> Unit,
     onNextClick: (String, String) -> Unit,
-    viewModel: PostViewModel = hiltViewModel(),
+    viewModel: PostViewModel? = null,
 ) {
-    val subject by viewModel.title.collectAsState()
-    val content by viewModel.content.collectAsState()
+    val actualViewModel = viewModel ?: hiltViewModel()
+    val subject by actualViewModel.title.collectAsState()
+    val content by actualViewModel.content.collectAsState()
 
     PostWriteScreen(
         subject = subject,
         content = content,
-        onSubjectChange = viewModel::onTitleChange,
-        onContentChange = viewModel::onContentChange,
+        onSubjectChange = actualViewModel::onTitleChange,
+        onContentChange = actualViewModel::onContentChange,
         onImageAdd = {},
         onNextClick = onNextClick,
         onBackClick = onBackClick,
@@ -154,4 +156,24 @@ private fun PostWriteScreen(
             }
         }
     }
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun PostWritePreview() {
+    PostWriteScreen(
+        subject = "예시 주제",
+        content = "예시 내용입니다.\n여러 줄로 작성된 내용도 미리보기 됩니다.",
+        onSubjectChange = {},
+        onContentChange = {},
+        onImageAdd = {},
+        onNextClick = { _, _ -> },
+        onBackClick = {},
+        imageContent = { isEnabled ->
+            AddImageButton(
+                onClick = {},
+                rippleColor = if (isEnabled) GwangSanColor.main100 else GwangSanColor.gray300
+            )
+        }
+    )
 }
