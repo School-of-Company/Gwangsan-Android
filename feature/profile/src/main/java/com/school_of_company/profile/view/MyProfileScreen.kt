@@ -16,14 +16,18 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.profile.component.BrightnessProgressBar
 import com.school_of_company.profile.component.GwangSanMoney
+import com.school_of_company.profile.component.LogoutDialog
 import com.school_of_company.profile.component.MyInformation
 import com.school_of_company.profile.component.MyProfileExerciseButton
 import com.school_of_company.profile.component.MyProfileReviewListItem
@@ -84,6 +88,8 @@ private fun MyProfileScreen(
     miningAmount: Int,
     item: List<Review>
 ) {
+    val (openLogoutDialog, setOpenLogoutDialog) = rememberSaveable { mutableStateOf(false) }
+
     GwangSanTheme { colors, typography ->
 
         LazyColumn(
@@ -103,7 +109,12 @@ private fun MyProfileScreen(
 
             item { Spacer(modifier = Modifier.height(24.dp)) }
 
-            item { MyInformation(onModifyClick = {}) }
+            item {
+                MyInformation(
+                    onModifyClick = { },
+                    onLogoutClick = { setOpenLogoutDialog(true) }
+                )
+            }
 
             item {
                 HorizontalDivider(
@@ -201,6 +212,18 @@ private fun MyProfileScreen(
             ) { reviewItem ->
                 MyProfileReviewListItem(
                     data = reviewItem
+                )
+            }
+        }
+
+        if (openLogoutDialog) {
+            Dialog(onDismissRequest = { setOpenLogoutDialog(false) }) {
+                LogoutDialog(
+                    onLogout = {
+                        // Add Logout Call Back
+                        setOpenLogoutDialog(false)
+                    },
+                    onDismiss = { setOpenLogoutDialog(false) }
                 )
             }
         }
