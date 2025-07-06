@@ -1,5 +1,7 @@
 package com.school_of_company.signup.view
 
+import android.content.ContextWrapper
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
@@ -11,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -31,8 +34,16 @@ internal fun ReCommenDerInputRoute(
     onBackClick: () -> Unit,
     onRecommenderClick: () -> Unit,
     onErrorToast: (Throwable?, Int?) -> Unit,
-    viewModel: SignUpViewModel = hiltViewModel()
-) {
+    viewModel: SignUpViewModel = hiltViewModel(
+        viewModelStoreOwner = LocalContext.current.let { context ->
+            var ctx = context
+            while (ctx is ContextWrapper) {
+                if (ctx is ComponentActivity) return@let ctx
+                ctx = ctx.baseContext
+            }
+            ctx as ComponentActivity
+        }
+    )) {
     val recommender by viewModel.recommender.collectAsStateWithLifecycle()
     val isNextEnabled = recommender.isNotBlank()
 

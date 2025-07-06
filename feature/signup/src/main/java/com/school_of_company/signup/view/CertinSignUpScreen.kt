@@ -1,6 +1,8 @@
 package com.school_of_company.signup.view
 
+import android.content.ContextWrapper
 import android.util.Log
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -56,8 +58,16 @@ internal fun CertInSignUpRoute(
     onBackClick: () -> Unit,
     onNeighborhoodClick: () -> Unit,
     onErrorToast: (throwable: Throwable?, message: Int?) -> Unit,
-    viewModel: SignUpViewModel = hiltViewModel()
-){
+    viewModel: SignUpViewModel = hiltViewModel(
+        viewModelStoreOwner = LocalContext.current.let { context ->
+            var ctx = context
+            while (ctx is ContextWrapper) {
+                if (ctx is ComponentActivity) return@let ctx
+                ctx = ctx.baseContext
+            }
+            ctx as ComponentActivity
+        }
+    )){
     val certificationNumber by viewModel.certificationNumber.collectAsStateWithLifecycle()
     val phoneNumber by viewModel.number.collectAsStateWithLifecycle()
     val verifyNumberUiState by viewModel.verifyNumberUiState.collectAsStateWithLifecycle()

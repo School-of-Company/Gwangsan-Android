@@ -1,5 +1,7 @@
 package com.school_of_company.signup.view
 
+import android.content.ContextWrapper
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -23,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -43,8 +46,16 @@ import com.yourpackage.design_system.component.textField.GwangSanSearchTextField
 internal fun NeighborhoodSignupRoute(
     onBackClick: () -> Unit,
     onIntroduceClick: () -> Unit,
-    viewModel: SignUpViewModel = hiltViewModel()
-) {
+    viewModel: SignUpViewModel = hiltViewModel(
+        viewModelStoreOwner = LocalContext.current.let { context ->
+            var ctx = context
+            while (ctx is ContextWrapper) {
+                if (ctx is ComponentActivity) return@let ctx
+                ctx = ctx.baseContext
+            }
+            ctx as ComponentActivity
+        }
+    )) {
     val studentSearch by viewModel.dong.collectAsStateWithLifecycle()
     val filteredAreas by viewModel.filteredAreas.collectAsStateWithLifecycle()
 

@@ -1,6 +1,8 @@
 package com.school_of_company.signup.view
 
+import android.content.ContextWrapper
 import android.util.Log
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
@@ -15,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -45,8 +48,16 @@ internal fun IntroduceRoute(
     onBackClick: () -> Unit,
     onNextClick: () -> Unit,
     onErrorToast: (throwable: Throwable?, message: Int?) -> Unit,
-    viewModel: SignUpViewModel = hiltViewModel()
-) {
+    viewModel: SignUpViewModel = hiltViewModel(
+        viewModelStoreOwner = LocalContext.current.let { context ->
+            var ctx = context
+            while (ctx is ContextWrapper) {
+                if (ctx is ComponentActivity) return@let ctx
+                ctx = ctx.baseContext
+            }
+            ctx as ComponentActivity
+        }
+    )) {
     val specialty by viewModel.specialty.collectAsStateWithLifecycle()
     val isDropdownVisible by viewModel.specialtyDropdownVisible.collectAsStateWithLifecycle()
     val signUpUiState by viewModel.signUpUiState.collectAsStateWithLifecycle()
