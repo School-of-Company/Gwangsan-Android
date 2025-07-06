@@ -34,12 +34,12 @@ interface AuthAPI {
     @DELETE("/api/auth/out")
     suspend fun signLogout()
 
-    @POST("/api/auth/send")
+    @POST("/api/sms")
     suspend fun signUpCertificationNumberSend(
         @Body body: SignUpCertificationNumberSendRequest
     )
 
-    @GET("/api/auth/send")
+    @GET("/api/sms/verify")
     suspend fun signUpCertificationNumberCertification(
         @Query("phoneNumber") phoneNumber: String,
         @Query("code") code: String
