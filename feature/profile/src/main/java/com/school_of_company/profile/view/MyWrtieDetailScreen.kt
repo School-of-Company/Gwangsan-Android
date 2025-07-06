@@ -134,9 +134,7 @@ fun ReviewPostDetailScreen(
 
 @Preview
 @Composable
-fun PreViewReviewPostDetailScreen(
-
-){
+private fun PreViewReviewPostDetailScreen(){
     ReviewPostDetailScreen(
         coverImage = "https://example.com/cover_image.jpg",
         name = "사용자 이름",

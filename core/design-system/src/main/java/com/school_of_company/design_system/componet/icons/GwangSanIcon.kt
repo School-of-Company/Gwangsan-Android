@@ -188,3 +188,16 @@ fun ObjectIcon(
         tint = tint
     )
 }
+
+@Composable
+fun ArrowDown(
+     modifier: Modifier = Modifier,
+     tint: Color = Color.Unspecified
+) {
+    Icon(
+        painter = painterResource(id = R.drawable.arrow_down),
+        contentDescription = "아래 화살표",
+        modifier = modifier,
+        tint = tint
+    )
+}

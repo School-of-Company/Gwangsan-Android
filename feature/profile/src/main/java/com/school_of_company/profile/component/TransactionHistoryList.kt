@@ -142,6 +142,7 @@ internal fun TransactionHistoryList(
         }
     }
 }
+
 data class DataTransactionHistoryItem(
     val coverImage: String,
     val title: String,
