@@ -1,6 +1,7 @@
 package com.school_of_company.signup.view
 
 import android.content.ContextWrapper
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
@@ -65,9 +66,7 @@ internal fun CertInSignUpRoute(
             }
             ctx as ComponentActivity
         }
-    )
-) {
-
+    )){
     val certificationNumber by viewModel.certificationNumber.collectAsStateWithLifecycle()
     val phoneNumber by viewModel.number.collectAsStateWithLifecycle()
     val verifyNumberUiState by viewModel.verifyNumberUiState.collectAsStateWithLifecycle()
