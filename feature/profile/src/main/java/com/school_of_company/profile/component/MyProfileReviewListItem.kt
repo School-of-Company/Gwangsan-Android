@@ -39,14 +39,15 @@ internal fun MyProfileReviewListItem(
 ) {
     GwangSanTheme { colors, typography ->
         Card(
+            colors = CardDefaults.cardColors(containerColor = Color.White),
+            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+            onClick = onClick,
             modifier = modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = Color.White
-            ),
-            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-            onClick = onClick
+                .padding(
+                    horizontal = 16.dp,
+                    vertical = 8.dp
+                ),
         ) {
             Column(
                 modifier = Modifier
