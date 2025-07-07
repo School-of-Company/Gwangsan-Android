@@ -5,6 +5,6 @@ data class PostAllRequestModel(
     val mode: String,
     val title: String,
     val content: String,
-    val gwangsan: Number,
-    val imageIds: List<Number>
+    val gwangsan: Int,
+    val imageIds: List<Long>
 )

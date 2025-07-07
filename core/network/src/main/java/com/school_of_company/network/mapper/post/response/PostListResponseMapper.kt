@@ -22,7 +22,7 @@ fun PostDto.toModel(): Post {
         mode = this.mode,
         title = this.title,
         content = this.content,
-        gwangsan = this.gwangsan.toInt(),
+        gwangsan = this.gwangsan,
         imageUrls = this.imageUrls.toModel()
     )
 }

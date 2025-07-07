@@ -10,12 +10,12 @@ data class PostListResponse(
 
 @JsonClass(generateAdapter = true)
 data class PostDto(
-    @Json(name = "id") val id: Number,
+    @Json(name = "id") val id: Long,
     @Json(name = "type") val type: String,
     @Json(name = "mode") val mode: String,
     @Json(name = "title") val title: String,
     @Json(name = "content") val content: String,
-    @Json(name = "gwangsan") val gwangsan: Number,
+    @Json(name = "gwangsan") val gwangsan: Int,
     @Json(name = "imageUrls") val imageUrls: ImageUrlsDto
 )
 
@@ -26,6 +26,6 @@ data class ImageUrlsDto(
 
 @JsonClass(generateAdapter = true)
 data class ImageDto(
-    @Json(name = "imageId") val imageId: Number,
+    @Json(name = "imageId") val imageId: Long,
     @Json(name = "imageUrl") val imageUrl: String
 )

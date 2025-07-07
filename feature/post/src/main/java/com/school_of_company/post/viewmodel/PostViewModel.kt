@@ -57,7 +57,7 @@ class PostViewModel @Inject constructor(
                 title = title.value,
                 content = content.value,
                 gwangsan = gwangsan.value.toInt(),
-                imageIds = imageIds.value.map { it.toInt() }
+                imageIds = imageIds.value.map { it.toLong() }
             )
         )
             .asResult()

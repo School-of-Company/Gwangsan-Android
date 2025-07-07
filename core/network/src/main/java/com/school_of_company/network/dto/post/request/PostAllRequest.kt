@@ -9,6 +9,6 @@ data class PostAllRequest(
     @Json(name = "mode") val mode: String,
     @Json(name = "title") val title: String,
     @Json(name = "content") val content: String,
-    @Json(name = "gwangsan") val gwangsan: Number,
-    @Json(name = "imageIds") val imageIds: List<Number>
+    @Json(name = "gwangsan") val gwangsan: Int,
+    @Json(name = "imageIds") val imageIds: List<Long>
 )
