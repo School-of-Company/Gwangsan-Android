@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.school_of_company.model.enum.Mode
 import com.school_of_company.model.enum.Type
-import com.school_of_company.network.dto.post.request.PostWriteRequest
 import com.school_of_company.network.errorHandling
 import com.school_of_company.result.asResult
 import com.school_of_company.data.repository.post.PostRepository
+import com.school_of_company.model.post.request.PostAllRequestModel
 import com.school_of_company.post.viewmodel.uiState.PostUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -51,15 +51,13 @@ class PostViewModel @Inject constructor(
 
         _postUiState.value = PostUiState.Loading
         postRepository.writePostInformation(
-            type = type.value,
-            mode = mode.value,
-            request = PostWriteRequest(
-                type = type.value,
-                mode = mode.value,
+            body = PostAllRequestModel(
+                type = type.value.name,
+                mode = mode.value.name,
                 title = title.value,
                 content = content.value,
-                gwangsan = gwangsan.value.toIntOrNull() ?: 0,
-                imageIds = imageIds.value.map { it.toIntOrNull() ?: 0 }
+                gwangsan = gwangsan.value.toInt(),
+                imageIds = imageIds.value.map { it.toInt() }
             )
         )
             .asResult()
