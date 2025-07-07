@@ -1,20 +1,24 @@
 package com.school_of_company.data.repository.post
 
-import com.school_of_company.model.enum.Mode
-import com.school_of_company.model.enum.Type
-import com.school_of_company.network.dto.post.request.PostWriteRequest
+import com.school_of_company.model.post.request.PostAllRequestModel
+import com.school_of_company.model.post.response.PostListResponseModel
+import com.school_of_company.network.dto.post.response.PostModifyResponse
 import kotlinx.coroutines.flow.Flow
 
 interface PostRepository {
-    fun writePostInformation(
-        type: Type,
-        mode: Mode,
-        request: PostWriteRequest
-    ): Flow<Unit>
-
+    fun writePostInformation(body: PostAllRequestModel) : Flow<Unit>
     fun modifyPostInformation(
-        type: Type,
-        mode: Mode,
-        request: PostWriteRequest
-    ): Flow<Unit>
+        postId: Long,
+        body: PostAllRequestModel
+    ) : Flow<PostModifyResponse>
+    fun getSpecificInformation() : Flow<PostListResponseModel>
+    fun getAllPostInformation(
+        type: String,
+        mode: String
+    ) : Flow<PostListResponseModel>
+    fun getMyPostInformation(
+        type: String,
+        mode: String
+    ) : Flow<PostListResponseModel>
+    fun deletePostInformation(postId: Long) : Flow<Unit>
 }
