@@ -1,36 +1,57 @@
 package com.school_of_company.data.repository.post
 
-import com.school_of_company.model.enum.Mode
-import com.school_of_company.model.enum.Type
+import com.school_of_company.model.post.request.PostAllRequestModel
+import com.school_of_company.model.post.response.PostListResponseModel
 import com.school_of_company.network.datasource.post.PostDataSource
-import com.school_of_company.network.dto.post.request.PostWriteRequest
+import com.school_of_company.network.dto.post.response.PostModifyResponse
+import com.school_of_company.network.mapper.post.request.toDto
+import com.school_of_company.network.mapper.post.response.toModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class PostRepositoryImpl @Inject constructor (
     private val postDataSource: PostDataSource
 ) : PostRepository {
-    override fun writePostInformation(
-        type: Type,
-        mode: Mode,
-        request: PostWriteRequest
-    ): Flow<Unit> {
-        return postDataSource.writePostInformation(
-            type = type,
-            mode = mode,
-            request = request
-        )
+    override fun writePostInformation(body: PostAllRequestModel): Flow<Unit> {
+        return postDataSource.writePostInformation(body = body.toDto())
     }
 
     override fun modifyPostInformation(
-        type: Type,
-        mode: Mode,
-        request: PostWriteRequest
-    ): Flow<Unit> {
+        postId: Long,
+        body: PostAllRequestModel
+    ): Flow<PostModifyResponse> {
         return postDataSource.modifyPostInformation(
-            type = type,
-            mode = mode,
-            request = request
+            postId = postId,
+            body = body.toDto()
         )
+    }
+
+    override fun getSpecificInformation(): Flow<PostListResponseModel> {
+        return postDataSource.getSpecificInformation().map { it.toModel() }
+    }
+
+    override fun getAllPostInformation(
+        type: String,
+        mode: String
+    ): Flow<PostListResponseModel> {
+        return postDataSource.getAllPostInformation(
+            type = type,
+            mode = mode
+        ).map { it.toModel() }
+    }
+
+    override fun getMyPostInformation(
+        type: String,
+        mode: String
+    ): Flow<PostListResponseModel> {
+        return postDataSource.getMyPostInformation(
+            type = type,
+            mode = mode
+        ).map { it.toModel() }
+    }
+
+    override fun deletePostInformation(postId: Long): Flow<Unit> {
+        return postDataSource.deletePostInformation(postId = postId)
     }
 }

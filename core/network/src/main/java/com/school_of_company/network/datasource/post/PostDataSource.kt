@@ -1,21 +1,25 @@
 package com.school_of_company.network.datasource.post
 
-import com.school_of_company.model.enum.Mode
-import com.school_of_company.model.enum.Type
-import com.school_of_company.network.dto.post.request.PostWriteRequest
+import com.school_of_company.network.dto.post.request.PostAllRequest
+import com.school_of_company.network.dto.post.response.PostListResponse
+import com.school_of_company.network.dto.post.response.PostModifyResponse
 import kotlinx.coroutines.flow.Flow
 
 interface PostDataSource {
 
-    fun writePostInformation(
-        type: Type,
-        mode: Mode,
-        request: PostWriteRequest
-    ): Flow<Unit>
-
+    fun writePostInformation(body: PostAllRequest) : Flow<Unit>
     fun modifyPostInformation(
-        type: Type,
-        mode: Mode,
-        request: PostWriteRequest
-    ): Flow<Unit>
+        postId: Long,
+        body: PostAllRequest
+    ) : Flow<PostModifyResponse>
+    fun getSpecificInformation() : Flow<PostListResponse>
+    fun getAllPostInformation(
+        type: String,
+        mode: String
+    ) : Flow<PostListResponse>
+    fun getMyPostInformation(
+        type: String,
+        mode: String
+    ) : Flow<PostListResponse>
+    fun deletePostInformation(postId: Long) : Flow<Unit>
 }

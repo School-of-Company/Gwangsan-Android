@@ -1,25 +1,46 @@
 package com.school_of_company.network.api
 
-import com.school_of_company.model.enum.Mode
-import com.school_of_company.model.enum.Type
-import com.school_of_company.network.dto.post.request.PostWriteRequest
+import com.school_of_company.network.dto.post.request.PostAllRequest
+import com.school_of_company.network.dto.post.response.PostListResponse
+import com.school_of_company.network.dto.post.response.PostModifyResponse
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
+import retrofit2.http.DELETE
+import retrofit2.http.PATCH
 import retrofit2.http.Query
 
 interface PostAPI {
 
     @POST("/api/post")
     suspend fun writePostInformation(
-        @Query("type") type: Type,
-        @Query("mode") mode: Mode,
-        @Body request: PostWriteRequest
+        @Body body: PostAllRequest
     )
 
-    @POST("/api/post/modify")
+    @PATCH("/api/post/{post_id}")
     suspend fun modifyPostInformation(
-        @Query("type") type: Type,
-        @Query("mode") mode: Mode,
-        @Body request: PostWriteRequest
+        @Path("post_id") postId: Long,
+        @Body body: PostAllRequest
+    ) : PostModifyResponse
+
+    @GET("/api/post/{post_id}")
+    suspend fun getSpecificInformation() : PostListResponse
+
+    @GET("/api/post")
+    suspend fun getAllPostInformation(
+        @Query("type") type: String,
+        @Query("mode") mode: String
+    ) : PostListResponse
+
+    @GET("/api/post/current")
+    suspend fun getMyPostInformation(
+        @Query("type") type: String,
+        @Query("mode") mode: String
+    ) : PostListResponse
+
+    @DELETE("/api/post/{post_id}")
+    suspend fun deletePostInformation(
+        @Path("post_id") postId: Long
     )
 }
