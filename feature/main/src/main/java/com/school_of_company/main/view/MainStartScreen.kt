@@ -35,6 +35,7 @@ import com.school_of_company.design_system.componet.icons.ServiceIcon
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.main.component.MainButton
+import com.school_of_company.ui.previews.GwangsanPreviews
 import kotlinx.coroutines.delay
 
 @Composable
@@ -187,8 +188,8 @@ private fun AutoSlideBanner(
     }
 }
 
+@GwangsanPreviews
 @Composable
-@Preview
 fun MainStartScreenPreview() {
     MainStartScreen(
         navigationToService = {},

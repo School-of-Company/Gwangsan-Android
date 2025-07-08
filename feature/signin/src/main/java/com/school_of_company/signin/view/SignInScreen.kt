@@ -26,6 +26,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.school_of_company.design_system.R
@@ -39,6 +40,7 @@ import com.school_of_company.network.util.DeviceIdManager
 import com.school_of_company.signin.viewmodel.SignInViewModel
 import com.school_of_company.signin.viewmodel.uistate.SaveTokenUiState
 import com.school_of_company.signin.viewmodel.uistate.SignInUiState
+import com.school_of_company.ui.previews.GwangsanPreviews
 import com.yourpackage.design_system.component.textField.GwangSanTextField
 
 @Composable
@@ -208,4 +210,17 @@ private fun SignInScreen(
             }
         }
     }
+}
+
+@GwangsanPreviews
+@Composable
+private fun SignInScreenPreview() {
+    SignInScreen(
+        onBackClick = {},
+        signInCallBack = {},
+        id = "",
+        password = "",
+        onIdChange = {},
+        onPasswordChange = {}
+    )
 }

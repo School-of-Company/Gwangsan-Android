@@ -20,6 +20,8 @@ import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.profile.component.MyReviewItem
 import com.school_of_company.profile.component.MyReviewList
+import com.school_of_company.ui.previews.GwangsanPreviews
+
 @Composable
 internal fun MyReviewRoute(
     onBackClick: () -> Unit,
@@ -74,7 +76,7 @@ private val ReViewDummyItems = listOf(
     )
 )
 
-@Preview
+@GwangsanPreviews
 @Composable
 private fun PreViewMyReviewScreen(){
     MyReviewScreen(

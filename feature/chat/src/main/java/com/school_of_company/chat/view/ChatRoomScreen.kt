@@ -22,6 +22,7 @@ import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.icons.DownArrowIcon
 import com.school_of_company.design_system.componet.topbar.GwangSanTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.ui.previews.GwangsanPreviews
 import com.yourpackage.design_system.component.textField.ChatInputTextField
 
 internal data class ChatMessage(
@@ -152,7 +153,7 @@ private fun ChatRoomScreen(
     }
 }
 
-@Preview
+@GwangsanPreviews
 @Composable
 private fun ChatRoomScreenPreview() {
     ChatRoomScreen(

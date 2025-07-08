@@ -1,5 +1,6 @@
 package com.school_of_company.chat.view
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -18,6 +19,7 @@ import com.school_of_company.design_system.componet.bottombar.GwangSanNavigation
 import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.ui.previews.GwangsanPreviews
 
 // 임시 모델 (API 나오면 model 패키지로 이동)
 internal data class ChatRoom(
@@ -73,10 +75,11 @@ private fun ChatScreen(
     onCloseClick: () -> Unit,
     onChatClick: (ChatRoom) -> Unit = {},
 ) {
-    GwangSanTheme { _, _ ->
+    GwangSanTheme { colors, _ ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(color = colors.white)
                 .padding(bottom = 56.dp)
         ) {
 
@@ -112,7 +115,7 @@ private fun ChatScreen(
     }
 }
 
-@Preview(showBackground = true)
+@GwangsanPreviews
 @Composable
 private fun ChatScreenPreview() {
     val dummyList = listOf(
@@ -120,6 +123,10 @@ private fun ChatScreenPreview() {
         ChatRoom("2", "모태환", "안녕하세요 ~.~^^", 1),
         ChatRoom("3", "모태환", "안녕하세요 ~.~^^", 0),
         ChatRoom("4", "모태환", "안녕하세요 ~.~^^", 0),
+        ChatRoom("5", "모태환", "안녕하세요 ~.~^^", 0),
+        ChatRoom("6", "모태환", "안녕하세요 ~.~^^", 0),
+        ChatRoom("7", "모태환", "안녕하세요 ~.~^^", 0),
+        ChatRoom("8", "모태환", "안녕하세요 ~.~^^", 0),
     )
 
     ChatScreen(

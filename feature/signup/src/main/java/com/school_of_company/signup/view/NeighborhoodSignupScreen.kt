@@ -37,6 +37,7 @@ import com.school_of_company.design_system.componet.topbar.GwangSanTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.signup.componet.AreaList
 import com.school_of_company.signup.viewmodel.SignUpViewModel
+import com.school_of_company.ui.previews.GwangsanPreviews
 import com.yourpackage.design_system.component.textField.GwangSanSearchTextField
 @Composable
 internal fun NeighborhoodSignupRoute(
@@ -56,6 +57,7 @@ internal fun NeighborhoodSignupRoute(
         onIntroduceClick = onIntroduceClick
     )
 }
+
 @Composable
 private fun NeighborhoodSignupScreen(
     modifier: Modifier = Modifier,
@@ -157,4 +159,17 @@ private fun NeighborhoodSignupScreen(
             }
         }
     }
+}
+
+@GwangsanPreviews
+@Composable
+private fun NeighborhoodSignupScreenPreview() {
+    NeighborhoodSignupScreen(
+        studentSearch = "",
+        filteredAreas = listOf("강남구", "강동구", "강북구", "강서구", "관악구", "광진구", "구로구", "금천구", "노원구", "도봉구",),
+        onStudentSearchChange = {},
+        onAreaClick = {},
+        onBackClick = {},
+        onIntroduceClick = {}
+    )
 }

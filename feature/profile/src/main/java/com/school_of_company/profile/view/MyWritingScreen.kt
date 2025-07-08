@@ -26,6 +26,7 @@ import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.design_system.componet.recycle.MyWriteItem
 import com.school_of_company.design_system.componet.recycle.MyWriteList
+import com.school_of_company.ui.previews.GwangsanPreviews
 
 @Composable
 internal fun MyWritingRoute(
@@ -117,8 +118,8 @@ private val dummyItems = listOf(
     )
 )
 
+@GwangsanPreviews
 @Composable
-@Preview
 private fun MyWritingScreenPreview(){
     MyWritingScreen(
         onBackClick = {},

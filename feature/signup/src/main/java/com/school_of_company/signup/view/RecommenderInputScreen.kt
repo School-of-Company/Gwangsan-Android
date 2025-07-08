@@ -23,6 +23,7 @@ import com.school_of_company.design_system.componet.icons.DownArrowIcon
 import com.school_of_company.design_system.componet.topbar.GwangSanTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.signup.viewmodel.SignUpViewModel
+import com.school_of_company.ui.previews.GwangsanPreviews
 import com.yourpackage.design_system.component.textField.GwangSanTextField
 
 @Composable
@@ -118,4 +119,16 @@ fun RecommenderInputScreen(
             )
         }
     }
+}
+
+@GwangsanPreviews
+@Composable
+private fun RecommenderInputScreenPreview() {
+    RecommenderInputScreen(
+        recommender = "",
+        isNextEnabled = false,
+        onRecommenderChange = {},
+        onBackClick = {},
+        onNextClick = {}
+    )
 }

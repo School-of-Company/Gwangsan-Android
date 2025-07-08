@@ -26,6 +26,7 @@ import com.school_of_company.design_system.componet.recycle.CleaningRequestCard
 import com.school_of_company.design_system.componet.recycle.MyProfileUserLevel
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.ui.previews.GwangsanPreviews
 
 @Composable
 internal fun ReadMoreRoute(
@@ -201,7 +202,7 @@ private fun ReadMoreScreen(
     }
 }
 
-@Preview
+@GwangsanPreviews
 @Composable
 private fun PreviewReadMoreScreen() {
     ReadMoreScreen(
