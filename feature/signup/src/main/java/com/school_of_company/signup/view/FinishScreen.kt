@@ -12,6 +12,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.school_of_company.design_system.componet.button.GwangSanButton
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.ui.previews.GwangsanPreviews
+
 @Composable
 internal fun FinishRoute(
     onClickGoToLogin: () -> Unit,
@@ -66,7 +68,7 @@ fun FinishScreen(
     }
 }
 
-@Preview(showBackground = true)
+@GwangsanPreviews
 @Composable
 fun FinishScreenPreview() {
     FinishScreen(onClickGoToLogin = {})
