@@ -38,6 +38,7 @@ import com.school_of_company.main.viewmodel.MainViewModel
 import com.school_of_company.main.viewmodel.uistate.GetMainListUiState
 import com.school_of_company.model.enum.Mode
 import com.school_of_company.model.enum.Type
+import com.school_of_company.ui.previews.GwangsanPreviews
 
 @Composable
 internal fun MainRoute(
@@ -197,7 +198,7 @@ private fun MainScreen(
     }
 }
 
-@Preview(showBackground = true)
+@GwangsanPreviews
 @Composable
 private fun MainScreenPreview() {
     val dummyState = rememberSwipeRefreshState(isRefreshing = false)

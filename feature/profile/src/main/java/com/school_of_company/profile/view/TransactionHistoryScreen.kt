@@ -26,6 +26,8 @@ import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.profile.component.DataTransactionHistoryItem
 import com.school_of_company.profile.component.TransactionHistoryList
+import com.school_of_company.ui.previews.GwangsanPreviews
+
 @Composable
 internal fun TransactionHistoryRoute(
     onBackClick: () -> Unit,
@@ -112,7 +114,8 @@ private val DummyItems = listOf(
         price = "3000 광산"
     )
 )
-@Preview
+
+@GwangsanPreviews
 @Composable
 private fun PreviewTransactionHistoryScreen(
 ){

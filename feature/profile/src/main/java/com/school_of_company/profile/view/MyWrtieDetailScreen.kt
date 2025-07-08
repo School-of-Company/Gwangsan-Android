@@ -22,6 +22,7 @@ import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.profile.component.CleaningRequestCard
 import com.school_of_company.profile.component.MyProfileUserLevel
+import com.school_of_company.ui.previews.GwangsanPreviews
 
 @Composable
 internal fun ReviewPostDetailRoute(
@@ -132,7 +133,7 @@ fun ReviewPostDetailScreen(
     }
 }
 
-@Preview
+@GwangsanPreviews
 @Composable
 private fun PreViewReviewPostDetailScreen(){
     ReviewPostDetailScreen(

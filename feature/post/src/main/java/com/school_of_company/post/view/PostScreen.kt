@@ -24,6 +24,7 @@ import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.model.enum.Mode
 import com.school_of_company.model.enum.Type
 import com.school_of_company.post.viewmodel.PostViewModel
+import com.school_of_company.ui.previews.GwangsanPreviews
 import kotlinx.coroutines.launch
 
 @Composable
@@ -162,7 +163,7 @@ private fun PostScreen(
     }
 }
 
-@Preview
+@GwangsanPreviews
 @Composable
 private fun PostScreenPreview() {
     PostRoute(

@@ -14,6 +14,7 @@ import com.school_of_company.design_system.componet.recycle.MyWriteItem
 import com.school_of_company.design_system.componet.recycle.MyWriteList
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.ui.previews.GwangsanPreviews
 
 @Composable
 internal fun ContentRoute(
@@ -130,7 +131,7 @@ val dummyItems = listOf(
     )
 )
 
-@Preview(showBackground = true, widthDp = 1200, heightDp = 900)
+@GwangsanPreviews
 @Composable
 fun ContentScreenPreviewStates() {
     Row(modifier = Modifier.fillMaxSize()) {

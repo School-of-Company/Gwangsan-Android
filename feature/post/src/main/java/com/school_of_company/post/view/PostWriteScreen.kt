@@ -21,6 +21,7 @@ import com.school_of_company.design_system.theme.color.GwangSanColor
 import com.school_of_company.model.enum.Mode
 import com.school_of_company.model.enum.Type
 import com.school_of_company.post.viewmodel.PostViewModel
+import com.school_of_company.ui.previews.GwangsanPreviews
 import com.yourpackage.design_system.component.textField.GwangSanTextField
 
 @Composable
@@ -158,8 +159,8 @@ private fun PostWriteScreen(
     }
 }
 
+@GwangsanPreviews
 @Composable
-@Preview(showBackground = true)
 private fun PostWritePreview() {
     PostWriteScreen(
         subject = "예시 주제",

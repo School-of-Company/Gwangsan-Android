@@ -23,6 +23,7 @@ import com.school_of_company.design_system.R
 import com.school_of_company.design_system.componet.button.GwangSanEnableButton
 import com.school_of_company.design_system.componet.button.GwangSanStateButton
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.ui.previews.GwangsanPreviews
 
 @Composable
 internal fun StartRoute(
@@ -149,7 +150,7 @@ private fun StartScreen(
     }
 }
 
-@Preview
+@GwangsanPreviews
 @Composable
 private fun StartScreenPreview() {
     StartScreen(

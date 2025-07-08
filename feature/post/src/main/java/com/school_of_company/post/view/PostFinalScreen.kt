@@ -28,6 +28,7 @@ import com.school_of_company.model.enum.Mode
 import com.school_of_company.model.enum.Type
 import com.school_of_company.post.viewmodel.PostViewModel
 import com.school_of_company.post.viewmodel.uiState.PostUiState
+import com.school_of_company.ui.previews.GwangsanPreviews
 
 @Composable
 internal fun PostFinalRoute(
@@ -269,7 +270,7 @@ private fun PostFinalScreen(
     }
 }
 
-@Preview(showBackground = true)
+@GwangsanPreviews
 @Composable
 private fun PostFinalPreview() {
     PostFinalScreen(

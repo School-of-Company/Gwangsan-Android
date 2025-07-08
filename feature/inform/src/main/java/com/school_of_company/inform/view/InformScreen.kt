@@ -14,6 +14,7 @@ import com.school_of_company.design_system.componet.icons.CloseIcon
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.inform.component.InformItem
+import com.school_of_company.ui.previews.GwangsanPreviews
 
 // 임시 모델 (API 나오면 model 패키지로 이동)
 private data class Inform(
@@ -104,7 +105,7 @@ private fun InformScreen(
     }
 }
 
-@Preview(showBackground = true)
+@GwangsanPreviews
 @Composable
 private fun InformScreenPreview() {
     val dummyList = listOf(

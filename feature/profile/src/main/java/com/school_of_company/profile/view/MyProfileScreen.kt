@@ -32,6 +32,7 @@ import com.school_of_company.profile.component.MyInformation
 import com.school_of_company.profile.component.MyProfileExerciseButton
 import com.school_of_company.profile.component.MyProfileReviewListItem
 import com.school_of_company.profile.component.Review
+import com.school_of_company.ui.previews.GwangsanPreviews
 
 @Composable
 internal fun MyProfileRoute(
@@ -230,7 +231,7 @@ private fun MyProfileScreen(
     }
 }
 
-@Preview
+@GwangsanPreviews
 @Composable
 private fun MyProfileScreenPreview() {
     MyProfileScreen(
@@ -271,3 +272,4 @@ private fun MyProfileScreenPreview() {
         )
     )
 }
+

@@ -19,6 +19,7 @@ import com.school_of_company.design_system.componet.icons.CloseIcon
 import com.school_of_company.design_system.componet.icons.DownArrowIcon
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.ui.previews.GwangsanPreviews
 
 @Composable
 internal fun InformDetailRoute(
@@ -130,7 +131,7 @@ private fun InformDetailScreen(
     }
 }
 
-@Preview(showBackground = true)
+@GwangsanPreviews
 @Composable
 private fun InformDetailScreenPreviewWithImage() {
     InformDetailScreen(
@@ -141,7 +142,7 @@ private fun InformDetailScreenPreviewWithImage() {
     )
 }
 
-@Preview(showBackground = true)
+@GwangsanPreviews
 @Composable
 private fun InformDetailScreenPreviewWithoutImage() {
     InformDetailScreen(

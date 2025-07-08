@@ -36,6 +36,9 @@ import com.school_of_company.signup.viewmodel.SignUpViewModel
 import com.school_of_company.signup.viewmodel.uistate.SignUpUiState
 import com.yourpackage.design_system.component.textField.GwangSanSelectTextField
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.school_of_company.signup.viewmodel.uistate.SendNumberUiState
+import com.school_of_company.signup.viewmodel.uistate.VerifyNumberUiState
+import com.school_of_company.ui.previews.GwangsanPreviews
 
 @Composable
 internal fun IntroduceRoute(
@@ -251,4 +254,19 @@ private fun IntroduceScreen(
             }
         }
     }
+}
+
+@GwangsanPreviews
+@Composable
+private fun IntroduceScreenPreview() {
+    IntroduceScreen(
+        specialty = "",
+        isDropdownVisible = false,
+        onBackClick = {},
+        onNextClick = {},
+        onToggleDropdown = {},
+        onCloseDropdown = {},
+        callBack = {},
+        onSpecialtyChange = {}
+    )
 }
