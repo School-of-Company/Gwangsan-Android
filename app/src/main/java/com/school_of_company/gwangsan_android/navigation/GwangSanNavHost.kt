@@ -61,7 +61,6 @@ import com.school_of_company.signup.navigation.signUpPasswordScreen
 import com.school_of_company.signup.navigation.signUpPhoneScreen
 import com.school_of_company.signup.navigation.signUpRecommenderScreen
 
-
 @Composable
 fun GwangsanNavHost(
     modifier: Modifier = Modifier,
@@ -147,14 +146,10 @@ fun GwangsanNavHost(
 
         mainScreen(
             navigationToPost = { type: Type, mode: Mode ->
-                navController.navigateToPost(
-                    type = type,
-                    mode = mode
-                )
+                navController.navigateToPost(type = type, mode = mode)
             },
             onErrorToast = onErrorToast
         )
-
         mainStartScreen(
             navigationToService = { navController.navigateToMain("SERVICE") },
             navigationToObject = { navController.navigateToMain("OBJECT") }
@@ -224,5 +219,10 @@ fun GwangsanNavHost(
             onBackClick = { navController.popBackStack() },
             onMyProfileClick = { navController.navigateToMyProfile() }
         )
+
+
+
+
+
     }
 }
