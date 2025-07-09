@@ -3,6 +3,7 @@ package com.school_of_company.data.repository.auth
 import com.school_of_company.model.auth.request.LoginRequestModel
 import com.school_of_company.model.auth.request.SignUpCertificationNumberSendRequestModel
 import com.school_of_company.model.auth.request.SignUpRequestModel
+import com.school_of_company.model.auth.request.SmsVerifyCodeRequestModel
 import com.school_of_company.model.auth.response.LoginResponseModel
 import kotlinx.coroutines.flow.Flow
 
@@ -23,7 +24,7 @@ interface AuthRepository {
 
     suspend fun deleteTokenData()
 
-    fun signUpCertificationNumberCertification(phoneNumber: String, code: String) : Flow<Unit>
+    fun signUpCertificationNumberCertification(body: SmsVerifyCodeRequestModel) : Flow<Unit>
 
     fun signUpCertificationNumberSend(body: SignUpCertificationNumberSendRequestModel) : Flow<Unit>
 }

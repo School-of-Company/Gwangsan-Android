@@ -8,6 +8,7 @@ import com.school_of_company.Regex.isValidPhoneNumber
 import com.school_of_company.data.repository.auth.AuthRepository
 import com.school_of_company.model.auth.request.SignUpCertificationNumberSendRequestModel
 import com.school_of_company.model.auth.request.SignUpRequestModel
+import com.school_of_company.model.auth.request.SmsVerifyCodeRequestModel
 import com.school_of_company.network.errorHandling
 import com.school_of_company.result.asResult
 import com.school_of_company.signup.viewmodel.uistate.SendNumberUiState
@@ -104,8 +105,10 @@ class SignUpViewModel @Inject constructor(
         viewModelScope.launch {
             _verifyNumberUiState.value = VerifyNumberUiState.Loading
             authRepository.signUpCertificationNumberCertification(
-                phoneNumber = phoneNumber,
-                code = code
+                body = SmsVerifyCodeRequestModel(
+                    phoneNumber = phoneNumber,
+                    code = code
+                )
             )
                 .asResult()
                 .collectLatest { result ->
