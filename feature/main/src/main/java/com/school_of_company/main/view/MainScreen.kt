@@ -1,5 +1,6 @@
 package com.school_of_company.main.view
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,7 +43,7 @@ import com.school_of_company.ui.previews.GwangsanPreviews
 
 @Composable
 internal fun MainRoute(
-    navigationToPostService: () -> Unit,
+    navigationToPost: (Mode) -> Unit,
     onErrorToast: (throwable: Throwable?, message: Int?) -> Unit,
     moDeselectedType: Type,
     viewModel: MainViewModel = hiltViewModel()
@@ -53,7 +54,7 @@ internal fun MainRoute(
 
     var switchState by remember { mutableStateOf(GwangSanSwitchState.NEED) }
 
-    val selectedType = when (switchState) {
+    val selectedMode = when (switchState) {
         GwangSanSwitchState.NEED -> Mode.RECEIVER
         GwangSanSwitchState.REQUEST -> Mode.GIVER
     }
@@ -63,19 +64,19 @@ internal fun MainRoute(
         Type.SERVICE -> "서비스"
     }
 
-    LaunchedEffect(selectedType, moDeselectedType) {
+    LaunchedEffect(selectedMode, moDeselectedType) {
         viewModel.getMainList(
-            mode = selectedType,
+            mode = selectedMode,
             type = moDeselectedType
         )
     }
 
     MainScreen(
-        navigationToPostService = navigationToPostService,
+        navigationToPostService = { navigationToPost(selectedMode) },
         mainCallBack = {
             viewModel.getMainList(
                 type = moDeselectedType,
-                mode = selectedType
+                mode = selectedMode
             )
         },
         onErrorToast = onErrorToast,
@@ -198,7 +199,7 @@ private fun MainScreen(
     }
 }
 
-@GwangsanPreviews
+@Preview
 @Composable
 private fun MainScreenPreview() {
     val dummyState = rememberSwipeRefreshState(isRefreshing = false)

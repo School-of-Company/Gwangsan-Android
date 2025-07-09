@@ -5,18 +5,41 @@ import androidx.compose.ui.Modifier
 import com.school_of_company.gwangsan_android.R
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
+import com.school_of_company.chat.navigation.chatRoomScreen
+import com.school_of_company.chat.navigation.chatScreen
+import com.school_of_company.chat.navigation.navigateToChatRoom
 import com.school_of_company.common.ForBiddenException
 import com.school_of_company.common.NoInternetException
 import com.school_of_company.common.OtherHttpException
 import com.school_of_company.common.ServerException
 import com.school_of_company.common.TimeOutException
 import com.school_of_company.common.UnKnownException
+import com.school_of_company.content.navigation.contentScreen
+import com.school_of_company.content.navigation.navigateToReadMore
+import com.school_of_company.content.navigation.readMoreScreen
 import com.school_of_company.design_system.componet.toast.makeToast
 import com.school_of_company.gwangsan_android.ui.GwangSanAppState
+import com.school_of_company.inform.navigation.informDetailScreen
+import com.school_of_company.inform.navigation.informScreen
+import com.school_of_company.inform.navigation.navigateToInformDetail
 import com.school_of_company.main.navgation.mainScreen
 import com.school_of_company.main.navgation.mainStartScreen
 import com.school_of_company.main.navgation.navigateToMain
 import com.school_of_company.main.navgation.navigateToMainStart
+import com.school_of_company.model.enum.Mode
+import com.school_of_company.model.enum.Type
+import com.school_of_company.post.navigation.navigateToPost
+import com.school_of_company.post.navigation.postScreen
+import com.school_of_company.profile.navigation.myProfileScreen
+import com.school_of_company.profile.navigation.myReviewScreen
+import com.school_of_company.profile.navigation.myWritingDetailScreen
+import com.school_of_company.profile.navigation.myWritingScreen
+import com.school_of_company.profile.navigation.navigateToMyProfile
+import com.school_of_company.profile.navigation.navigateToMyReview
+import com.school_of_company.profile.navigation.navigateToMyWriting
+import com.school_of_company.profile.navigation.navigateToMyWritingDetail
+import com.school_of_company.profile.navigation.navigateToTransactionHistory
+import com.school_of_company.profile.navigation.transactionHistoryScreen
 import com.school_of_company.signin.navigation.StartRoute
 import com.school_of_company.signin.navigation.navigateToSignIn
 import com.school_of_company.signin.navigation.signInScreen
@@ -37,7 +60,6 @@ import com.school_of_company.signup.navigation.signUpNickNameScreen
 import com.school_of_company.signup.navigation.signUpPasswordScreen
 import com.school_of_company.signup.navigation.signUpPhoneScreen
 import com.school_of_company.signup.navigation.signUpRecommenderScreen
-
 
 @Composable
 fun GwangsanNavHost(
@@ -85,7 +107,7 @@ fun GwangsanNavHost(
         )
 
         signUpNickNameScreen(
-            onBackClick = {navController.popBackStack() },
+            onBackClick = { navController.popBackStack() },
             onPasswordClick = { navController.navigateToSignUpPassword() },
             onErrorToast = onErrorToast
         )
@@ -106,16 +128,6 @@ fun GwangsanNavHost(
             onIntroduceClick = { navController.navigateToSignUpIntroduce() }
         )
 
-        mainScreen(
-            navigationToPostService = { navController.popBackStack()},
-            onErrorToast = onErrorToast
-        )
-
-        mainStartScreen(
-            navigationToService = { navController.navigateToMain("SERVICE") },
-            navigationToObject = { navController.navigateToMain("OBJECT") }
-        )
-
         signUpIntroduceScreen(
             onBackClick = { navController.popBackStack() },
             onNextClick = { navController.navigateToSignUpRecommender() },
@@ -131,5 +143,86 @@ fun GwangsanNavHost(
         signUpFinishScreen(
             onClickGoToLogin = { navController.navigateToSignIn() }
         )
+
+        mainScreen(
+            navigationToPost = { type: Type, mode: Mode ->
+                navController.navigateToPost(type = type, mode = mode)
+            },
+            onErrorToast = onErrorToast
+        )
+        mainStartScreen(
+            navigationToService = { navController.navigateToMain("SERVICE") },
+            navigationToObject = { navController.navigateToMain("OBJECT") }
+        )
+
+        chatScreen(
+            onCloseClick = { navController.popBackStack() },
+            onChatClick = { navController.navigateToChatRoom() }
+        )
+
+        chatRoomScreen(
+            onBackClick = { navController.popBackStack() },
+            onSendClick = { }
+        )
+
+        contentScreen(
+            onMyProfileClick = { navController.navigateToMyProfile() },
+            onItemClick = { navController.navigateToReadMore() }
+        )
+
+        readMoreScreen(
+            onBackClick = { navController.popBackStack() },
+            onMyProfileClick = { navController.navigateToMyProfile() },
+            onChatClick = { navController.navigateToChatRoom() },
+            onReviewClick = { _, _ -> },
+            onReportClick = { _, _ -> }
+        )
+
+        informScreen(
+            onBackClick = { navController.popBackStack() },
+            onNextClick = { navController.navigateToInformDetail() }
+        )
+
+        informDetailScreen(
+            onBackClick = { navController.popBackStack() }
+        )
+
+        postScreen(
+            onBackClick = { navController.popBackStack() },
+            onComplete = {  }
+        )
+
+        myProfileScreen(
+            onMyReviewClick = { navController.navigateToMyReview() },
+            onMyWritingClick = { navController.navigateToMyWriting() },
+            onTransactionHistoryClick = { navController.navigateToTransactionHistory() }
+        )
+
+        myReviewScreen(
+            onBackClick = { navController.popBackStack() },
+            onMyProfileClick = { navController.navigateToMyProfile() }
+        )
+
+        myWritingScreen(
+            onBackClick = { navController.popBackStack() },
+            onMyProfileClick = { navController.navigateToMyProfile() },
+            onReviewPostDetailClick = { navController.navigateToMyWritingDetail() }
+        )
+
+        myWritingDetailScreen(
+            onBackClick = { navController.popBackStack() },
+            onMyProfileClick = { navController.navigateToMyProfile() },
+            onCompleteClick = { navController.popBackStack() } // 또는 리뷰 작성 등으로 확장 가능
+        )
+
+        transactionHistoryScreen(
+            onBackClick = { navController.popBackStack() },
+            onMyProfileClick = { navController.navigateToMyProfile() }
+        )
+
+
+
+
+
     }
 }

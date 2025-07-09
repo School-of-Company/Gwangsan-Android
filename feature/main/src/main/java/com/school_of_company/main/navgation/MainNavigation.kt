@@ -6,6 +6,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.school_of_company.main.view.MainRoute
 import com.school_of_company.main.view.MainStartRoute
+import com.school_of_company.model.enum.Mode
 import com.school_of_company.model.enum.Type
 
 
@@ -21,16 +22,20 @@ fun NavController.navigateToMainStart(navOptions: NavOptions? = null) {
 }
 
 fun NavGraphBuilder.mainScreen(
-    navigationToPostService: () -> Unit,
-    onErrorToast: (throwable: Throwable?, message: Int?) -> Unit
-    ) {
+    navigationToPost: (Type, Mode) -> Unit,
+    onErrorToast: (Throwable?, Int?) -> Unit
+) {
     composable("main_route/{type}") { backStackEntry ->
-        val typeStr = backStackEntry.arguments?.getString("type") ?: "SERVICE"
-        val selectedType = Type.valueOf(typeStr) // SERVICE or OBJECT
+        val typeStr = backStackEntry.arguments?.getString("type") ?: "OBJECT"
+        val selectedType = Type.valueOf(typeStr)
 
         MainRoute(
-            navigationToPostService =  navigationToPostService,
-            onErrorToast =  onErrorToast,
+            navigationToPost = { mode ->
+                navigationToPost(
+                    selectedType,
+                    mode
+                ) },
+            onErrorToast = onErrorToast,
             moDeselectedType = selectedType
         )
     }
@@ -39,7 +44,6 @@ fun NavGraphBuilder.mainScreen(
 fun NavGraphBuilder.mainStartScreen(
     navigationToService: () -> Unit,
     navigationToObject: () -> Unit,
-
 ){
     composable(route = MainStartRoute) {
         MainStartRoute(
