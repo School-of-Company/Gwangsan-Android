@@ -4,8 +4,6 @@ import com.school_of_company.data.repository.auth.AuthRepository
 import com.school_of_company.data.repository.auth.AuthRepositoryImpl
 import com.school_of_company.data.repository.local.LocalRepository
 import com.school_of_company.data.repository.local.LocalRepositoryImpl
-import com.school_of_company.data.repository.main.MainRepository
-import com.school_of_company.data.repository.main.MainRepositoryImpl
 import com.school_of_company.data.repository.member.MemberRepository
 import com.school_of_company.data.repository.member.MemberRepositoryImpl
 import com.school_of_company.data.repository.post.PostRepository
@@ -22,11 +20,6 @@ abstract class RepositoryModule {
     abstract fun bindAuthRepository(
         authRepositoryImpl: AuthRepositoryImpl
     ): AuthRepository
-
-    @Binds
-    abstract fun bindMainRepository(
-        mainRepositoryImpl: MainRepositoryImpl
-    ): MainRepository
 
     @Binds
     abstract fun bindPostRepository(
