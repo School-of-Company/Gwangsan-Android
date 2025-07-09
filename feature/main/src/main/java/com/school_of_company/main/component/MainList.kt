@@ -22,16 +22,15 @@ import com.school_of_company.design_system.R
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.school_of_company.design_system.theme.GwangSanTheme
-import com.school_of_company.model.main.response.MainListResponseModel
+import com.school_of_company.model.post.response.Post
 
 @Composable
 fun MainListItem(
     modifier: Modifier = Modifier,
-    data: MainListResponseModel
+    data: Post
 ) {
     GwangSanTheme { color, typography ->
 
@@ -41,7 +40,7 @@ fun MainListItem(
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if (data.imageUrls.isNullOrEmpty()) {
+            if (data.imageUrls.images.isNotEmpty()) {
                 Box(
                     modifier = Modifier
                         .size(80.dp)
@@ -123,7 +122,7 @@ fun MainListItem(
 @Composable
 fun MainList(
     modifier: Modifier = Modifier,
-    items: List<MainListResponseModel>
+    items: List<Post>
 ) {
     GwangSanTheme { color, _ ->
 
