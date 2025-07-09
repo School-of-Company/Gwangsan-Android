@@ -16,5 +16,4 @@ dependencies {
     implementation(libs.swiperefresh)
     implementation(libs.androidx.navigation.runtime.android)
     implementation(libs.androidx.navigation.compose.android)
-
 }
