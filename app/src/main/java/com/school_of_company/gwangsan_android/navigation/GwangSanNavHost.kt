@@ -147,7 +147,10 @@ fun GwangsanNavHost(
 
         mainScreen(
             navigationToPost = { type: Type, mode: Mode ->
-                navController.navigateToPost(type = type, mode = mode)
+                navController.navigateToPost(
+                    type = type,
+                    mode = mode
+                )
             },
             onErrorToast = onErrorToast
         )
