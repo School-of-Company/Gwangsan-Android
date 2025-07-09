@@ -22,7 +22,7 @@ import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.ui.previews.GwangsanPreviews
 
 // 임시 모델 (API 나오면 model 패키지로 이동)
-internal data class ChatRoom(
+data class ChatRoom(
     val id: String,
     val name: String,
     val lastMessage: String,
