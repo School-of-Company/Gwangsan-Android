@@ -293,17 +293,9 @@ private fun CertinSignUpScreen(
 @GwangsanPreviews
 @Composable
 private fun CertinSignUpScreenPreview() {
-    CertinSignUpScreen(
+    CertInSignUpRoute(
+        onErrorToast = {_, _ ->},
         onBackClick = {},
-        onNeighborhoodClick = {},
-        certificationCallBack = {},
-        sendCertificationCodeCallBack = {},
-        onErrorToast = { _, _ -> },
-        onPhoneNumberChange = {},
-        onCertificationNumberChange = {},
-        phoneNumber = "",
-        certificationNumber = "",
-        verifyNumberUiState = VerifyNumberUiState.Loading,
-        sendNumberUiState = SendNumberUiState.Loading
+        onNeighborhoodClick = {}
     )
 }
