@@ -35,6 +35,8 @@ dependencies {
     implementation(project(":feature:post"))
     implementation(project(":feature:main"))
     implementation(project(":feature:content"))
+    implementation(project(":feature:chat"))
+    implementation(project(":feature:inform"))
     implementation(project(":core:device"))
     implementation(project(":core:local"))
     implementation(platform(libs.firebase.bom))
