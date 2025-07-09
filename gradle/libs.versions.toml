@@ -5,6 +5,7 @@ agp = "8.6.0"
 androidxComposeCompiler = "1.5.8"
 composeBom = "2023.08.00"
 coreKtx = "1.12.0"
+androidxNavigation = "2.8.3"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 navigationCommonAndroid = "2.9.0"
@@ -98,7 +99,7 @@ kotlinx-immutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collectio
 androidx-window-size = { group = "androidx.compose.material3", name = "material3-window-size-class", version.ref = "material3WindowSize" }
 androidx-navigation-common = { group = "androidx.navigation", name = "navigation-common", version.ref = "navigation" }
 androidx-navigation-runtime = { group = "androidx.navigation", name = "navigation-runtime", version.ref = "navigation" }
-androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigation" }
 androidx-navigation-runtime-android = { group = "androidx.navigation", name = "navigation-runtime-android", version.ref = "navigationRuntimeAndroid" }
 transport-runtime = { group = "com.google.android.datatransport", name = "transport-runtime", version.ref = "transportRuntime" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebaseMessaging" }
