@@ -4,6 +4,8 @@ import com.school_of_company.network.datasource.auth.AuthDataSource
 import com.school_of_company.network.datasource.auth.AuthDataSourceImpl
 import com.school_of_company.network.datasource.member.MemberDataSource
 import com.school_of_company.network.datasource.member.MemberDataSourceImpl
+import com.school_of_company.network.datasource.notice.NoticeDataSource
+import com.school_of_company.network.datasource.notice.NoticeDataSourceImpl
 import com.school_of_company.network.datasource.post.PostDataSource
 import com.school_of_company.network.datasource.post.PostDataSourceImpl
 import dagger.Binds
@@ -28,4 +30,9 @@ abstract class RemoteDataSourceModule {
     abstract fun bindMemberDataSource(
         memberDataSourceImpl: MemberDataSourceImpl
     ): MemberDataSource
+
+    @Binds
+    abstract fun bindNoticeDataSource(
+        noticeDataSourceImpl: NoticeDataSourceImpl
+    ) : NoticeDataSource
 }
