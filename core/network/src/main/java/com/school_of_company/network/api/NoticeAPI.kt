@@ -13,5 +13,5 @@ interface NoticeAPI {
     @GET("/api/notice/{noticeId}")
     suspend fun getSpecificNotice(
         @Path("noticeId") noticeId : Long
-    ) : List<GetSpecificNoticeResponse>
+    ) : GetSpecificNoticeResponse
 }

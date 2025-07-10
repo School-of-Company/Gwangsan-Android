@@ -7,5 +7,5 @@ import kotlinx.coroutines.flow.Flow
 interface NoticeRepository {
 
     fun getAllNotice() : Flow<List<GetAllNoticeResponseModel>>
-    fun getSpecificNotice(noticeId : Long) : Flow<List<GetSpecificNoticeResponseModel>>
+    fun getSpecificNotice(noticeId : Long) : Flow<GetSpecificNoticeResponseModel>
 }

@@ -193,8 +193,9 @@ fun GwangsanNavHost(
         )
 
         informScreen(
-            onBackClick = { navController.popBackStack() },
-            onNextClick = { navController.navigateToInformDetail() }
+            onNextClick = { id ->
+                navController.navigateToInformDetail(id)
+            }
         )
 
         informDetailScreen(
@@ -233,10 +234,5 @@ fun GwangsanNavHost(
             onBackClick = { navController.popBackStack() },
             onMyProfileClick = { navController.navigateToMyProfile() }
         )
-
-
-
-
-
     }
 }

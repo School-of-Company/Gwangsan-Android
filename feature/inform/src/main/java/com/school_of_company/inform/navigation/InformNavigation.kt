@@ -16,17 +16,21 @@ fun NavController.navigateToInform(navOptions: NavOptions? = null) {
     this.navigate(InformRoute, navOptions)
 }
 
-fun NavController.navigateToInformDetail(navOptions: NavOptions? = null) {
-    this.navigate(InformDetailRoute, navOptions)
+fun NavController.navigateToInformDetail(
+    noticeId: Long,
+    navOptions: NavOptions? = null
+) {
+    this.navigate(
+        route = "$InformDetailRoute/${noticeId}",
+        navOptions = navOptions
+    )
 }
 
 fun NavGraphBuilder.informScreen(
-    onBackClick: () -> Unit,
-    onNextClick: () -> Unit
+    onNextClick: (Long) -> Unit
 ) {
     composable(InformRoute) {
         InformRoute(
-            onBackClick = onBackClick,
             onNextClick = onNextClick
         )
     }
@@ -35,9 +39,13 @@ fun NavGraphBuilder.informScreen(
 fun NavGraphBuilder.informDetailScreen(
     onBackClick: () -> Unit
 ) {
-    composable(InformDetailRoute) {
-        InformDetailRoute(
-            onBackClick = onBackClick
-        )
+    composable(route = "${InformDetailRoute}/{noticeId}") { backStackEntry ->
+        val noticeId = backStackEntry.arguments?.getString("noticeId")?.toLongOrNull()
+        if (noticeId != null) {
+            InformDetailRoute(
+                noticeId = noticeId,
+                onBackClick = onBackClick
+            )
+        }
     }
 }
