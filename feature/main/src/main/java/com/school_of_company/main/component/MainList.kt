@@ -40,14 +40,14 @@ fun MainListItem(
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if (data.imageUrls.images.isNotEmpty()) {
+            if (data.imageUrls.images.isEmpty()) {
                 Box(
                     modifier = Modifier
                         .size(80.dp)
                         .clip(RoundedCornerShape(10.dp))
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.ic_image), // 이미지 리소스 추가 필요
+                        painter = painterResource(id = R.drawable.ic_image),
                         contentDescription = "바퀴벌레 이미지",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
@@ -84,7 +84,7 @@ fun MainListItem(
                         .clip(RoundedCornerShape(10.dp))
                 ) {
                     Image(
-                        painter = rememberAsyncImagePainter(model = data.imageUrls), // 이미지 리소스 추가 필요
+                        painter = rememberAsyncImagePainter(model = data.imageUrls),
                         contentDescription = "바퀴벌레 이미지",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()

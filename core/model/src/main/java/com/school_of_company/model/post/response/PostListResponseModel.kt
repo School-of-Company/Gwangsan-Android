@@ -1,9 +1,5 @@
 package com.school_of_company.model.post.response
 
-data class PostListResponseModel(
-    val body: List<Post>
-)
-
 data class Post(
     val id: Int,
     val type: String,

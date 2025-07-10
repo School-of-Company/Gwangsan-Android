@@ -1,7 +1,7 @@
 package com.school_of_company.data.repository.post
 
 import com.school_of_company.model.post.request.PostAllRequestModel
-import com.school_of_company.model.post.response.PostListResponseModel
+import com.school_of_company.model.post.response.Post
 import com.school_of_company.network.datasource.post.PostDataSource
 import com.school_of_company.network.dto.post.response.PostModifyResponse
 import com.school_of_company.network.mapper.post.request.toDto
@@ -27,28 +27,28 @@ class PostRepositoryImpl @Inject constructor (
         )
     }
 
-    override fun getSpecificInformation(): Flow<PostListResponseModel> {
-        return postDataSource.getSpecificInformation().map { it.toModel() }
+    override fun getSpecificInformation(): Flow<List<Post>> {
+        return postDataSource.getSpecificInformation().map { it.map { list -> list.toModel() } }
     }
 
     override fun getAllPostInformation(
         type: String,
         mode: String
-    ): Flow<PostListResponseModel> {
+    ): Flow<List<Post>> {
         return postDataSource.getAllPostInformation(
             type = type,
             mode = mode
-        ).map { it.toModel() }
+        ).map { it.map { list -> list.toModel() } }
     }
 
     override fun getMyPostInformation(
         type: String,
         mode: String
-    ): Flow<PostListResponseModel> {
+    ): Flow<List<Post>> {
         return postDataSource.getMyPostInformation(
             type = type,
             mode = mode
-        ).map { it.toModel() }
+        ).map { it.map { list -> list.toModel() } }
     }
 
     override fun deletePostInformation(postId: Long): Flow<Unit> {

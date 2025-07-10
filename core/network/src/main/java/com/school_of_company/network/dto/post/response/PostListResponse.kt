@@ -4,11 +4,6 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class PostListResponse(
-    @Json(name = "body") val body: List<PostDto>
-)
-
-@JsonClass(generateAdapter = true)
 data class PostDto(
     @Json(name = "id") val id: Long,
     @Json(name = "type") val type: String,
