@@ -194,12 +194,14 @@ private fun CertinSignUpScreen(
                     detectTapGestures { focusManager.clearFocus() }
                 }
         ) {
+            Spacer(modifier = Modifier.padding(top = 56.dp))
+
             GwangSanTopBar(
                 startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { onBackClick() }) },
                 betweenText = "뒤로"
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(32.dp))
 
             Text(
                 text = "회원가입",

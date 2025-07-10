@@ -88,6 +88,7 @@ private fun IntroduceScreen(
     val scrollState = rememberScrollState()
 
     GwangSanTheme { colors, typography ->
+
         Box(
             modifier = modifier
                 .fillMaxSize()
@@ -104,7 +105,10 @@ private fun IntroduceScreen(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 24.dp, bottom = 32.dp),
+                        .padding(
+                            top = 80.dp,
+                            bottom = 32.dp
+                        ),
                     horizontalArrangement = Arrangement.Start
                 ) {
                     GwangSanTopBar(
@@ -192,16 +196,20 @@ private fun IntroduceScreen(
             }
 
             Box(
+                contentAlignment = Alignment.BottomCenter,
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(24.dp),
-                contentAlignment = Alignment.BottomCenter
+                    .padding(
+                        start = 24.dp,
+                        end = 24.dp,
+                        bottom = 64.dp
+                    ),
             ) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(12.dp))
-                        .background(if (isDropdownVisible) colors.gray200 else colors.background)
+                        .background(if (isDropdownVisible) colors.gray200 else colors.white)
                 ) {
                     if (isDropdownVisible) {
                         GwangSanButton(
