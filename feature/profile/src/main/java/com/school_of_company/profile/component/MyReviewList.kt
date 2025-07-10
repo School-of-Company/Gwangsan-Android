@@ -17,14 +17,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.school_of_company.design_system.R
+import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.model.post.response.Post
 
 @Composable
 internal fun MyReviewListItem(
     modifier: Modifier = Modifier,
-    coverImage: String?,
-    title: String,
-    price: String
+    onClick: () -> Unit,
+    data: Post
 ) {
     GwangSanTheme { color, typography ->
 
@@ -32,9 +33,10 @@ internal fun MyReviewListItem(
             verticalAlignment = Alignment.CenterVertically,
             modifier = modifier
                 .background(color = color.white)
+                .GwangSanClickable { onClick() }
                 .fillMaxWidth(),
         ) {
-            if (coverImage.isNullOrEmpty()) {
+            if (data.imageUrls.images.isNullOrEmpty()) {
                 Box(
                     modifier = Modifier
                         .size(100.dp)
@@ -57,7 +59,7 @@ internal fun MyReviewListItem(
                         .clip(RoundedCornerShape(10.dp))
                 ) {
                     Image(
-                        painter = rememberAsyncImagePainter(model = coverImage),
+                        painter = rememberAsyncImagePainter(model = data.imageUrls),
                         contentDescription = "후기 이미지",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
@@ -72,7 +74,7 @@ internal fun MyReviewListItem(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = title,
+                    text = data.title,
                     style = typography.body3,
                     color = color.black
                 )
@@ -80,7 +82,7 @@ internal fun MyReviewListItem(
                 Spacer(modifier = Modifier.height(12.dp))
 
                 Text(
-                    text = price,
+                    text = "${data.gwangsan}",
                     style = typography.body5,
                     color = color.black
                 )
@@ -92,7 +94,8 @@ internal fun MyReviewListItem(
 @Composable
 internal fun MyReviewList(
     modifier: Modifier = Modifier,
-    items: List<MyReviewItem>
+    onClick: () -> Unit,
+    items: List<Post>
 ) {
     GwangSanTheme { color, _ ->
 
@@ -103,27 +106,10 @@ internal fun MyReviewList(
         ) {
             items(items) { item ->
                 MyReviewListItem(
-                    coverImage = item.coverImage,
-                    title = item.title,
-                    price = item.price
+                    onClick = onClick,
+                    data = item
                 )
             }
         }
     }
 }
-
-@Preview
-@Composable
-private fun MyReviewListItemPreview() {
-    MyReviewListItem(
-        coverImage = null,
-        title = "바퀴벌레 후기",
-        price = "1000원"
-    )
-}
-
-data class MyReviewItem(
-    val coverImage: String,
-    val title: String,
-    val price: String
-)
