@@ -24,7 +24,6 @@ fun AreaListItem(
     onClick: () -> Unit = {}
 ) {
     GwangSanTheme { colors, typography ->
-
         Column(
             horizontalAlignment = Alignment.Start,
             modifier = modifier
@@ -37,9 +36,7 @@ fun AreaListItem(
                 color = colors.black,
                 style = typography.body3
             )
-
             Spacer(modifier = Modifier.height(24.dp))
-
             Divider(color = colors.gray200)
         }
     }
@@ -47,20 +44,19 @@ fun AreaListItem(
 
 @Composable
 fun AreaList(
-    modifier: Modifier = Modifier,//더 자세한 api 명세서가 나오면 수정하겠습니다.
-    areaList: List<String>,
+    modifier: Modifier = Modifier,
+    filteredAreas: List<String>,
     onItemClick: (String) -> Unit
 ) {
     GwangSanTheme { colors, _ ->
-
         LazyColumn(
             modifier = modifier
                 .fillMaxWidth()
                 .heightIn(max = 10000.dp)
         ) {
             items(
-                items = areaList,
-                key = { areaName -> areaName }// 더 자세한 api명세서가 나오면 수정하겠습니다.
+                items = filteredAreas,
+                key = { areaName -> areaName }
             ) { areaName ->
                 Column(modifier = Modifier.fillMaxWidth()) {
                     AreaListItem(

@@ -1,5 +1,7 @@
 package com.school_of_company.signup.view
 
+import android.content.ContextWrapper
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -10,9 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
@@ -23,9 +23,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -43,8 +43,16 @@ import com.yourpackage.design_system.component.textField.GwangSanSearchTextField
 internal fun NeighborhoodSignupRoute(
     onBackClick: () -> Unit,
     onIntroduceClick: () -> Unit,
-    viewModel: SignUpViewModel = hiltViewModel()
-) {
+    viewModel: SignUpViewModel = hiltViewModel(
+        viewModelStoreOwner = LocalContext.current.let { context ->
+            var ctx = context
+            while (ctx is ContextWrapper) {
+                if (ctx is ComponentActivity) return@let ctx
+                ctx = ctx.baseContext
+            }
+            ctx as ComponentActivity
+        }
+    )) {
     val studentSearch by viewModel.dong.collectAsStateWithLifecycle()
     val filteredAreas by viewModel.filteredAreas.collectAsStateWithLifecycle()
 
@@ -126,7 +134,6 @@ private fun NeighborhoodSignupScreen(
                     setText = studentSearch,
                     onValueChange = onStudentSearchChange,
                     onSearchTextChange = onStudentSearchChange,
-                    singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -138,7 +145,7 @@ private fun NeighborhoodSignupScreen(
                 )
 
                 AreaList(
-                    areaList = filteredAreas,
+                    filteredAreas = filteredAreas,
                     onItemClick = onAreaClick
                 )
             }
@@ -151,7 +158,7 @@ private fun NeighborhoodSignupScreen(
             ) {
                 GwangSanStateButton(
                     text = "다음",
-                    state = if (studentSearch.isNotBlank()) ButtonState.Enable else ButtonState.Disable,
+                    state = if (allAreas.contains(studentSearch)) ButtonState.Enable else ButtonState.Disable,
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     onIntroduceClick()
@@ -160,6 +167,29 @@ private fun NeighborhoodSignupScreen(
         }
     }
 }
+
+private val allAreas = listOf(
+    "동곡동",
+    "도산동",
+    "평동",
+    "운남동",
+    "첨단1동",
+    "첨단2동",
+    "송정1동",
+    "송정2동",
+    "우산동",
+    "신가동",
+    "신흥동",
+    "수완동",
+    "임곡동",
+    "본량동",
+    "월곡1동",
+    "월곡2동",
+    "하남동",
+    "비아동",
+    "어룡동",
+    "삼도동"
+)
 
 @GwangsanPreviews
 @Composable

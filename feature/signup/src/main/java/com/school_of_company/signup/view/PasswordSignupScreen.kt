@@ -1,5 +1,6 @@
 package com.school_of_company.signup.view
 
+import android.content.ContextWrapper
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
@@ -48,8 +49,16 @@ import com.yourpackage.design_system.component.textField.GwangSanTextField
 internal fun PasswordSignupRoute(
     onBackClick: () -> Unit,
     onCerTinSignUpClick: () -> Unit,
-    viewModel: SignUpViewModel = hiltViewModel()
-) {
+    viewModel: SignUpViewModel = hiltViewModel(
+        viewModelStoreOwner = LocalContext.current.let { context ->
+            var ctx = context
+            while (ctx is ContextWrapper) {
+                if (ctx is ComponentActivity) return@let ctx
+                ctx = ctx.baseContext
+            }
+            ctx as ComponentActivity
+        }
+    )) {
     val password by viewModel.password.collectAsStateWithLifecycle()
     val rePassword by viewModel.checkPassword.collectAsStateWithLifecycle()
 
