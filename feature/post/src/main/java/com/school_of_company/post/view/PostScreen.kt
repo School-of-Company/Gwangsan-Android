@@ -1,5 +1,6 @@
 package com.school_of_company.post.view
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -63,14 +64,15 @@ private fun PostScreen(
     val progressRatios = listOf(0.3f, 0.6f, 1.0f)
     val currentProgress = progressRatios.getOrElse(pagerState.currentPage) { 0.3f }
 
-    GwangSanTheme { _, _ ->
-        Column(modifier = modifier.fillMaxSize()) {
-            Spacer(modifier = Modifier.height(52.dp))
+    GwangSanTheme { colors, _ ->
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .background(color = colors.white)
+        ) {
+            Spacer(modifier = Modifier.padding(top = 52.dp))
 
             GwangSanSubTopBar(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp),
                 startIcon = {
                     DownArrowIcon(
                         modifier = Modifier
@@ -88,6 +90,9 @@ private fun PostScreen(
                     )
                 },
                 betweenText = "해주세요",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp),
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -96,6 +101,8 @@ private fun PostScreen(
                 progressRatio = currentProgress,
                 modifier = Modifier.fillMaxWidth()
             )
+
+            Spacer(modifier = Modifier.padding(bottom = 48.dp))
 
             HorizontalPager(
                 state = pagerState,
