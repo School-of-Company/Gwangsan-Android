@@ -128,7 +128,6 @@ private fun SignInScreen(
                     top = 24.dp,
                     start = 24.dp,
                     end = 24.dp,
-                    bottom = 50.dp
                 )
                 .pointerInput(Unit) {
                     detectTapGestures {
@@ -145,7 +144,7 @@ private fun SignInScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            top = 18.dp,
+                            top = 56.dp,
                             bottom = 32.dp
                         )
                 ) {
@@ -204,7 +203,7 @@ private fun SignInScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                Spacer(modifier = Modifier.padding(bottom = 50.dp))
+                Spacer(modifier = Modifier.padding(bottom = 64.dp))
             }
         }
     }
