@@ -33,7 +33,7 @@ class PostDataSourceImpl @Inject constructor(
             mode = mode
         ) }
 
-    override fun getMyPostInformation(type: String, mode: String): Flow<List<PostDto>> =
+    override fun getMyPostInformation(type: String?, mode: String?): Flow<List<PostDto>> =
         performApiRequest { postAPI.getMyPostInformation(
             type = type,
             mode = mode

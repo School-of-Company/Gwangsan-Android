@@ -35,8 +35,8 @@ interface PostAPI {
 
     @GET("/api/post/current")
     suspend fun getMyPostInformation(
-        @Query("type") type: String,
-        @Query("mode") mode: String
+        @Query("type") type: String? = null,
+        @Query("mode") mode: String? = null,
     ) : List<PostDto>
 
     @DELETE("/api/post/{post_id}")
