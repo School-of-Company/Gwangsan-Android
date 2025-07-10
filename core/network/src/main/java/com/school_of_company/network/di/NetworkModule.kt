@@ -4,6 +4,7 @@ import android.util.Log
 import com.school_of_company.network.BuildConfig
 import com.school_of_company.network.api.AuthAPI
 import com.school_of_company.network.api.MemberAPI
+import com.school_of_company.network.api.NoticeAPI
 import com.school_of_company.network.api.PostAPI
 import com.school_of_company.network.util.AuthInterceptor
 import com.squareup.moshi.Moshi
@@ -87,5 +88,10 @@ object NetworkModule {
     @Singleton
     fun provideMemberAPI(retrofit: Retrofit): MemberAPI =
         retrofit.create(MemberAPI::class.java)
+
+    @Provides
+    @Singleton
+    fun provideNoticeAPI(retrofit: Retrofit): NoticeAPI =
+        retrofit.create(NoticeAPI::class.java)
 }
 
