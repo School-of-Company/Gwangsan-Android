@@ -143,7 +143,7 @@ private fun MainStartScreen(
                     MainButton(
                         buttonText = "물건",
                         buttonIcon = { ServiceIcon() },
-                        onClick = { navigationToService() },
+                        onClick = { navigationToObject() },
                         modifier = Modifier.weight(1f)
                     )
 
@@ -152,7 +152,7 @@ private fun MainStartScreen(
                     MainButton(
                         buttonText = "서비스",
                         buttonIcon = { ObjectIcon() },
-                        onClick = { navigationToObject() },
+                        onClick = { navigationToService() },
                         modifier = Modifier.weight(1f)
                     )
                 }

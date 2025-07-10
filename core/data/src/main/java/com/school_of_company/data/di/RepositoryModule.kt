@@ -4,10 +4,10 @@ import com.school_of_company.data.repository.auth.AuthRepository
 import com.school_of_company.data.repository.auth.AuthRepositoryImpl
 import com.school_of_company.data.repository.local.LocalRepository
 import com.school_of_company.data.repository.local.LocalRepositoryImpl
-import com.school_of_company.data.repository.main.MainRepository
-import com.school_of_company.data.repository.main.MainRepositoryImpl
 import com.school_of_company.data.repository.member.MemberRepository
 import com.school_of_company.data.repository.member.MemberRepositoryImpl
+import com.school_of_company.data.repository.notice.NoticeRepository
+import com.school_of_company.data.repository.notice.NoticeRepositoryImpl
 import com.school_of_company.data.repository.post.PostRepository
 import com.school_of_company.data.repository.post.PostRepositoryImpl
 import dagger.Binds
@@ -24,11 +24,6 @@ abstract class RepositoryModule {
     ): AuthRepository
 
     @Binds
-    abstract fun bindMainRepository(
-        mainRepositoryImpl: MainRepositoryImpl
-    ): MainRepository
-
-    @Binds
     abstract fun bindPostRepository(
         postRepositoryImpl: PostRepositoryImpl
     ): PostRepository
@@ -42,4 +37,9 @@ abstract class RepositoryModule {
     abstract fun bindMemberRepository(
         memberRepositoryImpl: MemberRepositoryImpl
     ): MemberRepository
+
+    @Binds
+    abstract fun bindNoticeRepository(
+        noticeRepositoryImpl: NoticeRepositoryImpl
+    ) : NoticeRepository
 }

@@ -38,9 +38,6 @@ internal class SignInViewModel @Inject constructor(
     private val _signInUiState = MutableStateFlow<SignInUiState>(SignInUiState.Loading)
     internal val signInUiState = _signInUiState.asStateFlow()
 
-    private val _saveTokenUiState = MutableStateFlow<SaveTokenUiState>(SaveTokenUiState.Loading)
-    internal val saveTokenUiState = _saveTokenUiState.asStateFlow()
-
     internal var id = savedStateHandle.getStateFlow(key = ID, initialValue = "")
     internal var password = savedStateHandle.getStateFlow(key = PASSWORD, initialValue = "")
 

@@ -22,16 +22,15 @@ import com.school_of_company.design_system.R
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.school_of_company.design_system.theme.GwangSanTheme
-import com.school_of_company.model.main.response.MainListResponseModel
+import com.school_of_company.model.post.response.Post
 
 @Composable
 fun MainListItem(
     modifier: Modifier = Modifier,
-    data: MainListResponseModel
+    data: Post
 ) {
     GwangSanTheme { color, typography ->
 
@@ -41,14 +40,14 @@ fun MainListItem(
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if (data.imageUrls.isNullOrEmpty()) {
+            if (data.imageUrls.images.isEmpty()) {
                 Box(
                     modifier = Modifier
                         .size(80.dp)
                         .clip(RoundedCornerShape(10.dp))
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.ic_image), // 이미지 리소스 추가 필요
+                        painter = painterResource(id = R.drawable.ic_image),
                         contentDescription = "바퀴벌레 이미지",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
@@ -85,7 +84,7 @@ fun MainListItem(
                         .clip(RoundedCornerShape(10.dp))
                 ) {
                     Image(
-                        painter = rememberAsyncImagePainter(model = data.imageUrls), // 이미지 리소스 추가 필요
+                        painter = rememberAsyncImagePainter(model = data.imageUrls),
                         contentDescription = "바퀴벌레 이미지",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
@@ -123,7 +122,7 @@ fun MainListItem(
 @Composable
 fun MainList(
     modifier: Modifier = Modifier,
-    items: List<MainListResponseModel>
+    items: List<Post>
 ) {
     GwangSanTheme { color, _ ->
 

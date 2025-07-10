@@ -1,16 +1,12 @@
 package com.school_of_company.network.di
 
 import android.util.Log
-import com.school_of_company.model.enum.Mode
-import com.school_of_company.model.enum.Type
 import com.school_of_company.network.BuildConfig
 import com.school_of_company.network.api.AuthAPI
-import com.school_of_company.network.api.MainAPI
 import com.school_of_company.network.api.MemberAPI
+import com.school_of_company.network.api.NoticeAPI
 import com.school_of_company.network.api.PostAPI
 import com.school_of_company.network.util.AuthInterceptor
-import com.squareup.moshi.JsonReader
-import com.squareup.moshi.JsonWriter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -85,11 +81,6 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideMainAPI(retrofit: Retrofit): MainAPI =
-        retrofit.create(MainAPI::class.java)
-
-    @Provides
-    @Singleton
     fun providePostAPI(retrofit: Retrofit): PostAPI =
         retrofit.create(PostAPI::class.java)
 
@@ -97,5 +88,10 @@ object NetworkModule {
     @Singleton
     fun provideMemberAPI(retrofit: Retrofit): MemberAPI =
         retrofit.create(MemberAPI::class.java)
+
+    @Provides
+    @Singleton
+    fun provideNoticeAPI(retrofit: Retrofit): NoticeAPI =
+        retrofit.create(NoticeAPI::class.java)
 }
 

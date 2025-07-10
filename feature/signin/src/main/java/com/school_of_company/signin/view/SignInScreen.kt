@@ -1,5 +1,6 @@
 package com.school_of_company.signin.view
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -34,6 +35,7 @@ import com.school_of_company.design_system.componet.button.GwangSanStateButton
 import com.school_of_company.design_system.componet.button.state.ButtonState
 import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.icons.DownArrowIcon
+import com.school_of_company.design_system.componet.toast.makeToast
 import com.school_of_company.design_system.componet.topbar.GwangSanTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.network.util.DeviceIdManager
@@ -52,7 +54,6 @@ internal fun SignInRoute(
 ) {
     val context = LocalContext.current
     val signInUiState by viewModel.signInUiState.collectAsStateWithLifecycle()
-    val saveTokenUiState by viewModel.saveTokenUiState.collectAsStateWithLifecycle()
     val id by viewModel.id.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
     val deviceId = remember { DeviceIdManager.getDeviceId(context) }
@@ -60,7 +61,7 @@ internal fun SignInRoute(
     var idIsError by remember { mutableStateOf(false) }
     var passwordIsError by remember { mutableStateOf(false) }
 
-    LaunchedEffect(signInUiState, saveTokenUiState) {
+    LaunchedEffect(signInUiState) {
         when (signInUiState) {
             is SignInUiState.Loading -> {
                 idIsError = false
@@ -68,11 +69,8 @@ internal fun SignInRoute(
             }
 
             is SignInUiState.Success -> {
-                when (saveTokenUiState) {
-                    is SaveTokenUiState.Loading -> Unit
-                    is SaveTokenUiState.Success -> onMainClick()
-                    is SaveTokenUiState.Error -> Unit
-                }
+                onMainClick()
+                makeToast(context, "로그인 성공")
             }
 
             is SignInUiState.NotFound -> {
@@ -86,7 +84,7 @@ internal fun SignInRoute(
             }
 
             is SignInUiState.Error -> {
-                val signInUiStateError= signInUiState as SignInUiState.Error
+                val signInUiStateError = signInUiState as SignInUiState.Error
                 onErrorToast(signInUiStateError.exception, R.string.error_login)
             }
         }

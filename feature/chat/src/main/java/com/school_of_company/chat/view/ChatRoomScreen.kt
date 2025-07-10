@@ -25,7 +25,8 @@ import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.ui.previews.GwangsanPreviews
 import com.yourpackage.design_system.component.textField.ChatInputTextField
 
-internal data class ChatMessage(
+// 임시 모델 (API 나오면 model 패키지로 이동)
+data class ChatMessage(
     val id: String,
     val text: String,
     val isMine: Boolean

@@ -1,10 +1,8 @@
 package com.school_of_company.main.viewmodel
 
-import android.util.Log
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.school_of_company.data.repository.main.MainRepository
+import com.school_of_company.data.repository.post.PostRepository
 import com.school_of_company.main.viewmodel.uistate.GetMainListUiState
 import com.school_of_company.model.enum.Mode
 import com.school_of_company.model.enum.Type
@@ -18,8 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class MainViewModel @Inject constructor(
-    private val mainRepository: MainRepository,
-    private val savedStateHandle: SavedStateHandle,
+    private val postRepository: PostRepository,
 ) : ViewModel() {
 
     private val _swipeRefreshLoading = MutableStateFlow(false)
@@ -33,9 +30,9 @@ internal class MainViewModel @Inject constructor(
         mode: Mode,
     ) = viewModelScope.launch {
         _swipeRefreshLoading.value = true
-        mainRepository.allPostGet(
-            type = type,
-            mode = mode
+        postRepository.getAllPostInformation(
+            type = type.name,
+            mode = mode.name
         )
             .asResult()
             .collectLatest { result ->
@@ -51,7 +48,6 @@ internal class MainViewModel @Inject constructor(
                         }
                     }
                     is com.school_of_company.result.Result.Error -> {
-                        Log.e("MainViewModel", "❌ Error 발생", result.exception)
                         _getMainListUiState.value = GetMainListUiState.Error(result.exception)
                         _swipeRefreshLoading.value = false
                     }

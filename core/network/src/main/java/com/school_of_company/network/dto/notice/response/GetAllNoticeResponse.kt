@@ -1,21 +1,13 @@
-package com.school_of_company.network.dto.post.response
+package com.school_of_company.network.dto.notice.response
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class PostDto(
+data class GetAllNoticeResponse(
     @Json(name = "id") val id: Long,
-    @Json(name = "type") val type: String,
-    @Json(name = "mode") val mode: String,
     @Json(name = "title") val title: String,
     @Json(name = "content") val content: String,
-    @Json(name = "gwangsan") val gwangsan: Int,
-    @Json(name = "imageUrls") val imageUrls: ImageUrlsDto
-)
-
-@JsonClass(generateAdapter = true)
-data class ImageUrlsDto(
     @Json(name = "images") val images: List<ImageDto>
 )
 
