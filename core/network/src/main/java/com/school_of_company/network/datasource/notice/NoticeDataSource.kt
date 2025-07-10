@@ -7,5 +7,5 @@ import kotlinx.coroutines.flow.Flow
 interface NoticeDataSource {
 
     fun getAllNotice() : Flow<List<GetAllNoticeResponse>>
-    fun getSpecificNotice(noticeId: Long) : Flow<List<GetSpecificNoticeResponse>>
+    fun getSpecificNotice(noticeId: Long) : Flow<GetSpecificNoticeResponse>
 }
