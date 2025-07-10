@@ -23,14 +23,15 @@ import androidx.compose.ui.unit.dp
 import com.school_of_company.design_system.R
 import com.school_of_company.design_system.componet.icons.EllipseIcon
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.model.member.response.GetAllMemberResponseModel
+import com.school_of_company.model.member.response.GetMemberResponseModel
+import com.school_of_company.model.post.response.Post
 
 @Composable
 internal fun MyProfileUserLevel(
     modifier: Modifier = Modifier,
-    name: String,
-    coverImage: String?,
-    description: String,
-    level: Int,
+    data: Post,
+    memberdata: GetMemberResponseModel
 ) {
     GwangSanTheme { colors, typography ->
 
@@ -39,7 +40,7 @@ internal fun MyProfileUserLevel(
                 .fillMaxWidth()
                 .background(colors.white)
         ) {
-            if (coverImage.isNullOrEmpty()) {
+            if (data.imageUrls.images.isNullOrEmpty()) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -71,19 +72,19 @@ internal fun MyProfileUserLevel(
 
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            text = "${name}단계",
+                            text = memberdata.nickname,
                             style = typography.body5,
                         )
 
                         Text(
-                            text = description,
+                            text = memberdata.placeName,
                             color = colors.gray500,
                             style = typography.body5
                         )
                     }
 
                     Text(
-                        text = "${level}단계",
+                        text = "${memberdata.light}단계",
                         color = colors.subYellow500, // 노란-주황 계열
                         style = typography.body5,
                     )
@@ -119,18 +120,22 @@ internal fun MyProfileUserLevel(
                         modifier = Modifier.weight(1f)
                     ) {
                         Text(
-                            text = name,
+                            text = memberdata.nickname,
                             style = typography.body5,
                         )
 
                         Spacer(modifier = Modifier.padding(5.dp))
 
-                        Text(text = description, color = colors.gray500, style = typography.body5)
+                        Text(
+                            text = memberdata.placeName,
+                            color = colors.gray500,
+                            style = typography.body5
+                        )
                     }
 
 
                     Text(
-                        text = "${level}단계",
+                        text = "${memberdata.light}단계",
                         color = colors.subYellow500, // 노란-주황 계열
                         style = typography.body5,
                     )
@@ -138,16 +143,4 @@ internal fun MyProfileUserLevel(
             }
         }
     }
-}
-
-@Preview
-@Composable
-private fun UserLevelCardPreview()
-{
-    MyProfileUserLevel(
-        name = "모태환",
-        coverImage = "https://image.dongascience.com/Photo/2019/12/fb4f7da04758d289a466f81478f5f488.jpg",
-        description = "바퀴벌레",
-        level = 1
-    )
 }
