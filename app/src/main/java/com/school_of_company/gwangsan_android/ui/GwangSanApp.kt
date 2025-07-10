@@ -2,6 +2,7 @@ package com.school_of_company.gwangsan_android.ui
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -10,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavDestination
@@ -20,6 +22,7 @@ import com.school_of_company.gwangsan_android.navigation.TopLevelDestination
 import com.school_of_company.design_system.componet.bottombar.GwangSanNavigationBar
 import com.school_of_company.design_system.componet.bottombar.GwangSanNavigationBarItem
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.inform.navigation.InformRoute
 import com.school_of_company.main.navgation.MainRoute
 import com.school_of_company.main.navgation.MainStartRoute
 import com.school_of_company.profile.navigation.MyProfileRoute
@@ -40,6 +43,7 @@ fun GwangSanApp(
     val topLevelDestinationRoute = listOf(
         MainStartRoute,
         MainRoute,
+        InformRoute,
         MyProfileRoute
         // 필요 시 여기에 추가
     )
@@ -63,10 +67,11 @@ fun GwangSanApp(
                     )
                 }
             }
-        ) { _ ->
+        ) { paddingValue ->
             GwangsanNavHost(
                 appState = appState,
-                startDestination = startDestination
+                startDestination = startDestination,
+                modifier = Modifier.padding(paddingValue)
             )
         }
     }
