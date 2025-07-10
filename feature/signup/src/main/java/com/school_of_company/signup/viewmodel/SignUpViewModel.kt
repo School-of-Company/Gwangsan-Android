@@ -37,6 +37,7 @@ class SignUpViewModel @Inject constructor(
         private const val DESCRIPTION = "description"
         private const val RECOMMENDER = "recommender"
         private const val SPECIALTY = "specialty"
+        private const val SPECIALTY_TEXT = "specialtyText"
         private const val PLACE_NAME = "placeName"
     }
 
@@ -65,6 +66,7 @@ class SignUpViewModel @Inject constructor(
     internal var description = savedStateHandle.getStateFlow(DESCRIPTION, "")
     internal var recommender = savedStateHandle.getStateFlow(RECOMMENDER, "")
     internal var specialty = savedStateHandle.getStateFlow(SPECIALTY, emptyList<String>())
+    internal var specialtyText = savedStateHandle.getStateFlow(SPECIALTY_TEXT, "")
     internal var placeName = savedStateHandle.getStateFlow(PLACE_NAME, "")
 
     internal fun signUp(body: SignUpRequestModel) = viewModelScope.launch {
@@ -202,8 +204,36 @@ class SignUpViewModel @Inject constructor(
         }
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
+    private val defaultSpecialties = listOf("청소하기", "운전하기", "달리기", "빨래하기", "벌레잡기", "이삿짐 나르기")
+
+    val specialtyOptions = specialty
+        .map { userAdded ->
+            (defaultSpecialties + userAdded).distinct()
+        }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, defaultSpecialties)
+
+    fun addSpecialty() {
+        val currentInput = specialtyText.value.trim()
+        if (currentInput.isNotBlank()) {
+            val currentSelected = specialty.value
+            if (!currentSelected.contains(currentInput)) {
+                savedStateHandle[SPECIALTY] = currentSelected + currentInput
+            }
+
+            savedStateHandle[SPECIALTY_TEXT] = ""
+        }
+    }
+    
+    fun removeSpecialty(item: String) {
+        savedStateHandle[SPECIALTY] = specialty.value - item
+    }
+
     fun onAreaSelected(value: String) {
         savedStateHandle[DONG] = value
+    }
+
+    fun onSpecialtyTextChange(value: String) {
+        savedStateHandle[SPECIALTY_TEXT] = value
     }
 
     fun onNameChange(value: String) {
@@ -240,11 +270,6 @@ class SignUpViewModel @Inject constructor(
 
     internal fun onRecommenderChange(value: String) {
         savedStateHandle[RECOMMENDER] = value
-    }
-
-    internal fun onSpecialtyTextChange(text: String) {
-        val list = text.split(",").map { it.trim() }.filter { it.isNotBlank() }
-        savedStateHandle[SPECIALTY] = list
     }
 
     internal fun onSpecialtyListChange(list: List<String>) {
