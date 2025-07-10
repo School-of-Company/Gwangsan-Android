@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -49,7 +50,9 @@ internal fun MainRoute(
     viewModel: MainViewModel = hiltViewModel()
 ) {
     val getMainListUiState by viewModel.getMainListUiState.collectAsStateWithLifecycle()
-    val swipeRefreshLoading by viewModel.swipeRefreshLoading.collectAsStateWithLifecycle(initialValue = false)
+    val swipeRefreshLoading by viewModel.swipeRefreshLoading.collectAsStateWithLifecycle(
+        initialValue = false
+    )
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = swipeRefreshLoading)
 
     var switchState by remember { mutableStateOf(GwangSanSwitchState.NEED) }
@@ -113,11 +116,18 @@ private fun MainScreen(
                     .padding(
                         start = 24.dp,
                         end = 24.dp,
-                        top = 24.dp
+                        top = 52.dp
                     )
             ) {
                 GwangSanSubTopBar(
-                    startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { }) },
+                    startIcon = {
+                        DownArrowIcon(
+                            modifier = Modifier
+                                .width(8.dp)
+                                .height(14.dp)
+                                .GwangSanClickable { }
+                        )
+                    },
                     betweenText = betweenText
                 )
 
