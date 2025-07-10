@@ -15,6 +15,7 @@ import com.school_of_company.signup.viewmodel.uistate.SendNumberUiState
 import com.school_of_company.signup.viewmodel.uistate.SignUpUiState
 import com.school_of_company.signup.viewmodel.uistate.VerifyNumberUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -162,13 +163,41 @@ class SignUpViewModel @Inject constructor(
         }
 
     private val allAreas = listOf(
-        "enw", "chiki", "첨단 3동", "첨단 4동", "첨단 5동"
+        "동곡동",
+        "도산동",
+        "평동",
+        "운남동",
+        "첨단1동",
+        "첨단2동",
+        "송정1동",
+        "송정2동",
+        "우산동",
+        "신가동",
+        "신흥동",
+        "수완동",
+        "임곡동",
+        "본량동",
+        "월곡1동",
+        "월곡2동",
+        "하남동",
+        "비아동",
+        "어룡동",
+        "삼도동"
     )
 
-    val filteredAreas = dong.map { keyword ->
-        if (keyword.isBlank()) emptyList()
-        else allAreas.filter { it.contains(keyword) }
-    }.stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+    @OptIn(FlowPreview::class)
+    val filteredAreas = dong
+        .debounce(100)
+        .map { keyword ->
+            if (keyword.isBlank()) {
+                emptyList()
+            } else {
+                allAreas.filter {
+                    it.contains(keyword, ignoreCase = true)
+                }
+            }
+        }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
     fun onAreaSelected(value: String) {
         savedStateHandle[DONG] = value
