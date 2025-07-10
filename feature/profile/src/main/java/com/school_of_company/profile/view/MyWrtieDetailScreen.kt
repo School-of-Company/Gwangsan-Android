@@ -1,6 +1,7 @@
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,10 +10,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.school_of_company.design_system.componet.button.GwangSanEnableButton
 import com.school_of_company.design_system.componet.button.GwangSanStateButton
 import com.school_of_company.design_system.componet.clickable.GwangSanClickable
@@ -20,42 +25,84 @@ import com.school_of_company.design_system.componet.icons.CloseIcon
 import com.school_of_company.design_system.componet.icons.DownArrowIcon
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.model.member.response.GetMemberResponseModel
+import com.school_of_company.model.post.response.Post
+import com.school_of_company.post.R
 import com.school_of_company.profile.component.CleaningRequestCard
 import com.school_of_company.profile.component.MyProfileUserLevel
+import com.school_of_company.profile.viewmodel.MyProfileViewModel
+import com.school_of_company.profile.viewmodel.uistate.GetMySpecificInformationUiState
+import com.school_of_company.profile.viewmodel.uistate.MemberUiState
 import com.school_of_company.ui.previews.GwangsanPreviews
 
 @Composable
 internal fun ReviewPostDetailRoute(
     onBackClick: () -> Unit,
     onMyProfileClick: () -> Unit,
-    onCompleteClick: () -> Unit,//
+    onCompleteClick: () -> Unit,
+    onErrorToast: (Throwable, Int) -> Unit,
+    viewModel: MyProfileViewModel = hiltViewModel()
 ){
-    ReviewPostDetailScreen(
-        onBackClick = onBackClick,
-        onMyProfileClick = onMyProfileClick,
-        coverImage = "https://example.com/cover_image.jpg",
-        name = "사용자 이름",
-        description = "사용자 설명",
-        level = 3,
-        postTitle = "게시글 제목",
-        postLocationAndPrice = "위치 및 가격",
-        postDescription = "게시글 설명",
-        onEditClick = { /* 수정 클릭 시 동작 */ },
-        onCompleteClick = onCompleteClick
-    )
+    val getMyProfileUiState = viewModel.myProfileUiState.collectAsStateWithLifecycle().value
+    val getMySpecificInformationUiState = viewModel.getMySpecificInformationUiState.collectAsStateWithLifecycle().value
+
+    LaunchedEffect(Unit) {
+        viewModel.getMyPostDetail()
+        viewModel.getMyProfile()
+    }
+
+
+    when (getMySpecificInformationUiState) {
+        is GetMySpecificInformationUiState.Loading -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("로딩 중...")
+            }
+        }
+
+        is GetMySpecificInformationUiState.Error -> {
+            onErrorToast(getMySpecificInformationUiState.exception, com.school_of_company.design_system.R.string.main_error)
+
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("게시글 정보를 불러오는 중 오류가 발생했습니다.")
+            }
+        }
+
+        is GetMySpecificInformationUiState.Empty -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("게시글이 존재하지 않습니다.")
+            }
+        }
+
+        is GetMySpecificInformationUiState.Success -> {
+            if (getMyProfileUiState is MemberUiState.Success) {
+                ReviewPostDetailScreen(
+                    memBerData = getMyProfileUiState.data,
+                    onBackClick = onBackClick,
+                    onMyProfileClick = onMyProfileClick,
+                    data = getMySpecificInformationUiState.data,
+                    onEditClick = { /* 수정 클릭 시 동작 */ },
+                    onCompleteClick = onCompleteClick,
+                )
+            }
+        }
+    }
 }
 @Composable
 fun ReviewPostDetailScreen(
     modifier: Modifier = Modifier,
-    coverImage: String?,
+    data: List<Post>,
+    memBerData: GetMemberResponseModel,
     onBackClick: () -> Unit,
     onMyProfileClick: () -> Unit,
-    name: String,
-    description: String,
-    level: Int,
-    postTitle: String,
-    postLocationAndPrice: String,
-    postDescription: String,
     onEditClick: () -> Unit,
     onCompleteClick: () -> Unit
 ) {
@@ -80,18 +127,14 @@ fun ReviewPostDetailScreen(
                 Spacer(modifier = Modifier.height(24.dp))
 
                 MyProfileUserLevel(
-                    name = name,
-                    coverImage = coverImage,
-                    description = description,
-                    level = level
+                    data = data.first(),
+                    memberdata = memBerData
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
 
                 CleaningRequestCard(
-                    title = postTitle,
-                    priceAndLocation = postLocationAndPrice,
-                    description = postDescription
+                    data = data.first()
                 )
             }
 
@@ -131,22 +174,4 @@ fun ReviewPostDetailScreen(
             }
         }
     }
-}
-
-@GwangsanPreviews
-@Composable
-private fun PreViewReviewPostDetailScreen(){
-    ReviewPostDetailScreen(
-        coverImage = "https://example.com/cover_image.jpg",
-        name = "사용자 이름",
-        description = "사용자 설명",
-        level = 3,
-        postTitle = "게시글 제목",
-        postLocationAndPrice = "위치 및 가격",
-        postDescription = "게시글 설명",
-        onEditClick = { /* 수정 클릭 시 동작 */ },
-        onCompleteClick = { /* 거래완료 클릭 시 동작 */ },
-        onBackClick = {},
-        onMyProfileClick = {}
-    )
 }
