@@ -57,21 +57,21 @@ internal fun MyProfileRoute(
             Review(
                 content = "뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨",
                 light = 4,
-                reviewedId = 1,
+                reviewedId = 2,
                 productId = 123,
                 createdAt = "2023-10-01"
             ),
             Review(
                 content = "뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨",
                 light = 4,
-                reviewedId = 1,
+                reviewedId = 3,
                 productId = 123,
                 createdAt = "2023-10-01"
             ),
             Review(
                 content = "뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨",
                 light = 4,
-                reviewedId = 1,
+                reviewedId = 4,
                 productId = 123,
                 createdAt = "2023-10-01"
             )
