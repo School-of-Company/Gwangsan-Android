@@ -1,6 +1,7 @@
 package com.school_of_company.main.view
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -13,6 +14,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,6 +25,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,6 +43,7 @@ import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.main.component.MainButton
 import com.school_of_company.ui.previews.GwangsanPreviews
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 internal fun MainStartRoute(
@@ -55,6 +62,7 @@ private fun MainStartScreen(
     navigationToService: () -> Unit,
     navigationToObject: () -> Unit,
 ) {
+    val scrollState = rememberScrollState()
     GwangSanTheme { colors, typography ->
 
         val bannerImages = listOf(
@@ -69,12 +77,13 @@ private fun MainStartScreen(
             modifier = modifier
                 .fillMaxSize()
                 .background(color = colors.white)
+                .verticalScroll(scrollState)
         ) {
             GwangSanSubTopBar(
                 startIcon = { MainTitle(modifier = Modifier.GwangSanClickable { }) },
                 endIcon = { BellIcon(modifier = Modifier.GwangSanClickable { }) },
                 modifier = Modifier.padding(
-                    top = 24.dp,
+                    top = 56.dp,
                     start = 24.dp,
                     end = 24.dp
                 )
@@ -134,7 +143,7 @@ private fun MainStartScreen(
                     color = colors.black
                 )
 
-                Spacer(modifier = Modifier.padding(bottom = 60.dp))
+                Spacer(modifier = Modifier.padding(bottom = 62.dp))
 
                 Row(
                     horizontalArrangement = Arrangement.Center,
@@ -165,25 +174,32 @@ private fun MainStartScreen(
 private fun AutoSlideBanner(
     modifier: Modifier = Modifier,
     imageIds: List<Int>,
-    durationMillis: Long = 3000L
+    durationMillis: Long = 2650L
 ) {
-    var currentIndex by remember { mutableIntStateOf(0) }
+    val pagerState = rememberPagerState(pageCount = { imageIds.size })
+    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         while (true) {
             delay(durationMillis)
-            currentIndex = (currentIndex + 1) % imageIds.size
+            val nextPage = (pagerState.currentPage + 1) % imageIds.size
+            coroutineScope.launch {
+                pagerState.animateScrollToPage(
+                    page = nextPage,
+                    animationSpec = tween(durationMillis = 500)
+                )
+            }
         }
     }
 
-    Crossfade(
-        targetState = currentIndex,
+    HorizontalPager(
+        state = pagerState,
         modifier = modifier
-    ) { index ->
+    ) { page ->
         Image(
-            painter = painterResource(id = imageIds[index]),
-            contentDescription = "슬라이드 배너 이미지",
-            modifier = modifier.fillMaxSize()
+            painter = painterResource(id = imageIds[page]),
+            contentDescription = "슬라이드 배너 이미지 $page",
+            modifier = Modifier.fillMaxSize()
         )
     }
 }
