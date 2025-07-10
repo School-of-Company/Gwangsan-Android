@@ -15,6 +15,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.school_of_company.gwangsan_android.navigation.TopLevelDestination
+import com.school_of_company.inform.navigation.navigateToInform
+import com.school_of_company.main.navgation.navigateToMainStart
+import com.school_of_company.profile.navigation.navigateToMyProfile
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
@@ -65,7 +68,10 @@ class GwangSanAppState(
                 restoreState = true
             }
             when (topLevelDestination) {
-                else -> null
+                TopLevelDestination.MAIN -> navController.navigateToMainStart(topLevelNavOptions)
+                TopLevelDestination.CHAT -> {}
+                TopLevelDestination.INFORM -> navController.navigateToInform(topLevelNavOptions)
+                TopLevelDestination.PROFILE -> navController.navigateToMyProfile(topLevelNavOptions)
             }
         }
     }
