@@ -30,15 +30,16 @@ import com.school_of_company.model.enum.Mode
 import com.school_of_company.model.enum.Type
 import com.school_of_company.post.navigation.navigateToPost
 import com.school_of_company.post.navigation.postScreen
+import com.school_of_company.profile.navigation.myInformationEditScreen
 import com.school_of_company.profile.navigation.myProfileScreen
 import com.school_of_company.profile.navigation.myReviewScreen
 import com.school_of_company.profile.navigation.myWritingDetailScreen
 import com.school_of_company.profile.navigation.myWritingScreen
+import com.school_of_company.profile.navigation.navigateToMyPeTchWritingDetail
 import com.school_of_company.profile.navigation.navigateToMyProfile
 import com.school_of_company.profile.navigation.navigateToMyReview
 import com.school_of_company.profile.navigation.navigateToMyWriting
-import com.school_of_company.profile.navigation.navigateToMyWritingDetail
-import com.school_of_company.profile.navigation.navigateToTransactionHistory
+import com.school_of_company.profile.navigation.navigateToOtherPersonProfile
 import com.school_of_company.profile.navigation.transactionHistoryScreen
 import com.school_of_company.signin.navigation.StartRoute
 import com.school_of_company.signin.navigation.navigateToSignIn
@@ -172,6 +173,7 @@ fun GwangsanNavHost(
 
         readMoreScreen(
             onBackClick = { navController.popBackStack() },
+            onOtherProfileClick = { navController.navigateToOtherPersonProfile() },
             onMyProfileClick = { navController.navigateToMyProfile() },
             onChatClick = { navController.navigateToChatRoom() },
             onReviewClick = { _, _ -> },
@@ -195,7 +197,14 @@ fun GwangsanNavHost(
         myProfileScreen(
             onMyReviewClick = { navController.navigateToMyReview() },
             onMyWritingClick = { navController.navigateToMyWriting() },
-            onTransactionHistoryClick = { navController.navigateToTransactionHistory() }
+            onErrorToast = onErrorToast,
+            onMyWritingDetailClick = { navController.navigateToMyPeTchWritingDetail() }
+        )
+
+        myInformationEditScreen(
+            onBackClick = { navController.popBackStack() },
+            onSubmitComplete = { navController.navigateToMyProfile() },
+            onErrorToast = onErrorToast
         )
 
         myReviewScreen(
@@ -206,23 +215,18 @@ fun GwangsanNavHost(
         myWritingScreen(
             onBackClick = { navController.popBackStack() },
             onMyProfileClick = { navController.navigateToMyProfile() },
-            onReviewPostDetailClick = { navController.navigateToMyWritingDetail() }
         )
 
         myWritingDetailScreen(
             onBackClick = { navController.popBackStack() },
             onMyProfileClick = { navController.navigateToMyProfile() },
-            onCompleteClick = { navController.popBackStack() } // 또는 리뷰 작성 등으로 확장 가능
+            onCompleteClick = { navController.popBackStack() },
+            onErrorToast = onErrorToast
         )
 
         transactionHistoryScreen(
             onBackClick = { navController.popBackStack() },
             onMyProfileClick = { navController.navigateToMyProfile() }
         )
-
-
-
-
-
     }
 }
