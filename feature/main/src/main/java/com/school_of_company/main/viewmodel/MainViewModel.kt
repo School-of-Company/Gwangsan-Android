@@ -1,6 +1,5 @@
 package com.school_of_company.main.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.school_of_company.data.repository.post.PostRepository
@@ -51,7 +50,6 @@ internal class MainViewModel @Inject constructor(
                     is com.school_of_company.result.Result.Error -> {
                         _getMainListUiState.value = GetMainListUiState.Error(result.exception)
                         _swipeRefreshLoading.value = false
-                        Log.e("Error", result.exception.message.toString())
                     }
                 }
             }

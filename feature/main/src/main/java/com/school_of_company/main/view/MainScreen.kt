@@ -155,7 +155,6 @@ private fun MainScreen(
 
                         is GetMainListUiState.Empty -> {
                             MainList(items = emptyList())
-                            Log.e("MainScreen", "Empty")
                         }
 
                         is GetMainListUiState.Loading -> {
