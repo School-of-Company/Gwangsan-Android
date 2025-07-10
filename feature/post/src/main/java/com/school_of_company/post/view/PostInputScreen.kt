@@ -1,5 +1,6 @@
 package com.school_of_company.post.view
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -59,58 +60,32 @@ private fun PostInputScreen(
     GwangSanTheme { colors, typography ->
 
         Column(
-            modifier = modifier.fillMaxSize()
+            modifier = modifier
+                .fillMaxSize()
+                .background(colors.white)
+                .padding(horizontal = 24.dp)
         ) {
-            Spacer(modifier = Modifier.height(52.dp))
-
-            GwangSanSubTopBar(
-                startIcon = {
-                    DownArrowIcon(
-                        modifier = Modifier
-                            .width(8.dp)
-                            .height(14.dp)
-                            .GwangSanClickable(onClick = onBackClick)
-                    )
-                },
-                betweenText = "해주세요",
-
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp)
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            GwangSanTopBarProgress(
-                progressRatio = 0.6f,
+            GwangSanTextField(
+                value = value,
+                onTextChange = onValueChange,
+                label = "광산",
+                placeHolder = "광산을 입력해주세요",
+                singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.weight(1f))
 
-            Column(modifier = Modifier.padding(horizontal = 24.dp)) {
-                GwangSanTextField(
-                    value = value,
-                    onTextChange = onValueChange,
-                    label = "광산",
-                    placeHolder = "광산을 입력해주세요",
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth()
-                )
+            GwangSanStateButton(
+                text = "다음",
+                state = if (value.isNotBlank()) ButtonState.Enable else ButtonState.Disable,
+                onClick = onNextClick,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+            )
 
-                Spacer(modifier = Modifier.weight(1f))
-
-                GwangSanStateButton(
-                    text = "다음",
-                    state = if (value.isNotBlank()) ButtonState.Enable else ButtonState.Disable,
-                    onClick = onNextClick,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp)
-                )
-
-                Spacer(modifier = Modifier.height(24.dp))
-            }
+            Spacer(modifier = Modifier.height(64.dp))
         }
     }
 }
