@@ -2,19 +2,34 @@ package com.school_of_company.profile.component
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
+import com.school_of_company.design_system.R
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,13 +37,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.design_system.theme.color.GwangSanColor
+import com.school_of_company.model.post.response.Image
 
 data class Review(
     val content: String,
     val light: Int,
     val reviewedId: Int,
     val productId: Int,
-    val createdAt: String
+    val name: String,
+    val coverImage: String?
 )
 
 @Composable
@@ -44,37 +61,64 @@ internal fun MyProfileReviewListItem(
             onClick = onClick,
             modifier = modifier
                 .fillMaxWidth()
-                .padding(
-                    horizontal = 16.dp,
-                    vertical = 8.dp
-                ),
+                .padding(horizontal = 16.dp, vertical = 8.dp)
         ) {
-            Column(
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                    .padding(vertical = 16.dp),
+                horizontalArrangement = Arrangement.Start
             ) {
-                MyProfileReviewProgressBar(
-                    progress = (data.light / 100f).coerceIn(0f, 1f),
-                    modifier = Modifier.fillMaxWidth()
-                )
+                Box(
+                    modifier = Modifier
+                        .size(100.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                ) {
+                    if (data.coverImage.isNullOrEmpty()) {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_image),
+                            contentDescription = "기본 이미지",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    } else {
+                        Image(
+                            painter = rememberAsyncImagePainter(model = data.coverImage),
+                            contentDescription = "후기 이미지",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
+                }
 
-                Text(
-                    text = data.content,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.Black,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
+                // ▶️ 우측 리뷰 정보
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    MyProfileReviewProgressBar(
+                        progress = (data.light / 100f).coerceIn(0f, 1f),
+                        modifier = Modifier.fillMaxWidth()
+                    )
 
-                Text(
-                    text = data.createdAt,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Normal,
-                    color = Color.Gray
-                )
+                    Text(
+                        text = data.content,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Thin,
+                        color = Color.Black,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
+
+                    Text(
+                        text = data.name,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Normal,
+                        color = Color.Gray
+                    )
+                }
             }
         }
     }
@@ -123,7 +167,8 @@ private fun MyProfileReviewListPreview() {
             light = 50,
             reviewedId = 1,
             productId = 123,
-            createdAt = "2023-10-01"
+            name = "kimjarkwan",
+            coverImage = ""
         )
     )
 }
