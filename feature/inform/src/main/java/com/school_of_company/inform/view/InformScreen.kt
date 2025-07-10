@@ -2,42 +2,46 @@ package com.school_of_company.inform.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.school_of_company.design_system.componet.clickable.GwangSanClickable
-import com.school_of_company.design_system.componet.icons.CloseIcon
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
+import com.google.accompanist.swiperefresh.SwipeRefreshState
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
-import com.school_of_company.inform.component.InformItem
+import com.school_of_company.inform.component.InformList
+import com.school_of_company.inform.viewmodel.NoticeViewModel
+import com.school_of_company.inform.viewmodel.uistate.GetAllNoticeUiState
+import com.school_of_company.model.notice.response.GetAllNoticeResponseModel
 import com.school_of_company.ui.previews.GwangsanPreviews
-
-// 임시 모델 (API 나오면 model 패키지로 이동)
-private data class Inform(
-    val title: String,
-    val description: String,
-    val imageUrl: String? = null
-)
 
 @Composable
 internal fun InformRoute(
-    onBackClick: () -> Unit,
-    onNextClick: () -> Unit
+    onNextClick: (Long) -> Unit,
+    viewModel: NoticeViewModel = hiltViewModel()
 ) {
+    val swipeRefreshLoading by viewModel.swipeRefreshLoading.collectAsStateWithLifecycle()
+    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = swipeRefreshLoading)
+
+    val getAllNoticeUiState by viewModel.getAllNoticeUiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.getAllNotice()
+    }
 
     InformScreen(
-        informList = listOf(
-            Inform(
-                title = "당분간 거래중지입니다",
-                description = "어떤 이의 거래 중지 의사로 인해 요청사항...",
-                imageUrl = null
-            )
-        ),
-        onBackClick = onBackClick,
+        swipeRefreshState = swipeRefreshState,
+        getAllNotice = { viewModel.getAllNotice() },
+        informList = getAllNoticeUiState,
         onNextClick = onNextClick
     )
 }
@@ -45,18 +49,18 @@ internal fun InformRoute(
 @Composable
 private fun InformScreen(
     modifier: Modifier = Modifier,
-    informList: List<Inform>,
-    onBackClick: () -> Unit = {},
-    onNextClick: () -> Unit
+    swipeRefreshState: SwipeRefreshState,
+    getAllNotice: () -> Unit,
+    informList: GetAllNoticeUiState,
+    onNextClick: (Long) -> Unit
 ) {
     GwangSanTheme { colors, typography ->
         Column(
             modifier = modifier
                 .fillMaxSize()
                 .background(color = colors.white)
-                .verticalScroll(rememberScrollState())
                 .padding(
-                    top = 24.dp,
+                    top = 56.dp,
                     bottom = 20.dp,
                     start = 24.dp,
                     end = 24.dp
@@ -65,15 +69,7 @@ private fun InformScreen(
             GwangSanSubTopBar(
                 startIcon = { Spacer(modifier = Modifier.size(24.dp)) },
                 betweenText = "공지",
-                endIcon = {
-                    Box(modifier = Modifier.padding(end = 24.dp)) {
-                        CloseIcon(
-                            modifier = Modifier
-                                .size(24.dp)
-                                .GwangSanClickable { onBackClick() }
-                        )
-                    }
-                },
+                endIcon = { Spacer(modifier = Modifier.size(24.dp)) },
                 modifier = Modifier.padding(bottom = 16.dp)
             )
 
@@ -93,13 +89,58 @@ private fun InformScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            informList.forEach {
-                InformItem(
-                    title = it.title,
-                    description = it.description,
-                    imageUrl = it.imageUrl,
-                    onClick = onNextClick
-                )
+            SwipeRefresh(
+                state = swipeRefreshState,
+                onRefresh = { getAllNotice() },
+                indicator = { state, refreshTrigger ->
+                    SwipeRefreshIndicator(
+                        state = state,
+                        refreshTriggerDistance = refreshTrigger,
+                        contentColor = colors.main500
+                    )
+                }
+            ) {
+                when (informList) {
+                    is GetAllNoticeUiState.Loading -> Unit
+                    is GetAllNoticeUiState.Success -> {
+                        InformList(
+                            items = informList.data,
+                            onClick = onNextClick
+                        )
+                    }
+
+                    is GetAllNoticeUiState.Error -> {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(color = colors.white)
+                        ) {
+                            Text(
+                                text = "공지를 불러오는데 실패했어요..",
+                                style = typography.titleMedium2,
+                                color = colors.gray500
+                            )
+                        }
+                    }
+
+                    is GetAllNoticeUiState.Empty -> {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(color = colors.white)
+                        ) {
+                            Text(
+                                text = "공지가 없어요..",
+                                style = typography.titleMedium2,
+                                color = colors.gray500
+                            )
+                        }
+                    }
+                }
             }
         }
     }
@@ -109,22 +150,19 @@ private fun InformScreen(
 @Composable
 private fun InformScreenPreview() {
     val dummyList = listOf(
-        Inform(
+        GetAllNoticeResponseModel(
             title = "당분간 거래중지입니다",
-            description = "어떤 이의 거래 중지 의사로 인해 요청사항...",
-            imageUrl = null
-        ),
-        Inform(
-            title = "시스템 점검 안내",
-            description = "6월 20일 오전 10시부터 오후 3시까지 점검 예정입니다.",
-            imageUrl = null
+            content = "어떤 이의 거래 중지 의사로 인해 요청사항...",
+            images = emptyList(),
+            id = 0
         )
     )
 
     InformScreen(
-        informList = dummyList,
-        onBackClick = {},
+        informList = GetAllNoticeUiState.Empty,
         onNextClick = {},
+        swipeRefreshState = SwipeRefreshState(isRefreshing = false),
+        getAllNotice = {},
         modifier = Modifier
     )
 }

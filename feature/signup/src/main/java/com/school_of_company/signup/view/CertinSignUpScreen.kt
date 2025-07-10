@@ -1,6 +1,7 @@
 package com.school_of_company.signup.view
 
-import android.util.Log
+import android.content.ContextWrapper
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -12,7 +13,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -20,7 +20,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -45,6 +44,7 @@ import com.school_of_company.design_system.componet.icons.DownArrowIcon
 import com.school_of_company.design_system.componet.toast.makeToast
 import com.school_of_company.design_system.componet.topbar.GwangSanTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.model.auth.request.SignUpCertificationNumberSendRequestModel
 import com.school_of_company.signup.viewmodel.SignUpViewModel
 import com.school_of_company.signup.viewmodel.uistate.SendNumberUiState
 import com.school_of_company.signup.viewmodel.uistate.VerifyNumberUiState
@@ -56,66 +56,37 @@ internal fun CertInSignUpRoute(
     onBackClick: () -> Unit,
     onNeighborhoodClick: () -> Unit,
     onErrorToast: (throwable: Throwable?, message: Int?) -> Unit,
-    viewModel: SignUpViewModel = hiltViewModel()
-){
+    viewModel: SignUpViewModel = hiltViewModel(
+        viewModelStoreOwner = LocalContext.current.let { context ->
+            var ctx = context
+            while (ctx is ContextWrapper) {
+                if (ctx is ComponentActivity) return@let ctx
+                ctx = ctx.baseContext
+            }
+            ctx as ComponentActivity
+        }
+    )
+) {
+
     val certificationNumber by viewModel.certificationNumber.collectAsStateWithLifecycle()
     val phoneNumber by viewModel.number.collectAsStateWithLifecycle()
     val verifyNumberUiState by viewModel.verifyNumberUiState.collectAsStateWithLifecycle()
     val sendNumberUiState by viewModel.sendNumberUiState.collectAsStateWithLifecycle()
 
-    CertinSignUpScreen(
-        onBackClick = onBackClick,
-        onNeighborhoodClick = onNeighborhoodClick,
-        certificationCallBack = {
-            viewModel.verifyNumber(
-                phoneNumber = phoneNumber,
-                code = certificationNumber
-            )
-        },
-        sendCertificationCodeCallBack = {
-            viewModel.sendCertificationCode(
-                body = com.school_of_company.model.auth.request.SignUpCertificationNumberSendRequestModel(
-                    phoneNumber = phoneNumber
-                )
-            )
-        },
-        onPhoneNumberChange = viewModel::onNumberChange,
-        onCertificationNumberChange = viewModel::onCertificationNumberChange,
-        phoneNumber = phoneNumber,
-        certificationNumber = certificationNumber,
-        verifyNumberUiState = verifyNumberUiState,
-        sendNumberUiState = sendNumberUiState,
-        onErrorToast = onErrorToast
-    )
-}
-
-@Composable
-private fun CertinSignUpScreen(
-    modifier: Modifier = Modifier,
-    phoneNumber: String,
-    verifyNumberUiState: VerifyNumberUiState,
-    sendNumberUiState: SendNumberUiState,
-    certificationNumber: String,
-    onBackClick: () -> Unit,
-    onNeighborhoodClick: () -> Unit,
-    focusManager: FocusManager = LocalFocusManager.current,
-    scrollState: ScrollState = rememberScrollState(),
-    certificationCallBack: () -> Unit,
-    sendCertificationCodeCallBack: () -> Unit,
-    onErrorToast: (throwable: Throwable?, message: Int?) -> Unit,
-    onPhoneNumberChange: (String) -> Unit,
-    onCertificationNumberChange: (String) -> Unit,
-) {
-    val isSuccess = sendNumberUiState is SendNumberUiState.Success
     var isLoading by remember { mutableStateOf(false) }
     var isError by remember { mutableStateOf(false) }
-    val context = LocalContext.current
 
+    val isVerifyNumberError = verifyNumberUiState is VerifyNumberUiState.Error
+
+    val context = LocalContext.current
 
     LaunchedEffect(verifyNumberUiState) {
         when (verifyNumberUiState) {
             is VerifyNumberUiState.Loading -> Unit
-            is VerifyNumberUiState.Success -> onNeighborhoodClick()
+            is VerifyNumberUiState.Success -> {
+                makeToast(context, "인증번호 성공")
+                onNeighborhoodClick()
+            }
             is VerifyNumberUiState.BadRequest -> {
                 isLoading = false
                 isError = true
@@ -137,15 +108,18 @@ private fun CertinSignUpScreen(
             is VerifyNumberUiState.Error -> {
                 isLoading = false
                 isError = true
-                onErrorToast(verifyNumberUiState.exception, R.string.error_verify_number)
+                onErrorToast(
+                    (verifyNumberUiState as VerifyNumberUiState.Error).exception,
+                    R.string.error_verify_number
+                )
             }
         }
     }
-    LaunchedEffect (sendNumberUiState) {
-        Log.d("SendNumberEffect", "Current State: $sendNumberUiState")
+
+    LaunchedEffect(sendNumberUiState) {
         when (sendNumberUiState) {
             is SendNumberUiState.Loading -> Unit
-            is SendNumberUiState.Success -> makeToast(context,"인증번호 성공")
+            is SendNumberUiState.Success -> makeToast(context, "인증번호 성공")
             is SendNumberUiState.PhoneNumberNotValid -> {
                 isLoading = false
                 onErrorToast(null, R.string.error_id_not_valid)
@@ -158,10 +132,53 @@ private fun CertinSignUpScreen(
 
             is SendNumberUiState.Error -> {
                 isLoading = false
-                onErrorToast(sendNumberUiState.exception, R.string.error_send_number)
+                onErrorToast(
+                    (sendNumberUiState as SendNumberUiState.Error).exception,
+                    R.string.error_send_number
+                )
             }
         }
     }
+
+    CertinSignUpScreen(
+        onBackClick = onBackClick,
+        certificationCallBack = {
+            viewModel.verifyNumber(
+                phoneNumber = phoneNumber,
+                code = certificationNumber
+            )
+        },
+        sendCertificationCodeCallBack = {
+            viewModel.sendCertificationCode(
+                body = SignUpCertificationNumberSendRequestModel(
+                    phoneNumber = phoneNumber
+                )
+            )
+        },
+        onPhoneNumberChange = viewModel::onNumberChange,
+        onCertificationNumberChange = viewModel::onCertificationNumberChange,
+        phoneNumber = phoneNumber,
+        certificationNumber = certificationNumber,
+        verifyNumberUiState = verifyNumberUiState,
+        isVerifyNumberError = isVerifyNumberError
+    )
+}
+
+@Composable
+private fun CertinSignUpScreen(
+    modifier: Modifier = Modifier,
+    phoneNumber: String,
+    verifyNumberUiState: VerifyNumberUiState,
+    isVerifyNumberError: Boolean,
+    certificationNumber: String,
+    onBackClick: () -> Unit,
+    focusManager: FocusManager = LocalFocusManager.current,
+    scrollState: ScrollState = rememberScrollState(),
+    certificationCallBack: () -> Unit,
+    sendCertificationCodeCallBack: () -> Unit,
+    onPhoneNumberChange: (String) -> Unit,
+    onCertificationNumberChange: (String) -> Unit,
+) {
 
     GwangSanTheme { colors, typography ->
 
@@ -178,7 +195,7 @@ private fun CertinSignUpScreen(
                 }
         ) {
             GwangSanTopBar(
-                startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable {onBackClick()}) },
+                startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { onBackClick() }) },
                 betweenText = "뒤로"
             )
 
@@ -212,22 +229,22 @@ private fun CertinSignUpScreen(
                     value = phoneNumber,
                     label = "전화번호",
                     placeHolder = "연락처는 \" - \" 빼고 입력해주세요",
-                    isError = isError,
                     isDisabled = false,
                     errorText = "",
                     onTextChange = onPhoneNumberChange,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     modifier = Modifier
+                        .weight(1f)
                         .height(70.dp)
-                        .width(250.dp)
                 )
 
                 GwangSanStateButton(
                     text = "인증",
                     state = if (phoneNumber.isNotBlank()) ButtonState.Enable else ButtonState.Disable,
                     modifier = Modifier
+                        .width(80.dp)
+                        .height(50.dp)
                         .align(Alignment.Bottom)
-                        .height(54.dp)
                 ) {
                     sendCertificationCodeCallBack()
                 }
@@ -238,11 +255,13 @@ private fun CertinSignUpScreen(
             GwangSanTextField(
                 value = certificationNumber,
                 placeHolder = "인증번호를 입력해주세요",
-                isError = isError,
+                isError = isVerifyNumberError,
                 isDisabled = false,
                 errorText = "인증번호가 틀립니다..",
                 onTextChange = {
-                    if (it.length <= 6 && it.all { char -> char.isDigit() }) onCertificationNumberChange(it)
+                    if (it.length <= 6 && it.all { char -> char.isDigit() }) onCertificationNumberChange(
+                        it
+                    )
                 },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 label = "전화번호 인증",
@@ -277,17 +296,9 @@ private fun CertinSignUpScreen(
 @GwangsanPreviews
 @Composable
 private fun CertinSignUpScreenPreview() {
-    CertinSignUpScreen(
+    CertInSignUpRoute(
+        onErrorToast = {_, _ ->},
         onBackClick = {},
-        onNeighborhoodClick = {},
-        certificationCallBack = {},
-        sendCertificationCodeCallBack = {},
-        onErrorToast = { _, _ -> },
-        onPhoneNumberChange = {},
-        onCertificationNumberChange = {},
-        phoneNumber = "",
-        certificationNumber = "",
-        verifyNumberUiState = VerifyNumberUiState.Loading,
-        sendNumberUiState = SendNumberUiState.Loading
+        onNeighborhoodClick = {}
     )
 }

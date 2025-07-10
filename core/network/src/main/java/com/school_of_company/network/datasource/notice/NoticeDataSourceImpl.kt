@@ -12,7 +12,7 @@ class NoticeDataSourceImpl @Inject constructor(
 ) : NoticeDataSource {
     override fun getAllNotice(): Flow<List<GetAllNoticeResponse>> =
         performApiRequest { noticeApi.getAllNotice() }
-
-    override fun getSpecificNotice(noticeId: Long): Flow<List<GetSpecificNoticeResponse>> =
+        
+    override fun getSpecificNotice(noticeId: Long): Flow<GetSpecificNoticeResponse> =
         performApiRequest { noticeApi.getSpecificNotice(noticeId = noticeId) }
 }

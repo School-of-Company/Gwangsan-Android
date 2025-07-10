@@ -1,11 +1,10 @@
 package com.school_of_company.network.datasource.auth
 
-import android.util.Log
 import com.school_of_company.network.api.AuthAPI
-import com.school_of_company.network.datasource.auth.AuthDataSource
 import com.school_of_company.network.dto.auth.requset.LoginRequest
 import com.school_of_company.network.dto.auth.requset.SignUpCertificationNumberSendRequest
 import com.school_of_company.network.dto.auth.requset.SignUpRequest
+import com.school_of_company.network.dto.auth.requset.SmsVerifyCodeRequest
 import com.school_of_company.network.dto.reponse.LoginResponse
 import com.school_of_company.network.util.performApiRequest
 import kotlinx.coroutines.flow.Flow
@@ -29,11 +28,9 @@ class AuthDataSourceImpl @Inject constructor(
     override fun logout(): Flow<Unit> =
         performApiRequest { authAPI.logout() }
 
+    override fun signUpCertificationNumberCertification(body: SmsVerifyCodeRequest): Flow<Unit> =
+        performApiRequest { authAPI.signUpCertificationNumberCertification(body = body) }
+
     override fun signUpCertificationNumberSend(body: SignUpCertificationNumberSendRequest): Flow<Unit> =
         performApiRequest { authAPI.signUpCertificationNumberSend(body = body) }
-
-    override fun signUpCertificationNumberCertification(
-        phoneNumber: String,
-        code: String
-    ): Flow<Unit> = performApiRequest { authAPI.signUpCertificationNumberCertification(phoneNumber = phoneNumber, code = code                                                                                                                      ) }
 }

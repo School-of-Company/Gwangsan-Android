@@ -15,7 +15,7 @@ class NoticeRepositoryImpl @Inject constructor(
         return noticeDataSource.getAllNotice().map { it.map { list -> list.toModel() } }
     }
 
-    override fun getSpecificNotice(noticeId: Long): Flow<List<GetSpecificNoticeResponseModel>> {
-        return noticeDataSource.getSpecificNotice(noticeId = noticeId).map { it.map { list -> list.toModel() } }
+    override fun getSpecificNotice(noticeId: Long): Flow<GetSpecificNoticeResponseModel> {
+        return noticeDataSource.getSpecificNotice(noticeId = noticeId).map { it.toModel() }
     }
 }

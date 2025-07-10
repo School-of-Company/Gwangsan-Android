@@ -30,6 +30,10 @@ class AuthInterceptor @Inject constructor(
                 request
             }
 
+            path.contains("/api/sms") && method == POST -> {
+                request
+            }
+
             // 토큰 재발급은 refreshToken 사용
             path.endsWith("/api/auth/") && method == PATCH -> {
                 request.newBuilder().addHeader("Authorization", "Bearer $refreshToken").build()
