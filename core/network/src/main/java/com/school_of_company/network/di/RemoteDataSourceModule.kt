@@ -1,10 +1,7 @@
 package com.school_of_company.network.di
 
-
 import com.school_of_company.network.datasource.auth.AuthDataSource
 import com.school_of_company.network.datasource.auth.AuthDataSourceImpl
-import com.school_of_company.network.datasource.main.MainDataSource
-import com.school_of_company.network.datasource.main.MainDataSourceImpl
 import com.school_of_company.network.datasource.member.MemberDataSource
 import com.school_of_company.network.datasource.member.MemberDataSourceImpl
 import com.school_of_company.network.datasource.post.PostDataSource
@@ -21,11 +18,6 @@ abstract class RemoteDataSourceModule {
     abstract fun bindAuthDataSource(
         authDataSourceImpl: AuthDataSourceImpl
     ): AuthDataSource
-
-    @Binds
-    abstract fun bindMainDataSource(
-        mainDataSourceImpl: MainDataSourceImpl
-    ): MainDataSource
 
     @Binds
     abstract fun bindPostDataSource(

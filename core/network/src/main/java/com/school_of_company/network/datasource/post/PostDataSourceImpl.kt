@@ -1,10 +1,8 @@
 package com.school_of_company.network.datasource.post
 
-import com.school_of_company.model.enum.Mode
-import com.school_of_company.model.enum.Type
 import com.school_of_company.network.api.PostAPI
 import com.school_of_company.network.dto.post.request.PostAllRequest
-import com.school_of_company.network.dto.post.response.PostListResponse
+import com.school_of_company.network.dto.post.response.PostDto
 import com.school_of_company.network.dto.post.response.PostModifyResponse
 import com.school_of_company.network.util.performApiRequest
 import kotlinx.coroutines.flow.Flow
@@ -26,16 +24,16 @@ class PostDataSourceImpl @Inject constructor(
             body = body
         ) }
 
-    override fun getSpecificInformation(): Flow<PostListResponse> =
+    override fun getSpecificInformation(): Flow<List<PostDto>> =
         performApiRequest { postAPI.getSpecificInformation() }
 
-    override fun getAllPostInformation(type: String, mode: String): Flow<PostListResponse> =
+    override fun getAllPostInformation(type: String, mode: String): Flow<List<PostDto>> =
         performApiRequest { postAPI.getAllPostInformation(
             type = type,
             mode = mode
         ) }
 
-    override fun getMyPostInformation(type: String, mode: String): Flow<PostListResponse> =
+    override fun getMyPostInformation(type: String, mode: String): Flow<List<PostDto>> =
         performApiRequest { postAPI.getMyPostInformation(
             type = type,
             mode = mode

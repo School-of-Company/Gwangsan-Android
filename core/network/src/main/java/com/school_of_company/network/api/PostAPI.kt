@@ -1,7 +1,7 @@
 package com.school_of_company.network.api
 
 import com.school_of_company.network.dto.post.request.PostAllRequest
-import com.school_of_company.network.dto.post.response.PostListResponse
+import com.school_of_company.network.dto.post.response.PostDto
 import com.school_of_company.network.dto.post.response.PostModifyResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -25,19 +25,19 @@ interface PostAPI {
     ) : PostModifyResponse
 
     @GET("/api/post/{post_id}")
-    suspend fun getSpecificInformation() : PostListResponse
+    suspend fun getSpecificInformation() : List<PostDto>
 
     @GET("/api/post")
     suspend fun getAllPostInformation(
         @Query("type") type: String,
         @Query("mode") mode: String
-    ) : PostListResponse
+    ) : List<PostDto>
 
     @GET("/api/post/current")
     suspend fun getMyPostInformation(
         @Query("type") type: String,
         @Query("mode") mode: String
-    ) : PostListResponse
+    ) : List<PostDto>
 
     @DELETE("/api/post/{post_id}")
     suspend fun deletePostInformation(
