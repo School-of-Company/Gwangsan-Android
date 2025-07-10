@@ -20,11 +20,13 @@ import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.icons.ArrowDown
 import com.school_of_company.design_system.componet.icons.EllipseIcon
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.model.member.response.GetMemberResponseModel
 
 @Composable
 internal fun MyInformation(
     modifier: Modifier = Modifier,
     onModifyClick: () -> Unit,
+    data: GetMemberResponseModel,
     onLogoutClick: () -> Unit
 ) {
     GwangSanTheme { colors, typography ->
@@ -44,7 +46,7 @@ internal fun MyInformation(
 
                 Column {
                     Text(
-                        text = "모태환",
+                        text = data.nickname,
                         style = typography.body1,
                         color = colors.black
                     )
@@ -70,15 +72,4 @@ internal fun MyInformation(
             )
         }
     }
-}
-
-@Preview
-@Composable
-private fun PreviewMyInformation(
-
-){
-    MyInformation(
-        onModifyClick = {},
-        onLogoutClick = {}
-    )
 }
