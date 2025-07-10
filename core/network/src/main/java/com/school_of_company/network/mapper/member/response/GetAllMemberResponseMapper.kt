@@ -7,7 +7,8 @@ fun GetAllMemberResponse.toModel(): GetAllMemberResponseModel =
     GetAllMemberResponseModel(
         memberId = this.memberId,
         nickname = this.nickname,
-        profileUrl = this.profileUrl,
         placeName = this.placeName,
-        light = this.light
+        light = this.light,
+        description = this.description,
+        specialties = this.specialties,
     )
