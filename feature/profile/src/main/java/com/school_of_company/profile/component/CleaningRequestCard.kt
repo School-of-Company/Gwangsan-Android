@@ -8,15 +8,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.model.post.response.Post
 
 @Composable
 internal fun CleaningRequestCard(
     modifier: Modifier = Modifier,
-    title: String,
-    priceAndLocation: String,
-    description: String,
+    data: Post
 ) {
     GwangSanTheme { colors, typography ->
 
@@ -26,7 +26,7 @@ internal fun CleaningRequestCard(
                 .padding(16.dp)
         ) {
             Text(
-                text = title,
+                text = data.title,
                 style = typography.titleSmall,
                 color = colors.black
             )
@@ -34,7 +34,7 @@ internal fun CleaningRequestCard(
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
-                text = priceAndLocation,
+                text = "${data.gwangsan}",
                 style = typography.titleSmall,
                 color = colors.black
             )
@@ -42,7 +42,7 @@ internal fun CleaningRequestCard(
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
-                text = description,
+                text = data.content,
                 style = typography.body4
             )
         }
