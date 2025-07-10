@@ -6,5 +6,6 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class ModifyMemberInformationRequest(
     @Json(name = "nickname") val nickname: String,
-    @Json(name = "profileUrl") val profileUrl: String
+    @Json(name = "specialties") val specialties: List<String>,
+    @Json(name = "description") val description: String
 )
