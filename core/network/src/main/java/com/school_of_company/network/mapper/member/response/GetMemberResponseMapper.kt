@@ -8,7 +8,8 @@ fun GetMemberResponse.toModel(): GetMemberResponseModel =
         memberId = this.memberId,
         nickname = this.nickname,
         placeName = this.placeName,
-        profileUrl = this.profileUrl,
         light = this.light,
-        gwangsan = this.gwangsan
+        gwangsan = this.gwangsan,
+        description = this.description,
+        specialties = this.specialties
     )
