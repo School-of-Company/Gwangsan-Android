@@ -3,6 +3,11 @@ package com.school_of_company.signup.view
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -67,3 +72,56 @@ fun MultiSelectDropdown(
         }
     }
 }
+
+@Composable
+fun SingleSelectDropdown(
+    modifier: Modifier = Modifier,
+    options: List<String>,
+    selectedOption: String?,
+    onOptionClick: (String) -> Unit,
+    onDismissRequest: () -> Unit
+) {
+    GwangSanTheme { colors, typography ->
+
+        Column(
+            modifier = modifier
+                .clip(RoundedCornerShape(12.dp))
+                .background(colors.white)
+        ) {
+            options.forEach { option ->
+                key(option) {
+
+                    val isSelected = option == selectedOption
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(
+                                color = if (isSelected) colors.focus else colors.white,
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                            .GwangSanClickable {
+                                onOptionClick(option)
+                                onDismissRequest()
+                            }
+                            .padding(horizontal = 16.dp, vertical = 12.dp)
+                    ) {
+                        if (isSelected) {
+                            CheckIcon(modifier = Modifier.padding(end = 8.dp))
+                        } else {
+                            Spacer(modifier = Modifier.width(24.dp))
+                        }
+
+                        Text(
+                            text = option,
+                            style = typography.body5,
+                            color = if (isSelected) colors.black else colors.gray600
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+

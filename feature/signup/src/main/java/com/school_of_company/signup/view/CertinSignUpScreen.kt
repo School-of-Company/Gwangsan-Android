@@ -83,7 +83,10 @@ internal fun CertInSignUpRoute(
     LaunchedEffect(verifyNumberUiState) {
         when (verifyNumberUiState) {
             is VerifyNumberUiState.Loading -> Unit
-            is VerifyNumberUiState.Success -> Unit
+            is VerifyNumberUiState.Success -> {
+                makeToast(context, "인증번호 성공")
+                onNeighborhoodClick()
+            }
             is VerifyNumberUiState.BadRequest -> {
                 isLoading = false
                 isError = true
@@ -140,7 +143,10 @@ internal fun CertInSignUpRoute(
     CertinSignUpScreen(
         onBackClick = onBackClick,
         certificationCallBack = {
-            onNeighborhoodClick()
+            viewModel.verifyNumber(
+                phoneNumber = phoneNumber,
+                code = certificationNumber
+            )
         },
         sendCertificationCodeCallBack = {
             viewModel.sendCertificationCode(

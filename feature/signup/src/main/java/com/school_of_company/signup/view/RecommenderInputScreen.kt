@@ -5,10 +5,12 @@ import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
+import com.school_of_company.design_system.R
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,9 +25,12 @@ import com.school_of_company.design_system.componet.button.GwangSanStateButton
 import com.school_of_company.design_system.componet.button.state.ButtonState
 import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.icons.DownArrowIcon
+import com.school_of_company.design_system.componet.toast.makeToast
 import com.school_of_company.design_system.componet.topbar.GwangSanTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.model.auth.request.SignUpRequestModel
 import com.school_of_company.signup.viewmodel.SignUpViewModel
+import com.school_of_company.signup.viewmodel.uistate.SignUpUiState
 import com.school_of_company.ui.previews.GwangsanPreviews
 import com.yourpackage.design_system.component.textField.GwangSanTextField
 
@@ -44,26 +49,75 @@ internal fun ReCommenDerInputRoute(
             ctx as ComponentActivity
         }
     )) {
+    val signUpUiState by viewModel.signUpUiState.collectAsStateWithLifecycle()
     val recommender by viewModel.recommender.collectAsStateWithLifecycle()
+
     val isNextEnabled = recommender.isNotBlank()
+
+    val context = LocalContext.current
+
+    LaunchedEffect(signUpUiState) {
+        when (signUpUiState) {
+            is SignUpUiState.Success -> {
+                makeToast(context, "회원가입 성공")
+                onRecommenderClick()
+            }
+            is SignUpUiState.Error -> {
+                onErrorToast((signUpUiState as SignUpUiState.Error).exception, R.string.error_generic)
+            }
+            is SignUpUiState.Loading -> Unit
+            is SignUpUiState.Conflict -> {
+                onErrorToast(null, R.string.error_user_exists)
+            }
+            is SignUpUiState.PasswordMismatch -> {
+                onErrorToast(null, R.string.error_password_mismatch)
+            }
+            is SignUpUiState.PasswordNotValid -> {
+                onErrorToast(null, R.string.error_invalid_password)
+            }
+            is SignUpUiState.BadRequest -> {
+                onErrorToast(null, R.string.error_bad_request)
+            }
+            is SignUpUiState.NotFound -> {
+                onErrorToast(null, R.string.error_resource_not_found)
+            }
+            is SignUpUiState.TooManyRequest -> {
+                onErrorToast(null, R.string.error_too_many_requests)
+            }
+        }
+    }
 
     RecommenderInputScreen(
         recommender = recommender,
         isNextEnabled = isNextEnabled,
         onRecommenderChange = viewModel::onRecommenderChange,
         onBackClick = onBackClick,
-        onNextClick = onRecommenderClick
+        onSignUpCallBack = {
+            viewModel.signUp(
+                body = SignUpRequestModel(
+                    name = viewModel.name.value,
+                    nickname = viewModel.nickname.value,
+                    password = viewModel.password.value,
+                    phoneNumber = viewModel.number.value,
+                    dongName = viewModel.dong.value,
+                    placeName = viewModel.placeName.value,
+                    specialties = viewModel.specialty.value,
+                    description = viewModel.description.value,
+                    recommender = viewModel.recommender.value,
+                )
+            )
+        }
     )
 }
 
 @Composable
 fun RecommenderInputScreen(
+    modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
     recommender: String,
     isNextEnabled: Boolean,
     onRecommenderChange: (String) -> Unit,
-    onNextClick: () -> Unit,
-    modifier: Modifier = Modifier
+    onSignUpCallBack: () -> Unit
 ) {
     val focusManager = LocalFocusManager.current
 
@@ -122,7 +176,7 @@ fun RecommenderInputScreen(
             GwangSanStateButton(
                 text = "다음",
                 state = if (isNextEnabled) ButtonState.Enable else ButtonState.Disable,
-                onClick = onNextClick,
+                onClick = onSignUpCallBack,
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .padding(start = 24.dp, end = 24.dp, bottom = 30.dp)
@@ -140,6 +194,6 @@ private fun RecommenderInputScreenPreview() {
         isNextEnabled = false,
         onRecommenderChange = {},
         onBackClick = {},
-        onNextClick = {}
+        onSignUpCallBack = {}
     )
 }

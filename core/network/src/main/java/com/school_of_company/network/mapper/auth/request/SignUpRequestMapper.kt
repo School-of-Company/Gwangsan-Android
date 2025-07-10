@@ -5,14 +5,13 @@ import com.school_of_company.network.dto.auth.requset.SignUpRequest
 
 fun SignUpRequestModel.toDto(): SignUpRequest =
     SignUpRequest(
-        name = name,
-        password = password,
-        phoneNumber = phoneNumber,
-        verificationCode = verificationCode,
-        dong = dong,
-        specialty = specialty,
-        recommender = recommender,
-        introduction = introduction,
-        branch = branch,
-        nickname = nickname
+        name = this.name,
+        nickname = this.nickname,
+        password = this.password,
+        phoneNumber = this.phoneNumber,
+        dongName = this.dongName,
+        placeName = this.placeName,
+        recommender = this.recommender,
+        specialties = this.specialties,
+        description = this.description
     )

@@ -14,6 +14,8 @@ const val SignUpIntroduceRoute = "signup_introduce"
 const val SignUpRecommenderRoute = "signup_recommender"
 const val SignUpFinishRoute = "signup_finish"
 const val SignUpNickNameRoute = "signup_nickname"
+const val SignUpDescriptionRoute = "signup_description"
+const val SignUpPlaceNameRoute = "signup_place_name"
 
 fun NavController.navigateToSignUpStart(navOptions: NavOptions? = null) {
     this.navigate(SignUpNameRoute, navOptions)
@@ -45,6 +47,14 @@ fun NavController.navigateToSignUpRecommender(navOptions: NavOptions? = null) {
 
 fun NavController.navigateToSignUpFinish(navOptions: NavOptions? = null) {
     this.navigate(SignUpFinishRoute)
+}
+
+fun NavController.navigateToSignUpDescription(navOptions: NavOptions? = null) {
+    this.navigate(SignUpDescriptionRoute, navOptions)
+}
+
+fun NavController.navigateToSignUpPlaceName(navOptions: NavOptions? = null) {
+    this.navigate(SignUpPlaceNameRoute, navOptions)
 }
 
 fun NavGraphBuilder.signUpNameScreen(
@@ -144,6 +154,30 @@ fun NavGraphBuilder.signUpFinishScreen(
     composable(route = SignUpFinishRoute) {
         FinishRoute(
             onClickGoToLogin = onClickGoToLogin
+        )
+    }
+}
+
+fun NavGraphBuilder.signUpDescriptionScreen(
+    onBackClick: () -> Unit,
+    onNextClick: () -> Unit,
+) {
+    composable(route = SignUpDescriptionRoute) {
+        DescriptionRoute(
+            onBackClick = onBackClick,
+            onNextClick = onNextClick
+        )
+    }
+}
+
+fun NavGraphBuilder.signUpPlaceNameScreen(
+    onBackClick: () -> Unit,
+    onNextClick: () -> Unit
+) {
+    composable(route = SignUpPlaceNameRoute) {
+        PlaceNameRoute(
+            onBackClick = onBackClick,
+            onNextClick = onNextClick,
         )
     }
 }

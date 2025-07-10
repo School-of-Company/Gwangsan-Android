@@ -4,13 +4,24 @@ import android.content.ContextWrapper
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -19,6 +30,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.school_of_company.design_system.componet.button.GwangSanButton
 import com.school_of_company.design_system.componet.button.GwangSanStateButton
@@ -30,14 +42,11 @@ import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.design_system.theme.color.GwangSanColor
 import com.school_of_company.signup.viewmodel.SignUpViewModel
 import com.yourpackage.design_system.component.textField.GwangSanSelectTextField
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.school_of_company.ui.previews.GwangsanPreviews
 
 @Composable
-internal fun IntroduceRoute(
+internal fun PlaceNameRoute(
     onBackClick: () -> Unit,
     onNextClick: () -> Unit,
-    onErrorToast: (throwable: Throwable?, message: Int?) -> Unit,
     viewModel: SignUpViewModel = hiltViewModel(
         viewModelStoreOwner = LocalContext.current.let { context ->
             var ctx = context
@@ -47,39 +56,37 @@ internal fun IntroduceRoute(
             }
             ctx as ComponentActivity
         }
-    )) {
-    val specialty by viewModel.specialty.collectAsStateWithLifecycle()
-    val isDropdownVisible by viewModel.specialtyDropdownVisible.collectAsStateWithLifecycle()
+    )
+) {
+    val placeName by viewModel.placeName.collectAsStateWithLifecycle()
 
-    IntroduceScreen(
-        specialty = specialty,
-        isDropdownVisible = isDropdownVisible,
+    PlaceNameScreen(
         onBackClick = onBackClick,
         onNextClick = onNextClick,
-        onToggleDropdown = viewModel::toggleSpecialtyDropdown,
-        onCloseDropdown = viewModel::closeSpecialtyDropdown,
-        onSpecialtyTextChange = viewModel::onSpecialtyTextChange,
-        onSpecialtyChange = viewModel::onSpecialtyListChange,
+        placeName = placeName,
+        onPlaceNameChange = viewModel::onPlaceNameChange,
     )
 }
 
 @Composable
-private fun IntroduceScreen(
+private fun PlaceNameScreen(
     modifier: Modifier = Modifier,
-    specialty: List<String>,
-    isDropdownVisible: Boolean,
     onBackClick: () -> Unit,
     onNextClick: () -> Unit,
-    onToggleDropdown: () -> Unit,
-    onCloseDropdown: () -> Unit,
-    onSpecialtyTextChange: (String) -> Unit,
-    onSpecialtyChange: (List<String>) -> Unit
+    placeName: String,
+    onPlaceNameChange: (String) -> Unit,
 ) {
-    val backgroundColor = if (isDropdownVisible) GwangSanColor.gray300 else GwangSanColor.white
+
+    val isDropdownVisible = rememberSaveable { mutableStateOf(false) }
+
+    val onToggleDropdown: () -> Unit = { isDropdownVisible.value = !isDropdownVisible.value }
+
+    val backgroundColor = if (isDropdownVisible.value) GwangSanColor.gray300 else GwangSanColor.white
     val focusManager = LocalFocusManager.current
     val scrollState = rememberScrollState()
 
     GwangSanTheme { colors, typography ->
+
         Box(
             modifier = modifier
                 .fillMaxSize()
@@ -87,8 +94,8 @@ private fun IntroduceScreen(
                 .imePadding()
                 .pointerInput(isDropdownVisible) {
                     detectTapGestures {
-                        if (isDropdownVisible) {
-                            onCloseDropdown()
+                        if (isDropdownVisible.value) {
+                            isDropdownVisible.value = false
                         } else {
                             focusManager.clearFocus()
                         }
@@ -124,7 +131,7 @@ private fun IntroduceScreen(
                 Spacer(modifier = Modifier.height(6.dp))
 
                 Text(
-                    text = "자신을 소개하는 글을 작성해주세요",
+                    text = "지점을 선택해주세요",
                     style = typography.label,
                     color = colors.black.copy(alpha = 0.5f)
                 )
@@ -132,21 +139,21 @@ private fun IntroduceScreen(
                 Spacer(modifier = Modifier.height(32.dp))
 
                 GwangSanSelectTextField(
-                    label = "특기",
-                    value = specialty.joinToString(", "),
-                    placeHolder = "특기 추가",
+                    label = "지점",
+                    value = placeName,
+                    placeHolder = "지점 추가",
                     onClick = onToggleDropdown,
-                    onTextChange = onSpecialtyTextChange
+                    onTextChange = { /* NONE */ }
                 )
 
-                if (isDropdownVisible) {
+                if (isDropdownVisible.value) {
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    MultiSelectDropdown(
-                        options = listOf("청소하기", "운전하기", "달리기", "빨래하기", "벌레잡기", "이삿짐 나르기"),
-                        selectedOptions = specialty,
-                        onSelectionChange = onSpecialtyChange,
-                        onDismissRequest = onCloseDropdown,
+                    SingleSelectDropdown(
+                        options = listOf("수완세영", "수완에너지", "신가", "신창", "도산", "우산", "월곡1", "첨단1", "평동", "월곡2", "하남"),
+                        selectedOption = placeName,
+                        onOptionClick = onPlaceNameChange,
+                        onDismissRequest = { isDropdownVisible.value = false },
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
@@ -164,9 +171,9 @@ private fun IntroduceScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(12.dp))
-                        .background(if (isDropdownVisible) colors.gray200 else colors.background)
+                        .background(if (isDropdownVisible.value) colors.gray200 else colors.background)
                 ) {
-                    if (isDropdownVisible) {
+                    if (isDropdownVisible.value) {
                         GwangSanButton(
                             text = "다음",
                             color = colors.gray400,
@@ -179,7 +186,7 @@ private fun IntroduceScreen(
                     } else {
                         GwangSanStateButton(
                             text = "다음",
-                            state = if (specialty.isNotEmpty()) ButtonState.Enable else ButtonState.Disable,
+                            state = if (placeName.isNotBlank()) ButtonState.Enable else ButtonState.Disable,
                             onClick = { onNextClick() },
                             modifier = Modifier.fillMaxWidth()
                         )
@@ -188,19 +195,4 @@ private fun IntroduceScreen(
             }
         }
     }
-}
-
-@GwangsanPreviews
-@Composable
-private fun IntroduceScreenPreview() {
-    IntroduceScreen(
-        specialty = listOf(),
-        isDropdownVisible = false,
-        onBackClick = {},
-        onNextClick = {},
-        onToggleDropdown = {},
-        onCloseDropdown = {},
-        onSpecialtyChange = {},
-        onSpecialtyTextChange = {}
-    )
 }

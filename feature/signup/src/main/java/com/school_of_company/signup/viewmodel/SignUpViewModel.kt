@@ -19,6 +19,7 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.school_of_company.result.Result
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
@@ -33,9 +34,10 @@ class SignUpViewModel @Inject constructor(
         private const val PHONE_NUMBER = "phoneNumber"
         private const val CERTIFICATION_NUMBER = "certificationNumber"
         private const val DONG = "dong"
-        private const val BRANCH = "branch"
+        private const val DESCRIPTION = "description"
         private const val RECOMMENDER = "recommender"
         private const val SPECIALTY = "specialty"
+        private const val PLACE_NAME = "placeName"
     }
 
     private val _signUpUiState = MutableStateFlow<SignUpUiState>(SignUpUiState.Loading)
@@ -60,9 +62,10 @@ class SignUpViewModel @Inject constructor(
     internal var password = savedStateHandle.getStateFlow(PASSWORD, "")
     internal var checkPassword = savedStateHandle.getStateFlow(RE_PASSWORD, "")
     internal var dong = savedStateHandle.getStateFlow(DONG, "")
-    internal var branch = savedStateHandle.getStateFlow(BRANCH, "")
+    internal var description = savedStateHandle.getStateFlow(DESCRIPTION, "")
     internal var recommender = savedStateHandle.getStateFlow(RECOMMENDER, "")
-    internal var specialty = savedStateHandle.getStateFlow(SPECIALTY, "")
+    internal var specialty = savedStateHandle.getStateFlow(SPECIALTY, emptyList<String>())
+    internal var placeName = savedStateHandle.getStateFlow(PLACE_NAME, "")
 
     internal fun signUp(body: SignUpRequestModel) = viewModelScope.launch {
         _signUpUiState.value = SignUpUiState.Loading
@@ -81,10 +84,10 @@ class SignUpViewModel @Inject constructor(
                     .asResult()
                     .collectLatest { result ->
                         when (result) {
-                            is com.school_of_company.result.Result.Success -> _signUpUiState.value =
+                            is Result.Success -> _signUpUiState.value =
                                 SignUpUiState.Success
 
-                            is com.school_of_company.result.Result.Error -> {
+                            is Result.Error -> {
                                 _signUpUiState.value = SignUpUiState.Error(result.exception)
                                 result.exception.errorHandling(
                                     badRequestAction = { SignUpUiState.BadRequest },
@@ -94,7 +97,7 @@ class SignUpViewModel @Inject constructor(
                                 )
                             }
 
-                            is com.school_of_company.result.Result.Loading -> _signUpUiState.value =
+                            is Result.Loading -> _signUpUiState.value =
                                 SignUpUiState.Loading
                         }
                     }
@@ -114,13 +117,13 @@ class SignUpViewModel @Inject constructor(
                 .asResult()
                 .collectLatest { result ->
                     when (result) {
-                        is com.school_of_company.result.Result.Loading -> _verifyNumberUiState.value =
+                        is Result.Loading -> _verifyNumberUiState.value =
                             VerifyNumberUiState.Loading
 
-                        is com.school_of_company.result.Result.Success -> _verifyNumberUiState.value =
+                        is Result.Success -> _verifyNumberUiState.value =
                             VerifyNumberUiState.Success
 
-                        is com.school_of_company.result.Result.Error -> {
+                        is Result.Error -> {
                             _verifyNumberUiState.value = VerifyNumberUiState.Error(result.exception)
                             result.exception.errorHandling(
                                 badRequestAction = { SignUpUiState.BadRequest },
@@ -143,13 +146,13 @@ class SignUpViewModel @Inject constructor(
                         _sendNumberUiState.value = SendNumberUiState.PhoneNumberNotValid
                     } else {
                         when (result) {
-                            is com.school_of_company.result.Result.Loading -> _sendNumberUiState.value =
+                            is Result.Loading -> _sendNumberUiState.value =
                                 SendNumberUiState.Loading
 
-                            is com.school_of_company.result.Result.Success -> _sendNumberUiState.value =
+                            is Result.Success -> _sendNumberUiState.value =
                                 SendNumberUiState.Success
 
-                            is com.school_of_company.result.Result.Error -> {
+                            is Result.Error -> {
                                 _sendNumberUiState.value = SendNumberUiState.Error(result.exception)
                                 result.exception.errorHandling(
                                     badRequestAction = { SignUpUiState.BadRequest },
@@ -231,23 +234,31 @@ class SignUpViewModel @Inject constructor(
         savedStateHandle[DONG] = value
     }
 
-    internal fun onBranchChange(value: String) {
-        savedStateHandle[BRANCH] = value
+    internal fun onDescriptionChange(value: String) {
+        savedStateHandle[DESCRIPTION] = value
     }
 
     internal fun onRecommenderChange(value: String) {
         savedStateHandle[RECOMMENDER] = value
     }
 
-    internal fun onSpecialtyChange(value: String) {
-        savedStateHandle[SPECIALTY] = value
+    internal fun onSpecialtyTextChange(text: String) {
+        val list = text.split(",").map { it.trim() }.filter { it.isNotBlank() }
+        savedStateHandle[SPECIALTY] = list
     }
 
+    internal fun onSpecialtyListChange(list: List<String>) {
+        savedStateHandle[SPECIALTY] = list
+    }
     internal fun toggleSpecialtyDropdown() {
         _specialtyDropdownVisible.value = !_specialtyDropdownVisible.value
     }
 
     internal fun closeSpecialtyDropdown() {
         _specialtyDropdownVisible.value = false
+    }
+
+    internal fun onPlaceNameChange(value: String) {
+        savedStateHandle[PLACE_NAME] = value
     }
 }
