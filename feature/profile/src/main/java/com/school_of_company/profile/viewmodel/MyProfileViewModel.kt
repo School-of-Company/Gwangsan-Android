@@ -60,9 +60,10 @@ internal class MyProfileViewModel @Inject constructor(
             .collectLatest { result ->
                 when (result) {
                     is Result.Loading -> _myProfileUiState.value = MemberUiState.Loading
+
                     is Result.Success -> _myProfileUiState.value = MemberUiState.Success(result.data)
-                    is Result.Error -> {
-                        _myProfileUiState.value = MemberUiState.Error(result.exception)
+
+                    is Result.Error -> { _myProfileUiState.value = MemberUiState.Error(result.exception)
                     }
                 }
             }
@@ -76,7 +77,9 @@ internal class MyProfileViewModel @Inject constructor(
             .collectLatest { result ->
                 when (result) {
                     is Result.Loading -> _otherPersonUiState.value = OtherPersonGetUistate.Loading
+
                     is Result.Success -> _otherPersonUiState.value = OtherPersonGetUistate.Success(result.data)
+
                     is Result.Error -> _otherPersonUiState.value = OtherPersonGetUistate.Error(result.exception)
                 }
             }
@@ -88,7 +91,9 @@ internal class MyProfileViewModel @Inject constructor(
             .collectLatest { result ->
                 when (result) {
                     is Result.Loading -> _myInformationPatchUiState.value = MyInForMatIonPeTchUiState.Loading
+
                     is Result.Success -> _myInformationPatchUiState.value = MyInForMatIonPeTchUiState.Success
+
                     is Result.Error -> _myInformationPatchUiState.value = MyInForMatIonPeTchUiState.Error(result.exception)
                 }
             }
@@ -103,7 +108,9 @@ internal class MyProfileViewModel @Inject constructor(
             .collectLatest { result ->
                 when (result) {
                     is Result.Loading -> _getMyPostUiState.value = GetMyPostUiState.Loading
+
                     is Result.Success -> _getMyPostUiState.value = GetMyPostUiState.Success(result.data)
+
                     is Result.Error -> _getMyPostUiState.value = GetMyPostUiState.Error(result.exception)
                 }
             }
@@ -114,14 +121,11 @@ internal class MyProfileViewModel @Inject constructor(
             .asResult()
             .collectLatest { result ->
                 when (result) {
-                    is Result.Loading -> _getMySpecificInformationUiState.value =
-                        GetMySpecificInformationUiState.Loading
+                    is Result.Loading -> _getMySpecificInformationUiState.value = GetMySpecificInformationUiState.Loading
 
-                    is Result.Success -> _getMySpecificInformationUiState.value =
-                        GetMySpecificInformationUiState.Success(result.data)
+                    is Result.Success -> _getMySpecificInformationUiState.value = GetMySpecificInformationUiState.Success(result.data)
 
-                    is Result.Error -> _getMySpecificInformationUiState.value =
-                        GetMySpecificInformationUiState.Error(result.exception)
+                    is Result.Error -> _getMySpecificInformationUiState.value = GetMySpecificInformationUiState.Error(result.exception)
                 }
             }
     }
