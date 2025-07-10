@@ -33,6 +33,7 @@ internal fun ReadMoreRoute(
     onBackClick: () -> Unit,
     onMyProfileClick: () -> Unit,
     onChatClick: () -> Unit,
+    onOtherProfileClick: () -> Unit,
     onReviewClick: (Int, String) -> Unit,
     onReportClick: (String, String) -> Unit
 ) {
@@ -49,7 +50,8 @@ internal fun ReadMoreRoute(
         postLocationAndPrice = "",
         postDescription = "",
         onReviewClick = onReviewClick,
-        onReportClick = onReportClick
+        onReportClick = onReportClick,
+        onOtherProfileClick = onOtherProfileClick
     )
 }
 
@@ -62,6 +64,7 @@ private fun ReadMoreScreen(
     description: String,
     level: Int,
     postTitle: String,
+    onOtherProfileClick: () -> Unit,
     postLocationAndPrice: String,
     postDescription: String,
     onBackClick: () -> Unit,
@@ -109,11 +112,12 @@ private fun ReadMoreScreen(
                 MyProfileUserLevel(
                     name = name,
                     description = description,
+                    onClick = onOtherProfileClick,
                     level = level,
                     modifier = Modifier.padding(
                         horizontal = 24.dp,
                         vertical = 12.dp
-                    )
+                    ),
                 )
 
                 Spacer(modifier = Modifier
@@ -217,6 +221,8 @@ private fun PreviewReadMoreScreen() {
         onBackClick = {},
         onMyProfileClick = {},
         onReportClick = {_, _ ->},
-        onReviewClick = {_, _ ->}
+        onReviewClick = {_, _ ->},
+        onOtherProfileClick = {}
+
     )
 }
