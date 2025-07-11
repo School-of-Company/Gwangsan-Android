@@ -25,7 +25,9 @@ interface PostAPI {
     ) : PostModifyResponse
 
     @GET("/api/post/{post_id}")
-    suspend fun getSpecificInformation() : List<PostDto>
+    suspend fun getSpecificInformation(
+        @Path("post_id") postId: Long
+    ) : PostDto
 
     @GET("/api/post")
     suspend fun getAllPostInformation(

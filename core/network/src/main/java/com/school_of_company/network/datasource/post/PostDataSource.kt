@@ -12,7 +12,7 @@ interface PostDataSource {
         postId: Long,
         body: PostAllRequest
     ) : Flow<PostModifyResponse>
-    fun getSpecificInformation() : Flow<List<PostDto>>
+    fun getSpecificInformation(postId: Long) : Flow<PostDto>
     fun getAllPostInformation(
         type: String,
         mode: String

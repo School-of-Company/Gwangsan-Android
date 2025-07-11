@@ -27,8 +27,8 @@ class PostRepositoryImpl @Inject constructor (
         )
     }
 
-    override fun getSpecificInformation(): Flow<List<Post>> {
-        return postDataSource.getSpecificInformation().map { it.map { list -> list.toModel() } }
+    override fun getSpecificInformation(postId: Long): Flow<Post> {
+        return postDataSource.getSpecificInformation(postId = postId).map { it.toModel() }
     }
 
     override fun getAllPostInformation(
