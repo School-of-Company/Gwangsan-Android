@@ -51,16 +51,20 @@ internal fun PostFinalRoute(
             is PostUiState.Loading -> {
                 Log.d("PostFinalRoute", "게시글 작성 중...")
             }
+
             is PostUiState.Success -> {
                 onErrorToast(null, R.string.success_post)
                 onSubmitClick()
             }
+
             is PostUiState.BadRequest -> {
                 onErrorToast(null, R.string.error_bad_request)
             }
+
             is PostUiState.NotFound -> {
                 onErrorToast(null, R.string.error_resource_not_found)
             }
+
             is PostUiState.Error -> {
                 onErrorToast(
                     (postUiState as PostUiState.Error).exception, R.string.error_generic
@@ -95,39 +99,15 @@ private fun PostFinalScreen(
 
     GwangSanTheme { colors, typography ->
 
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .verticalScroll(scrollState)
-        ) {
+        Box(modifier = Modifier.fillMaxSize()) {
 
-            Spacer(modifier = Modifier.height(52.dp))
-
-            GwangSanSubTopBar(
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp),
-                startIcon = {
-                    DownArrowIcon(
-                        modifier = Modifier
-                            .width(8.dp)
-                            .height(14.dp)
-                            .GwangSanClickable(onClick = onBackClick)
-                    )
-                },
-                betweenText = "해주세요",
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            GwangSanTopBarProgress(
-                progressRatio = 1.0f,
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            Spacer(modifier = Modifier.height(32.dp))
-
-            Column(modifier = Modifier.padding(horizontal = 24.dp)) {
+                    .fillMaxSize()
+                    .background(colors.white)
+                    .verticalScroll(scrollState)
+                    .padding(horizontal = 24.dp)
+            ) {
                 Text(
                     text = "다시 한번 확인해주세요.",
                     style = typography.titleSmall,
@@ -204,9 +184,7 @@ private fun PostFinalScreen(
 
                 Row {
                     AddImageButton(
-                        onClick = {
-
-                        },
+                        onClick = { },
                         rippleColor = GwangSanColor.main100
                     )
                 }
@@ -237,7 +215,9 @@ private fun PostFinalScreen(
 
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 15.dp)
                 ) {
                     GwangSanEnableButton(
                         text = "수정",
@@ -264,7 +244,7 @@ private fun PostFinalScreen(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(64.dp))
             }
         }
     }

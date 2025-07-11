@@ -2,6 +2,7 @@ package com.school_of_company.main.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,6 +25,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.model.post.response.Post
 
@@ -60,7 +62,7 @@ fun MainListItem(
                     horizontalAlignment = Alignment.Start,
                     modifier = Modifier.fillMaxWidth(),
 
-                ) {
+                    ) {
                     Text(
                         text = data.title,
                         style = typography.body3,
@@ -97,7 +99,7 @@ fun MainListItem(
                     horizontalAlignment = Alignment.Start,
                     modifier = Modifier.weight(1f),
 
-                ) {
+                    ) {
                     Text(
                         text = data.title,
                         style = typography.body3,

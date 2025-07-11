@@ -123,7 +123,7 @@ private fun PasswordSignupScreen(
                     modifier = modifier
                         .fillMaxWidth()
                         .padding(
-                            top = 18.dp,
+                            top = 56.dp,
                             bottom = 32.dp
                         ),
                 ) {

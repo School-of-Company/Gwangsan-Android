@@ -1,5 +1,6 @@
 package com.school_of_company.post.view
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -68,95 +69,63 @@ private fun PostWriteScreen(
     val isNextEnabled = subject.isNotBlank() && content.isNotBlank()
 
     GwangSanTheme { colors, typography ->
-        Column(
-            modifier = modifier.fillMaxSize()
-        ) {
-            Spacer(modifier = Modifier.height(52.dp))
 
-            GwangSanSubTopBar(
-                startIcon = {
-                    DownArrowIcon(
-                        modifier = Modifier
-                            .width(8.dp)
-                            .height(14.dp)
-                            .GwangSanClickable(onClick = onBackClick)
-                    )
-                },
-                betweenText = "해주세요",
-                endIcon = {
-                    CloseIcon(
-                        modifier = Modifier
-                            .size(24.dp)
-                            .GwangSanClickable(onClick = onBackClick)
-                    )
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp),
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .background(colors.white)
+                .padding(horizontal = 24.dp)
+        ) {
+            GwangSanTextField(
+                value = subject,
+                onTextChange = onSubjectChange,
+                label = "주제",
+                placeHolder = "주제를 작성해주세요"
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(28.dp))
 
-            GwangSanTopBarProgress(
-                progressRatio = 0.3f,
+            GwangSanTextField(
+                value = content,
+                onTextChange = onContentChange,
+                label = "내용",
+                placeHolder = "내용을 작성해주세요",
+                singleLine = false,
+                maxLines = Int.MAX_VALUE,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 0.dp),
+                    .height(185.dp)
             )
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            Column(modifier = Modifier.padding(horizontal = 24.dp)) {
-                GwangSanTextField(
-                    value = subject,
-                    onTextChange = onSubjectChange,
-                    label = "주제",
-                    placeHolder = "주제를 작성해주세요"
-                )
+            Text(
+                text = "사진첨부",
+                style = typography.body5,
+                color = colors.black
+            )
 
-                Spacer(modifier = Modifier.height(28.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
-                GwangSanTextField(
-                    value = content,
-                    onTextChange = onContentChange,
-                    label = "내용",
-                    placeHolder = "내용을 작성해주세요",
-                    singleLine = false,
-                    maxLines = Int.MAX_VALUE,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(185.dp)
-                )
-
-                Spacer(modifier = Modifier.height(32.dp))
-
-                Text(
-                    text = "사진첨부",
-                    style = typography.body5,
-                    color = colors.black
-                )
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    imageContent(isNextEnabled)
-                }
-
-                Spacer(modifier = Modifier.weight(1f, fill = true))
-
-                GwangSanStateButton(
-                    text = "다음",
-                    state = if (isNextEnabled) ButtonState.Enable else ButtonState.Disable,
-                    onClick = { onNextClick(subject, content) },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp)
-                )
-
-                Spacer(modifier = Modifier.height(24.dp))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                imageContent(isNextEnabled)
             }
+
+            Spacer(modifier = Modifier.weight(1f, fill = true))
+
+            GwangSanStateButton(
+                text = "다음",
+                state = if (isNextEnabled) ButtonState.Enable else ButtonState.Disable,
+                onClick = { onNextClick(subject, content) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+            )
+
+            Spacer(modifier = Modifier.height(64.dp))
         }
     }
+
 }
 
 @GwangsanPreviews

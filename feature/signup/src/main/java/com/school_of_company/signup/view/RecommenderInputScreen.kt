@@ -137,7 +137,7 @@ fun RecommenderInputScreen(
                     .verticalScroll(rememberScrollState())
                     .imePadding()
             ) {
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.padding(top = 80.dp))
 
                 GwangSanTopBar(
                     startIcon = {
@@ -179,7 +179,11 @@ fun RecommenderInputScreen(
                 onClick = onSignUpCallBack,
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
-                    .padding(start = 24.dp, end = 24.dp, bottom = 30.dp)
+                    .padding(
+                        start = 24.dp,
+                        end = 24.dp,
+                        bottom = 64.dp
+                    )
                     .fillMaxWidth()
             )
         }
