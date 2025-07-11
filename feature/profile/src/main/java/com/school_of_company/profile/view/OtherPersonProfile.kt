@@ -3,29 +3,39 @@ package com.school_of_company.profile.view
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.model.member.response.GetAllMemberResponseModel
+import com.school_of_company.model.post.response.Image
+import com.school_of_company.model.post.response.ImageUrls
 import com.school_of_company.model.post.response.Post
 import com.school_of_company.profile.component.BrightnessProgressBar
-import com.school_of_company.profile.component.MyReviewList
+import com.school_of_company.profile.component.MyProfileExerciseButton
+import com.school_of_company.profile.component.MyReviewListItem
 import com.school_of_company.profile.component.OtherInformation
 import com.school_of_company.profile.component.OtherPersonIntroduce
 import com.school_of_company.profile.viewmodel.MyProfileViewModel
@@ -35,6 +45,7 @@ import com.school_of_company.profile.viewmodel.uistate.OtherPersonGetUistate
 internal fun OtherPersonProfileRoute(
     onErrorToast: (Throwable, Int) -> Unit,
     memberId: Long,
+    onOtherReviewClick: () -> Unit,
     viewModel: MyProfileViewModel = hiltViewModel(),
 ) {
     val otherPersonUiState = viewModel.otherPersonUiState.collectAsStateWithLifecycle().value
@@ -79,7 +90,8 @@ internal fun OtherPersonProfileRoute(
         is OtherPersonGetUistate.Success -> {
             OtherPersonProfileScreen(
                 data = otherPersonUiState.data,
-                item = listOf()
+                item = listOf(),
+                onOtherReviewClick = onOtherReviewClick
             )
         }
     }
@@ -89,6 +101,7 @@ internal fun OtherPersonProfileRoute(
 private fun OtherPersonProfileScreen(
     modifier: Modifier = Modifier,
     data: GetAllMemberResponseModel,
+    onOtherReviewClick: () -> Unit,
     item: List<Post>
 ) {
 
@@ -99,14 +112,12 @@ private fun OtherPersonProfileScreen(
             verticalArrangement = Arrangement.Top,
             modifier = modifier
                 .fillMaxSize()
-                .padding(24.dp)
                 .background(color = colors.white)
         ) {
             item {
                 GwangSanSubTopBar(
                     startIcon = { Box(modifier = Modifier.size(24.dp)) },
                     betweenText = "프로필",
-                    modifier = Modifier.padding(24.dp),
                 )
             }
 
@@ -115,16 +126,38 @@ private fun OtherPersonProfileScreen(
             item {
                 OtherInformation(
                     data = data,
+                    modifier = Modifier.padding(start = 24.dp)
                 )
             }
 
-            item {
-                HorizontalDivider(thickness = 12.dp, color = colors.gray200)
-            }
+            item { Spacer(modifier = Modifier.height(24.dp)) }
 
             item {
-                OtherPersonIntroduce(data = data)
+                HorizontalDivider(
+                    thickness = 12.dp,
+                    color = colors.gray200
+                )
             }
+
+            item { Spacer(modifier = Modifier.height(24.dp)) }
+
+
+            item {
+                OtherPersonIntroduce(
+                    data = data,
+                )
+            }
+
+            item { Spacer(modifier = Modifier.height(40.dp)) }
+
+            item {
+                HorizontalDivider(
+                    thickness = 12.dp,
+                    color = colors.gray200
+                )
+            }
+
+            item { Spacer(modifier = Modifier.height(24.dp)) }
 
             item {
                 BrightnessProgressBar(
@@ -141,10 +174,47 @@ private fun OtherPersonProfileScreen(
                 )
             }
 
+            item { Spacer(modifier = Modifier.height(24.dp)) }
+
+            item {
+                Column (
+                    modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp)
+                ) {
+
+                    Text(
+                        text = "후기",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = colors.black,
+                        modifier = Modifier.padding(bottom = 24.dp)
+                    )
+
+                    MyProfileExerciseButton(
+                        onClick = {  onOtherReviewClick() },
+                        buttonText = "내가 작성한 후기",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 40.dp)
+                    )
+                }
+            }
+
+            item {
+                HorizontalDivider(
+                    thickness = 12.dp,
+                    color = colors.gray200
+                )
+            }
+
+            item { Spacer(modifier = Modifier.height(24.dp)) }
+
             item {
                 Text(
                     text = "게시글",
-                    style = typography.body1,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
                     color = colors.black,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -152,17 +222,20 @@ private fun OtherPersonProfileScreen(
                 )
             }
 
-            item {
-                MyReviewList(
-                    onClick = {},
-                    items = item
+            items(
+                items = item,
+                key = { it.id }
+            ) { items ->
+                MyReviewListItem(
+                    data = items,
+                    onClick = {  }
                 )
             }
         }
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun OtherPersonProfileScreenPreview() {
     val fakeData = GetAllMemberResponseModel(
@@ -174,11 +247,40 @@ private fun OtherPersonProfileScreenPreview() {
         specialties = listOf("특기1", "특기2")
     )
 
-    OtherPersonProfileScreen(
-        data = fakeData,
-        item = listOf(
-
+    val fakePosts = listOf(
+        Post(
+            id = 1,
+            type = "SERVICE",
+            mode = "PROVIDE",
+            title = "첫 번째 게시글",
+            content = "첫 번째 게시글 내용입니다.",
+            gwangsan = 10,
+            imageUrls = ImageUrls(
+                images = listOf(
+                    Image(imageId = 1, imageUrl = "https://via.placeholder.com/150")
+                )
+            )
+        ),
+        Post(
+            id = 2,
+            type = "OBJECT",
+            mode = "REQUEST",
+            title = "두 번째 게시글",
+            content = "두 번째 게시글 내용입니다.",
+            gwangsan = 5,
+            imageUrls = ImageUrls(
+                images = listOf(
+                    Image(imageId = 2, imageUrl = "https://via.placeholder.com/150")
+                )
+            )
         )
     )
+
+    OtherPersonProfileScreen(
+        data = fakeData,
+        item = fakePosts,
+        onOtherReviewClick = {}
+    )
 }
+
 

@@ -46,14 +46,16 @@ fun NavController.navigateToMyPeTchWritingDetail(navOptions: NavOptions? = null)
 }
 
 fun NavGraphBuilder.otherPersonProfileScreen(
-    onErrorToast: (Throwable, Int) -> Unit
+    onErrorToast: (Throwable, Int) -> Unit,
+    onOtherReviewClick: () -> Unit
 ) {
     composable("$OtherPersonProfileRoute/{memberId}") { backStackEntry ->
         val memberId = backStackEntry.arguments?.getString("memberId")?.toLongOrNull() ?: return@composable
 
         OtherPersonProfileRoute(
             memberId = memberId,
-            onErrorToast = onErrorToast
+            onErrorToast = onErrorToast,
+            onOtherReviewClick = onOtherReviewClick
         )
     }
 }
