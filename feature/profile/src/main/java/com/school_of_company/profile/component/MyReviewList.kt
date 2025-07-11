@@ -2,6 +2,7 @@ package com.school_of_company.profile.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -13,8 +14,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.school_of_company.design_system.R
 import com.school_of_company.design_system.componet.clickable.GwangSanClickable
@@ -36,11 +39,11 @@ internal fun MyReviewListItem(
                 .GwangSanClickable { onClick() }
                 .fillMaxWidth(),
         ) {
-            if (data.imageUrls.images.isNullOrEmpty()) {
+            if (data.imageUrls.images.isEmpty()) {
                 Box(
                     modifier = Modifier
-                        .size(100.dp)
                         .padding(horizontal = 24.dp, vertical = 16.dp)
+                        .size(100.dp)
                         .clip(RoundedCornerShape(10.dp))
                 ) {
                     Image(
@@ -50,12 +53,11 @@ internal fun MyReviewListItem(
                         modifier = Modifier.fillMaxSize()
                     )
                 }
-            }
-            else {
+            } else {
                 Box(
                     modifier = Modifier
+                        .padding(horizontal = 16.dp, vertical = 24.dp)
                         .size(100.dp)
-                        .padding(horizontal = 24.dp, vertical = 16.dp)
                         .clip(RoundedCornerShape(10.dp))
                 ) {
                     Image(
@@ -67,15 +69,14 @@ internal fun MyReviewListItem(
                 }
             }
 
-            Spacer(modifier = Modifier.width(24.dp))
-
             Column(
                 horizontalAlignment = Alignment.Start,
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
                     text = data.title,
-                    style = typography.body3,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
                     color = color.black
                 )
 
