@@ -31,6 +31,7 @@ fun MySpecialListScreen(
                 text = "소개",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
+                color = colors.black,
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
 
@@ -49,7 +50,7 @@ fun MySpecialListScreen(
                         color = colors.gray600,
                         modifier = Modifier
                             .clip(RoundedCornerShape(20.dp))
-                            .border(1.dp, colors.gray600, RoundedCornerShape(20.dp)) // 윤곽선 회색
+                            .border(1.dp, colors.gray600, RoundedCornerShape(20.dp))
                             .background(Color.White)
                             .padding(
                                 horizontal = 12.dp,
@@ -59,20 +60,12 @@ fun MySpecialListScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
             Text(
                 text = data.description,
                 style = typography.body5,
-                modifier = Modifier.padding(horizontal = 16.dp)
-            )
-
-            Spacer(modifier = Modifier.height(32.dp))
-
-            Text(
-                text = "특기",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
+                color = colors.black,
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
         }

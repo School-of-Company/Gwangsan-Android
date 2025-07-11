@@ -22,17 +22,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.model.member.response.GetMemberResponseModel
-import com.school_of_company.model.post.response.Post
-import com.school_of_company.network.dto.member.response.GetMemberResponse
-import com.school_of_company.post.R
 import com.school_of_company.profile.component.BrightnessProgressBar
 import com.school_of_company.profile.component.GwangSanMoney
 import com.school_of_company.profile.component.LogoutDialog
@@ -40,7 +39,6 @@ import com.school_of_company.profile.component.MyInformation
 import com.school_of_company.profile.component.MyProfileExerciseButton
 import com.school_of_company.profile.component.MyReviewList
 import com.school_of_company.profile.component.MySpecialListScreen
-import com.school_of_company.profile.component.Review
 import com.school_of_company.profile.viewmodel.MyProfileViewModel
 import com.school_of_company.profile.viewmodel.uistate.GetMyPostUiState
 import com.school_of_company.profile.viewmodel.uistate.MemberUiState
@@ -49,6 +47,7 @@ import com.school_of_company.profile.viewmodel.uistate.MemberUiState
 internal fun MyProfileRoute(
     onMyWritingClick: () -> Unit,
     onMyReviewClick: () -> Unit,
+    onMyInformationEditClick: () -> Unit,
     onMyWritingDetailClick: (Int) -> Unit,
     onErrorToast: (Throwable, Int) -> Unit,
     viewModel: MyProfileViewModel = hiltViewModel()
@@ -79,8 +78,7 @@ internal fun MyProfileRoute(
             onErrorToast(memberUiState.exception, com.school_of_company.design_system.R.string.main_error)
 
             Box(
-                modifier = Modifier
-                    .fillMaxSize(),
+                modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -91,8 +89,7 @@ internal fun MyProfileRoute(
 
         is MemberUiState.Empty -> {
             Box(
-                modifier = Modifier
-                    .fillMaxSize(),
+                modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -107,7 +104,8 @@ internal fun MyProfileRoute(
                 onMyWritingClick = onMyWritingClick,
                 onMyReviewClick = onMyReviewClick,
                 getMyPostUiState = getMyPostUiState,
-                onMyWritingDetailClick = onMyWritingDetailClick
+                onMyWritingDetailClick = onMyWritingDetailClick,
+                onMyInformationEditClick = onMyInformationEditClick
             )
         }
     }
@@ -118,6 +116,7 @@ private fun MyProfileScreen(
     modifier: Modifier = Modifier,
     onMyWritingDetailClick: (Int) -> Unit,
     data: GetMemberResponseModel,
+    onMyInformationEditClick: () -> Unit,
     onMyWritingClick: () -> Unit,
     getMyPostUiState: GetMyPostUiState,
     onMyReviewClick: () -> Unit,
@@ -145,7 +144,7 @@ private fun MyProfileScreen(
 
             item {
                 MyInformation(
-                    onModifyClick = {  },
+                    onModifyClick = { onMyInformationEditClick()  },
                     data = data,
                     onLogoutClick = { setOpenLogoutDialog(true) }
                 )
@@ -159,8 +158,13 @@ private fun MyProfileScreen(
             }
 
             item {
-                MySpecialListScreen(data = data)
+                MySpecialListScreen(
+                    data = data,
+                    modifier = Modifier.padding(24.dp),
+                )
             }
+
+            item { Spacer(modifier = Modifier.height(24.dp)) }
 
             item {
                 BrightnessProgressBar(
@@ -170,7 +174,7 @@ private fun MyProfileScreen(
                 )
             }
 
-            item { Spacer(modifier = Modifier.height(32.dp)) }
+            item { Spacer(modifier = Modifier.height(24.dp)) }
 
             item {
                 GwangSanMoney(
@@ -191,7 +195,8 @@ private fun MyProfileScreen(
             item {
                 Text(
                     text = "내 활동",
-                    style = typography.body1,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
                     color = colors.black,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -203,14 +208,14 @@ private fun MyProfileScreen(
                 Row(modifier = Modifier.padding(horizontal = 24.dp)) {
                     MyProfileExerciseButton(
                         modifier = Modifier.weight(1f),
-                        onClick = { onMyWritingClick() },
+                        onClick = { onMyReviewClick() },
                         buttonText = "내가 받은 후기"
                     )
 
                     Spacer(modifier = Modifier.width(12.dp))
 
                     MyProfileExerciseButton(
-                        onClick = { onMyReviewClick() },
+                        onClick = { onMyWritingClick() },
                         buttonText = "내가 작성한 후기",
                         modifier = Modifier
                             .weight(1f)
@@ -229,7 +234,8 @@ private fun MyProfileScreen(
             item {
                 Text(
                     text = "게시글",
-                    style = typography.body1,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
                     color = colors.black,
                     modifier = Modifier
                         .fillMaxWidth()
