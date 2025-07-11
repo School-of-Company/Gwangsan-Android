@@ -25,7 +25,7 @@ fun NavController.navigateToOtherPersonProfile(navOptions: NavOptions? = null) {
     this.navigate(OtherPersonProfileRoute, navOptions)
 }
 
-fun NavController.navigateToReviewPostDetail(navOptions: NavOptions? = null) {
+fun NavController.navigateToPostDetail(navOptions: NavOptions? = null) {
     this.navigate(MyPeTchPostDetailRoute, navOptions)
 }
 
@@ -76,6 +76,7 @@ fun NavGraphBuilder.myProfileScreen(
     onMyReviewClick: () -> Unit,
     onMyWritingClick: () -> Unit,
     onMyWritingDetailClick: (Int) -> Unit,
+    onMyInformationEditClick: () -> Unit,
     onErrorToast: (Throwable, Int) -> Unit
 ) {
     composable(route = MyProfileRoute) {
@@ -83,7 +84,8 @@ fun NavGraphBuilder.myProfileScreen(
             onMyReviewClick = onMyReviewClick,
             onMyWritingClick = onMyWritingClick,
             onMyWritingDetailClick = onMyWritingDetailClick,
-            onErrorToast = onErrorToast
+            onErrorToast = onErrorToast,
+            onMyInformationEditClick = onMyInformationEditClick
         )
     }
 }
@@ -118,14 +120,13 @@ fun NavGraphBuilder.myWritingDetailScreen(
     onMyProfileClick: () -> Unit,
     onCompleteClick: () -> Unit,
     onErrorToast: (Throwable, Int) -> Unit
-)
-{
+) {
     composable(route = MyWritingDetailRoute) {
         ReviewPostDetailRoute(
             onBackClick = onBackClick,
             onMyProfileClick = onMyProfileClick,
             onCompleteClick = onCompleteClick,
-            onErrorToast = onErrorToast
+            onErrorToast = onErrorToast,
         )
     }
 }

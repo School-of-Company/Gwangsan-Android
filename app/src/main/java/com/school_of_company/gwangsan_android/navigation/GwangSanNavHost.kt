@@ -40,6 +40,7 @@ import com.school_of_company.profile.navigation.navigateToMyProfile
 import com.school_of_company.profile.navigation.navigateToMyReview
 import com.school_of_company.profile.navigation.navigateToMyWriting
 import com.school_of_company.profile.navigation.navigateToOtherPersonProfile
+import com.school_of_company.profile.navigation.navigateToPostDetail
 import com.school_of_company.profile.navigation.transactionHistoryScreen
 import com.school_of_company.signin.navigation.StartRoute
 import com.school_of_company.signin.navigation.navigateToSignIn
@@ -213,7 +214,9 @@ fun GwangsanNavHost(
             onMyReviewClick = { navController.navigateToMyReview() },
             onMyWritingClick = { navController.navigateToMyWriting() },
             onErrorToast = onErrorToast,
-            onMyWritingDetailClick = { navController.navigateToMyPeTchWritingDetail() }
+            onMyWritingDetailClick = { navController.navigateToPostDetail()},
+            onMyInformationEditClick = { navController.navigateToMyPeTchWritingDetail() }
+
         )
 
         myInformationEditScreen(
