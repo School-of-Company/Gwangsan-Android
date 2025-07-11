@@ -11,11 +11,6 @@ data class PostDto(
     @Json(name = "title") val title: String,
     @Json(name = "content") val content: String,
     @Json(name = "gwangsan") val gwangsan: Int,
-    @Json(name = "imageUrls") val imageUrls: ImageUrlsDto
-)
-
-@JsonClass(generateAdapter = true)
-data class ImageUrlsDto(
     @Json(name = "images") val images: List<ImageDto>
 )
 
