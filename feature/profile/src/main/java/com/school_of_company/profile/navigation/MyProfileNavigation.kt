@@ -10,6 +10,7 @@ import com.school_of_company.profile.view.MyInformationEditRoute
 import com.school_of_company.profile.view.MyProfileRoute
 import com.school_of_company.profile.view.MyReceiveReviewRoute
 import com.school_of_company.profile.view.OtherPersonProfileRoute
+import com.school_of_company.profile.view.OtherReviewRoute
 import com.school_of_company.profile.view.TransactionHistoryRoute
 
 
@@ -20,6 +21,7 @@ const val MyWritingDetailRoute = "my_writing_detail"
 const val TransactionHistoryRoute = "transaction_history"
 const val OtherPersonProfileRoute = "other_person_profile"
 const val MyPeTchPostDetailRoute = "review_post_detail"
+const val OtherReviewRoute = "review_other_review"
 
 fun NavController.navigateToOtherPersonProfile(navOptions: NavOptions? = null) {
     this.navigate(OtherPersonProfileRoute, navOptions)
@@ -31,6 +33,10 @@ fun NavController.navigateToPostDetail(navOptions: NavOptions? = null) {
 
 fun NavController.navigateToMyProfile(navOptions: NavOptions? = null) {
     this.navigate(MyProfileRoute, navOptions)
+}
+
+fun NavController.navigateToOtherReview(navOptions: NavOptions? = null){
+    this.navigate(OtherReviewRoute, navOptions)
 }
 
 fun NavController.navigateToMyReview(navOptions: NavOptions? = null) {
@@ -144,3 +150,18 @@ fun NavGraphBuilder.transactionHistoryScreen(
         )
     }
 }
+
+fun NavGraphBuilder.otherReviewScreen(
+    onBackClick: () -> Unit,
+    onOtherProfileClick: () -> Unit,
+){
+    composable(route = OtherReviewRoute){
+        OtherReviewRoute(
+            onOtherProfileClick = onOtherProfileClick,
+            onBackClick =  onBackClick
+        )
+    }
+}
+
+
+

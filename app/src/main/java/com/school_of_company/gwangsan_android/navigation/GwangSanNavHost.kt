@@ -40,7 +40,10 @@ import com.school_of_company.profile.navigation.navigateToMyProfile
 import com.school_of_company.profile.navigation.navigateToMyReview
 import com.school_of_company.profile.navigation.navigateToMyWriting
 import com.school_of_company.profile.navigation.navigateToOtherPersonProfile
+import com.school_of_company.profile.navigation.navigateToOtherReview
 import com.school_of_company.profile.navigation.navigateToPostDetail
+import com.school_of_company.profile.navigation.otherPersonProfileScreen
+import com.school_of_company.profile.navigation.otherReviewScreen
 import com.school_of_company.profile.navigation.transactionHistoryScreen
 import com.school_of_company.signin.navigation.StartRoute
 import com.school_of_company.signin.navigation.navigateToSignIn
@@ -219,6 +222,11 @@ fun GwangsanNavHost(
 
         )
 
+        otherPersonProfileScreen(
+            onErrorToast = onErrorToast,
+            onOtherReviewClick = { navController.navigateToOtherReview() }
+        )
+
         myInformationEditScreen(
             onBackClick = { navController.popBackStack() },
             onSubmitComplete = { navController.navigateToMyProfile() },
@@ -245,6 +253,11 @@ fun GwangsanNavHost(
         transactionHistoryScreen(
             onBackClick = { navController.popBackStack() },
             onMyProfileClick = { navController.navigateToMyProfile() }
+        )
+
+        otherReviewScreen(
+            onBackClick = { navController.popBackStack() },
+            onOtherProfileClick = { navController.navigateToOtherPersonProfile() }
         )
     }
 }
