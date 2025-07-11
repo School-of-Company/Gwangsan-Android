@@ -22,20 +22,21 @@ internal fun OtherPersonIntroduce(
     data: GetAllMemberResponseModel
 ) {
     GwangSanTheme { colors, typography ->
-        Column(modifier = modifier.fillMaxSize()) {
+        Column(modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 24.dp)
+        ) {
             Text(
                 text = "소개",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(horizontal = 16.dp)
+                modifier = Modifier
             )
 
             Spacer(modifier = Modifier.height(24.dp))
 
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 data.specialties.forEach { specialty ->
@@ -60,7 +61,6 @@ internal fun OtherPersonIntroduce(
             Text(
                 text = data.description,
                 style = typography.body5,
-                modifier = Modifier.padding(horizontal = 16.dp)
             )
         }
     }
