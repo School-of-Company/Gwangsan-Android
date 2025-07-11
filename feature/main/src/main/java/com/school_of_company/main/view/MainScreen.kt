@@ -1,6 +1,5 @@
 package com.school_of_company.main.view
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -29,7 +28,6 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
 import com.google.accompanist.swiperefresh.SwipeRefreshState
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.school_of_company.design_system.R
 import com.school_of_company.design_system.componet.button.gwangsanfloatingbutton.GwangSanFloatingButton
 import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.dropdown.GwangSanSwitchButton
@@ -42,12 +40,12 @@ import com.school_of_company.main.viewmodel.MainViewModel
 import com.school_of_company.main.viewmodel.uistate.GetMainListUiState
 import com.school_of_company.model.enum.Mode
 import com.school_of_company.model.enum.Type
-import com.school_of_company.ui.previews.GwangsanPreviews
 
 @Composable
 internal fun MainRoute(
     navigationToPost: (Mode) -> Unit,
     navigationToDetail: (Long) -> Unit,
+    onBackClick: () -> Unit,
     onErrorToast: (throwable: Throwable?, message: Int?) -> Unit,
     moDeselectedType: Type,
     viewModel: MainViewModel = hiltViewModel()
@@ -79,6 +77,7 @@ internal fun MainRoute(
 
     MainScreen(
         navigationToPostService = { navigationToPost(selectedMode) },
+        onBackClick = onBackClick,
         mainCallBack = {
             viewModel.getMainList(
                 type = moDeselectedType,
@@ -100,6 +99,7 @@ private fun MainScreen(
     navigationToPostService: () -> Unit,
     navigationToDetail: (Long) -> Unit,
     mainCallBack: () -> Unit,
+    onBackClick: () -> Unit,
     getMainListUiState: GetMainListUiState,
     switchState: GwangSanSwitchState,
     swipeRefreshState: SwipeRefreshState,
@@ -128,7 +128,7 @@ private fun MainScreen(
                             modifier = Modifier
                                 .width(8.dp)
                                 .height(14.dp)
-                                .GwangSanClickable { }
+                                .GwangSanClickable { onBackClick() }
                         )
                     },
                     betweenText = betweenText
@@ -250,6 +250,7 @@ private fun MainScreenPreview() {
         onSwitchStateChange = {},
         swipeRefreshState = dummyState,
         betweenText = "물건",
-        navigationToDetail = {}
+        navigationToDetail = {},
+        onBackClick = {}
     )
 }
