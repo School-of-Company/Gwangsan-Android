@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,7 +28,6 @@ import com.school_of_company.profile.component.BrightnessProgressBar
 import com.school_of_company.profile.component.MyReviewList
 import com.school_of_company.profile.component.OtherInformation
 import com.school_of_company.profile.component.OtherPersonIntroduce
-import com.school_of_company.profile.component.Review
 import com.school_of_company.profile.viewmodel.MyProfileViewModel
 import com.school_of_company.profile.viewmodel.uistate.OtherPersonGetUistate
 
@@ -42,22 +40,40 @@ internal fun OtherPersonProfileRoute(
     val otherPersonUiState = viewModel.otherPersonUiState.collectAsStateWithLifecycle().value
 
     LaunchedEffect(Unit) {
-        viewModel.otherPersonGetMyProfile(
-            memberId = memberId
-        )
+        viewModel.otherPersonGetMyProfile(memberId = memberId)
     }
 
     when (otherPersonUiState) {
         is OtherPersonGetUistate.Loading -> {
-            // 로딩 UI 필요 시 여기에 작성
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(text = "로딩 중입니다...")
+            }
         }
 
         is OtherPersonGetUistate.Error -> {
-            onErrorToast(otherPersonUiState.exception, com.school_of_company.design_system.R.string.main_error)
+            onErrorToast(
+                otherPersonUiState.exception,
+                com.school_of_company.design_system.R.string.main_error
+            )
+
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(text = "프로필 정보를 불러오는 데 실패했습니다.")
+            }
         }
 
         is OtherPersonGetUistate.Empty -> {
-            // 비어있을 때 처리
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(text = "해당 유저의 프로필이 존재하지 않습니다.")
+            }
         }
 
         is OtherPersonGetUistate.Success -> {
