@@ -2,6 +2,7 @@ package com.school_of_company.main.view
 
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -45,6 +47,7 @@ import com.school_of_company.ui.previews.GwangsanPreviews
 @Composable
 internal fun MainRoute(
     navigationToPost: (Mode) -> Unit,
+    navigationToDetail: (Long) -> Unit,
     onErrorToast: (throwable: Throwable?, message: Int?) -> Unit,
     moDeselectedType: Type,
     viewModel: MainViewModel = hiltViewModel()
@@ -82,12 +85,12 @@ internal fun MainRoute(
                 mode = selectedMode
             )
         },
-        onErrorToast = onErrorToast,
         getMainListUiState = getMainListUiState,
         switchState = switchState,
         onSwitchStateChange = { switchState = it },
         swipeRefreshState = swipeRefreshState,
-        betweenText = betweenText
+        betweenText = betweenText,
+        navigationToDetail = navigationToDetail
     )
 }
 
@@ -95,15 +98,15 @@ internal fun MainRoute(
 private fun MainScreen(
     modifier: Modifier = Modifier,
     navigationToPostService: () -> Unit,
+    navigationToDetail: (Long) -> Unit,
     mainCallBack: () -> Unit,
-    onErrorToast: (throwable: Throwable?, message: Int?) -> Unit,
     getMainListUiState: GetMainListUiState,
     switchState: GwangSanSwitchState,
     swipeRefreshState: SwipeRefreshState,
     onSwitchStateChange: (GwangSanSwitchState) -> Unit,
     betweenText: String
 ) {
-    GwangSanTheme { colors, _ ->
+    GwangSanTheme { colors, typography ->
         Box(
             modifier = modifier
                 .fillMaxSize()
@@ -160,11 +163,24 @@ private fun MainScreen(
                         is GetMainListUiState.Success -> {
                             MainList(
                                 items = getMainListUiState.getMainListResponse,
+                                onClick = navigationToDetail
                             )
                         }
 
                         is GetMainListUiState.Empty -> {
-                            MainList(items = emptyList())
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(color = colors.white)
+                            ) {
+                                Text(
+                                    text = "정보가 없습니다..",
+                                    style = typography.titleMedium2,
+                                    color = colors.gray500
+                                )
+                            }
                         }
 
                         is GetMainListUiState.Loading -> {
@@ -192,7 +208,19 @@ private fun MainScreen(
                         }
 
                         is GetMainListUiState.Error -> {
-                            onErrorToast(getMainListUiState.exception, R.string.main_error)
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(color = colors.white)
+                            ) {
+                                Text(
+                                    text = "정보를 불러오는데 실패했어요..",
+                                    style = typography.titleMedium2,
+                                    color = colors.gray500
+                                )
+                            }
                         }
                     }
                 }
@@ -217,11 +245,11 @@ private fun MainScreenPreview() {
     MainScreen(
         navigationToPostService = {},
         mainCallBack = {},
-        onErrorToast = { _, _ -> },
         getMainListUiState = GetMainListUiState.Loading,
         switchState = GwangSanSwitchState.NEED,
         onSwitchStateChange = {},
         swipeRefreshState = dummyState,
-        betweenText = "물건"
+        betweenText = "물건",
+        navigationToDetail = {}
     )
 }
