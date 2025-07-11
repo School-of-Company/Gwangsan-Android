@@ -36,7 +36,6 @@ internal fun OtherInformation(
             modifier = modifier
                 .fillMaxWidth()
                 .background(colors.white)
-                .padding(16.dp),
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 EllipseIcon(modifier = Modifier.size(50.dp))
@@ -49,16 +48,6 @@ internal fun OtherInformation(
                         style = typography.body1,
                         color = colors.black
                     )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    Row(verticalAlignment = Alignment.CenterVertically){
-                        Text(
-                            text = "로그아웃하기",
-                            style = typography.label,
-                            color = colors.gray500
-                        )
-                    }
                 }
             }
         }
