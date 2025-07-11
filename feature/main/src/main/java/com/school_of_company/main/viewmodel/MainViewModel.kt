@@ -1,5 +1,6 @@
 package com.school_of_company.main.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.school_of_company.data.repository.post.PostRepository
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.school_of_company.result.Result
 
 @HiltViewModel
 internal class MainViewModel @Inject constructor(
@@ -37,8 +39,8 @@ internal class MainViewModel @Inject constructor(
             .asResult()
             .collectLatest { result ->
                 when (result) {
-                    is com.school_of_company.result.Result.Loading -> _getMainListUiState.value = GetMainListUiState.Loading
-                    is com.school_of_company.result.Result.Success -> {
+                    is Result.Loading -> _getMainListUiState.value = GetMainListUiState.Loading
+                    is Result.Success -> {
                         if (result.data.isEmpty()) {
                             _getMainListUiState.value = GetMainListUiState.Empty
                             _swipeRefreshLoading.value = false
@@ -47,7 +49,7 @@ internal class MainViewModel @Inject constructor(
                             _swipeRefreshLoading.value = false
                         }
                     }
-                    is com.school_of_company.result.Result.Error -> {
+                    is Result.Error -> {
                         _getMainListUiState.value = GetMainListUiState.Error(result.exception)
                         _swipeRefreshLoading.value = false
                     }

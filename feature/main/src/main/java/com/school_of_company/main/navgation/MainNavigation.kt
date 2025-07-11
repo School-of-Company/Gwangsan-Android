@@ -22,6 +22,7 @@ fun NavController.navigateToMainStart(navOptions: NavOptions? = null) {
 }
 
 fun NavGraphBuilder.mainScreen(
+    navigateToDetail: (Long) -> Unit,
     navigationToPost: (Type, Mode) -> Unit,
     onErrorToast: (Throwable?, Int?) -> Unit
 ) {
@@ -36,7 +37,8 @@ fun NavGraphBuilder.mainScreen(
                     mode
                 ) },
             onErrorToast = onErrorToast,
-            moDeselectedType = selectedType
+            moDeselectedType = selectedType,
+            navigationToDetail = navigateToDetail
         )
     }
 }

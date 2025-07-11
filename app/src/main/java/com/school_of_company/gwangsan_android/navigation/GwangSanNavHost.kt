@@ -162,6 +162,9 @@ fun GwangsanNavHost(
             navigationToPost = { type: Type, mode: Mode ->
                 navController.navigateToPost(type = type, mode = mode)
             },
+            navigateToDetail = { id ->
+                navController.navigateToReadMore(id)
+            },
             onErrorToast = onErrorToast
         )
         mainStartScreen(
@@ -181,7 +184,7 @@ fun GwangsanNavHost(
 
         contentScreen(
             onMyProfileClick = { navController.navigateToMyProfile() },
-            onItemClick = { navController.navigateToReadMore() }
+            onItemClick = {  }
         )
 
         readMoreScreen(
