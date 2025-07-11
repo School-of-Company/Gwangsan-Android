@@ -32,99 +32,76 @@ import com.school_of_company.model.post.response.Post
 @Composable
 fun MainListItem(
     modifier: Modifier = Modifier,
+    onClick: (Long) -> Unit,
     data: Post
 ) {
     GwangSanTheme { color, typography ->
+        val firstImageUrl = data.images.firstOrNull()?.imageUrl
 
         Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = modifier
+                .GwangSanClickable { onClick(data.id) }
                 .background(color = color.white)
                 .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
         ) {
-            if (data.imageUrls.images.isEmpty()) {
-                Box(
-                    modifier = Modifier
-                        .size(80.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                ) {
+            Box(
+                modifier = Modifier
+                    .size(80.dp)
+                    .border(
+                        width = 1.dp,
+                        shape = RoundedCornerShape(10.dp),
+                        color = color.main500
+                    )
+                    .clip(RoundedCornerShape(10.dp))
+            ) {
+                if (firstImageUrl.isNullOrBlank()) {
                     Image(
-                        painter = painterResource(id = R.drawable.ic_image),
-                        contentDescription = "바퀴벌레 이미지",
+                        painter = painterResource(id = R.drawable.gwangsan),
+                        contentDescription = "기본 이미지",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
                     )
-                }
-
-                Spacer(modifier = Modifier.width(24.dp))
-
-                Column(
-                    horizontalAlignment = Alignment.Start,
-                    modifier = Modifier.fillMaxWidth(),
-
-                    ) {
-                    Text(
-                        text = data.title,
-                        style = typography.body3,
-                        color = color.black
+                } else {
+                    Image(
+                        painter = rememberAsyncImagePainter(model = firstImageUrl),
+                        contentDescription = "네트워크 이미지",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize()
                     )
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    Text(
-                        text = "${data.gwangsan}",
-                        style = typography.body5,
-                        color = color.black
-                    )
-
                 }
             }
-            else {
-                Box(
-                    modifier = Modifier
-                        .size(80.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                ) {
-                    Image(
-                        painter = rememberAsyncImagePainter(model = data.imageUrls),
-                        contentDescription = "바퀴벌레 이미지",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxSize()
-                    )
-                }
 
-                Spacer(modifier = Modifier.width(24.dp))
+            Spacer(modifier = Modifier.width(24.dp))
 
-                Column(
-                    horizontalAlignment = Alignment.Start,
-                    modifier = Modifier.weight(1f),
+            Column(
+                horizontalAlignment = Alignment.Start,
+                modifier = Modifier.weight(1f),
+            ) {
+                Text(
+                    text = data.title,
+                    style = typography.body3,
+                    color = color.black
+                )
 
-                    ) {
-                    Text(
-                        text = data.title,
-                        style = typography.body3,
-                        color = color.black
-                    )
+                Spacer(modifier = Modifier.height(12.dp))
 
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    Text(
-                        text = "${data.gwangsan}",
-                        style = typography.body5,
-                        color = color.black
-                    )
-
-                }
-
+                Text(
+                    text = "${data.gwangsan}",
+                    style = typography.body5,
+                    color = color.black
+                )
             }
         }
     }
 }
 
+
 @Composable
 fun MainList(
     modifier: Modifier = Modifier,
-    items: List<Post>
+    items: List<Post>,
+    onClick: (Long) -> Unit
 ) {
     GwangSanTheme { color, _ ->
 
@@ -135,7 +112,8 @@ fun MainList(
         ) {
             items(items) { item ->
                 MainListItem(
-                    data = item
+                    data = item,
+                    onClick = onClick
                 )
             }
         }
