@@ -22,11 +22,7 @@ internal fun OtherPersonIntroduce(
     data: GetAllMemberResponseModel
 ) {
     GwangSanTheme { colors, typography ->
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(top = 24.dp)
-        ) {
+        Column(modifier = modifier.fillMaxSize()) {
             Text(
                 text = "소개",
                 fontSize = 20.sp,
@@ -49,7 +45,7 @@ internal fun OtherPersonIntroduce(
                         color = colors.gray600,
                         modifier = Modifier
                             .clip(RoundedCornerShape(20.dp))
-                            .border(1.dp, colors.gray600, RoundedCornerShape(20.dp)) // 윤곽선 회색
+                            .border(1.dp, colors.gray600, RoundedCornerShape(20.dp))
                             .background(Color.White)
                             .padding(
                                 horizontal = 12.dp,
@@ -59,20 +55,11 @@ internal fun OtherPersonIntroduce(
                 }
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
             Text(
                 text = data.description,
                 style = typography.body5,
-                modifier = Modifier.padding(horizontal = 16.dp)
-            )
-
-            Spacer(modifier = Modifier.height(32.dp))
-
-            Text(
-                text = "특기",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
         }
