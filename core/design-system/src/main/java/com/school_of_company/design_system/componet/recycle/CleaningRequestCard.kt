@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.school_of_company.design_system.theme.GwangSanTheme
 
@@ -43,4 +44,15 @@ fun CleaningRequestCard(
             )
         }
     }
+}
+
+@Preview
+@Composable
+private fun CleaningRequestCardPreview() {
+    CleaningRequestCard(
+        modifier = Modifier.padding(16.dp),
+        title = "청소 요청 제목",
+        priceAndLocation = "10,000원 | 서울시 강남구",
+        description = "청소 요청 설명"
+    )
 }
