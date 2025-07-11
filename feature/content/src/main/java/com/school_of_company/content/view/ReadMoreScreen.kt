@@ -111,7 +111,7 @@ private fun ReadMoreScreen(
                             betweenText = "해주세요",
                             endIcon = { Spacer(modifier = Modifier.size(24.dp)) },
                             modifier = Modifier.padding(
-                                top = 24.dp,
+                                top = 52.dp,
                                 start = 24.dp,
                                 end = 24.dp
                             )
