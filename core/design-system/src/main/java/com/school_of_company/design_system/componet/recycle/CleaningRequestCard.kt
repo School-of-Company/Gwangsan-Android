@@ -40,6 +40,7 @@ fun CleaningRequestCard(
 
             Text(
                 text = description,
+                color = colors.black,
                 style = typography.body4
             )
         }

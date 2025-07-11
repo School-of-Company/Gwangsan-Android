@@ -90,17 +90,20 @@ private fun ReadMoreScreen(
 
     GwangSanTheme { colors, typography ->
 
-        when(getSpecificPostUiState) {
+        when (getSpecificPostUiState) {
             is GetSpecificPostUiState.Success -> {
-                val pagerState = rememberPagerState(pageCount = { getSpecificPostUiState.post.images.size})
+                val pagerState =
+                    rememberPagerState(pageCount = { getSpecificPostUiState.post.images.size })
 
                 Box(
                     modifier = modifier
                         .fillMaxSize()
                         .background(colors.white)
                 ) {
-                    Column(modifier = Modifier
-                        .fillMaxSize().verticalScroll(scrollState)
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .verticalScroll(scrollState)
                     ) {
                         GwangSanSubTopBar(
                             startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { onBackClick() }) },
@@ -115,22 +118,34 @@ private fun ReadMoreScreen(
 
                         Spacer(modifier = Modifier.height(24.dp))
 
-                        HorizontalPager(
-                            state = pagerState,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(280.dp)
-                        ) { page ->
-                            val image = getSpecificPostUiState.post.images[page]
-                            AsyncImage(
-                                model = image.imageUrl,
-                                contentDescription = "게시물 백그라운드 이미지 $page",
-                                placeholder = painterResource(id = R.drawable.gwangsan),
-                                error = painterResource(id = R.drawable.gwangsan),
-                                fallback = painterResource(id = R.drawable.gwangsan),
+
+                        if (getSpecificPostUiState.post.images.isEmpty()) {
+                            Image(
+                                painter = painterResource(id = R.drawable.gwangsan),
+                                contentDescription = "기본 이미지",
                                 contentScale = ContentScale.Crop,
-                                modifier = Modifier.fillMaxSize()
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(280.dp)
                             )
+                        } else {
+                            HorizontalPager(
+                                state = pagerState,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(280.dp)
+                            ) { page ->
+                                val image = getSpecificPostUiState.post.images[page]
+                                AsyncImage(
+                                    model = image.imageUrl,
+                                    contentDescription = "게시물 이미지 $page",
+                                    placeholder = painterResource(id = R.drawable.gwangsan),
+                                    error = painterResource(id = R.drawable.gwangsan),
+                                    fallback = painterResource(id = R.drawable.gwangsan),
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier.fillMaxSize()
+                                )
+                            }
                         }
 
                         Row(
@@ -323,8 +338,8 @@ private fun PreviewReadMoreScreen() {
         onChatClick = {},
         onBackClick = {},
         onMyProfileClick = {},
-        onReportClick = {_, _ ->},
-        onReviewClick = {_, _ ->},
+        onReportClick = { _, _ -> },
+        onReviewClick = { _, _ -> },
         getSpecificPostUiState = GetSpecificPostUiState.Success(dummyPost)
     )
 }
