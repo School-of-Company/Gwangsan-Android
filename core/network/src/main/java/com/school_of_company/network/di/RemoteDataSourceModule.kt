@@ -8,6 +8,8 @@ import com.school_of_company.network.datasource.notice.NoticeDataSource
 import com.school_of_company.network.datasource.notice.NoticeDataSourceImpl
 import com.school_of_company.network.datasource.post.PostDataSource
 import com.school_of_company.network.datasource.post.PostDataSourceImpl
+import com.school_of_company.network.datasource.report.ReportDataSource
+import com.school_of_company.network.datasource.report.ReportDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -35,4 +37,9 @@ abstract class RemoteDataSourceModule {
     abstract fun bindNoticeDataSource(
         noticeDataSourceImpl: NoticeDataSourceImpl
     ) : NoticeDataSource
+
+    @Binds
+    abstract fun bindReportDataSource(
+        reportDataSourceImpl: ReportDataSourceImpl
+    ) : ReportDataSource
 }
