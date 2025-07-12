@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.icons.CloseIcon
@@ -80,4 +81,32 @@ fun OtherReviewScreenList(
             )
         }
     }
+}
+@Preview(showBackground = true)
+@Composable
+fun OtherReviewScreenPreview() {
+    val sampleReviews = listOf(
+        Review(
+            content = "시간 약속 잘 지켜주셨고, 친절하셨어요!",
+            light = 5,
+            reviewedId = 1,
+            productId = 101,
+            name = "김도보",
+            coverImage = null
+        ),
+        Review(
+            content = "좋은 거래 감사합니다.",
+            light = 4,
+            reviewedId = 2,
+            productId = 102,
+            name = "박정우",
+            coverImage = null
+        )
+    )
+
+    OtherReviewScreen(
+        onBackClick = {},
+        onOtherProfileClick = {},
+        item = sampleReviews
+    )
 }
