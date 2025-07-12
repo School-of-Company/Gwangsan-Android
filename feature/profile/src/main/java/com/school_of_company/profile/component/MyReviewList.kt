@@ -39,7 +39,7 @@ internal fun MyReviewListItem(
                 .GwangSanClickable { onClick() }
                 .fillMaxWidth(),
         ) {
-            if (data.imageUrls.images.isEmpty()) {
+            if (data.images.isEmpty()) {
                 Box(
                     modifier = Modifier
                         .padding(horizontal = 24.dp, vertical = 16.dp)
@@ -61,7 +61,7 @@ internal fun MyReviewListItem(
                         .clip(RoundedCornerShape(10.dp))
                 ) {
                     Image(
-                        painter = rememberAsyncImagePainter(model = data.imageUrls),
+                        painter = rememberAsyncImagePainter(model = data.images),
                         contentDescription = "후기 이미지",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
