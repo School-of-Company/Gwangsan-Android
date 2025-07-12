@@ -23,12 +23,24 @@ const val OtherPersonProfileRoute = "other_person_profile"
 const val MyPeTchPostDetailRoute = "review_post_detail"
 const val OtherReviewRoute = "review_other_review"
 
-fun NavController.navigateToOtherPersonProfile(navOptions: NavOptions? = null) {
-    this.navigate(OtherPersonProfileRoute, navOptions)
+fun NavController.navigateToOtherPersonProfile(
+    memberId: Long,
+    navOptions: NavOptions? = null
+) {
+    this.navigate(
+        route = "$OtherPersonProfileRoute/${memberId}",
+        navOptions =  navOptions
+    )
 }
 
-fun NavController.navigateToPostDetail(navOptions: NavOptions? = null) {
-    this.navigate(MyPeTchPostDetailRoute, navOptions)
+fun NavController.navigateToPostDetail(
+    postId: Long,
+    navOptions: NavOptions? = null
+) {
+    this.navigate(
+        route = "$MyWritingDetailRoute/${postId}",
+        navOptions = navOptions
+    )
 }
 
 fun NavController.navigateToMyProfile(navOptions: NavOptions? = null) {
@@ -83,7 +95,7 @@ fun NavGraphBuilder.myInformationEditScreen(
 fun NavGraphBuilder.myProfileScreen(
     onMyReviewClick: () -> Unit,
     onMyWritingClick: () -> Unit,
-    onMyWritingDetailClick: (Int) -> Unit,
+    onMyWritingDetailClick: (Long) -> Unit,
     onMyInformationEditClick: () -> Unit,
     onErrorToast: (Throwable, Int) -> Unit
 ) {
@@ -129,8 +141,15 @@ fun NavGraphBuilder.myWritingDetailScreen(
     onCompleteClick: () -> Unit,
     onErrorToast: (Throwable, Int) -> Unit
 ) {
-    composable(route = MyWritingDetailRoute) {
+    composable(route = "$MyWritingDetailRoute/{postId}") { backStackEntry ->
+        val postId = backStackEntry.arguments?.getString("postId")?.toLongOrNull()
+        if (postId == null) {
+            onErrorToast(Throwable("postId가 null입니다"), com.school_of_company.design_system.R.string.main_error)
+            return@composable
+        }
+
         ReviewPostDetailRoute(
+            postId = postId,
             onBackClick = onBackClick,
             onMyProfileClick = onMyProfileClick,
             onCompleteClick = onCompleteClick,
