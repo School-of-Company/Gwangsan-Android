@@ -48,7 +48,7 @@ internal fun MyProfileRoute(
     onMyWritingClick: () -> Unit,
     onMyReviewClick: () -> Unit,
     onMyInformationEditClick: () -> Unit,
-    onMyWritingDetailClick: (Int) -> Unit,
+    onMyWritingDetailClick: (Long) -> Unit,
     onErrorToast: (Throwable, Int) -> Unit,
     viewModel: MyProfileViewModel = hiltViewModel()
 ) {
@@ -114,7 +114,7 @@ internal fun MyProfileRoute(
 @Composable
 private fun MyProfileScreen(
     modifier: Modifier = Modifier,
-    onMyWritingDetailClick: (Int) -> Unit,
+    onMyWritingDetailClick: (Long) -> Unit,
     data: GetMemberResponseModel,
     onMyInformationEditClick: () -> Unit,
     onMyWritingClick: () -> Unit,
