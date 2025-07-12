@@ -49,9 +49,8 @@ import com.school_of_company.ui.previews.GwangsanPreviews
 internal fun ReadMoreRoute(
     postId: Long,
     onBackClick: () -> Unit,
-    onMyProfileClick: () -> Unit,
+    onOtherProfileClick: (Long) -> Unit,
     onChatClick: () -> Unit,
-    onOtherProfileClick: () -> Unit,
     onReviewClick: (Int, String) -> Unit,
     onReportClick: (String, String) -> Unit,
     viewModel: ContentViewModel = hiltViewModel()
@@ -65,11 +64,10 @@ internal fun ReadMoreRoute(
     ReadMoreScreen(
         getSpecificPostUiState = getSpecificPostUiState,
         onBackClick = onBackClick,
-        onMyProfileClick = onMyProfileClick,
+        onOtherProfileClick = onOtherProfileClick,
         onChatClick = onChatClick,
         onReviewClick = onReviewClick,
         onReportClick = onReportClick,
-        onOtherProfileClick = onOtherProfileClick
     )
 }
 
@@ -79,7 +77,7 @@ private fun ReadMoreScreen(
     modifier: Modifier = Modifier,
     getSpecificPostUiState: GetSpecificPostUiState,
     onBackClick: () -> Unit,
-    onMyProfileClick: () -> Unit,
+    onOtherProfileClick: (Long) -> Unit,
     onChatClick: () -> Unit,
     onReviewClick: (Int, String) -> Unit,
     onReportClick: (String, String) -> Unit
@@ -170,13 +168,12 @@ private fun ReadMoreScreen(
                         }
 
                         MyProfileUserLevel(
-                            name = getSpecificPostUiState.post.member.nickname,
-                            description = getSpecificPostUiState.post.member.placeName,
-                            level = getSpecificPostUiState.post.member.light,
                             modifier = Modifier.padding(
                                 horizontal = 24.dp,
                                 vertical = 12.dp
-                            )
+                            ),
+                            onClick =  onOtherProfileClick,
+                            data = getSpecificPostUiState.post.member
                         )
 
                         Spacer(
@@ -338,7 +335,7 @@ private fun PreviewReadMoreScreen() {
     ReadMoreScreen(
         onChatClick = {},
         onBackClick = {},
-        onMyProfileClick = {},
+        onOtherProfileClick = {},
         onReportClick = { _, _ -> },
         onReviewClick = { _, _ -> },
         getSpecificPostUiState = GetSpecificPostUiState.Success(dummyPost)
