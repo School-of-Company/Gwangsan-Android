@@ -57,17 +57,14 @@ internal fun MyProfileReviewListItem(
     GwangSanTheme { colors, typography ->
         Card(
             colors = CardDefaults.cardColors(containerColor = Color.White),
-            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
             onClick = onClick,
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp)
+            modifier = modifier.fillMaxWidth()
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 16.dp),
-                horizontalArrangement = Arrangement.Start
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Box(
                     modifier = Modifier
@@ -91,31 +88,37 @@ internal fun MyProfileReviewListItem(
                     }
                 }
 
-                // ▶️ 우측 리뷰 정보
                 Column(
                     modifier = Modifier
                         .weight(1f)
-                        .padding(end = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                        .padding(16.dp)
+                    ,
+
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
+                    // 얇은 프로그레스바
                     MyProfileReviewProgressBar(
                         progress = (data.light / 100f).coerceIn(0f, 1f),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(8.dp)  // 얇게
                     )
 
+                    // 후기 내용
                     Text(
                         text = data.content,
                         fontSize = 14.sp,
-                        fontWeight = FontWeight.Thin,
+                        fontWeight = FontWeight.Normal,
                         color = Color.Black,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis
                     )
 
+                    // 작성자 이름
                     Text(
                         text = data.name,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Normal,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Medium,
                         color = Color.Gray
                     )
                 }
@@ -123,6 +126,7 @@ internal fun MyProfileReviewListItem(
         }
     }
 }
+
 
 @Composable
 private fun MyProfileReviewProgressBar(
