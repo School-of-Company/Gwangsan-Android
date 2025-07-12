@@ -38,8 +38,7 @@ fun NavGraphBuilder.contentScreen(
 
 fun NavGraphBuilder.readMoreScreen(
     onBackClick: () -> Unit,
-    onMyProfileClick: () -> Unit,
-    onOtherProfileClick: () -> Unit,
+    onOtherProfileClick: (Long) -> Unit,
     onChatClick: () -> Unit,
     onReviewClick: (Int, String) -> Unit,
     onReportClick: (String, String) -> Unit
@@ -50,11 +49,12 @@ fun NavGraphBuilder.readMoreScreen(
         if (postId != null) {
             ReadMoreRoute(
                 onBackClick = onBackClick,
-                onMyProfileClick = onMyProfileClick,
+                onOtherProfileClick = onOtherProfileClick,
                 onChatClick = onChatClick,
                 onReviewClick = onReviewClick,
                 onReportClick = onReportClick,
-                postId = postId
+                postId = postId,
+
             )
         }
     }
