@@ -167,6 +167,10 @@ fun GwangsanNavHost(
             navigationToPost = { type: Type, mode: Mode ->
                 navController.navigateToPost(type = type, mode = mode)
             },
+            navigateToDetail = { id ->
+                navController.navigateToReadMore(id)
+            },
+            onBackClick = { navController.popBackStack() },
             onErrorToast = onErrorToast
         )
         mainStartScreen(
@@ -186,7 +190,7 @@ fun GwangsanNavHost(
 
         contentScreen(
             onMyProfileClick = { navController.navigateToMyProfile() },
-            onItemClick = { navController.navigateToReadMore() }
+            onItemClick = {  }
         )
 
         readMoreScreen(
@@ -246,8 +250,7 @@ fun GwangsanNavHost(
         myWritingDetailScreen(
             onBackClick = { navController.popBackStack() },
             onMyProfileClick = { navController.navigateToMyProfile() },
-            onCompleteClick = { navController.popBackStack() },
-            onErrorToast = onErrorToast
+            onCompleteClick = { navController.popBackStack() }
         )
 
         transactionHistoryScreen(

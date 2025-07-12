@@ -14,8 +14,14 @@ fun NavController.navigateToContent(navOptions: NavOptions? = null) {
     this.navigate(ContentRoute, navOptions)
 }
 
-fun NavController.navigateToReadMore(navOptions: NavOptions? = null) {
-    this.navigate(ReadMoreRoute, navOptions)
+fun NavController.navigateToReadMore(
+    postId: Long,
+    navOptions: NavOptions? = null
+) {
+    this.navigate(
+        route = "$ReadMoreRoute/${postId}",
+        navOptions = navOptions
+    )
 }
 
 fun NavGraphBuilder.contentScreen(
@@ -38,14 +44,18 @@ fun NavGraphBuilder.readMoreScreen(
     onReviewClick: (Int, String) -> Unit,
     onReportClick: (String, String) -> Unit
 ) {
-    composable(ReadMoreRoute) {
-        ReadMoreRoute(
-            onBackClick = onBackClick,
-            onMyProfileClick = onMyProfileClick,
-            onChatClick = onChatClick,
-            onReviewClick = onReviewClick,
-            onReportClick = onReportClick,
-            onOtherProfileClick = onOtherProfileClick
-        )
+    composable(route = "${ReadMoreRoute}/{postId}") { backStackEntry ->
+        val postId = backStackEntry.arguments?.getString("postId")?.toLongOrNull()
+
+        if (postId != null) {
+            ReadMoreRoute(
+                onBackClick = onBackClick,
+                onMyProfileClick = onMyProfileClick,
+                onChatClick = onChatClick,
+                onReviewClick = onReviewClick,
+                onReportClick = onReportClick,
+                postId = postId
+            )
+        }
     }
 }

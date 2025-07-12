@@ -11,7 +11,7 @@ interface PostRepository {
         postId: Long,
         body: PostAllRequestModel
     ) : Flow<PostModifyResponse>
-    fun getSpecificInformation() : Flow<List<Post>>
+    fun getSpecificInformation(postId: Long) : Flow<Post>
     fun getAllPostInformation(
         type: String,
         mode: String

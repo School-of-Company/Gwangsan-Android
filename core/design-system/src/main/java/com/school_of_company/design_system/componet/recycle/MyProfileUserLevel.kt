@@ -54,6 +54,7 @@ fun MyProfileUserLevel(
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = name,
+                    color = colors.black,
                     style = typography.body5,
                 )
 

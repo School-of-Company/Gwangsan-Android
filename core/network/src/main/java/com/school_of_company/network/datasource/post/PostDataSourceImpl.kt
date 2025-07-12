@@ -14,7 +14,6 @@ class PostDataSourceImpl @Inject constructor(
     override fun writePostInformation(body: PostAllRequest): Flow<Unit> =
         performApiRequest { postAPI.writePostInformation(body = body) }
 
-
     override fun modifyPostInformation(
         postId: Long,
         body: PostAllRequest
@@ -24,8 +23,8 @@ class PostDataSourceImpl @Inject constructor(
             body = body
         ) }
 
-    override fun getSpecificInformation(): Flow<List<PostDto>> =
-        performApiRequest { postAPI.getSpecificInformation() }
+    override fun getSpecificInformation(postId: Long): Flow<PostDto> =
+        performApiRequest { postAPI.getSpecificInformation(postId = postId) }
 
     override fun getAllPostInformation(type: String, mode: String): Flow<List<PostDto>> =
         performApiRequest { postAPI.getAllPostInformation(
