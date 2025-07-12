@@ -116,14 +116,14 @@ internal class MyProfileViewModel @Inject constructor(
             }
     }
 
-    internal fun getMyPostDetail() = viewModelScope.launch {
-        postRepository.getSpecificInformation()
+    internal fun getMyPostDetail(postId: Long ) = viewModelScope.launch {
+        postRepository.getSpecificInformation(postId = postId)
             .asResult()
             .collectLatest { result ->
                 when (result) {
                     is Result.Loading -> _getMySpecificInformationUiState.value = GetMySpecificInformationUiState.Loading
 
-                    is Result.Success -> _getMySpecificInformationUiState.value = GetMySpecificInformationUiState.Success(result.data)
+                    is Result.Success -> _getMySpecificInformationUiState.value = GetMySpecificInformationUiState.Success(listOf(result.data))
 
                     is Result.Error -> _getMySpecificInformationUiState.value = GetMySpecificInformationUiState.Error(result.exception)
                 }
