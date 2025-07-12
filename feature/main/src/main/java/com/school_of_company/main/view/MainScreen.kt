@@ -233,7 +233,10 @@ private fun MainScreen(
             GwangSanFloatingButton(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .padding(24.dp)
+                    .padding(
+                        end = 24.dp,
+                        bottom = 60.dp
+                    )
             ) {
                 navigationToPostService()
             }

@@ -18,7 +18,7 @@ fun NavController.navigateToMain(type: String, navOptions: NavOptions? = null) {
 }
 
 fun NavController.navigateToMainStart(navOptions: NavOptions? = null) {
-    this.navigate( MainStartRoute, navOptions)
+    this.navigate(MainStartRoute, navOptions)
 }
 
 fun NavGraphBuilder.mainScreen(

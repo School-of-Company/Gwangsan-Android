@@ -42,8 +42,8 @@ class PostRepositoryImpl @Inject constructor (
     }
 
     override fun getMyPostInformation(
-        type: String,
-        mode: String
+        type: String?,
+        mode: String?
     ): Flow<List<Post>> {
         return postDataSource.getMyPostInformation(
             type = type,

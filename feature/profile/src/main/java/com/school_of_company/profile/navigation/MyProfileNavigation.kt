@@ -1,13 +1,16 @@
 package com.school_of_company.profile.navigation
 
+import MyReviewRoute
 import ReviewPostDetailRoute
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import com.school_of_company.profile.view.MyInformationEditRoute
 import com.school_of_company.profile.view.MyProfileRoute
-import com.school_of_company.profile.view.MyReviewRoute
-import com.school_of_company.profile.view.MyWritingRoute
+import com.school_of_company.profile.view.MyReceiveReviewRoute
+import com.school_of_company.profile.view.OtherPersonProfileRoute
+import com.school_of_company.profile.view.OtherReviewRoute
 import com.school_of_company.profile.view.TransactionHistoryRoute
 
 
@@ -16,9 +19,36 @@ const val MyReviewRoute = "my_review"
 const val MyWritingRoute = "my_writing"
 const val MyWritingDetailRoute = "my_writing_detail"
 const val TransactionHistoryRoute = "transaction_history"
+const val OtherPersonProfileRoute = "other_person_profile"
+const val MyPeTchPostDetailRoute = "review_post_detail"
+const val OtherReviewRoute = "review_other_review"
+
+fun NavController.navigateToOtherPersonProfile(
+    memberId: Long,
+    navOptions: NavOptions? = null
+) {
+    this.navigate(
+        route = "$OtherPersonProfileRoute/${memberId}",
+        navOptions =  navOptions
+    )
+}
+
+fun NavController.navigateToPostDetail(
+    postId: Long,
+    navOptions: NavOptions? = null
+) {
+    this.navigate(
+        route = "$MyWritingDetailRoute/${postId}",
+        navOptions = navOptions
+    )
+}
 
 fun NavController.navigateToMyProfile(navOptions: NavOptions? = null) {
     this.navigate(MyProfileRoute, navOptions)
+}
+
+fun NavController.navigateToOtherReview(navOptions: NavOptions? = null){
+    this.navigate(OtherReviewRoute, navOptions)
 }
 
 fun NavController.navigateToMyReview(navOptions: NavOptions? = null) {
@@ -29,66 +59,95 @@ fun NavController.navigateToMyWriting(navOptions: NavOptions? = null) {
     this.navigate(MyWritingRoute, navOptions)
 }
 
-fun NavController.navigateToMyWritingDetail(navOptions: NavOptions? = null) {
-    this.navigate(MyWritingDetailRoute, navOptions)
+fun NavController.navigateToMyPeTchWritingDetail(navOptions: NavOptions? = null) {
+    this.navigate(MyPeTchPostDetailRoute, navOptions)
 }
 
-fun NavController.navigateToTransactionHistory(navOptions: NavOptions? = null) {
-    this.navigate(TransactionHistoryRoute, navOptions)
+fun NavGraphBuilder.otherPersonProfileScreen(
+    onErrorToast: (Throwable, Int) -> Unit,
+    onOtherReviewClick: () -> Unit
+) {
+    composable("$OtherPersonProfileRoute/{memberId}") { backStackEntry ->
+        val memberId = backStackEntry.arguments?.getString("memberId")?.toLongOrNull() ?: return@composable
+
+        OtherPersonProfileRoute(
+            memberId = memberId,
+            onErrorToast = onErrorToast,
+            onOtherReviewClick = onOtherReviewClick
+        )
+    }
+}
+
+fun NavGraphBuilder.myInformationEditScreen(
+    onBackClick: () -> Unit,
+    onSubmitComplete: () -> Unit,
+    onErrorToast: (Throwable?, Int?) -> Unit
+){
+    composable(route = MyPeTchPostDetailRoute) {
+        MyInformationEditRoute(
+            onBackClick = onBackClick,
+            onSubmitComplete = onSubmitComplete,
+            onErrorToast = onErrorToast
+        )
+    }
 }
 
 fun NavGraphBuilder.myProfileScreen(
     onMyReviewClick: () -> Unit,
     onMyWritingClick: () -> Unit,
-    onTransactionHistoryClick: () -> Unit
+    onMyWritingDetailClick: (Long) -> Unit,
+    onMyInformationEditClick: () -> Unit,
+    onErrorToast: (Throwable, Int) -> Unit,
+    onLogoutClick: () -> Unit
 ) {
     composable(route = MyProfileRoute) {
         MyProfileRoute(
             onMyReviewClick = onMyReviewClick,
             onMyWritingClick = onMyWritingClick,
-            onTransactionHistoryClick = onTransactionHistoryClick
+            onMyWritingDetailClick = onMyWritingDetailClick,
+            onErrorToast = onErrorToast,
+            onMyInformationEditClick = onMyInformationEditClick,
+            onLogoutClick = onLogoutClick
         )
     }
 }
 
+
 fun NavGraphBuilder.myReviewScreen(
     onBackClick: () -> Unit,
-    onMyProfileClick: () -> Unit,
 ) {
     composable(route = MyReviewRoute) {
-        MyReviewRoute(
+        MyReceiveReviewRoute(
             onBackClick = onBackClick,
-            onMyProfileClick = onMyProfileClick
         )
     }
 }
 
 fun NavGraphBuilder.myWritingScreen(
     onBackClick: () -> Unit,
-    onMyProfileClick: () -> Unit,
-    onReviewPostDetailClick: () -> Unit,
 ) {
     composable(route = MyWritingRoute) {
-        MyWritingRoute (
+        MyReviewRoute(
             onBackClick = onBackClick,
-            onMyProfileClick = onMyProfileClick,
-            onReviewPostDetailClick = onReviewPostDetailClick
         )
     }
 }
 
 fun NavGraphBuilder.myWritingDetailScreen(
     onBackClick: () -> Unit,
-    onMyProfileClick: () -> Unit,
     onCompleteClick: () -> Unit,
-)
-{
-    composable(route = MyWritingDetailRoute) {
-        ReviewPostDetailRoute(
-            onBackClick = onBackClick,
-            onMyProfileClick = onMyProfileClick,
-            onCompleteClick = onCompleteClick
-        )
+    onErrorToast: (Throwable, Int) -> Unit
+) {
+    composable(route = "$MyWritingDetailRoute/{postId}") { backStackEntry ->
+        val postId = backStackEntry.arguments?.getString("postId")?.toLongOrNull()
+        if (postId != null) {
+            ReviewPostDetailRoute(
+                postId = postId,
+                onBackClick = onBackClick,
+                onCompleteClick = onCompleteClick,
+                onErrorToast = onErrorToast,
+            )
+        }
     }
 }
 
@@ -103,3 +162,16 @@ fun NavGraphBuilder.transactionHistoryScreen(
         )
     }
 }
+
+fun NavGraphBuilder.otherReviewScreen(
+    onBackClick: () -> Unit,
+){
+    composable(route = OtherReviewRoute){
+        OtherReviewRoute(
+            onBackClick =  onBackClick
+        )
+    }
+}
+
+
+

@@ -19,6 +19,7 @@ android {
         }
     }
 
+
     namespace = "com.school_of_company.gwangsan_android"
 }
 
@@ -30,20 +31,22 @@ dependencies {
     implementation(project(":feature:signup"))
     implementation(project(":feature:profile"))
     implementation(project(":core:data"))
+    implementation(project(":core:local"))
+    implementation(project(":core:device"))
     implementation(project(":core:network"))
+    implementation(project(":core:model"))
     implementation(project(":core:common"))
     implementation(project(":feature:post"))
-    implementation(project(":feature:main"))
+
     implementation(project(":feature:content"))
     implementation(project(":feature:chat"))
     implementation(project(":feature:inform"))
-    implementation(project(":core:model"))
-    implementation(project(":core:device"))
-    implementation(project(":core:local"))
+    implementation(project(":feature:main"))
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.messaging)
     implementation(libs.androidx.window.size)
+    implementation(libs.androidx.navigation.runtime)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.material3)
     testImplementation(libs.junit)

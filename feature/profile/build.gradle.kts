@@ -10,5 +10,5 @@ android {
 dependencies {
     implementation(libs.coil.kt)
     implementation(libs.androidx.navigation.compose.android)
-
+    implementation(libs.androidx.hilt.navigation.compose)
 }

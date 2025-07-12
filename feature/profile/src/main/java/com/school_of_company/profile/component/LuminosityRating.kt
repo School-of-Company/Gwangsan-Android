@@ -15,8 +15,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.school_of_company.design_system.theme.GwangSanTheme
 
 @Composable
@@ -42,7 +44,9 @@ internal fun BrightnessProgressBar(
         ) {
             Text(
                 text = "밝기",
-                style = typography.body1
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                color = colors.black
             )
 
             Spacer(modifier = Modifier.height(24.dp))

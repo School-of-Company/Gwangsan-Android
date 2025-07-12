@@ -6,5 +6,6 @@ import com.school_of_company.network.dto.member.request.ModifyMemberInformationR
 fun ModifyMemberInformationRequestModel.toDto(): ModifyMemberInformationRequest =
     ModifyMemberInformationRequest(
         nickname = this.nickname,
-        profileUrl = this.profileUrl
+        specialties = this.specialties,
+        description = this.description,
     )

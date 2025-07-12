@@ -2,6 +2,7 @@ package com.school_of_company.profile.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -13,18 +14,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.school_of_company.design_system.R
+import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.model.post.response.Post
 
 @Composable
 internal fun MyReviewListItem(
     modifier: Modifier = Modifier,
-    coverImage: String?,
-    title: String,
-    price: String
+    onClick: () -> Unit,
+    data: Post
 ) {
     GwangSanTheme { color, typography ->
 
@@ -32,13 +36,14 @@ internal fun MyReviewListItem(
             verticalAlignment = Alignment.CenterVertically,
             modifier = modifier
                 .background(color = color.white)
+                .GwangSanClickable { onClick() }
                 .fillMaxWidth(),
         ) {
-            if (coverImage.isNullOrEmpty()) {
+            if (data.images.isEmpty()) {
                 Box(
                     modifier = Modifier
-                        .size(100.dp)
                         .padding(horizontal = 24.dp, vertical = 16.dp)
+                        .size(100.dp)
                         .clip(RoundedCornerShape(10.dp))
                 ) {
                     Image(
@@ -48,16 +53,15 @@ internal fun MyReviewListItem(
                         modifier = Modifier.fillMaxSize()
                     )
                 }
-            }
-            else {
+            } else {
                 Box(
                     modifier = Modifier
+                        .padding(horizontal = 16.dp, vertical = 24.dp)
                         .size(100.dp)
-                        .padding(horizontal = 24.dp, vertical = 16.dp)
                         .clip(RoundedCornerShape(10.dp))
                 ) {
                     Image(
-                        painter = rememberAsyncImagePainter(model = coverImage),
+                        painter = rememberAsyncImagePainter(model = data.images),
                         contentDescription = "후기 이미지",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
@@ -65,22 +69,21 @@ internal fun MyReviewListItem(
                 }
             }
 
-            Spacer(modifier = Modifier.width(24.dp))
-
             Column(
                 horizontalAlignment = Alignment.Start,
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = title,
-                    style = typography.body3,
+                    text = data.title,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
                     color = color.black
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
 
                 Text(
-                    text = price,
+                    text = "${data.gwangsan}",
                     style = typography.body5,
                     color = color.black
                 )
@@ -88,42 +91,3 @@ internal fun MyReviewListItem(
         }
     }
 }
-
-@Composable
-internal fun MyReviewList(
-    modifier: Modifier = Modifier,
-    items: List<MyReviewItem>
-) {
-    GwangSanTheme { color, _ ->
-
-        LazyColumn(
-            modifier = modifier
-                .fillMaxSize()
-                .background(color.white),
-        ) {
-            items(items) { item ->
-                MyReviewListItem(
-                    coverImage = item.coverImage,
-                    title = item.title,
-                    price = item.price
-                )
-            }
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun MyReviewListItemPreview() {
-    MyReviewListItem(
-        coverImage = null,
-        title = "바퀴벌레 후기",
-        price = "1000원"
-    )
-}
-
-data class MyReviewItem(
-    val coverImage: String,
-    val title: String,
-    val price: String
-)

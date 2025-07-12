@@ -18,6 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.school_of_company.design_system.componet.icons.GwangSanIcon
 import com.school_of_company.design_system.theme.GwangSanTheme
 
@@ -31,8 +32,9 @@ internal fun GwangSanMoney(
         Column(modifier = modifier.background(colors.white)) {
             Text(
                 text = "광산",
-                style = typography.body1,
-                color = colors.black
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                color = colors.black,
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -51,7 +53,7 @@ internal fun GwangSanMoney(
                 Spacer(modifier = Modifier.width(40.dp))
 
                 Text(
-                    text = "${miningAmount} 광산",
+                    text = "$miningAmount 광산",
                     color = colors.subYellow700,
                     style = typography.titleMedium2,
                     fontWeight = FontWeight.Bold

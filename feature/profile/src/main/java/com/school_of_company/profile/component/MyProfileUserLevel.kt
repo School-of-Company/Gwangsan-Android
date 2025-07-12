@@ -20,17 +20,18 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import com.school_of_company.design_system.R
 import com.school_of_company.design_system.componet.icons.EllipseIcon
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.model.member.response.GetAllMemberResponseModel
+import com.school_of_company.model.member.response.GetMemberResponseModel
+import com.school_of_company.model.post.response.Post
 
 @Composable
 internal fun MyProfileUserLevel(
     modifier: Modifier = Modifier,
-    name: String,
-    coverImage: String?,
-    description: String,
-    level: Int,
+    data: Post,
 ) {
     GwangSanTheme { colors, typography ->
 
@@ -39,7 +40,7 @@ internal fun MyProfileUserLevel(
                 .fillMaxWidth()
                 .background(colors.white)
         ) {
-            if (coverImage.isNullOrEmpty()) {
+            if (data.images.isEmpty()) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -71,19 +72,19 @@ internal fun MyProfileUserLevel(
 
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            text = "${name}단계",
+                            text = data.member.nickname,
                             style = typography.body5,
                         )
 
                         Text(
-                            text = description,
+                            text = data.member.placeName,
                             color = colors.gray500,
                             style = typography.body5
                         )
                     }
 
                     Text(
-                        text = "${level}단계",
+                        text = "${data.member.light}단계",
                         color = colors.subYellow500, // 노란-주황 계열
                         style = typography.body5,
                     )
@@ -96,7 +97,7 @@ internal fun MyProfileUserLevel(
                         .aspectRatio(1.5f)
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.ic_image), // 이미지 리소스 추가 필요
+                        painter = rememberAsyncImagePainter(model = data.images), // 이미지 리소스 추가 필요
                         contentDescription = "바퀴벌레 이미지",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
@@ -114,23 +115,25 @@ internal fun MyProfileUserLevel(
 
                     Spacer(modifier = Modifier.width(12.dp))
 
-                    // 이름과 설명
                     Column(
                         modifier = Modifier.weight(1f)
                     ) {
                         Text(
-                            text = name,
+                            text = data.member.nickname,
                             style = typography.body5,
                         )
 
                         Spacer(modifier = Modifier.padding(5.dp))
 
-                        Text(text = description, color = colors.gray500, style = typography.body5)
+                        Text(
+                            text = data.member.placeName,
+                            color = colors.gray500,
+                            style = typography.body5
+                        )
                     }
 
-
                     Text(
-                        text = "${level}단계",
+                        text = "${data.member.light} 단계",
                         color = colors.subYellow500, // 노란-주황 계열
                         style = typography.body5,
                     )
@@ -138,16 +141,4 @@ internal fun MyProfileUserLevel(
             }
         }
     }
-}
-
-@Preview
-@Composable
-private fun UserLevelCardPreview()
-{
-    MyProfileUserLevel(
-        name = "모태환",
-        coverImage = "https://image.dongascience.com/Photo/2019/12/fb4f7da04758d289a466f81478f5f488.jpg",
-        description = "바퀴벌레",
-        level = 1
-    )
 }

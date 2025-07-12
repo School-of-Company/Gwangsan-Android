@@ -275,6 +275,7 @@ class SignUpViewModel @Inject constructor(
     internal fun onSpecialtyListChange(list: List<String>) {
         savedStateHandle[SPECIALTY] = list
     }
+
     internal fun toggleSpecialtyDropdown() {
         _specialtyDropdownVisible.value = !_specialtyDropdownVisible.value
     }

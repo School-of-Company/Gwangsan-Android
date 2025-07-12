@@ -17,8 +17,8 @@ interface PostRepository {
         mode: String
     ) : Flow<List<Post>>
     fun getMyPostInformation(
-        type: String,
-        mode: String
+        type: String? = null,
+        mode: String? = null
     ) : Flow<List<Post>>
     fun deletePostInformation(postId: Long) : Flow<Unit>
 }

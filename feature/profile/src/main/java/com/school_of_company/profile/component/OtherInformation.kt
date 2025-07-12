@@ -20,14 +20,13 @@ import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.icons.ArrowDown
 import com.school_of_company.design_system.componet.icons.EllipseIcon
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.model.member.response.GetAllMemberResponseModel
 import com.school_of_company.model.member.response.GetMemberResponseModel
 
 @Composable
-internal fun MyInformation(
+internal fun OtherInformation(
     modifier: Modifier = Modifier,
-    onModifyClick: () -> Unit,
-    data: GetMemberResponseModel,
-    onLogoutClick: () -> Unit
+    data: GetAllMemberResponseModel,
 ) {
     GwangSanTheme { colors, typography ->
 
@@ -37,7 +36,6 @@ internal fun MyInformation(
             modifier = modifier
                 .fillMaxWidth()
                 .background(colors.white)
-                .padding(16.dp),
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 EllipseIcon(modifier = Modifier.size(50.dp))
@@ -50,26 +48,8 @@ internal fun MyInformation(
                         style = typography.body1,
                         color = colors.black
                     )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    Row(verticalAlignment = Alignment.CenterVertically){
-                        Text(
-                            text = "로그아웃하기",
-                            style = typography.label,
-                            color = colors.gray500
-                        )
-
-                        Spacer(modifier = Modifier.width(12.dp))
-
-                        ArrowDown(modifier = Modifier.GwangSanClickable { onLogoutClick() })
-                    }
                 }
             }
-
-            MyProfileModifyButton(
-                onClick = onModifyClick
-            )
         }
     }
 }

@@ -22,15 +22,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.school_of_company.design_system.R
+import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.icons.EllipseIcon
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.model.member.response.GetAllMemberResponseModel
+import com.school_of_company.model.member.response.GetMemberResponseModel
+import com.school_of_company.model.post.response.Member
+import com.school_of_company.model.post.response.Post
 
 @Composable
 fun MyProfileUserLevel(
     modifier: Modifier = Modifier,
-    name: String,
-    description: String,
-    level: Int,
+    data: Member,
+    onClick: (Long) -> Unit,
 ) {
     GwangSanTheme { colors, typography ->
 
@@ -42,14 +46,16 @@ fun MyProfileUserLevel(
                 .padding(vertical = 8.dp)
         ) {
             Box(modifier = Modifier.size(40.dp)) {
-                EllipseIcon()
+                EllipseIcon(
+                    modifier = Modifier.GwangSanClickable {onClick(data.memberId) },
+                )
             }
 
             Spacer(modifier = Modifier.width(12.dp))
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = name,
+                    text = data.nickname,
                     color = colors.black,
                     style = typography.body5,
                 )
@@ -57,28 +63,17 @@ fun MyProfileUserLevel(
                 Spacer(modifier = Modifier.height(5.dp))
 
                 Text(
-                    text = description,
+                    text = data.placeName,
                     color = colors.gray500,
                     style = typography.body5
                 )
             }
 
             Text(
-                text = "${level}단계",
+                text = "${data.light}단계",
                 color = colors.subYellow500,
                 style = typography.body5,
             )
         }
     }
-}
-
-@Preview
-@Composable
-private fun UserLevelCardPreview()
-{
-    MyProfileUserLevel(
-        name = "모태환",
-        description = "바퀴벌레",
-        level = 1
-    )
 }

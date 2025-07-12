@@ -23,7 +23,6 @@ class DeviceTokenManager @Inject constructor(
 
             CoroutineScope(Dispatchers.IO).launch {
                 saveDeviceToken(deviceToken = task.result)
-                Log.e("DeviceTokenManager", "Device Token: ${task.result}")
             }
         }
     }

@@ -18,8 +18,8 @@ interface PostDataSource {
         mode: String
     ) : Flow<List<PostDto>>
     fun getMyPostInformation(
-        type: String,
-        mode: String
+        type: String? = null,
+        mode: String? = null
     ) : Flow<List<PostDto>>
     fun deletePostInformation(postId: Long) : Flow<Unit>
 }

@@ -49,7 +49,7 @@ import com.school_of_company.ui.previews.GwangsanPreviews
 internal fun ReadMoreRoute(
     postId: Long,
     onBackClick: () -> Unit,
-    onMyProfileClick: () -> Unit,
+    onOtherProfileClick: (Long) -> Unit,
     onChatClick: () -> Unit,
     onReviewClick: (Int, String) -> Unit,
     onReportClick: (String, String) -> Unit,
@@ -64,10 +64,10 @@ internal fun ReadMoreRoute(
     ReadMoreScreen(
         getSpecificPostUiState = getSpecificPostUiState,
         onBackClick = onBackClick,
-        onMyProfileClick = onMyProfileClick,
+        onOtherProfileClick = onOtherProfileClick,
         onChatClick = onChatClick,
         onReviewClick = onReviewClick,
-        onReportClick = onReportClick
+        onReportClick = onReportClick,
     )
 }
 
@@ -77,7 +77,7 @@ private fun ReadMoreScreen(
     modifier: Modifier = Modifier,
     getSpecificPostUiState: GetSpecificPostUiState,
     onBackClick: () -> Unit,
-    onMyProfileClick: () -> Unit,
+    onOtherProfileClick: (Long) -> Unit,
     onChatClick: () -> Unit,
     onReviewClick: (Int, String) -> Unit,
     onReportClick: (String, String) -> Unit
@@ -92,8 +92,7 @@ private fun ReadMoreScreen(
 
         when (getSpecificPostUiState) {
             is GetSpecificPostUiState.Success -> {
-                val pagerState =
-                    rememberPagerState(pageCount = { getSpecificPostUiState.post.images.size })
+                val pagerState = rememberPagerState(pageCount = { getSpecificPostUiState.post.images.size })
 
                 Box(
                     modifier = modifier
@@ -117,7 +116,6 @@ private fun ReadMoreScreen(
                         )
 
                         Spacer(modifier = Modifier.height(24.dp))
-
 
                         if (getSpecificPostUiState.post.images.isEmpty()) {
                             Image(
@@ -169,13 +167,12 @@ private fun ReadMoreScreen(
                         }
 
                         MyProfileUserLevel(
-                            name = getSpecificPostUiState.post.member.nickname,
-                            description = getSpecificPostUiState.post.member.placeName,
-                            level = getSpecificPostUiState.post.member.light,
                             modifier = Modifier.padding(
                                 horizontal = 24.dp,
                                 vertical = 12.dp
-                            )
+                            ),
+                            onClick =  onOtherProfileClick,
+                            data = getSpecificPostUiState.post.member
                         )
 
                         Spacer(
@@ -337,7 +334,7 @@ private fun PreviewReadMoreScreen() {
     ReadMoreScreen(
         onChatClick = {},
         onBackClick = {},
-        onMyProfileClick = {},
+        onOtherProfileClick = {},
         onReportClick = { _, _ -> },
         onReviewClick = { _, _ -> },
         getSpecificPostUiState = GetSpecificPostUiState.Success(dummyPost)

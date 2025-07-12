@@ -19,6 +19,8 @@ import com.school_of_company.content.navigation.navigateToReadMore
 import com.school_of_company.content.navigation.readMoreScreen
 import com.school_of_company.design_system.componet.toast.makeToast
 import com.school_of_company.gwangsan_android.ui.GwangSanAppState
+import com.school_of_company.gwangsan_android.ui.navigateToHomeAndClearLogin
+import com.school_of_company.gwangsan_android.ui.navigationPopUpToLogin
 import com.school_of_company.inform.navigation.informDetailScreen
 import com.school_of_company.inform.navigation.informScreen
 import com.school_of_company.inform.navigation.navigateToInformDetail
@@ -30,15 +32,20 @@ import com.school_of_company.model.enum.Mode
 import com.school_of_company.model.enum.Type
 import com.school_of_company.post.navigation.navigateToPost
 import com.school_of_company.post.navigation.postScreen
+import com.school_of_company.profile.navigation.myInformationEditScreen
 import com.school_of_company.profile.navigation.myProfileScreen
 import com.school_of_company.profile.navigation.myReviewScreen
 import com.school_of_company.profile.navigation.myWritingDetailScreen
 import com.school_of_company.profile.navigation.myWritingScreen
+import com.school_of_company.profile.navigation.navigateToMyPeTchWritingDetail
 import com.school_of_company.profile.navigation.navigateToMyProfile
 import com.school_of_company.profile.navigation.navigateToMyReview
 import com.school_of_company.profile.navigation.navigateToMyWriting
-import com.school_of_company.profile.navigation.navigateToMyWritingDetail
-import com.school_of_company.profile.navigation.navigateToTransactionHistory
+import com.school_of_company.profile.navigation.navigateToOtherPersonProfile
+import com.school_of_company.profile.navigation.navigateToOtherReview
+import com.school_of_company.profile.navigation.navigateToPostDetail
+import com.school_of_company.profile.navigation.otherPersonProfileScreen
+import com.school_of_company.profile.navigation.otherReviewScreen
 import com.school_of_company.profile.navigation.transactionHistoryScreen
 import com.school_of_company.signin.navigation.StartRoute
 import com.school_of_company.signin.navigation.navigateToSignIn
@@ -101,7 +108,7 @@ fun GwangsanNavHost(
 
         signInScreen(
             onBackClick = { navController.popBackStack() },
-            onMainClick = { navController.navigateToMainStart() },
+            onMainClick = { navController.navigateToHomeAndClearLogin() },
             onErrorToast = onErrorToast
         )
 
@@ -185,12 +192,14 @@ fun GwangsanNavHost(
 
         contentScreen(
             onMyProfileClick = { navController.navigateToMyProfile() },
-            onItemClick = {  }
+            onItemClick = { }
         )
 
         readMoreScreen(
             onBackClick = { navController.popBackStack() },
-            onMyProfileClick = { navController.navigateToMyProfile() },
+            onOtherProfileClick = { memberId ->
+                navController.navigateToOtherPersonProfile(memberId = memberId)
+            },
             onChatClick = { navController.navigateToChatRoom() },
             onReviewClick = { _, _ -> },
             onReportClick = { _, _ -> }
@@ -208,35 +217,46 @@ fun GwangsanNavHost(
 
         postScreen(
             onBackClick = { navController.popBackStack() },
-            onComplete = {  }
+            onComplete = { }
         )
 
         myProfileScreen(
             onMyReviewClick = { navController.navigateToMyReview() },
             onMyWritingClick = { navController.navigateToMyWriting() },
-            onTransactionHistoryClick = { navController.navigateToTransactionHistory() }
+            onErrorToast = onErrorToast,
+            onMyWritingDetailClick = { id ->
+                navController.navigateToPostDetail(id)
+            },
+            onMyInformationEditClick = { navController.navigateToMyPeTchWritingDetail() },
+            onLogoutClick = { navController.navigationPopUpToLogin(loginRoute = StartRoute) }
         )
 
-        myReviewScreen(
-            onBackClick = { navController.popBackStack() },
-            onMyProfileClick = { navController.navigateToMyProfile() }
+        otherPersonProfileScreen(
+            onErrorToast = onErrorToast,
+            onOtherReviewClick = { navController.navigateToOtherReview() }
         )
 
-        myWritingScreen(
+        myInformationEditScreen(
             onBackClick = { navController.popBackStack() },
-            onMyProfileClick = { navController.navigateToMyProfile() },
-            onReviewPostDetailClick = { navController.navigateToMyWritingDetail() }
+            onSubmitComplete = { navController.navigateToMyProfile() },
+            onErrorToast = onErrorToast
         )
+
+        myReviewScreen(onBackClick = { navController.popBackStack() })
+
+        myWritingScreen(onBackClick = { navController.popBackStack() })
 
         myWritingDetailScreen(
             onBackClick = { navController.popBackStack() },
-            onMyProfileClick = { navController.navigateToMyProfile() },
-            onCompleteClick = { navController.popBackStack() }
+            onCompleteClick = { navController.popBackStack() },
+            onErrorToast = onErrorToast
         )
 
         transactionHistoryScreen(
             onBackClick = { navController.popBackStack() },
             onMyProfileClick = { navController.navigateToMyProfile() }
         )
+
+        otherReviewScreen(onBackClick = { navController.popBackStack() })
     }
 }
