@@ -18,10 +18,12 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -29,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.school_of_company.design_system.componet.toast.makeToast
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.model.member.response.GetMemberResponseModel
@@ -37,11 +40,13 @@ import com.school_of_company.profile.component.GwangSanMoney
 import com.school_of_company.profile.component.LogoutDialog
 import com.school_of_company.profile.component.MyInformation
 import com.school_of_company.profile.component.MyProfileExerciseButton
-import com.school_of_company.profile.component.MyReviewList
+import com.school_of_company.profile.component.MyReviewListItem
 import com.school_of_company.profile.component.MySpecialListScreen
 import com.school_of_company.profile.viewmodel.MyProfileViewModel
 import com.school_of_company.profile.viewmodel.uistate.GetMyPostUiState
+import com.school_of_company.profile.viewmodel.uistate.LogoutUiState
 import com.school_of_company.profile.viewmodel.uistate.MemberUiState
+import kotlin.math.log
 
 @Composable
 internal fun MyProfileRoute(
@@ -49,23 +54,36 @@ internal fun MyProfileRoute(
     onMyReviewClick: () -> Unit,
     onMyInformationEditClick: () -> Unit,
     onMyWritingDetailClick: (Long) -> Unit,
+    onLogoutClick: () -> Unit,
     onErrorToast: (Throwable, Int) -> Unit,
     viewModel: MyProfileViewModel = hiltViewModel()
 ) {
     val memberUiState = viewModel.myProfileUiState.collectAsStateWithLifecycle().value
     val getMyPostUiState = viewModel.getMyPostUiState.collectAsStateWithLifecycle().value
+    val logoutUiState by viewModel.logoutUiState.collectAsStateWithLifecycle()
+
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         viewModel.getMyProfile()
         viewModel.getMyPost()
     }
 
+    when (logoutUiState) {
+        is LogoutUiState.Loading -> Unit
+        is LogoutUiState.Error -> {
+            makeToast(context, "로그아웃 실패")
+        }
+        is LogoutUiState.Success -> {
+            onLogoutClick()
+            makeToast(context, "로그아웃 성공")
+        }
+    }
 
     when (memberUiState) {
         is MemberUiState.Loading -> {
             Box(
-                modifier = Modifier
-                    .fillMaxSize(),
+                modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -76,7 +94,6 @@ internal fun MyProfileRoute(
 
         is MemberUiState.Error -> {
             onErrorToast(memberUiState.exception, com.school_of_company.design_system.R.string.main_error)
-
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -105,7 +122,8 @@ internal fun MyProfileRoute(
                 onMyReviewClick = onMyReviewClick,
                 getMyPostUiState = getMyPostUiState,
                 onMyWritingDetailClick = onMyWritingDetailClick,
-                onMyInformationEditClick = onMyInformationEditClick
+                onMyInformationEditClick = onMyInformationEditClick,
+                onLogoutCallBack = { viewModel.logout() }
             )
         }
     }
@@ -116,6 +134,7 @@ private fun MyProfileScreen(
     modifier: Modifier = Modifier,
     onMyWritingDetailClick: (Long) -> Unit,
     data: GetMemberResponseModel,
+    onLogoutCallBack: () -> Unit,
     onMyInformationEditClick: () -> Unit,
     onMyWritingClick: () -> Unit,
     getMyPostUiState: GetMyPostUiState,
@@ -131,6 +150,7 @@ private fun MyProfileScreen(
             modifier = modifier
                 .fillMaxSize()
                 .background(color = colors.white)
+                .padding(top = 80.dp)
         ) {
             item {
                 GwangSanSubTopBar(
@@ -289,46 +309,57 @@ private fun MyProfileScreen(
                             Text(
                                 text = "게시물이 없습니다.",
                                 style = typography.body2,
-                                color = colors.gray600
+                                color = colors.gray600,
                             )
                         }
                     }
                 }
 
                 is GetMyPostUiState.Success -> {
-                    if (getMyPostUiState.data.isEmpty()) {
-                        item {
-                            Text(
-                                text = "게시물이 없습니다.",
-                                style = typography.body2,
-                                color = colors.gray600,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 16.dp),
-                            )
-                        }
-                    } else {
                         items(getMyPostUiState.data) { item ->
-                            MyReviewList(
+                            MyReviewListItem(
                                 onClick = { onMyWritingDetailClick(item.id) },
-                                items = listOf(item)
+                                data = item
                             )
-                        }
                     }
                 }
             }
+        }
 
-            item {
-                if (openLogoutDialog) {
-                    Dialog(onDismissRequest = { setOpenLogoutDialog(false) }) {
-                        LogoutDialog(
-                            onLogout = { setOpenLogoutDialog(false) },
-                            onDismiss = { setOpenLogoutDialog(false) }
-                        )
-                    }
-                }
+        if (openLogoutDialog) {
+            Dialog(onDismissRequest = { setOpenLogoutDialog(false) }) {
+                LogoutDialog(
+                    onLogout = {
+                        onLogoutCallBack()
+                        setOpenLogoutDialog(false)
+                    },
+                    onDismiss = { setOpenLogoutDialog(false) }
+                )
             }
         }
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+private fun MyProfileScreenPreview() {
+    val mockData = GetMemberResponseModel(
+        memberId = 1L,
+        nickname = "홍길동",
+        light = 5,
+        gwangsan = 300,
+        specialties = listOf("Android", "Kotlin", "Jetpack Compose"),
+        placeName = "광산",
+        description = "안녕하세요, 홍길동입니다."
+    )
+
+    MyProfileScreen(
+        data = mockData,
+        onMyInformationEditClick = {},
+        onMyWritingClick = {},
+        onMyReviewClick = {},
+        onMyWritingDetailClick = {},
+        getMyPostUiState = GetMyPostUiState.Empty,
+        onLogoutCallBack = {}
+    )
+}

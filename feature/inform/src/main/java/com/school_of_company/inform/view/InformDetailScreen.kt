@@ -1,5 +1,6 @@
 package com.school_of_company.inform.view
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
@@ -87,41 +88,52 @@ private fun InformDetailScreen(
                             .fillMaxSize()
                             .verticalScroll(rememberScrollState())
                     ) {
-                        HorizontalPager(
-                            state = pagerState,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(280.dp)
-                        ) { page ->
-                            val image = getSpecificNoticeUiState.data.images[page]
-                            AsyncImage(
-                                model = image.imageUrl,
-                                contentDescription = "공지 이미지 $page",
-                                placeholder = painterResource(id = R.drawable.gwangsan),
-                                error = painterResource(id = R.drawable.gwangsan),
-                                fallback = painterResource(id = R.drawable.gwangsan),
+                        if (getSpecificNoticeUiState.data.images.isEmpty()) {
+                            Image(
+                                painter = painterResource(id = R.drawable.gwangsan),
+                                contentDescription = "기본 이미지",
                                 contentScale = ContentScale.Crop,
-                                modifier = Modifier.fillMaxSize()
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(280.dp)
                             )
-                        }
-
-                        Row(
-                            horizontalArrangement = Arrangement.Center,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 8.dp),
-                        ) {
-                            repeat(getSpecificNoticeUiState.data.images.size) { index ->
-                                val isSelected = pagerState.currentPage == index
-                                Box(
-                                    modifier = Modifier
-                                        .padding(horizontal = 4.dp)
-                                        .size(if (isSelected) 8.dp else 6.dp)
-                                        .background(
-                                            color = if (isSelected) colors.main500 else colors.gray300,
-                                            shape = androidx.compose.foundation.shape.CircleShape
-                                        )
+                        } else {
+                            HorizontalPager(
+                                state = pagerState,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(280.dp)
+                            ) { page ->
+                                val image = getSpecificNoticeUiState.data.images[page]
+                                AsyncImage(
+                                    model = image.imageUrl,
+                                    contentDescription = "공지 이미지 $page",
+                                    placeholder = painterResource(id = R.drawable.gwangsan),
+                                    error = painterResource(id = R.drawable.gwangsan),
+                                    fallback = painterResource(id = R.drawable.gwangsan),
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier.fillMaxSize()
                                 )
+                            }
+
+                            Row(
+                                horizontalArrangement = Arrangement.Center,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 8.dp),
+                            ) {
+                                repeat(getSpecificNoticeUiState.data.images.size) { index ->
+                                    val isSelected = pagerState.currentPage == index
+                                    Box(
+                                        modifier = Modifier
+                                            .padding(horizontal = 4.dp)
+                                            .size(if (isSelected) 8.dp else 6.dp)
+                                            .background(
+                                                color = if (isSelected) colors.main500 else colors.gray300,
+                                                shape = androidx.compose.foundation.shape.CircleShape
+                                            )
+                                    )
+                                }
                             }
                         }
 

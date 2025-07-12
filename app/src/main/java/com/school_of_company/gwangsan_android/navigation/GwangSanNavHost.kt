@@ -19,6 +19,8 @@ import com.school_of_company.content.navigation.navigateToReadMore
 import com.school_of_company.content.navigation.readMoreScreen
 import com.school_of_company.design_system.componet.toast.makeToast
 import com.school_of_company.gwangsan_android.ui.GwangSanAppState
+import com.school_of_company.gwangsan_android.ui.navigateToHomeAndClearLogin
+import com.school_of_company.gwangsan_android.ui.navigationPopUpToLogin
 import com.school_of_company.inform.navigation.informDetailScreen
 import com.school_of_company.inform.navigation.informScreen
 import com.school_of_company.inform.navigation.navigateToInformDetail
@@ -106,7 +108,7 @@ fun GwangsanNavHost(
 
         signInScreen(
             onBackClick = { navController.popBackStack() },
-            onMainClick = { navController.navigateToMainStart() },
+            onMainClick = { navController.navigateToHomeAndClearLogin() },
             onErrorToast = onErrorToast
         )
 
@@ -190,13 +192,14 @@ fun GwangsanNavHost(
 
         contentScreen(
             onMyProfileClick = { navController.navigateToMyProfile() },
-            onItemClick = {  }
+            onItemClick = { }
         )
 
         readMoreScreen(
             onBackClick = { navController.popBackStack() },
             onOtherProfileClick = { memberId ->
-                navController.navigateToOtherPersonProfile(memberId = memberId) },
+                navController.navigateToOtherPersonProfile(memberId = memberId)
+            },
             onChatClick = { navController.navigateToChatRoom() },
             onReviewClick = { _, _ -> },
             onReportClick = { _, _ -> }
@@ -214,20 +217,18 @@ fun GwangsanNavHost(
 
         postScreen(
             onBackClick = { navController.popBackStack() },
-            onComplete = {  }
+            onComplete = { }
         )
 
         myProfileScreen(
             onMyReviewClick = { navController.navigateToMyReview() },
             onMyWritingClick = { navController.navigateToMyWriting() },
             onErrorToast = onErrorToast,
-            onMyWritingDetailClick = {
-                postId ->
-                navController.navigateToPostDetail(
-                    postId = postId
-                ) },
-            onMyInformationEditClick = { navController.navigateToMyPeTchWritingDetail() }
-
+            onMyWritingDetailClick = { id ->
+                navController.navigateToPostDetail(id)
+            },
+            onMyInformationEditClick = { navController.navigateToMyPeTchWritingDetail() },
+            onLogoutClick = { navController.navigationPopUpToLogin(loginRoute = StartRoute) }
         )
 
         otherPersonProfileScreen(
@@ -241,9 +242,9 @@ fun GwangsanNavHost(
             onErrorToast = onErrorToast
         )
 
-        myReviewScreen( onBackClick = { navController.popBackStack() },)
+        myReviewScreen(onBackClick = { navController.popBackStack() })
 
-        myWritingScreen( onBackClick = { navController.popBackStack() },)
+        myWritingScreen(onBackClick = { navController.popBackStack() })
 
         myWritingDetailScreen(
             onBackClick = { navController.popBackStack() },
@@ -256,6 +257,6 @@ fun GwangsanNavHost(
             onMyProfileClick = { navController.navigateToMyProfile() }
         )
 
-        otherReviewScreen(onBackClick = { navController.popBackStack() },)
+        otherReviewScreen(onBackClick = { navController.popBackStack() })
     }
 }

@@ -32,7 +32,6 @@ import com.school_of_company.model.post.response.Post
 internal fun MyProfileUserLevel(
     modifier: Modifier = Modifier,
     data: Post,
-    memberdata: GetMemberResponseModel
 ) {
     GwangSanTheme { colors, typography ->
 
@@ -73,19 +72,19 @@ internal fun MyProfileUserLevel(
 
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            text = memberdata.nickname,
+                            text = data.member.nickname,
                             style = typography.body5,
                         )
 
                         Text(
-                            text = memberdata.placeName,
+                            text = data.member.placeName,
                             color = colors.gray500,
                             style = typography.body5
                         )
                     }
 
                     Text(
-                        text = "${memberdata.light}단계",
+                        text = "${data.member.light}단계",
                         color = colors.subYellow500, // 노란-주황 계열
                         style = typography.body5,
                     )
@@ -116,27 +115,25 @@ internal fun MyProfileUserLevel(
 
                     Spacer(modifier = Modifier.width(12.dp))
 
-                    // 이름과 설명
                     Column(
                         modifier = Modifier.weight(1f)
                     ) {
                         Text(
-                            text = memberdata.nickname,
+                            text = data.member.nickname,
                             style = typography.body5,
                         )
 
                         Spacer(modifier = Modifier.padding(5.dp))
 
                         Text(
-                            text = memberdata.placeName,
+                            text = data.member.placeName,
                             color = colors.gray500,
                             style = typography.body5
                         )
                     }
 
-
                     Text(
-                        text = "${memberdata.light}단계",
+                        text = "${data.member.light} 단계",
                         color = colors.subYellow500, // 노란-주황 계열
                         style = typography.body5,
                     )

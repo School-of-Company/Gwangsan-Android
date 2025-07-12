@@ -91,26 +91,3 @@ internal fun MyReviewListItem(
         }
     }
 }
-
-@Composable
-internal fun MyReviewList(
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit,
-    items: List<Post>
-) {
-    GwangSanTheme { color, _ ->
-
-        LazyColumn(
-            modifier = modifier
-                .fillMaxSize()
-                .background(color.white),
-        ) {
-            items(items) { item ->
-                MyReviewListItem(
-                    onClick = onClick,
-                    data = item
-                )
-            }
-        }
-    }
-}

@@ -16,8 +16,11 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.school_of_company.gwangsan_android.navigation.TopLevelDestination
 import com.school_of_company.inform.navigation.navigateToInform
+import com.school_of_company.main.navgation.MainRoute
+import com.school_of_company.main.navgation.MainStartRoute
 import com.school_of_company.main.navgation.navigateToMainStart
 import com.school_of_company.profile.navigation.navigateToMyProfile
+import com.school_of_company.signin.navigation.SignInRoute
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
@@ -80,5 +83,11 @@ class GwangSanAppState(
 fun NavController.navigationPopUpToLogin(loginRoute: String) {
     this.navigate(loginRoute) {
         popUpTo(loginRoute) { inclusive = true }
+    }
+}
+
+fun NavController.navigateToHomeAndClearLogin() {
+    this.navigate(MainStartRoute) {
+        popUpTo(SignInRoute) { inclusive = true }
     }
 }

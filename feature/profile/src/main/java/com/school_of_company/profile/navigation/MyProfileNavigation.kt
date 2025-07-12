@@ -97,7 +97,8 @@ fun NavGraphBuilder.myProfileScreen(
     onMyWritingClick: () -> Unit,
     onMyWritingDetailClick: (Long) -> Unit,
     onMyInformationEditClick: () -> Unit,
-    onErrorToast: (Throwable, Int) -> Unit
+    onErrorToast: (Throwable, Int) -> Unit,
+    onLogoutClick: () -> Unit
 ) {
     composable(route = MyProfileRoute) {
         MyProfileRoute(
@@ -105,7 +106,8 @@ fun NavGraphBuilder.myProfileScreen(
             onMyWritingClick = onMyWritingClick,
             onMyWritingDetailClick = onMyWritingDetailClick,
             onErrorToast = onErrorToast,
-            onMyInformationEditClick = onMyInformationEditClick
+            onMyInformationEditClick = onMyInformationEditClick,
+            onLogoutClick = onLogoutClick
         )
     }
 }
@@ -138,17 +140,14 @@ fun NavGraphBuilder.myWritingDetailScreen(
 ) {
     composable(route = "$MyWritingDetailRoute/{postId}") { backStackEntry ->
         val postId = backStackEntry.arguments?.getString("postId")?.toLongOrNull()
-        if (postId == null) {
-            onErrorToast(Throwable("postId가 null입니다"), com.school_of_company.design_system.R.string.main_error)
-            return@composable
+        if (postId != null) {
+            ReviewPostDetailRoute(
+                postId = postId,
+                onBackClick = onBackClick,
+                onCompleteClick = onCompleteClick,
+                onErrorToast = onErrorToast,
+            )
         }
-
-        ReviewPostDetailRoute(
-            postId = postId,
-            onBackClick = onBackClick,
-            onCompleteClick = onCompleteClick,
-            onErrorToast = onErrorToast,
-        )
     }
 }
 

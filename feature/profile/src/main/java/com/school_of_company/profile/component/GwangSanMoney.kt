@@ -53,7 +53,7 @@ internal fun GwangSanMoney(
                 Spacer(modifier = Modifier.width(40.dp))
 
                 Text(
-                    text = "${miningAmount} 광산",
+                    text = "$miningAmount 광산",
                     color = colors.subYellow700,
                     style = typography.titleMedium2,
                     fontWeight = FontWeight.Bold

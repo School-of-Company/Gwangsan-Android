@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -42,13 +43,13 @@ private fun OtherReviewScreen(
         Column(
             modifier = modifier
                 .fillMaxSize()
-                .padding(24.dp)
                 .background(color = colors.white)
+                .padding(24.dp)
         ) {
             GwangSanSubTopBar(
                 startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { onBackClick() }) },
                 betweenText = "내가 받은 후기",
-                modifier = Modifier.padding(24.dp),
+                modifier = Modifier.fillMaxWidth()
             )
 
             Spacer(modifier = Modifier.height(12.dp))

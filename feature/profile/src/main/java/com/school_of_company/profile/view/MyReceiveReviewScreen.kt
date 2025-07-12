@@ -14,12 +14,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.school_of_company.design_system.componet.clickable.GwangSanClickable
-import com.school_of_company.design_system.componet.icons.CloseIcon
 import com.school_of_company.design_system.componet.icons.DownArrowIcon
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.profile.component.MyProfileReviewListItem
-import com.school_of_company.profile.component.MyReviewList
 import com.school_of_company.profile.component.Review
 @Composable
 fun MyReceiveReviewRoute(

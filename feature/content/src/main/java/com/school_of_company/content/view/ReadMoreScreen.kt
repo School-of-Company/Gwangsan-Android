@@ -92,8 +92,7 @@ private fun ReadMoreScreen(
 
         when (getSpecificPostUiState) {
             is GetSpecificPostUiState.Success -> {
-                val pagerState =
-                    rememberPagerState(pageCount = { getSpecificPostUiState.post.images.size })
+                val pagerState = rememberPagerState(pageCount = { getSpecificPostUiState.post.images.size })
 
                 Box(
                     modifier = modifier
