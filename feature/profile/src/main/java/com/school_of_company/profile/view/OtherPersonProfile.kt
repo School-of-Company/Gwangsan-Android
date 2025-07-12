@@ -31,7 +31,6 @@ import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.model.member.response.GetAllMemberResponseModel
 import com.school_of_company.model.post.response.Image
-import com.school_of_company.model.post.response.ImageUrls
 import com.school_of_company.model.post.response.Post
 import com.school_of_company.profile.component.BrightnessProgressBar
 import com.school_of_company.profile.component.MyProfileExerciseButton
@@ -233,54 +232,6 @@ private fun OtherPersonProfileScreen(
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun OtherPersonProfileScreenPreview() {
-    val fakeData = GetAllMemberResponseModel(
-        memberId = 999L,
-        nickname = "테스트 유저",
-        placeName = "서울 강남구",
-        light = 6,
-        description = "테스트 유저입니다.",
-        specialties = listOf("특기1", "특기2")
-    )
-
-    val fakePosts = listOf(
-        Post(
-            id = 1,
-            type = "SERVICE",
-            mode = "PROVIDE",
-            title = "첫 번째 게시글",
-            content = "첫 번째 게시글 내용입니다.",
-            gwangsan = 10,
-            imageUrls = ImageUrls(
-                images = listOf(
-                    Image(imageId = 1, imageUrl = "https://via.placeholder.com/150")
-                )
-            )
-        ),
-        Post(
-            id = 2,
-            type = "OBJECT",
-            mode = "REQUEST",
-            title = "두 번째 게시글",
-            content = "두 번째 게시글 내용입니다.",
-            gwangsan = 5,
-            imageUrls = ImageUrls(
-                images = listOf(
-                    Image(imageId = 2, imageUrl = "https://via.placeholder.com/150")
-                )
-            )
-        )
-    )
-
-    OtherPersonProfileScreen(
-        data = fakeData,
-        item = fakePosts,
-        onOtherReviewClick = {}
-    )
 }
 
 
