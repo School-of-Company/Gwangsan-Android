@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.R
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.school_of_company.design_system.componet.button.GwangSanEnableButton
@@ -17,6 +19,7 @@ import com.school_of_company.design_system.componet.icons.DropDownIcon
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.design_system.theme.color.GwangSanColor
+import com.school_of_company.model.enum.ReportType
 import com.yourpackage.design_system.component.textField.GwangSanTextField
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -32,21 +35,26 @@ internal fun ReportBottomSheet(
     GwangSanTheme { colors, _ ->
 
         var expanded by remember { mutableStateOf(false) }
-        var selectedOption by remember { mutableStateOf(initialSelectedOption) }
+        var selectedReportType by remember {
+            mutableStateOf(
+                ReportType.values().find { it.name == initialSelectedOption }
+            )
+        }
         var reportContent by remember { mutableStateOf(initialReportContent) }
 
-        val isButtonEnabled = selectedOption.isNotBlank() && reportContent.isNotBlank()
+        val isButtonEnabled = selectedReportType != null && reportContent.isNotBlank()
 
         ModalBottomSheet(
             onDismissRequest = { onDismiss() },
             sheetState = sheetState,
             containerColor = colors.white,
-            shape = RoundedCornerShape(
-                topStart = 20.dp,
-                topEnd = 20.dp
-            ),
+            shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
         ) {
-            Column(modifier = modifier.padding(horizontal = 24.dp)) {
+            Column(
+                modifier = modifier
+                    .padding(horizontal = 24.dp)
+                    .verticalScroll(rememberScrollState())
+            ) {
                 GwangSanSubTopBar(
                     startIcon = { Box(modifier = Modifier.size(24.dp)) },
                     betweenText = "신고하기",
@@ -55,9 +63,9 @@ internal fun ReportBottomSheet(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                Box {
+                Box(modifier = Modifier.fillMaxWidth()) {
                     GwangSanTextField(
-                        value = selectedOption,
+                        value = selectedReportType?.value ?: "",
                         label = "신고유형",
                         placeHolder = "신고유형을 선택해주세요",
                         onTextChange = {},
@@ -71,13 +79,15 @@ internal fun ReportBottomSheet(
                     DropdownMenu(
                         expanded = expanded,
                         onDismissRequest = { expanded = false },
-                        modifier = Modifier.background(GwangSanColor.white)
+                        modifier = Modifier
+                            .align(Alignment.TopStart)
+                            .background(GwangSanColor.white)
                     ) {
-                        listOf("허위매물등록", "욕설/비방", "사기", "기타").forEach {
+                        ReportType.entries.forEach { type ->
                             DropdownMenuItem(
-                                text = { Text(it) },
+                                text = { Text(type.value) },
                                 onClick = {
-                                    selectedOption = it
+                                    selectedReportType = type
                                     expanded = false
                                 }
                             )
@@ -103,8 +113,8 @@ internal fun ReportBottomSheet(
                 GwangSanEnableButton(
                     text = "신고하기",
                     onClick = {
-                        if (isButtonEnabled) {
-                            onSubmit(selectedOption, reportContent)
+                        selectedReportType?.let { type ->
+                            onSubmit(type.name, reportContent) // 서버에 Enum name 전송
                         }
                     },
                     backgroundColor = if (isButtonEnabled) colors.error else colors.gray300,
