@@ -10,6 +10,8 @@ import com.school_of_company.data.repository.notice.NoticeRepository
 import com.school_of_company.data.repository.notice.NoticeRepositoryImpl
 import com.school_of_company.data.repository.post.PostRepository
 import com.school_of_company.data.repository.post.PostRepositoryImpl
+import com.school_of_company.data.repository.report.ReportRepository
+import com.school_of_company.data.repository.report.ReportRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -42,4 +44,9 @@ abstract class RepositoryModule {
     abstract fun bindNoticeRepository(
         noticeRepositoryImpl: NoticeRepositoryImpl
     ) : NoticeRepository
+
+    @Binds
+    abstract fun bindReportRepository(
+        reportRepositoryImpl: ReportRepositoryImpl
+    ) : ReportRepository
 }

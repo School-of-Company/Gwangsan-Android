@@ -6,6 +6,7 @@ import com.school_of_company.network.api.AuthAPI
 import com.school_of_company.network.api.MemberAPI
 import com.school_of_company.network.api.NoticeAPI
 import com.school_of_company.network.api.PostAPI
+import com.school_of_company.network.api.ReportAPI
 import com.school_of_company.network.util.AuthInterceptor
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -93,5 +94,10 @@ object NetworkModule {
     @Singleton
     fun provideNoticeAPI(retrofit: Retrofit): NoticeAPI =
         retrofit.create(NoticeAPI::class.java)
+
+    @Provides
+    @Singleton
+    fun provideReportAPI(retrofit: Retrofit): ReportAPI =
+        retrofit.create(ReportAPI::class.java)
 }
 
