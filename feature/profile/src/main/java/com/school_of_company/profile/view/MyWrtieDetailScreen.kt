@@ -40,6 +40,7 @@ internal fun ReviewPostDetailRoute(
     onBackClick: () -> Unit,
     onMyProfileClick: () -> Unit,
     onCompleteClick: () -> Unit,
+    postId: Long,
     onErrorToast: (Throwable, Int) -> Unit,
     viewModel: MyProfileViewModel = hiltViewModel()
 ){
@@ -47,8 +48,7 @@ internal fun ReviewPostDetailRoute(
     val getMySpecificInformationUiState = viewModel.getMySpecificInformationUiState.collectAsStateWithLifecycle().value
 
     LaunchedEffect(Unit) {
-        viewModel.getMyPostDetail()
-        viewModel.getMyProfile()
+        viewModel.getMyPostDetail(postId = postId)
     }
 
 
