@@ -28,7 +28,7 @@ internal fun ContentRoute(
         onTypeSelected = {},
         onDetailSelected = {},
         selectedType = "",
-        selectedDetail = ""
+        selectedDetail = "",
     )
 }
 
@@ -40,7 +40,7 @@ private fun ContentScreen(
     onTypeSelected: (String) -> Unit,
     onDetailSelected: (String) -> Unit,
     onMyProfileClick: () -> Unit,
-    onItemClick: () -> Unit
+    onItemClick: () -> Unit,
 ) {
     val categoryMap = mapOf(
         "서비스" to listOf("해주세요", "필요해요"),
