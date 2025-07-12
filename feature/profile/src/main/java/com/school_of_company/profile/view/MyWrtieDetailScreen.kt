@@ -38,7 +38,6 @@ import com.school_of_company.ui.previews.GwangsanPreviews
 @Composable
 internal fun ReviewPostDetailRoute(
     onBackClick: () -> Unit,
-    onMyProfileClick: () -> Unit,
     onCompleteClick: () -> Unit,
     postId: Long,
     onErrorToast: (Throwable, Int) -> Unit,
@@ -87,7 +86,6 @@ internal fun ReviewPostDetailRoute(
                 ReviewPostDetailScreen(
                     memBerData = getMyProfileUiState.data,
                     onBackClick = onBackClick,
-                    onMyProfileClick = onMyProfileClick,
                     data = getMySpecificInformationUiState.data,
                     onEditClick = { /* 수정 클릭 시 동작 */ },
                     onCompleteClick = onCompleteClick,
@@ -102,7 +100,6 @@ fun ReviewPostDetailScreen(
     data: List<Post>,
     memBerData: GetMemberResponseModel,
     onBackClick: () -> Unit,
-    onMyProfileClick: () -> Unit,
     onEditClick: () -> Unit,
     onCompleteClick: () -> Unit
 ) {
@@ -120,8 +117,7 @@ fun ReviewPostDetailScreen(
             ) {
                 GwangSanSubTopBar(
                     startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { onBackClick() }) },
-                    betweenText = "내 글",
-                    endIcon = { CloseIcon(modifier = Modifier.GwangSanClickable {onMyProfileClick()}) }
+                    betweenText = "내 글"
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))

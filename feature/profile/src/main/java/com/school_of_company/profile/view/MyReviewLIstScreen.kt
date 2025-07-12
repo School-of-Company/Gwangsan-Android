@@ -21,11 +21,9 @@ import com.school_of_company.profile.component.Review
 @Composable
 internal fun MyReviewRoute(
     onBackClick: () -> Unit,
-    onMyProfileClick: () -> Unit,
 ) {
     MyReviewScreen(
         onBackClick = onBackClick,
-        onMyProfileClick = onMyProfileClick,
         item = listOf(),
     )
 }
@@ -33,7 +31,6 @@ internal fun MyReviewRoute(
 private fun MyReviewScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
-    onMyProfileClick: () -> Unit,
     item: List<Review>
 ) {
     GwangSanTheme { colors, _ ->
@@ -48,7 +45,6 @@ private fun MyReviewScreen(
             GwangSanSubTopBar(
                 startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { onBackClick() }) },
                 betweenText = "내가 작성한 후기",
-                endIcon = { CloseIcon(modifier = Modifier.GwangSanClickable { onMyProfileClick() }) },
                 modifier = Modifier.padding(24.dp),
             )
 

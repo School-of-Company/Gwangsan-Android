@@ -113,31 +113,26 @@ fun NavGraphBuilder.myProfileScreen(
 
 fun NavGraphBuilder.myReviewScreen(
     onBackClick: () -> Unit,
-    onMyProfileClick: () -> Unit,
 ) {
     composable(route = MyReviewRoute) {
         MyReceiveReviewRoute(
             onBackClick = onBackClick,
-            onMyProfileClick = onMyProfileClick
         )
     }
 }
 
 fun NavGraphBuilder.myWritingScreen(
     onBackClick: () -> Unit,
-    onMyProfileClick: () -> Unit,
 ) {
     composable(route = MyWritingRoute) {
         MyReviewRoute(
             onBackClick = onBackClick,
-            onMyProfileClick = onMyProfileClick,
         )
     }
 }
 
 fun NavGraphBuilder.myWritingDetailScreen(
     onBackClick: () -> Unit,
-    onMyProfileClick: () -> Unit,
     onCompleteClick: () -> Unit,
     onErrorToast: (Throwable, Int) -> Unit
 ) {
@@ -151,7 +146,6 @@ fun NavGraphBuilder.myWritingDetailScreen(
         ReviewPostDetailRoute(
             postId = postId,
             onBackClick = onBackClick,
-            onMyProfileClick = onMyProfileClick,
             onCompleteClick = onCompleteClick,
             onErrorToast = onErrorToast,
         )
@@ -172,11 +166,9 @@ fun NavGraphBuilder.transactionHistoryScreen(
 
 fun NavGraphBuilder.otherReviewScreen(
     onBackClick: () -> Unit,
-    onOtherProfileClick: () -> Unit,
 ){
     composable(route = OtherReviewRoute){
         OtherReviewRoute(
-            onOtherProfileClick = onOtherProfileClick,
             onBackClick =  onBackClick
         )
     }
