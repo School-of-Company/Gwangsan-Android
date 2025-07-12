@@ -20,6 +20,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import com.school_of_company.design_system.R
 import com.school_of_company.design_system.componet.icons.EllipseIcon
 import com.school_of_company.design_system.theme.GwangSanTheme
@@ -40,7 +41,7 @@ internal fun MyProfileUserLevel(
                 .fillMaxWidth()
                 .background(colors.white)
         ) {
-            if (data.imageUrls.images.isNullOrEmpty()) {
+            if (data.images.isEmpty()) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -97,7 +98,7 @@ internal fun MyProfileUserLevel(
                         .aspectRatio(1.5f)
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.ic_image), // 이미지 리소스 추가 필요
+                        painter = rememberAsyncImagePainter(model = data.images), // 이미지 리소스 추가 필요
                         contentDescription = "바퀴벌레 이미지",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
