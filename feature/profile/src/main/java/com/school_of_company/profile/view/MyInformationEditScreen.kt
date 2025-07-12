@@ -89,7 +89,6 @@ internal fun MyInformationEditRoute(
         onBackClick = onBackClick,
         addSpecialty = viewModel::addSpecialty,
         specialtyList = specialtyList,
-        onSpecialtyListChange = viewModel::onSpecialtyListChange,
         removeSpecialty = viewModel::removeSpecialty
     )
 }
@@ -100,7 +99,6 @@ fun MyInformationEditScreen(
     modifier: Modifier = Modifier,
     nickname: String,
     specialtyList: List<String>,
-    onSpecialtyListChange: (List<String>) -> Unit,
     onNicknameChange: (String) -> Unit,
     specialty: String,
     onSpecialtyChange: (String) -> Unit,
@@ -196,6 +194,8 @@ fun MyInformationEditScreen(
                     .fillMaxWidth()
                     .height(50.dp)
             )
+
+            Spacer(modifier = Modifier.padding(bottom = 40.dp))
         }
     }
 }
@@ -212,7 +212,6 @@ fun MyInformationEditScreenPreview() {
         onDescriptionChange = {},
         onSubmitClick = {},
         onBackClick = {},
-        onSpecialtyListChange = {},
         specialtyList = listOf("앱 개발", "웹 개발", "머신러닝"),
         removeSpecialty = {},
         addSpecialty = {}
