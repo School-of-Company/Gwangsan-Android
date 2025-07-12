@@ -65,6 +65,8 @@ private fun MainStartScreen(
     val scrollState = rememberScrollState()
     GwangSanTheme { colors, typography ->
 
+        val scrollState = rememberScrollState()
+
         val bannerImages = listOf(
             R.drawable.main2,
             R.drawable.main3,

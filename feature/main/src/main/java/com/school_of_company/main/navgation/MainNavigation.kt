@@ -22,6 +22,8 @@ fun NavController.navigateToMainStart(navOptions: NavOptions? = null) {
 }
 
 fun NavGraphBuilder.mainScreen(
+    onBackClick: () -> Unit,
+    navigateToDetail: (Long) -> Unit,
     navigationToPost: (Type, Mode) -> Unit,
     onErrorToast: (Throwable?, Int?) -> Unit
 ) {
@@ -30,13 +32,15 @@ fun NavGraphBuilder.mainScreen(
         val selectedType = Type.valueOf(typeStr)
 
         MainRoute(
+            onBackClick = onBackClick,
             navigationToPost = { mode ->
                 navigationToPost(
                     selectedType,
                     mode
                 ) },
             onErrorToast = onErrorToast,
-            moDeselectedType = selectedType
+            moDeselectedType = selectedType,
+            navigationToDetail = navigateToDetail
         )
     }
 }
