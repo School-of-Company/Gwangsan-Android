@@ -9,123 +9,135 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
+import com.google.accompanist.swiperefresh.SwipeRefreshState
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.icons.DownArrowIcon
-import com.school_of_company.design_system.componet.toast.makeToast
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
-import com.school_of_company.model.post.response.Post
 import com.school_of_company.model.review.response.ReviewResponseModel
 import com.school_of_company.profile.component.MyProfileReviewListItem
 import com.school_of_company.profile.viewmodel.MyProfileViewModel
 import com.school_of_company.profile.viewmodel.uistate.GetMyReviewUiState
-import com.school_of_company.profile.viewmodel.uistate.GetMySpecificInformationUiState
 
 @Composable
 internal fun MyReceiveReviewRoute(
     onBackClick: () -> Unit,
     viewModel: MyProfileViewModel = hiltViewModel(),
 ) {
-    val getMyReviewUiState by viewModel.getMyReviewUiState.collectAsStateWithLifecycle()
-    val getSpecificPostUiState by viewModel.getMySpecificInformationUiState.collectAsStateWithLifecycle()
+    val swipeRefreshLoading by viewModel.swipeRefreshLoading.collectAsStateWithLifecycle(
+        initialValue = false
+    )
+    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = swipeRefreshLoading)
 
-    val context = LocalContext.current
+    val getMyReviewUiState by viewModel.getMyReviewUiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.getMyReview()
     }
 
-
-    LaunchedEffect(getMyReviewUiState) {
-        if (getMyReviewUiState is GetMyReviewUiState.Success) {
-            val firstProductId = (getMyReviewUiState as GetMyReviewUiState.Success).review.firstOrNull()?.productId
-            if (firstProductId != null) {
-                viewModel.getMyPostDetail(firstProductId)
-            }
-        }
-    }
-
-    when (getMyReviewUiState) {
-        is GetMyReviewUiState.Loading -> {
-            makeToast(context, "로딩중")
-        }
-
-        is GetMyReviewUiState.Empty -> {
-            makeToast(context, "데이터가 비어있습니다.")
-        }
-
-        is GetMyReviewUiState.Error -> {
-            makeToast(context,"오류")
-        }
-
-        is GetMyReviewUiState.Success -> {
-            val reviewList = (getMyReviewUiState as GetMyReviewUiState.Success).review
-
-            when (getSpecificPostUiState) {
-                is GetMySpecificInformationUiState.Success -> {
-                    val image = (getSpecificPostUiState as GetMySpecificInformationUiState.Success).data
-                    MyReceiveReviewScreen(
-                        onBackClick = onBackClick,
-                        image = image,
-                        item = reviewList,
-                    )
-                }
-
-                is GetMySpecificInformationUiState.Loading -> {
-                    makeToast(context,"로딩중")
-                }
-
-                is GetMySpecificInformationUiState.Empty -> {
-                    makeToast(context,"데이터 비어있음")
-                }
-
-                is GetMySpecificInformationUiState.Error -> {
-                    makeToast(context,"게시글 오류옴")
-                }
-            }
-
-        }
-    }
+    MyReceiveReviewScreen(
+        onBackClick = onBackClick,
+        getMyReviewUiState = getMyReviewUiState,
+        getMyReceiveCallBack = { viewModel.getMyReview() },
+        swipeRefreshState = swipeRefreshState
+    )
 }
 
 @Composable
 private fun MyReceiveReviewScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
-    image: Post,
-    item: List<ReviewResponseModel>
+    getMyReviewUiState: GetMyReviewUiState,
+    swipeRefreshState: SwipeRefreshState,
+    getMyReceiveCallBack: () -> Unit
 ) {
-    GwangSanTheme { colors, _ ->
+    GwangSanTheme { colors, typography ->
 
         Column(
             modifier = modifier
                 .fillMaxSize()
-                .padding(24.dp)
                 .background(color = colors.white)
+                .padding(24.dp)
         ) {
             GwangSanSubTopBar(
                 startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { onBackClick() }) },
                 betweenText = "내가 받은 후기",
-                modifier = Modifier.padding(24.dp),
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.padding(bottom = 56.dp))
 
-            MyReceiveReviewProfileList(
-                items = item,
-                image = image,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 16.dp)
-            )
+            SwipeRefresh(
+                state = swipeRefreshState,
+                onRefresh = { getMyReceiveCallBack() },
+                indicator = { state, refreshTrigger ->
+                    SwipeRefreshIndicator(
+                        state = state,
+                        refreshTriggerDistance = refreshTrigger,
+                        contentColor = colors.main500
+                    )
+                }
+            ) {
+                when (getMyReviewUiState) {
+                    is GetMyReviewUiState.Success -> {
+                        MyReceiveReviewProfileList(
+                            items = getMyReviewUiState.review,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(horizontal = 16.dp)
+                        )
+                    }
+
+                    is GetMyReviewUiState.Error -> {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .verticalScroll(rememberScrollState())
+                                .background(color = colors.white)
+                        ) {
+                            Text(
+                                text = "리뷰를 불러오는데 실패했습니다..",
+                                style = typography.titleMedium2,
+                                color = colors.gray500
+                            )
+                        }
+                    }
+
+                    is GetMyReviewUiState.Empty -> {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .verticalScroll(rememberScrollState())
+                                .background(color = colors.white)
+                        ) {
+                            Text(
+                                text = "리뷰가 없습니다..",
+                                style = typography.titleMedium2,
+                                color = colors.gray500
+                            )
+                        }
+                    }
+
+                    is GetMyReviewUiState.Loading -> Unit
+                }
+            }
         }
     }
 }
@@ -133,7 +145,6 @@ private fun MyReceiveReviewScreen(
 @Composable
 fun MyReceiveReviewProfileList(
     items: List<ReviewResponseModel>,
-    image: Post,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -141,10 +152,7 @@ fun MyReceiveReviewProfileList(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         items(items) { review ->
-            MyProfileReviewListItem(
-                data = review,
-                image = image
-            )
+            MyProfileReviewListItem(data = review)
         }
     }
 }

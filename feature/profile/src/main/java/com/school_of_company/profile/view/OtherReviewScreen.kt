@@ -94,7 +94,6 @@ private fun OtherReviewScreen(
 
             OtherReviewScreenList(
                 items = item,
-                image = image,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(horizontal = 16.dp)
@@ -106,7 +105,6 @@ private fun OtherReviewScreen(
 @Composable
 fun OtherReviewScreenList(
     items: List<ReviewResponseModel>,
-    image: Post,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -116,7 +114,6 @@ fun OtherReviewScreenList(
         items(items) { review ->
             MyProfileReviewListItem(
                 data = review,
-                image = image
             )
         }
     }

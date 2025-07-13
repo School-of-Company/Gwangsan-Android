@@ -44,7 +44,6 @@ import com.school_of_company.model.review.response.ReviewResponseModel
 @Composable
 internal fun MyProfileReviewListItem(
     modifier: Modifier = Modifier,
-    image: Post,
     data : ReviewResponseModel,
     onClick: () -> Unit = {}
 ) {
@@ -60,45 +59,19 @@ internal fun MyProfileReviewListItem(
                     .padding(16.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(100.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                ) {
-                    if (image.images.isEmpty()) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_image),
-                            contentDescription = "기본 이미지",
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier.fillMaxSize()
-                        )
-                    } else {
-                        Image(
-                            painter = rememberAsyncImagePainter(model = image.images),
-                            contentDescription = "후기 이미지",
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier.fillMaxSize()
-                        )
-                    }
-                }
-
                 Column(
                     modifier = Modifier
                         .weight(1f)
-                        .padding(16.dp)
-                    ,
-
+                        .padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    // 얇은 프로그레스바
                     MyProfileReviewProgressBar(
                         progress = (data.light / 100f).coerceIn(0f, 1f),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(8.dp)  // 얇게
+                            .height(8.dp)
                     )
 
-                    // 후기 내용
                     Text(
                         text = data.content,
                         fontSize = 14.sp,
@@ -108,7 +81,6 @@ internal fun MyProfileReviewListItem(
                         overflow = TextOverflow.Ellipsis
                     )
 
-                    // 작성자 이름
                     Text(
                         text = data.reviewerName,
                         fontSize = 12.sp,
@@ -154,4 +126,17 @@ private fun MyProfileReviewProgressBar(
             )
         }
     }
+}
+
+@Preview
+@Composable
+private fun MyProfileReviewListItemPreview() {
+    MyProfileReviewListItem(
+        data = ReviewResponseModel(
+            productId = 0L,
+            content = "adsfasdf",
+            light = 19,
+            reviewerName = "김치라"
+        )
+    )
 }

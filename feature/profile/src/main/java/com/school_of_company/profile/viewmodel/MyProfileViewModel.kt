@@ -43,6 +43,9 @@ internal class MyProfileViewModel @Inject constructor(
         private const val NICKNAME = "nickname"
     }
 
+    private val _swipeRefreshLoading = MutableStateFlow(false)
+    val swipeRefreshLoading = _swipeRefreshLoading.asStateFlow()
+
     private val _logoutUiState = MutableStateFlow<LogoutUiState>(LogoutUiState.Loading)
     internal val logoutUiState = _logoutUiState.asStateFlow()
 
@@ -219,15 +222,27 @@ internal class MyProfileViewModel @Inject constructor(
 
 
     internal fun getMyReview() = viewModelScope.launch {
+        _getMyReviewUiState.value = GetMyReviewUiState.Loading
+        _swipeRefreshLoading.value = true
+
         reviewRepository.getMyReview()
             .asResult()
             .collectLatest { result ->
                 when (result) {
                     is Result.Loading -> _getMyReviewUiState.value = GetMyReviewUiState.Loading
-                    is Result.Success -> _getMyReviewUiState.value = GetMyReviewUiState.Success(result.data)
+                    is Result.Success -> {
+                        if (result.data.isEmpty()) {
+                            _getMyReviewUiState.value = GetMyReviewUiState.Empty
+                            _swipeRefreshLoading.value = false
+                        } else {
+                            _getMyReviewUiState.value = GetMyReviewUiState.Success(result.data)
+                            _swipeRefreshLoading.value = false
+                        }
+                    }
+
                     is Result.Error -> {
-                        Log.e("MyProfileViewModel", "getMyReview() 실패", result.exception)
                         _getMyReviewUiState.value = GetMyReviewUiState.Error(result.exception)
+                        _swipeRefreshLoading.value = false
                     }
                 }
             }

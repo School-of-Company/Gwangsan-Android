@@ -9,6 +9,7 @@ android {
 
 dependencies {
     implementation(libs.coil.kt)
+    implementation(libs.swiperefresh)
     implementation(libs.androidx.navigation.compose.android)
     implementation(libs.androidx.hilt.navigation.compose)
 }
