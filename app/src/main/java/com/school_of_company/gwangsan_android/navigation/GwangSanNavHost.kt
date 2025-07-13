@@ -235,12 +235,15 @@ fun GwangsanNavHost(
 
         otherPersonProfileScreen(
             onErrorToast = onErrorToast,
-            onOtherReviewClick = { navController.navigateToOtherReview() }
+            onOtherReviewClick = {
+                id ->
+                navController.navigateToOtherReview(id) }
         )
 
         myInformationEditScreen(
             onBackClick = { navController.popBackStack() },
-            onSubmitComplete = { navController.navigateToMyProfile() },
+            onSubmitComplete = {
+                navController.navigateToMyProfile() },
             onErrorToast = onErrorToast
         )
 
@@ -255,11 +258,6 @@ fun GwangsanNavHost(
             onEditClick = { id, type, mode ->
                 navController.navigateToPostEdit(id, type, mode)
             }
-        )
-
-        transactionHistoryScreen(
-            onBackClick = { navController.popBackStack() },
-            onMyProfileClick = { navController.navigateToMyProfile() }
         )
 
         otherReviewScreen(onBackClick = { navController.popBackStack() })

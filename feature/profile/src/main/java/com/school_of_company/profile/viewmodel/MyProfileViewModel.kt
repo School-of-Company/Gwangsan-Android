@@ -1,18 +1,23 @@
 package com.school_of_company.profile.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.school_of_company.data.repository.auth.AuthRepository
 import com.school_of_company.data.repository.member.MemberRepository
 import com.school_of_company.data.repository.post.PostRepository
+import com.school_of_company.data.repository.review.ReviewRepository
 import com.school_of_company.model.member.request.ModifyMemberInformationRequestModel
 import com.school_of_company.profile.viewmodel.uistate.GetMyPostUiState
+import com.school_of_company.profile.viewmodel.uistate.GetMyReviewUiState
+import com.school_of_company.profile.viewmodel.uistate.GetMyReviewWriteUiState
 import com.school_of_company.profile.viewmodel.uistate.GetMySpecificInformationUiState
 import com.school_of_company.profile.viewmodel.uistate.LogoutUiState
 import com.school_of_company.profile.viewmodel.uistate.MemberUiState
 import com.school_of_company.profile.viewmodel.uistate.MyInForMatIonPeTchUiState
 import com.school_of_company.profile.viewmodel.uistate.OtherPersonGetUistate
+import com.school_of_company.profile.viewmodel.uistate.OtherReviewUIState
 import com.school_of_company.result.asResult
 import com.school_of_company.result.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,6 +31,7 @@ import javax.inject.Inject
 internal class MyProfileViewModel @Inject constructor(
     private val memberRepository: MemberRepository,
     private val postRepository: PostRepository,
+    private val reviewRepository: ReviewRepository,
     private val authRepository: AuthRepository,
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
@@ -37,25 +43,34 @@ internal class MyProfileViewModel @Inject constructor(
         private const val NICKNAME = "nickname"
     }
 
+    private val _swipeRefreshLoading = MutableStateFlow(false)
+    val swipeRefreshLoading = _swipeRefreshLoading.asStateFlow()
+
     private val _logoutUiState = MutableStateFlow<LogoutUiState>(LogoutUiState.Loading)
     internal val logoutUiState = _logoutUiState.asStateFlow()
 
     private val _myProfileUiState = MutableStateFlow<MemberUiState>(MemberUiState.Loading)
     internal val myProfileUiState = _myProfileUiState.asStateFlow()
 
-    private val _getMySpecificInformationUiState =
-        MutableStateFlow<GetMySpecificInformationUiState>(GetMySpecificInformationUiState.Loading)
+    private val _otherReviewUIState = MutableStateFlow<OtherReviewUIState>(OtherReviewUIState.Loading)
+    internal val otherReviewUIState = _otherReviewUIState.asStateFlow()
+
+    private val _getMySpecificInformationUiState = MutableStateFlow<GetMySpecificInformationUiState>(GetMySpecificInformationUiState.Loading)
     internal val getMySpecificInformationUiState = _getMySpecificInformationUiState.asStateFlow()
+
+    private val _getMyWriteReviewUiState = MutableStateFlow<GetMyReviewWriteUiState>(GetMyReviewWriteUiState.Loading)
+    internal val getMyWriteReviewUiState = _getMyWriteReviewUiState.asStateFlow()
 
     private val _getMyPostUiState = MutableStateFlow<GetMyPostUiState>(GetMyPostUiState.Loading)
     internal val getMyPostUiState = _getMyPostUiState.asStateFlow()
 
-    private val _otherPersonUiState =
-        MutableStateFlow<OtherPersonGetUistate>(OtherPersonGetUistate.Loading)
+    private val _otherPersonUiState = MutableStateFlow<OtherPersonGetUistate>(OtherPersonGetUistate.Loading)
     internal val otherPersonUiState = _otherPersonUiState.asStateFlow()
 
-    private val _myInformationPatchUiState =
-        MutableStateFlow<MyInForMatIonPeTchUiState?>(MyInForMatIonPeTchUiState.Loading)
+    private val _getMyReviewUiState = MutableStateFlow<GetMyReviewUiState>(GetMyReviewUiState.Loading)
+    internal val getMyReviewUiState = _getMyReviewUiState.asStateFlow()
+
+    private val _myInformationPatchUiState = MutableStateFlow<MyInForMatIonPeTchUiState?>(MyInForMatIonPeTchUiState.Loading)
     internal val myInformationPatchUiState = _myInformationPatchUiState.asStateFlow()
 
     internal val nickname = savedStateHandle.getStateFlow(NICKNAME, "")
@@ -187,6 +202,62 @@ internal class MyProfileViewModel @Inject constructor(
 
             savedStateHandle[SPECIALTY] = ""
         }
+    }
+
+    internal fun getMyWriteReview(type: String? = null, mode: String? = null) = viewModelScope.launch {
+        reviewRepository.getMyWriteReview(
+            type = type,
+            mode = mode
+        )
+            .asResult()
+            .collectLatest {
+                result ->
+                when (result) {
+                    is Result.Loading -> _getMyWriteReviewUiState.value = GetMyReviewWriteUiState.Loading
+                    is Result.Success -> _getMyWriteReviewUiState.value = GetMyReviewWriteUiState.Success(result.data)
+                    is Result.Error -> _getMyWriteReviewUiState.value = GetMyReviewWriteUiState.Error(result.exception)
+                }
+            }
+    }
+
+
+    internal fun getMyReview() = viewModelScope.launch {
+        _getMyReviewUiState.value = GetMyReviewUiState.Loading
+        _swipeRefreshLoading.value = true
+
+        reviewRepository.getMyReview()
+            .asResult()
+            .collectLatest { result ->
+                when (result) {
+                    is Result.Loading -> _getMyReviewUiState.value = GetMyReviewUiState.Loading
+                    is Result.Success -> {
+                        if (result.data.isEmpty()) {
+                            _getMyReviewUiState.value = GetMyReviewUiState.Empty
+                            _swipeRefreshLoading.value = false
+                        } else {
+                            _getMyReviewUiState.value = GetMyReviewUiState.Success(result.data)
+                            _swipeRefreshLoading.value = false
+                        }
+                    }
+
+                    is Result.Error -> {
+                        _getMyReviewUiState.value = GetMyReviewUiState.Error(result.exception)
+                        _swipeRefreshLoading.value = false
+                    }
+                }
+            }
+    }
+
+    internal fun getOtherReview(memberId: Long) = viewModelScope.launch {
+        reviewRepository.getOtherReview(memberId)
+            .asResult()
+            .collectLatest { result ->
+                when (result) {
+                    is Result.Loading -> _otherReviewUIState.value =  OtherReviewUIState.Loading
+                    is Result.Success -> _otherReviewUIState.value = OtherReviewUIState.Success(result.data)
+                    is Result.Error ->  _otherReviewUIState.value = OtherReviewUIState.Error(result.exception)
+                }
+            }
     }
 
     fun removeSpecialty(item: String) {

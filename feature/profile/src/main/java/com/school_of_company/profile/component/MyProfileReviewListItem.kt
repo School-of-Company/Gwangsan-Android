@@ -38,20 +38,13 @@ import androidx.compose.ui.unit.sp
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.design_system.theme.color.GwangSanColor
 import com.school_of_company.model.post.response.Image
-
-data class Review(
-    val content: String,
-    val light: Int,
-    val reviewedId: Int,
-    val productId: Int,
-    val name: String,
-    val coverImage: String?
-)
+import com.school_of_company.model.post.response.Post
+import com.school_of_company.model.review.response.ReviewResponseModel
 
 @Composable
 internal fun MyProfileReviewListItem(
     modifier: Modifier = Modifier,
-    data: Review,
+    data : ReviewResponseModel,
     onClick: () -> Unit = {}
 ) {
     GwangSanTheme { colors, typography ->
@@ -66,45 +59,19 @@ internal fun MyProfileReviewListItem(
                     .padding(16.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(100.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                ) {
-                    if (data.coverImage.isNullOrEmpty()) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_image),
-                            contentDescription = "기본 이미지",
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier.fillMaxSize()
-                        )
-                    } else {
-                        Image(
-                            painter = rememberAsyncImagePainter(model = data.coverImage),
-                            contentDescription = "후기 이미지",
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier.fillMaxSize()
-                        )
-                    }
-                }
-
                 Column(
                     modifier = Modifier
                         .weight(1f)
-                        .padding(16.dp)
-                    ,
-
+                        .padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    // 얇은 프로그레스바
                     MyProfileReviewProgressBar(
                         progress = (data.light / 100f).coerceIn(0f, 1f),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(8.dp)  // 얇게
+                            .height(8.dp)
                     )
 
-                    // 후기 내용
                     Text(
                         text = data.content,
                         fontSize = 14.sp,
@@ -114,9 +81,8 @@ internal fun MyProfileReviewListItem(
                         overflow = TextOverflow.Ellipsis
                     )
 
-                    // 작성자 이름
                     Text(
-                        text = data.name,
+                        text = data.reviewerName,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Medium,
                         color = Color.Gray
@@ -164,15 +130,13 @@ private fun MyProfileReviewProgressBar(
 
 @Preview
 @Composable
-private fun MyProfileReviewListPreview() {
+private fun MyProfileReviewListItemPreview() {
     MyProfileReviewListItem(
-        data = Review(
-            content = "뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨",
-            light = 50,
-            reviewedId = 1,
-            productId = 123,
-            name = "kimjarkwan",
-            coverImage = ""
+        data = ReviewResponseModel(
+            productId = 0L,
+            content = "adsfasdf",
+            light = 19,
+            reviewerName = "김치라"
         )
     )
 }

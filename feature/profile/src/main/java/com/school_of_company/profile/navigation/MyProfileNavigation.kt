@@ -49,8 +49,10 @@ fun NavController.navigateToMyProfile(navOptions: NavOptions? = null) {
     this.navigate(MyProfileRoute, navOptions)
 }
 
-fun NavController.navigateToOtherReview(navOptions: NavOptions? = null){
-    this.navigate(OtherReviewRoute, navOptions)
+fun NavController.navigateToOtherReview(
+    memberId: Long,
+    navOptions: NavOptions? = null){
+    this.navigate("$OtherReviewRoute/${memberId}", navOptions)
 }
 
 fun NavController.navigateToMyReview(navOptions: NavOptions? = null) {
@@ -67,7 +69,7 @@ fun NavController.navigateToMyPeTchWritingDetail(navOptions: NavOptions? = null)
 
 fun NavGraphBuilder.otherPersonProfileScreen(
     onErrorToast: (Throwable, Int) -> Unit,
-    onOtherReviewClick: () -> Unit
+    onOtherReviewClick: (Long) -> Unit
 ) {
     composable("$OtherPersonProfileRoute/{memberId}") { backStackEntry ->
         val memberId = backStackEntry.arguments?.getString("memberId")?.toLongOrNull() ?: return@composable
@@ -170,12 +172,14 @@ fun NavGraphBuilder.transactionHistoryScreen(
 fun NavGraphBuilder.otherReviewScreen(
     onBackClick: () -> Unit,
 ){
-    composable(route = OtherReviewRoute){
+    composable( "$OtherReviewRoute/{memberId}"){ backStackEntry ->
+        val memberId = backStackEntry.arguments?.getString("memberId")?.toLongOrNull() ?: return@composable
+
         OtherReviewRoute(
-            onBackClick =  onBackClick
+            onBackClick =  onBackClick,
+            memberId = memberId
         )
     }
 }
-
 
 

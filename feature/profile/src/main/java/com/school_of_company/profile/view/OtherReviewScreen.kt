@@ -11,32 +11,70 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.icons.CloseIcon
 import com.school_of_company.design_system.componet.icons.DownArrowIcon
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.model.post.response.Post
+import com.school_of_company.model.review.response.ReviewResponseModel
 import com.school_of_company.profile.component.MyProfileReviewListItem
-import com.school_of_company.profile.component.Review
+import com.school_of_company.profile.viewmodel.MyProfileViewModel
+import com.school_of_company.profile.viewmodel.uistate.GetMyReviewUiState
+import com.school_of_company.profile.viewmodel.uistate.GetMySpecificInformationUiState
+import com.school_of_company.profile.viewmodel.uistate.OtherReviewUIState
 
 @Composable
-fun OtherReviewRoute(
+internal fun OtherReviewRoute(
     onBackClick: () -> Unit,
+    memberId: Long,
+    viewModel: MyProfileViewModel = hiltViewModel()
 ) {
-    OtherReviewScreen(
-        onBackClick = onBackClick,
-        item = listOf(),
-    )
+    val getOtherReviewUiState by viewModel.otherReviewUIState.collectAsStateWithLifecycle()
+    val getSpecificPostUiState by viewModel.getMySpecificInformationUiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.getOtherReview(
+            memberId = memberId
+        )
+    }
+
+    LaunchedEffect(getOtherReviewUiState) {
+        if (getOtherReviewUiState is OtherReviewUIState.Success) {
+            val firstProductId = (getOtherReviewUiState as OtherReviewUIState.Success).data.productId
+            if (firstProductId != null) {
+                viewModel.getMyPostDetail(firstProductId)
+            }
+        }
+    }
+
+    if (getOtherReviewUiState is OtherReviewUIState.Success &&
+        getSpecificPostUiState is GetMySpecificInformationUiState.Success
+    ) {
+        val reviewList = (getOtherReviewUiState as GetMyReviewUiState.Success).review
+        val image  = (getSpecificPostUiState as GetMySpecificInformationUiState.Success).data
+
+        OtherReviewScreen(
+            onBackClick = onBackClick,
+            image = image,
+            item = reviewList
+        )
+    }
 }
 
 @Composable
 private fun OtherReviewScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
-    item: List<Review>
+    image: Post,
+    item: List<ReviewResponseModel>
 ) {
     GwangSanTheme { colors, _ ->
 
@@ -66,7 +104,7 @@ private fun OtherReviewScreen(
 
 @Composable
 fun OtherReviewScreenList(
-    items: List<Review>,
+    items: List<ReviewResponseModel>,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -79,31 +117,4 @@ fun OtherReviewScreenList(
             )
         }
     }
-}
-@Preview(showBackground = true)
-@Composable
-fun OtherReviewScreenPreview() {
-    val sampleReviews = listOf(
-        Review(
-            content = "시간 약속 잘 지켜주셨고, 친절하셨어요!",
-            light = 5,
-            reviewedId = 1,
-            productId = 101,
-            name = "김도보",
-            coverImage = null
-        ),
-        Review(
-            content = "좋은 거래 감사합니다.",
-            light = 4,
-            reviewedId = 2,
-            productId = 102,
-            name = "박정우",
-            coverImage = null
-        )
-    )
-
-    OtherReviewScreen(
-        onBackClick = {},
-        item = sampleReviews
-    )
 }

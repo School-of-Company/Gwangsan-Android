@@ -8,6 +8,7 @@ import com.school_of_company.network.api.MemberAPI
 import com.school_of_company.network.api.NoticeAPI
 import com.school_of_company.network.api.PostAPI
 import com.school_of_company.network.api.ReportAPI
+import com.school_of_company.network.api.ReviewAPI
 import com.school_of_company.network.util.AuthInterceptor
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -105,5 +106,11 @@ object NetworkModule {
     @Singleton
     fun provideImageAPI(retrofit: Retrofit): ImageAPI =
         retrofit.create(ImageAPI::class.java)
+
+    @Provides
+    @Singleton
+    fun provideReviewAPI(retrofit: Retrofit): ReviewAPI =
+        retrofit.create(ReviewAPI::class.java)
+
 }
 

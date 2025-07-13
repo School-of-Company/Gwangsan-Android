@@ -12,6 +12,8 @@ import com.school_of_company.network.datasource.post.PostDataSource
 import com.school_of_company.network.datasource.post.PostDataSourceImpl
 import com.school_of_company.network.datasource.report.ReportDataSource
 import com.school_of_company.network.datasource.report.ReportDataSourceImpl
+import com.school_of_company.network.datasource.review.ReviewDataSource
+import com.school_of_company.network.datasource.review.ReviewDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -49,4 +51,9 @@ abstract class RemoteDataSourceModule {
     abstract fun bindImageDataSource(
         imageDataSourceImpl: ImageDataSourceImpl
     ) : ImageDataSource
+
+    @Binds
+    abstract fun bindReviewDataSource(
+        reviewDataSourceImpl: ReviewDataSourceImpl
+    ) : ReviewDataSource
 }
