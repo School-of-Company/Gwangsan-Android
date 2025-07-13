@@ -31,6 +31,7 @@ import com.school_of_company.content.component.ReportBottomSheet
 import com.school_of_company.content.viewmodel.ContentViewModel
 import com.school_of_company.content.viewmodel.uistate.GetSpecificPostUiState
 import com.school_of_company.content.viewmodel.uistate.ReportPostUiState
+import com.school_of_company.content.viewmodel.uistate.ReviewPostUiState
 import com.school_of_company.design_system.R
 import com.school_of_company.design_system.componet.button.GwangSanEnableButton
 import com.school_of_company.design_system.componet.button.GwangSanStateButton
@@ -42,6 +43,7 @@ import com.school_of_company.design_system.componet.toast.makeToast
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.model.report.request.ReportRequestModel
+import com.school_of_company.model.review.request.ReviewRequestModel
 import com.school_of_company.ui.previews.GwangsanPreviews
 
 @Composable
@@ -56,6 +58,7 @@ internal fun ReadMoreRoute(
 ) {
     val getSpecificPostUiState by viewModel.getSpecificPostUiState.collectAsStateWithLifecycle()
     val reportPostUiState by viewModel.reportPostUiState.collectAsStateWithLifecycle()
+    val reviewPostUiState by viewModel.reviewPostUiState.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
     val (openReportBottomSheet, setOpenReportBottomSheet) = rememberSaveable { mutableStateOf(false) }
@@ -78,6 +81,19 @@ internal fun ReadMoreRoute(
         }
     }
 
+    LaunchedEffect(reviewPostUiState) {
+        when (reviewPostUiState) {
+            is ReviewPostUiState.Loading -> Unit
+            is ReviewPostUiState.Success -> {
+                makeToast(context, "리뷰를 성공하였습니다.")
+                setOpenReviewBottomSheet(false)
+            }
+            is ReviewPostUiState.Error -> {
+                makeToast(context, "리뷰를 실패하였습니다.")
+            }
+        }
+    }
+
     ReadMoreScreen(
         getSpecificPostUiState = getSpecificPostUiState,
         onBackClick = onBackClick,
@@ -85,6 +101,15 @@ internal fun ReadMoreRoute(
         onChatClick = onChatClick,
         onReviewClick = onReviewClick,
         onReportClick = onReportClick,
+        onReviewCallBack = { light, content ->
+            viewModel.reviewPost(
+                body = ReviewRequestModel(
+                    productId = postId,
+                    content = content,
+                    light = light
+                )
+            )
+        },
         onReportCallBack = { reportType, reportContent ->
             viewModel.reportPost(
                 body = ReportRequestModel(
@@ -101,7 +126,6 @@ internal fun ReadMoreRoute(
     )
 }
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ReadMoreScreen(
@@ -113,6 +137,7 @@ private fun ReadMoreScreen(
     onReviewClick: (Int, String) -> Unit,
     onReportClick: (String, String) -> Unit,
     onReportCallBack: (String, String) -> Unit,
+    onReviewCallBack: (Int, String) -> Unit,
     openReportBottomSheet: Boolean,
     openReviewBottomSheet: Boolean,
     setOpenReportBottomSheet: (Boolean) -> Unit,
@@ -302,7 +327,9 @@ private fun ReadMoreScreen(
         Dialog(onDismissRequest = { setOpenReviewBottomSheet(false) }) {
             ReviewBottomSheet(
                 onDismiss = { setOpenReviewBottomSheet(false) },
-                onSubmit = onReviewClick
+                onSubmit = { content, light ->
+                    onReviewCallBack(content, light)
+                }
             )
         }
     }
@@ -356,6 +383,7 @@ private fun PreviewReadMoreScreen() {
         setOpenReportBottomSheet = {},
         setOpenReviewBottomSheet = {},
         openReportBottomSheet = false,
-        openReviewBottomSheet = false
+        openReviewBottomSheet = false,
+        onReviewCallBack = {_, _ ->}
     )
 }
