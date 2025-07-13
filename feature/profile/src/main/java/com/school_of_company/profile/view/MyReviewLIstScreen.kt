@@ -11,12 +11,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.school_of_company.design_system.componet.clickable.GwangSanClickable
-import com.school_of_company.design_system.componet.icons.CloseIcon
 import com.school_of_company.design_system.componet.icons.DownArrowIcon
+import com.school_of_company.design_system.componet.toast.makeToast
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.model.post.response.Post
@@ -36,6 +37,8 @@ internal fun MyReviewRoute(
     val getMyWriteReviewUiState by viewModel.getMyWriteReviewUiState.collectAsStateWithLifecycle()
     val getSpecificPostUiState by viewModel.getMySpecificInformationUiState.collectAsStateWithLifecycle()
 
+    val context = LocalContext.current
+
     LaunchedEffect(Unit) {
         viewModel.getMyWriteReview()
     }
@@ -49,16 +52,47 @@ internal fun MyReviewRoute(
             }
         }
     }
-    if (getMyWriteReviewUiState is GetMyReviewWriteUiState.Success && getSpecificPostUiState is GetMySpecificInformationUiState.Success
-    ) {
-        val reviewList = (getMyWriteReviewUiState as GetMyReviewUiState.Success).review
-        val image = (getSpecificPostUiState as GetMySpecificInformationUiState.Success).data
+    
+    when (getMyWriteReviewUiState) {
+        is GetMyReviewWriteUiState.Loading -> {
+            makeToast(context, "로딩중")
+        }
 
-        MyReviewScreen(
-            onBackClick = onBackClick,
-            image = image,
-            item = reviewList,
-        )
+        is GetMyReviewWriteUiState.Empty -> {
+            makeToast(context, "데이터가 비어있습니다.")
+        }
+
+        is GetMyReviewWriteUiState.Error -> {
+            makeToast(context,"오류")
+        }
+
+        is GetMyReviewWriteUiState.Success -> {
+            val reviewList = listOf((getMyWriteReviewUiState as GetMyReviewWriteUiState.Success).data)
+
+            when (getSpecificPostUiState) {
+                is GetMySpecificInformationUiState.Success -> {
+                    val image = (getSpecificPostUiState as GetMySpecificInformationUiState.Success).data
+                    MyReviewScreen(
+                        onBackClick = onBackClick,
+                        image = image,
+                        item = reviewList,
+                    )
+                }
+
+                is GetMySpecificInformationUiState.Loading -> {
+                    makeToast(context,"로딩중")
+                }
+
+                is GetMySpecificInformationUiState.Empty -> {
+                    makeToast(context,"데이터 비어있음")
+                }
+
+                is GetMySpecificInformationUiState.Error -> {
+                    makeToast(context,"게시글 오류옴")
+                }
+            }
+
+        }
     }
 }
 @Composable

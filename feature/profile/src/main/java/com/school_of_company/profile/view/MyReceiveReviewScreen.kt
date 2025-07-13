@@ -1,6 +1,5 @@
 package com.school_of_company.profile.view
 
-import MyReviewProfileList
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -29,7 +28,6 @@ import com.school_of_company.profile.component.MyProfileReviewListItem
 import com.school_of_company.profile.viewmodel.MyProfileViewModel
 import com.school_of_company.profile.viewmodel.uistate.GetMyReviewUiState
 import com.school_of_company.profile.viewmodel.uistate.GetMySpecificInformationUiState
-import javax.annotation.meta.When
 
 @Composable
 internal fun MyReceiveReviewRoute(
@@ -82,11 +80,11 @@ internal fun MyReceiveReviewRoute(
                 }
 
                 is GetMySpecificInformationUiState.Loading -> {
-                    // 게시글 로딩 중이면 여기에 처리
+                    makeToast(context,"로딩중")
                 }
 
                 is GetMySpecificInformationUiState.Empty -> {
-                    // 게시글 데이터가 비어있을 때
+                    makeToast(context,"데이터 비어있음")
                 }
 
                 is GetMySpecificInformationUiState.Error -> {
@@ -97,6 +95,7 @@ internal fun MyReceiveReviewRoute(
         }
     }
 }
+
 @Composable
 private fun MyReceiveReviewScreen(
     modifier: Modifier = Modifier,
