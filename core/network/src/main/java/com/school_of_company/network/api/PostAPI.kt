@@ -22,7 +22,7 @@ interface PostAPI {
     suspend fun modifyPostInformation(
         @Path("post_id") postId: Long,
         @Body body: PostAllRequest
-    ) : PostModifyResponse
+    )
 
     @GET("/api/post/{post_id}")
     suspend fun getSpecificInformation(

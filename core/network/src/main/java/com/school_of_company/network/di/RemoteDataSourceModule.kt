@@ -2,6 +2,8 @@ package com.school_of_company.network.di
 
 import com.school_of_company.network.datasource.auth.AuthDataSource
 import com.school_of_company.network.datasource.auth.AuthDataSourceImpl
+import com.school_of_company.network.datasource.image.ImageDataSource
+import com.school_of_company.network.datasource.image.ImageDataSourceImpl
 import com.school_of_company.network.datasource.member.MemberDataSource
 import com.school_of_company.network.datasource.member.MemberDataSourceImpl
 import com.school_of_company.network.datasource.notice.NoticeDataSource
@@ -42,4 +44,9 @@ abstract class RemoteDataSourceModule {
     abstract fun bindReportDataSource(
         reportDataSourceImpl: ReportDataSourceImpl
     ) : ReportDataSource
+
+    @Binds
+    abstract fun bindImageDataSource(
+        imageDataSourceImpl: ImageDataSourceImpl
+    ) : ImageDataSource
 }

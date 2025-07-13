@@ -10,7 +10,7 @@ interface PostRepository {
     fun modifyPostInformation(
         postId: Long,
         body: PostAllRequestModel
-    ) : Flow<PostModifyResponse>
+    ) : Flow<Unit>
     fun getSpecificInformation(postId: Long) : Flow<Post>
     fun getAllPostInformation(
         type: String,

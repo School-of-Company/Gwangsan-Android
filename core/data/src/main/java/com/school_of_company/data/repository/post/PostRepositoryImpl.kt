@@ -20,7 +20,7 @@ class PostRepositoryImpl @Inject constructor (
     override fun modifyPostInformation(
         postId: Long,
         body: PostAllRequestModel
-    ): Flow<PostModifyResponse> {
+    ): Flow<Unit> {
         return postDataSource.modifyPostInformation(
             postId = postId,
             body = body.toDto()

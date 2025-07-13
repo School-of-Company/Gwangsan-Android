@@ -2,6 +2,8 @@ package com.school_of_company.data.di
 
 import com.school_of_company.data.repository.auth.AuthRepository
 import com.school_of_company.data.repository.auth.AuthRepositoryImpl
+import com.school_of_company.data.repository.image.ImageRepository
+import com.school_of_company.data.repository.image.ImageRepositoryImpl
 import com.school_of_company.data.repository.local.LocalRepository
 import com.school_of_company.data.repository.local.LocalRepositoryImpl
 import com.school_of_company.data.repository.member.MemberRepository
@@ -49,4 +51,9 @@ abstract class RepositoryModule {
     abstract fun bindReportRepository(
         reportRepositoryImpl: ReportRepositoryImpl
     ) : ReportRepository
+
+    @Binds
+    abstract fun bindImageRepository(
+        imageRepositoryImpl: ImageRepositoryImpl
+    ) : ImageRepository
 }

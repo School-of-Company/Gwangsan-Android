@@ -31,6 +31,7 @@ import com.school_of_company.main.navgation.navigateToMainStart
 import com.school_of_company.model.enum.Mode
 import com.school_of_company.model.enum.Type
 import com.school_of_company.post.navigation.navigateToPost
+import com.school_of_company.post.navigation.navigateToPostEdit
 import com.school_of_company.post.navigation.postScreen
 import com.school_of_company.profile.navigation.myInformationEditScreen
 import com.school_of_company.profile.navigation.myProfileScreen
@@ -217,7 +218,8 @@ fun GwangsanNavHost(
 
         postScreen(
             onBackClick = { navController.popBackStack() },
-            onComplete = { }
+            onCreateComplete = { navController.navigateToMainStart() },
+            onEditComplete = { navController.popBackStack() }
         )
 
         myProfileScreen(
@@ -249,7 +251,10 @@ fun GwangsanNavHost(
         myWritingDetailScreen(
             onBackClick = { navController.popBackStack() },
             onCompleteClick = { navController.popBackStack() },
-            onErrorToast = onErrorToast
+            onErrorToast = onErrorToast,
+            onEditClick = { id, type, mode ->
+                navController.navigateToPostEdit(id, type, mode)
+            }
         )
 
         transactionHistoryScreen(

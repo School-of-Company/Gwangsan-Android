@@ -10,7 +10,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":feature:profile"))
     implementation(libs.coil.kt)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.navigation.compose.android)
+    implementation(libs.androidx.exifinterface)
 }

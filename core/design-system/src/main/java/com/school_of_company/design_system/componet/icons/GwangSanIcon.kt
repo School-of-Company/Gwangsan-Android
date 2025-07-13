@@ -201,3 +201,16 @@ fun ArrowDown(
         tint = tint
     )
 }
+
+@Composable
+fun PlussIcon(
+    modifier: Modifier = Modifier,
+    tint: Color = Color.Unspecified
+) {
+    Icon(
+        painter = painterResource(id = R.drawable.dddddd),
+        contentDescription = "플러스",
+        modifier = modifier,
+        tint = tint
+    )
+}
