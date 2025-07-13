@@ -6,6 +6,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import com.school_of_company.model.enum.Mode
+import com.school_of_company.model.enum.Type
 import com.school_of_company.profile.view.MyInformationEditRoute
 import com.school_of_company.profile.view.MyProfileRoute
 import com.school_of_company.profile.view.MyReceiveReviewRoute
@@ -136,8 +138,9 @@ fun NavGraphBuilder.myWritingScreen(
 fun NavGraphBuilder.myWritingDetailScreen(
     onBackClick: () -> Unit,
     onCompleteClick: () -> Unit,
-    onErrorToast: (Throwable, Int) -> Unit
-) {
+    onErrorToast: (Throwable, Int) -> Unit,
+    onEditClick: (Long, String, String) -> Unit,
+    ) {
     composable(route = "$MyWritingDetailRoute/{postId}") { backStackEntry ->
         val postId = backStackEntry.arguments?.getString("postId")?.toLongOrNull()
         if (postId != null) {
@@ -146,6 +149,7 @@ fun NavGraphBuilder.myWritingDetailScreen(
                 onBackClick = onBackClick,
                 onCompleteClick = onCompleteClick,
                 onErrorToast = onErrorToast,
+                onEditClick = onEditClick
             )
         }
     }

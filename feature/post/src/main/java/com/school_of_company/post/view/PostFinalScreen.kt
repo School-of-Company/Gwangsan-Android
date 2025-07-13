@@ -1,32 +1,42 @@
 package com.school_of_company.post.view
 
+import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
 import com.school_of_company.design_system.R
-import com.school_of_company.design_system.component.progress.GwangSanTopBarProgress
 import com.school_of_company.design_system.componet.button.GwangSanEnableButton
 import com.school_of_company.design_system.componet.button.GwangSanStateButton
 import com.school_of_company.design_system.componet.button.state.ButtonState
-import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.icon.AddImageButton
-import com.school_of_company.design_system.componet.icons.DownArrowIcon
-import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
+import com.school_of_company.design_system.componet.icons.PlussIcon
+import com.school_of_company.design_system.componet.toast.makeToast
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.design_system.theme.color.GwangSanColor
 import com.school_of_company.model.enum.Mode
 import com.school_of_company.model.enum.Type
 import com.school_of_company.post.viewmodel.PostViewModel
+import com.school_of_company.post.viewmodel.uiState.ModifyPostUiState
 import com.school_of_company.post.viewmodel.uiState.PostUiState
 import com.school_of_company.ui.previews.GwangsanPreviews
 
@@ -44,13 +54,19 @@ internal fun PostFinalRoute(
     val subject by actualViewModel.title.collectAsState()
     val content by actualViewModel.content.collectAsState()
     val price by actualViewModel.gwangsan.collectAsState()
+    val images by actualViewModel.selectedImages.collectAsStateWithLifecycle()
+
     val postUiState by actualViewModel.postUiState.collectAsState()
+    val modifyPostUiState by actualViewModel.modifyPostUiStat.collectAsStateWithLifecycle()
+
+    val isEditMode by actualViewModel.isEditMode.collectAsState()
+    val editPostId by actualViewModel.editPostId.collectAsState()
+
+    val context = LocalContext.current
 
     LaunchedEffect(postUiState) {
         when (postUiState) {
-            is PostUiState.Loading -> {
-                Log.d("PostFinalRoute", "게시글 작성 중...")
-            }
+            is PostUiState.Loading -> Unit
 
             is PostUiState.Success -> {
                 onErrorToast(null, R.string.success_post)
@@ -73,16 +89,38 @@ internal fun PostFinalRoute(
         }
     }
 
+    LaunchedEffect(modifyPostUiState) {
+        when (modifyPostUiState) {
+            is ModifyPostUiState.Loading -> Unit
+            is ModifyPostUiState.Success -> {
+                makeToast(context, "게시글 수정 성공")
+                onSubmitClick()
+            }
+
+            is ModifyPostUiState.Error -> {
+                makeToast(context, "게시글 수정 실패")
+            }
+        }
+    }
+
     PostFinalScreen(
         subject = subject,
         content = content,
         price = price,
         imageContent = {},
         onEditClick = onEditClick,
-        onSubmitClick = { actualViewModel.writePost() },
+        onSubmitClick = {
+            if (isEditMode && editPostId != null) {
+                actualViewModel.modifyPost(editPostId!!)
+            } else {
+                actualViewModel.writePost()
+            }
+        },
         onBackClick = onBackClick,
+        images = images
     )
 }
+
 
 @Composable
 private fun PostFinalScreen(
@@ -90,6 +128,7 @@ private fun PostFinalScreen(
     subject: String,
     content: String,
     price: String,
+    images: List<Uri>,
     imageContent: @Composable () -> Unit,
     onEditClick: () -> Unit,
     onSubmitClick: () -> Unit,
@@ -99,7 +138,7 @@ private fun PostFinalScreen(
 
     GwangSanTheme { colors, typography ->
 
-        Box(modifier = Modifier.fillMaxSize()) {
+        Box(modifier = modifier.fillMaxSize()) {
 
             Column(
                 modifier = Modifier
@@ -182,11 +221,33 @@ private fun PostFinalScreen(
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                Row {
-                    AddImageButton(
-                        onClick = { },
-                        rippleColor = GwangSanColor.main100
-                    )
+                if (images.isEmpty()) {
+                    Box(
+                        modifier = Modifier
+                            .size(60.dp)
+                            .clip(CircleShape)
+                            .background(Color(0xFFF5F6F8))
+                    ) {
+                        PlussIcon(
+                            tint = colors.black,
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
+                } else {
+                    LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(images) { uri ->
+                            AsyncImage(
+                                model = uri,
+                                contentDescription = "선택된 이미지",
+                                modifier = Modifier
+                                    .size(60.dp)
+                                    .clip(CircleShape),
+                                contentScale = ContentScale.Crop
+                            )
+                        }
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -250,7 +311,7 @@ private fun PostFinalScreen(
     }
 }
 
-@GwangsanPreviews
+@Preview
 @Composable
 private fun PostFinalPreview() {
     PostFinalScreen(
@@ -265,6 +326,7 @@ private fun PostFinalPreview() {
         },
         onEditClick = {},
         onSubmitClick = {},
-        onBackClick = {}
+        onBackClick = {},
+        images = listOf()
     )
 }

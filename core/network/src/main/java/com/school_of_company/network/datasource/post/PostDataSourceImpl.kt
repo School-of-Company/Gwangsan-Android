@@ -17,7 +17,7 @@ class PostDataSourceImpl @Inject constructor(
     override fun modifyPostInformation(
         postId: Long,
         body: PostAllRequest
-    ): Flow<PostModifyResponse> =
+    ): Flow<Unit> =
         performApiRequest { postAPI.modifyPostInformation(
             postId = postId,
             body = body

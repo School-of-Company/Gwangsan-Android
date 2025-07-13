@@ -3,6 +3,7 @@ package com.school_of_company.network.di
 import android.util.Log
 import com.school_of_company.network.BuildConfig
 import com.school_of_company.network.api.AuthAPI
+import com.school_of_company.network.api.ImageAPI
 import com.school_of_company.network.api.MemberAPI
 import com.school_of_company.network.api.NoticeAPI
 import com.school_of_company.network.api.PostAPI
@@ -99,5 +100,10 @@ object NetworkModule {
     @Singleton
     fun provideReportAPI(retrofit: Retrofit): ReportAPI =
         retrofit.create(ReportAPI::class.java)
+
+    @Provides
+    @Singleton
+    fun provideImageAPI(retrofit: Retrofit): ImageAPI =
+        retrofit.create(ImageAPI::class.java)
 }
 

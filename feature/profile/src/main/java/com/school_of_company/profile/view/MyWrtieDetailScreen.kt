@@ -23,7 +23,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -31,24 +30,20 @@ import coil.compose.AsyncImage
 import com.school_of_company.design_system.componet.button.GwangSanEnableButton
 import com.school_of_company.design_system.componet.button.GwangSanStateButton
 import com.school_of_company.design_system.componet.clickable.GwangSanClickable
-import com.school_of_company.design_system.componet.icons.CloseIcon
 import com.school_of_company.design_system.componet.icons.DownArrowIcon
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
-import com.school_of_company.model.member.response.GetMemberResponseModel
+import com.school_of_company.model.enum.Mode
+import com.school_of_company.model.enum.Type
 import com.school_of_company.model.post.response.Post
-import com.school_of_company.post.R
-import com.school_of_company.profile.component.CleaningRequestCard
-import com.school_of_company.profile.component.MyProfileUserLevel
 import com.school_of_company.profile.viewmodel.MyProfileViewModel
 import com.school_of_company.profile.viewmodel.uistate.GetMySpecificInformationUiState
-import com.school_of_company.profile.viewmodel.uistate.MemberUiState
-import com.school_of_company.ui.previews.GwangsanPreviews
 
 @Composable
 internal fun ReviewPostDetailRoute(
     onBackClick: () -> Unit,
     onCompleteClick: () -> Unit,
+    onEditClick: (Long, String, String) -> Unit,
     postId: Long,
     onErrorToast: (Throwable, Int) -> Unit,
     viewModel: MyProfileViewModel = hiltViewModel()
@@ -90,16 +85,19 @@ internal fun ReviewPostDetailRoute(
         }
 
         is GetMySpecificInformationUiState.Success -> {
+            val post = getMySpecificInformationUiState.data
                 ReviewPostDetailScreen(
                     onBackClick = onBackClick,
                     data = getMySpecificInformationUiState.data,
-                    onEditClick = { /* 수정 클릭 시 동작 */ },
+                    onEditClick = {
+                        onEditClick(post.id, post.type, post.mode)
+                    },
                     onCompleteClick = onCompleteClick,
                 )
-
         }
     }
 }
+
 @Composable
 fun ReviewPostDetailScreen(
     modifier: Modifier = Modifier,
@@ -204,7 +202,7 @@ fun ReviewPostDetailScreen(
 
                 com.school_of_company.design_system.componet.recycle.CleaningRequestCard(
                     title = data.title,
-                    priceAndLocation = "${data}.gwangsan} 광산",
+                    priceAndLocation = "${data.gwangsan} 광산",
                     description = data.content,
                     modifier = Modifier.padding(horizontal = 24.dp)
                 )

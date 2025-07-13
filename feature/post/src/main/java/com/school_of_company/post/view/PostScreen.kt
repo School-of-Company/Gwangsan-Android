@@ -14,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.school_of_company.design_system.component.progress.GwangSanTopBarProgress
@@ -32,33 +31,45 @@ import kotlinx.coroutines.launch
 internal fun PostRoute(
     type: Type,
     mode: Mode,
+    editPostId: Long? = null,
     onBackClick: () -> Unit,
-    onComplete: () -> Unit
+    onCreateComplete: () -> Unit,
+    onEditComplete: () -> Unit
 ) {
     PostScreen(
         type = type,
         mode = mode,
         onBackClick = onBackClick,
-        onComplete = onComplete
+        editPostId = editPostId,
+        onCreateComplete = onCreateComplete,
+        onEditComplete = onEditComplete
     )
 }
 
 @Composable
 private fun PostScreen(
+    modifier: Modifier = Modifier,
     type: Type,
     mode: Mode,
-    modifier: Modifier = Modifier,
+    editPostId: Long? = null,
     onBackClick: () -> Unit,
-    onComplete: () -> Unit
+    onCreateComplete: () -> Unit,
+    onEditComplete: () -> Unit
 ) {
     val pagerState = rememberPagerState(pageCount = { 3 })
     val coroutineScope = rememberCoroutineScope()
 
     val viewModel: PostViewModel = hiltViewModel()
 
+    val isEditMode = editPostId != null
+
     LaunchedEffect(type, mode) {
         viewModel.onTypeChange(type)
         viewModel.onModeChange(mode)
+
+        if (isEditMode && editPostId != null) {
+            viewModel.loadPostForEdit(editPostId)
+        }
     }
 
     val progressRatios = listOf(0.3f, 0.6f, 1.0f)
@@ -149,7 +160,13 @@ private fun PostScreen(
                     2 -> PostFinalRoute(
                         type = type,
                         mode = mode,
-                        onSubmitClick = onComplete,
+                        onSubmitClick = {
+                            if (isEditMode) {
+                                onEditComplete()
+                            } else {
+                                onCreateComplete()
+                            }
+                        },
                         onEditClick = {
                             coroutineScope.launch {
                                 pagerState.animateScrollToPage(page = 1)
@@ -176,7 +193,8 @@ private fun PostScreenPreview() {
     PostRoute(
         type = Type.OBJECT,
         mode = Mode.GIVER,
-        onComplete = {},
         onBackClick = {},
+        onCreateComplete = {},
+        onEditComplete = {}
     )
 }

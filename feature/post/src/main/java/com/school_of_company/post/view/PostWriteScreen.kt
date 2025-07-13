@@ -1,24 +1,31 @@
 package com.school_of_company.post.view
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.school_of_company.design_system.component.progress.GwangSanTopBarProgress
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
 import com.school_of_company.design_system.componet.button.GwangSanStateButton
 import com.school_of_company.design_system.componet.button.state.ButtonState
 import com.school_of_company.design_system.componet.clickable.GwangSanClickable
-import com.school_of_company.design_system.componet.icons.CloseIcon
-import com.school_of_company.design_system.componet.icons.DownArrowIcon
-import com.school_of_company.design_system.componet.icon.AddImageButton
-import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
+import com.school_of_company.design_system.componet.icons.PlussIcon
 import com.school_of_company.design_system.theme.GwangSanTheme
-import com.school_of_company.design_system.theme.color.GwangSanColor
 import com.school_of_company.model.enum.Mode
 import com.school_of_company.model.enum.Type
 import com.school_of_company.post.viewmodel.PostViewModel
@@ -37,20 +44,50 @@ internal fun PostWriteRoute(
     val subject by actualViewModel.title.collectAsState()
     val content by actualViewModel.content.collectAsState()
 
+    val selectedImageUris by actualViewModel.selectedImages.collectAsStateWithLifecycle()
+    val existingImageUrls by actualViewModel.existingImageUrls.collectAsState()
+
+    val uploadedUris = remember { mutableStateListOf<Uri>() }
+
+    val context = LocalContext.current
+
+    val galleryLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            if (uri != null) {
+                actualViewModel.addImage(uri)
+            }
+        }
+
+    LaunchedEffect(selectedImageUris) {
+        selectedImageUris.forEach { uri ->
+            if (uploadedUris.contains(uri).not()) {
+                try {
+                    val imageId = actualViewModel.imageUpLoad(context, uri)
+                    actualViewModel.onImageIdAdded(imageId)
+                    uploadedUris.add(uri)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+    }
+
     PostWriteScreen(
         subject = subject,
         content = content,
+        imageUri = selectedImageUris,
+        existingImageUrls = existingImageUrls,
+        onImageRemove = { index ->
+            actualViewModel.removeNewImage(index)
+        },
+        onExistingImageRemove = { index ->
+            actualViewModel.removeExistingImage(index)
+        },
         onSubjectChange = actualViewModel::onTitleChange,
         onContentChange = actualViewModel::onContentChange,
-        onImageAdd = {},
+        onImageAdd = { galleryLauncher.launch("image/*") },
         onNextClick = onNextClick,
         onBackClick = onBackClick,
-        imageContent = { isEnabled ->
-            AddImageButton(
-                onClick = {},
-                rippleColor = if (isEnabled) GwangSanColor.main100 else GwangSanColor.gray300
-            )
-        }
     )
 }
 
@@ -59,12 +96,15 @@ private fun PostWriteScreen(
     modifier: Modifier = Modifier,
     subject: String,
     content: String,
+    imageUri: List<Uri>,
+    existingImageUrls: List<String>,
+    onImageRemove: (Int) -> Unit,
+    onExistingImageRemove: (Int) -> Unit,
     onSubjectChange: (String) -> Unit,
     onContentChange: (String) -> Unit,
     onImageAdd: () -> Unit,
     onNextClick: (String, String) -> Unit,
     onBackClick: () -> Unit,
-    imageContent: @Composable (Boolean) -> Unit
 ) {
     val isNextEnabled = subject.isNotBlank() && content.isNotBlank()
 
@@ -107,9 +147,53 @@ private fun PostWriteScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                imageContent(isNextEnabled)
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                itemsIndexed(existingImageUrls) { index, imageUrl ->
+                    AsyncImage(
+                        model = imageUrl,
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .size(50.dp)
+                            .GwangSanClickable {
+                                onExistingImageRemove(index)
+                            }
+                    )
+                }
+
+                itemsIndexed(imageUri) { index, imageUri ->
+                    AsyncImage(
+                        model = imageUri,
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .size(50.dp)
+                            .GwangSanClickable { onImageRemove(index) }
+                    )
+                }
+
+                item {
+                    Box(
+                        modifier = Modifier
+                            .size(60.dp)
+                            .clip(CircleShape)
+                            .background(Color(0xFFF5F6F8))
+                            .GwangSanClickable { onImageAdd() }
+                    ) {
+                        PlussIcon(
+                            tint = colors.black,
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
+                }
             }
+
 
             Spacer(modifier = Modifier.weight(1f, fill = true))
 
@@ -125,7 +209,27 @@ private fun PostWriteScreen(
             Spacer(modifier = Modifier.height(64.dp))
         }
     }
+}
 
+@Composable
+private fun ImageItem(
+    uri: Uri,
+    onRemove: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier.size(60.dp)
+    ) {
+        AsyncImage(
+            model = uri,
+            contentDescription = "선택된 이미지",
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(CircleShape)
+                .size(50.dp),
+            contentScale = ContentScale.Crop
+        )
+    }
 }
 
 @GwangsanPreviews
@@ -139,11 +243,9 @@ private fun PostWritePreview() {
         onImageAdd = {},
         onNextClick = { _, _ -> },
         onBackClick = {},
-        imageContent = { isEnabled ->
-            AddImageButton(
-                onClick = {},
-                rippleColor = if (isEnabled) GwangSanColor.main100 else GwangSanColor.gray300
-            )
-        }
+        imageUri = listOf(),
+        onImageRemove = {},
+        existingImageUrls = listOf(),
+        onExistingImageRemove = {}
     )
 }
