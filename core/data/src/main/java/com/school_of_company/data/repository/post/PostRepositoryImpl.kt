@@ -1,6 +1,7 @@
 package com.school_of_company.data.repository.post
 
 import com.school_of_company.model.post.request.PostAllRequestModel
+import com.school_of_company.model.post.request.TransactionCompleteRequestModel
 import com.school_of_company.model.post.response.Post
 import com.school_of_company.network.datasource.post.PostDataSource
 import com.school_of_company.network.dto.post.response.PostModifyResponse
@@ -53,5 +54,9 @@ class PostRepositoryImpl @Inject constructor (
 
     override fun deletePostInformation(postId: Long): Flow<Unit> {
         return postDataSource.deletePostInformation(postId = postId)
+    }
+
+    override fun transactionComplete(body: TransactionCompleteRequestModel): Flow<Unit> {
+        return  postDataSource.transactionComplete(body = body.toDto())
     }
 }

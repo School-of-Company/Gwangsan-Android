@@ -32,6 +32,7 @@ import com.school_of_company.content.viewmodel.ContentViewModel
 import com.school_of_company.content.viewmodel.uistate.GetSpecificPostUiState
 import com.school_of_company.content.viewmodel.uistate.ReportPostUiState
 import com.school_of_company.content.viewmodel.uistate.ReviewPostUiState
+import com.school_of_company.content.viewmodel.uistate.TransactionCompleteUiState
 import com.school_of_company.design_system.R
 import com.school_of_company.design_system.componet.button.GwangSanEnableButton
 import com.school_of_company.design_system.componet.button.GwangSanStateButton
@@ -42,6 +43,7 @@ import com.school_of_company.design_system.componet.recycle.MyProfileUserLevel
 import com.school_of_company.design_system.componet.toast.makeToast
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.model.post.request.TransactionCompleteRequestModel
 import com.school_of_company.model.report.request.ReportRequestModel
 import com.school_of_company.model.review.request.ReviewRequestModel
 import com.school_of_company.ui.previews.GwangsanPreviews
@@ -59,6 +61,7 @@ internal fun ReadMoreRoute(
     val getSpecificPostUiState by viewModel.getSpecificPostUiState.collectAsStateWithLifecycle()
     val reportPostUiState by viewModel.reportPostUiState.collectAsStateWithLifecycle()
     val reviewPostUiState by viewModel.reviewPostUiState.collectAsStateWithLifecycle()
+    val transactionCompleteUiState by viewModel.transactionCompleteUiState.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
     val (openReportBottomSheet, setOpenReportBottomSheet) = rememberSaveable { mutableStateOf(false) }
@@ -94,6 +97,19 @@ internal fun ReadMoreRoute(
         }
     }
 
+    LaunchedEffect (transactionCompleteUiState){
+        when(transactionCompleteUiState){
+            is TransactionCompleteUiState.Loading -> Unit
+            is TransactionCompleteUiState.Success ->{
+                setOpenReviewBottomSheet(false)
+                makeToast(context,"거래완료 성공")
+            }
+            is TransactionCompleteUiState.Error ->{
+                makeToast(context,"거래완료 실패")
+            }
+        }
+    }
+
     ReadMoreScreen(
         getSpecificPostUiState = getSpecificPostUiState,
         onBackClick = onBackClick,
@@ -101,6 +117,14 @@ internal fun ReadMoreRoute(
         onChatClick = onChatClick,
         onReviewClick = onReviewClick,
         onReportClick = onReportClick,
+        onTransactionCompleteCallBack = {
+            viewModel.transactionComplete(
+                body = TransactionCompleteRequestModel(
+                    productId = postId,
+                    otherMemberId = (getSpecificPostUiState as GetSpecificPostUiState.Success).post.id
+                )
+            )
+        },
         onReviewCallBack = { light, content ->
             viewModel.reviewPost(
                 body = ReviewRequestModel(
@@ -122,7 +146,8 @@ internal fun ReadMoreRoute(
         openReportBottomSheet = openReportBottomSheet,
         openReviewBottomSheet = openReviewBottomSheet,
         setOpenReportBottomSheet = setOpenReportBottomSheet,
-        setOpenReviewBottomSheet = setOpenReviewBottomSheet
+        setOpenReviewBottomSheet = setOpenReviewBottomSheet,
+
     )
 }
 
@@ -136,6 +161,7 @@ private fun ReadMoreScreen(
     onChatClick: () -> Unit,
     onReviewClick: (Int, String) -> Unit,
     onReportClick: (String, String) -> Unit,
+    onTransactionCompleteCallBack: () -> Unit,
     onReportCallBack: (String, String) -> Unit,
     onReviewCallBack: (Int, String) -> Unit,
     openReportBottomSheet: Boolean,
@@ -276,7 +302,9 @@ private fun ReadMoreScreen(
 
                             GwangSanStateButton(
                                 text = "거래완료",
-                                onClick = { setOpenReviewBottomSheet(true) },
+                                onClick = {
+                                    onTransactionCompleteCallBack()
+                                    setOpenReviewBottomSheet(true) },
                                 modifier = Modifier
                                     .weight(1f)
                                     .border(1.dp, colors.main500, RoundedCornerShape(8.dp))
@@ -384,6 +412,7 @@ private fun PreviewReadMoreScreen() {
         setOpenReviewBottomSheet = {},
         openReportBottomSheet = false,
         openReviewBottomSheet = false,
-        onReviewCallBack = {_, _ ->}
+        onReviewCallBack = {_, _ ->},
+        onTransactionCompleteCallBack = {}
     )
 }
