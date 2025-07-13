@@ -10,6 +10,6 @@ interface ReviewDataSource {
         type: String? = null,
         mode: String? = null
     ) : Flow<ReviewResponse>
-    fun getMyReview() : Flow<ReviewResponse>
+    fun getMyReview() : Flow<List<ReviewResponse>>
     fun getOtherReview(memberId: Long) : Flow<ReviewResponse>
 }

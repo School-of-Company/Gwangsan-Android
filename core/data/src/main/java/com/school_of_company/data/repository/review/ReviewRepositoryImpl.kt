@@ -6,6 +6,7 @@ import com.school_of_company.model.review.request.ReviewRequestModel
 import com.school_of_company.model.review.response.ReviewResponseModel
 import com.school_of_company.network.datasource.report.ReportDataSource
 import com.school_of_company.network.datasource.review.ReviewDataSource
+import com.school_of_company.network.mapper.post.response.toModel
 import com.school_of_company.network.mapper.report.request.toDto
 import com.school_of_company.network.mapper.review.request.toDto
 import com.school_of_company.network.mapper.review.response.toModel
@@ -16,8 +17,8 @@ import javax.inject.Inject
 class ReviewRepositoryImpl @Inject constructor(
     private val reviewDataSource: ReviewDataSource
 ) : ReviewRepository {
-    override fun getMyReview(): Flow<ReviewResponseModel> {
-        return reviewDataSource.getMyReview().map { it.toModel() }
+    override fun getMyReview(): Flow<List<ReviewResponseModel>> {
+        return reviewDataSource.getMyReview().map { it.map { list -> list.toModel() } }
     }
 
     override fun getOtherReview(memberId: Long): Flow<ReviewResponseModel> {

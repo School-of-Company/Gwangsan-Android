@@ -11,7 +11,7 @@ class ReviewDataSourceImpl @Inject constructor(
     private val reviewApi: ReviewAPI
 ) : ReviewDataSource {
 
-    override fun getMyReview(): Flow<ReviewResponse>  =
+    override fun getMyReview(): Flow<List<ReviewResponse>>  =
         performApiRequest { reviewApi.getMyReview() }
 
     override fun postReview(body: ReviewRequest): Flow<Unit> =

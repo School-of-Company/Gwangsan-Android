@@ -21,7 +21,7 @@ interface ReviewAPI {
     ) : ReviewResponse
 
     @GET("/api/review/current")
-    suspend fun getMyReview() : ReviewResponse
+    suspend fun getMyReview() : List<ReviewResponse>
 
     @GET("/api/review/{memberId}")
     suspend fun getOtherReview(

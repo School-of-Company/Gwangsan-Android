@@ -10,6 +10,6 @@ interface ReviewRepository {
         type: String? = null,
         mode: String? = null
     ) : Flow<ReviewResponseModel>
-    fun getMyReview() : Flow<ReviewResponseModel>
+    fun getMyReview() : Flow<List<ReviewResponseModel>>
     fun getOtherReview(memberId: Long) : Flow<ReviewResponseModel>
 }
