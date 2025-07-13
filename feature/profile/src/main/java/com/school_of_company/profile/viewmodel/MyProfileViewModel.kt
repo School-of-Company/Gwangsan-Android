@@ -224,7 +224,7 @@ internal class MyProfileViewModel @Inject constructor(
             .collectLatest { result ->
                 when (result) {
                     is Result.Loading -> _getMyReviewUiState.value = GetMyReviewUiState.Loading
-                    is Result.Success -> _getMyReviewUiState.value = GetMyReviewUiState.Success(listOf(result.data))
+                    is Result.Success -> _getMyReviewUiState.value = GetMyReviewUiState.Success(result.data)
                     is Result.Error -> {
                         Log.e("MyProfileViewModel", "getMyReview() 실패", result.exception)
                         _getMyReviewUiState.value = GetMyReviewUiState.Error(result.exception)
