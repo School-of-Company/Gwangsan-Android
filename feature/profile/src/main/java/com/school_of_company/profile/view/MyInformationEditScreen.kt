@@ -60,7 +60,8 @@ internal fun MyInformationEditRoute(
 
     LaunchedEffect(myInForMatIonPeTchUiState) {
         when (myInForMatIonPeTchUiState) {
-            is MyInForMatIonPeTchUiState.Success -> onSubmitComplete()
+            is MyInForMatIonPeTchUiState.Success -> onSubmitComplete(
+            )
             is MyInForMatIonPeTchUiState.Loading -> Unit
             is MyInForMatIonPeTchUiState.Error -> {
                 val exception = (myInForMatIonPeTchUiState as MyInForMatIonPeTchUiState.Error).exception

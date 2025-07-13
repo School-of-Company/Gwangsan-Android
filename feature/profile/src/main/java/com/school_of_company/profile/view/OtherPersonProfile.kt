@@ -44,7 +44,7 @@ import com.school_of_company.profile.viewmodel.uistate.OtherPersonGetUistate
 internal fun OtherPersonProfileRoute(
     onErrorToast: (Throwable, Int) -> Unit,
     memberId: Long,
-    onOtherReviewClick: () -> Unit,
+    onOtherReviewClick: (Long) -> Unit,
     viewModel: MyProfileViewModel = hiltViewModel(),
 ) {
     val otherPersonUiState = viewModel.otherPersonUiState.collectAsStateWithLifecycle().value
@@ -100,7 +100,7 @@ internal fun OtherPersonProfileRoute(
 private fun OtherPersonProfileScreen(
     modifier: Modifier = Modifier,
     data: GetAllMemberResponseModel,
-    onOtherReviewClick: () -> Unit,
+    onOtherReviewClick: (Long) -> Unit,
     item: List<Post>
 ) {
 
@@ -191,7 +191,7 @@ private fun OtherPersonProfileScreen(
                     )
 
                     MyProfileExerciseButton(
-                        onClick = {  onOtherReviewClick() },
+                        onClick = {  onOtherReviewClick(data.memberId) },
                         buttonText = "내가 작성한 후기",
                         modifier = Modifier
                             .fillMaxWidth()

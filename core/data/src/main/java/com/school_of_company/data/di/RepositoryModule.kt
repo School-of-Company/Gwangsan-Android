@@ -14,6 +14,8 @@ import com.school_of_company.data.repository.post.PostRepository
 import com.school_of_company.data.repository.post.PostRepositoryImpl
 import com.school_of_company.data.repository.report.ReportRepository
 import com.school_of_company.data.repository.report.ReportRepositoryImpl
+import com.school_of_company.data.repository.review.ReviewRepository
+import com.school_of_company.data.repository.review.ReviewRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -56,4 +58,10 @@ abstract class RepositoryModule {
     abstract fun bindImageRepository(
         imageRepositoryImpl: ImageRepositoryImpl
     ) : ImageRepository
+
+    @Binds
+    abstract fun bindReviewRepository(
+        reviewRepositoryImpl: ReviewRepositoryImpl
+    ) : ReviewRepository
+
 }

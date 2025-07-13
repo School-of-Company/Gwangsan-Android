@@ -38,20 +38,14 @@ import androidx.compose.ui.unit.sp
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.design_system.theme.color.GwangSanColor
 import com.school_of_company.model.post.response.Image
-
-data class Review(
-    val content: String,
-    val light: Int,
-    val reviewedId: Int,
-    val productId: Int,
-    val name: String,
-    val coverImage: String?
-)
+import com.school_of_company.model.post.response.Post
+import com.school_of_company.model.review.response.ReviewResponseModel
 
 @Composable
 internal fun MyProfileReviewListItem(
     modifier: Modifier = Modifier,
-    data: Review,
+    image: Post,
+    data : ReviewResponseModel,
     onClick: () -> Unit = {}
 ) {
     GwangSanTheme { colors, typography ->
@@ -71,7 +65,7 @@ internal fun MyProfileReviewListItem(
                         .size(100.dp)
                         .clip(RoundedCornerShape(10.dp))
                 ) {
-                    if (data.coverImage.isNullOrEmpty()) {
+                    if (image.images.isEmpty()) {
                         Image(
                             painter = painterResource(id = R.drawable.ic_image),
                             contentDescription = "기본 이미지",
@@ -80,7 +74,7 @@ internal fun MyProfileReviewListItem(
                         )
                     } else {
                         Image(
-                            painter = rememberAsyncImagePainter(model = data.coverImage),
+                            painter = rememberAsyncImagePainter(model = image.images),
                             contentDescription = "후기 이미지",
                             contentScale = ContentScale.Crop,
                             modifier = Modifier.fillMaxSize()
@@ -116,7 +110,7 @@ internal fun MyProfileReviewListItem(
 
                     // 작성자 이름
                     Text(
-                        text = data.name,
+                        text = data.reviewerName,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Medium,
                         color = Color.Gray
@@ -160,19 +154,4 @@ private fun MyProfileReviewProgressBar(
             )
         }
     }
-}
-
-@Preview
-@Composable
-private fun MyProfileReviewListPreview() {
-    MyProfileReviewListItem(
-        data = Review(
-            content = "뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨뀨",
-            light = 50,
-            reviewedId = 1,
-            productId = 123,
-            name = "kimjarkwan",
-            coverImage = ""
-        )
-    )
 }
