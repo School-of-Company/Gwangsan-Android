@@ -22,15 +22,10 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.school_of_company.design_system.R
 import com.school_of_company.design_system.componet.clickable.GwangSanClickable
@@ -62,7 +57,6 @@ private fun MainStartScreen(
     navigationToService: () -> Unit,
     navigationToObject: () -> Unit,
 ) {
-    val scrollState = rememberScrollState()
     GwangSanTheme { colors, typography ->
 
         val scrollState = rememberScrollState()
@@ -136,11 +130,10 @@ private fun MainStartScreen(
                     color = colors.black,
                 )
 
-
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "수완세영",
+                    text = "신가",
                     style = typography.body4,
                     color = colors.black
                 )

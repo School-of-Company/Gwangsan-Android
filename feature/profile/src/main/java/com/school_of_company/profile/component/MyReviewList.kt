@@ -47,7 +47,7 @@ internal fun MyReviewListItem(
                         .clip(RoundedCornerShape(10.dp))
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.ic_image),
+                        painter = painterResource(id = R.drawable.gwangsan),
                         contentDescription = "기본 이미지",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
@@ -61,7 +61,7 @@ internal fun MyReviewListItem(
                         .clip(RoundedCornerShape(10.dp))
                 ) {
                     Image(
-                        painter = rememberAsyncImagePainter(model = data.images),
+                        painter = rememberAsyncImagePainter(model = data.images.first().imageUrl),
                         contentDescription = "후기 이미지",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()

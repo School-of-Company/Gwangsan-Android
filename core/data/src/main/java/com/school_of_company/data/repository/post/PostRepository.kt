@@ -1,6 +1,7 @@
 package com.school_of_company.data.repository.post
 
 import com.school_of_company.model.post.request.PostAllRequestModel
+import com.school_of_company.model.post.request.TransactionCompleteRequestModel
 import com.school_of_company.model.post.response.Post
 import com.school_of_company.network.dto.post.response.PostModifyResponse
 import kotlinx.coroutines.flow.Flow
@@ -21,4 +22,5 @@ interface PostRepository {
         mode: String? = null
     ) : Flow<List<Post>>
     fun deletePostInformation(postId: Long) : Flow<Unit>
+    fun transactionComplete(body: TransactionCompleteRequestModel) : Flow<Unit>
 }

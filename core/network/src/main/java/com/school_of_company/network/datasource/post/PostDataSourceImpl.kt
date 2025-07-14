@@ -2,6 +2,7 @@ package com.school_of_company.network.datasource.post
 
 import com.school_of_company.network.api.PostAPI
 import com.school_of_company.network.dto.post.request.PostAllRequest
+import com.school_of_company.network.dto.post.request.TransactionCompleteRequest
 import com.school_of_company.network.dto.post.response.PostDto
 import com.school_of_company.network.dto.post.response.PostModifyResponse
 import com.school_of_company.network.util.performApiRequest
@@ -40,4 +41,7 @@ class PostDataSourceImpl @Inject constructor(
 
     override fun deletePostInformation(postId: Long): Flow<Unit> =
         performApiRequest { postAPI.deletePostInformation(postId = postId) }
+
+    override fun transactionComplete(body: TransactionCompleteRequest): Flow<Unit> =
+        performApiRequest { postAPI.transactionComplete(body = body) }
 }

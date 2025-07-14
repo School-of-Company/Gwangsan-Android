@@ -82,12 +82,12 @@ class GwangSanAppState(
 
 fun NavController.navigationPopUpToLogin(loginRoute: String) {
     this.navigate(loginRoute) {
-        popUpTo(loginRoute) { inclusive = true }
+        popUpTo(0) { inclusive = true }
     }
 }
 
 fun NavController.navigateToHomeAndClearLogin() {
     this.navigate(MainStartRoute) {
-        popUpTo(SignInRoute) { inclusive = true }
+        popUpTo(0) { inclusive = true }
     }
 }

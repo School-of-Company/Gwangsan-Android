@@ -1,6 +1,7 @@
 package com.school_of_company.network.datasource.post
 
 import com.school_of_company.network.dto.post.request.PostAllRequest
+import com.school_of_company.network.dto.post.request.TransactionCompleteRequest
 import com.school_of_company.network.dto.post.response.PostDto
 import com.school_of_company.network.dto.post.response.PostModifyResponse
 import kotlinx.coroutines.flow.Flow
@@ -22,4 +23,5 @@ interface PostDataSource {
         mode: String? = null
     ) : Flow<List<PostDto>>
     fun deletePostInformation(postId: Long) : Flow<Unit>
+    fun transactionComplete(body: TransactionCompleteRequest) : Flow<Unit>
 }

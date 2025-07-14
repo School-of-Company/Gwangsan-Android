@@ -43,6 +43,7 @@ internal fun MainButton(
             verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier
+                .GwangSanClickable { onClick() }
                 .shadow(
                     elevation = 20.dp,
                     spotColor = Color(0xA0000000),
@@ -55,7 +56,6 @@ internal fun MainButton(
                 .wrapContentWidth()
                 .height(160.dp)
                 .padding(all = 24.dp)
-                .GwangSanClickable { onClick() }
         ) {
                 buttonIcon()
 

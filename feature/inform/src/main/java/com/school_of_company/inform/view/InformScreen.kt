@@ -76,7 +76,7 @@ private fun InformScreen(
             )
 
             Text(
-                text = "지점명 공지입니다",
+                text = "신가지점 공지입니다",
                 style = typography.titleMedium2,
                 color = colors.black
             )
@@ -84,7 +84,7 @@ private fun InformScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "본점",
+                text = "신가",
                 style = typography.body5,
                 color = colors.gray400,
             )

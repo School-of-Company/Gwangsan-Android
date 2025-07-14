@@ -9,6 +9,7 @@ import com.school_of_company.data.repository.member.MemberRepository
 import com.school_of_company.data.repository.post.PostRepository
 import com.school_of_company.data.repository.review.ReviewRepository
 import com.school_of_company.model.member.request.ModifyMemberInformationRequestModel
+import com.school_of_company.model.post.request.TransactionCompleteRequestModel
 import com.school_of_company.profile.viewmodel.uistate.GetMyPostUiState
 import com.school_of_company.profile.viewmodel.uistate.GetMyReviewUiState
 import com.school_of_company.profile.viewmodel.uistate.GetMyReviewWriteUiState
@@ -18,6 +19,7 @@ import com.school_of_company.profile.viewmodel.uistate.MemberUiState
 import com.school_of_company.profile.viewmodel.uistate.MyInForMatIonPeTchUiState
 import com.school_of_company.profile.viewmodel.uistate.OtherPersonGetUistate
 import com.school_of_company.profile.viewmodel.uistate.OtherReviewUIState
+import com.school_of_company.profile.viewmodel.uistate.TransactionCompleteUiState
 import com.school_of_company.result.asResult
 import com.school_of_company.result.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -42,6 +44,9 @@ internal class MyProfileViewModel @Inject constructor(
         private const val SPECIALTY_LIST = "specialty_list"
         private const val NICKNAME = "nickname"
     }
+
+    private val _transactionCompleteUiState = MutableStateFlow<TransactionCompleteUiState>(TransactionCompleteUiState.Loading)
+    internal val transactionCompleteUiState = _transactionCompleteUiState.asStateFlow()
 
     private val _swipeRefreshLoading = MutableStateFlow(false)
     val swipeRefreshLoading = _swipeRefreshLoading.asStateFlow()
@@ -256,6 +261,19 @@ internal class MyProfileViewModel @Inject constructor(
                     is Result.Loading -> _otherReviewUIState.value =  OtherReviewUIState.Loading
                     is Result.Success -> _otherReviewUIState.value = OtherReviewUIState.Success(result.data)
                     is Result.Error ->  _otherReviewUIState.value = OtherReviewUIState.Error(result.exception)
+                }
+            }
+    }
+
+    internal fun transactionComplete(body: TransactionCompleteRequestModel) = viewModelScope.launch {
+        _transactionCompleteUiState.value = TransactionCompleteUiState.Loading
+        postRepository.transactionComplete(body = body)
+            .asResult()
+            .collectLatest { result ->
+                when (result){
+                    is Result.Loading -> _transactionCompleteUiState.value = TransactionCompleteUiState.Loading
+                    is Result.Success -> _transactionCompleteUiState.value = TransactionCompleteUiState.Success
+                    is Result.Error -> _transactionCompleteUiState.value = TransactionCompleteUiState.Error(result.exception)
                 }
             }
     }

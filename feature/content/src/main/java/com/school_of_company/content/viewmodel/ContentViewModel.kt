@@ -6,9 +6,11 @@ import androidx.lifecycle.viewModelScope
 import com.school_of_company.content.viewmodel.uistate.GetSpecificPostUiState
 import com.school_of_company.content.viewmodel.uistate.ReportPostUiState
 import com.school_of_company.content.viewmodel.uistate.ReviewPostUiState
+import com.school_of_company.content.viewmodel.uistate.TransactionCompleteUiState
 import com.school_of_company.data.repository.post.PostRepository
 import com.school_of_company.data.repository.report.ReportRepository
 import com.school_of_company.data.repository.review.ReviewRepository
+import com.school_of_company.model.post.request.TransactionCompleteRequestModel
 import com.school_of_company.model.report.request.ReportRequestModel
 import com.school_of_company.model.review.request.ReviewRequestModel
 import com.school_of_company.network.errorHandling
@@ -35,6 +37,9 @@ class ContentViewModel @Inject constructor(
 
     private val _reportPostUiState = MutableStateFlow<ReportPostUiState>(ReportPostUiState.Loading)
     internal val reportPostUiState = _reportPostUiState.asStateFlow()
+
+    private val _transactionCompleteUiState = MutableStateFlow<TransactionCompleteUiState>(TransactionCompleteUiState.Loading)
+    internal val transactionCompleteUiState = _transactionCompleteUiState.asStateFlow()
 
     private val _reviewPostUiState = MutableStateFlow<ReviewPostUiState>(ReviewPostUiState.Loading)
     internal val reviewPostUiState = _reviewPostUiState.asStateFlow()
@@ -80,6 +85,19 @@ class ContentViewModel @Inject constructor(
                     is Result.Loading -> _reviewPostUiState.value = ReviewPostUiState.Loading
                     is Result.Success -> _reviewPostUiState.value = ReviewPostUiState.Success
                     is Result.Error -> _reviewPostUiState.value = ReviewPostUiState.Error(result.exception)
+                }
+            }
+    }
+
+    internal fun transactionComplete(body: TransactionCompleteRequestModel) = viewModelScope.launch {
+        _transactionCompleteUiState.value = TransactionCompleteUiState.Loading
+        postRepository.transactionComplete(body = body)
+            .asResult()
+            .collectLatest { result ->
+                when (result){
+                    is Result.Loading -> _transactionCompleteUiState.value = TransactionCompleteUiState.Loading
+                    is Result.Success -> _transactionCompleteUiState.value = TransactionCompleteUiState.Success
+                    is Result.Error -> _transactionCompleteUiState.value = TransactionCompleteUiState.Error(result.exception)
                 }
             }
     }

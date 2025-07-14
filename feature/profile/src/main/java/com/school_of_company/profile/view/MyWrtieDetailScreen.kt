@@ -19,9 +19,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -31,13 +33,16 @@ import com.school_of_company.design_system.componet.button.GwangSanEnableButton
 import com.school_of_company.design_system.componet.button.GwangSanStateButton
 import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.icons.DownArrowIcon
+import com.school_of_company.design_system.componet.toast.makeToast
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.model.enum.Mode
 import com.school_of_company.model.enum.Type
+import com.school_of_company.model.post.request.TransactionCompleteRequestModel
 import com.school_of_company.model.post.response.Post
 import com.school_of_company.profile.viewmodel.MyProfileViewModel
 import com.school_of_company.profile.viewmodel.uistate.GetMySpecificInformationUiState
+import com.school_of_company.profile.viewmodel.uistate.TransactionCompleteUiState
 
 @Composable
 internal fun ReviewPostDetailRoute(
@@ -48,10 +53,25 @@ internal fun ReviewPostDetailRoute(
     onErrorToast: (Throwable, Int) -> Unit,
     viewModel: MyProfileViewModel = hiltViewModel()
 ){
+    val transactionCompleteUiState by viewModel.transactionCompleteUiState.collectAsStateWithLifecycle()
     val getMySpecificInformationUiState = viewModel.getMySpecificInformationUiState.collectAsStateWithLifecycle().value
 
+    val context = LocalContext.current
     LaunchedEffect(postId) {
         viewModel.getMyPostDetail(postId = postId)
+    }
+
+    LaunchedEffect (transactionCompleteUiState){
+        when(transactionCompleteUiState){
+            is TransactionCompleteUiState.Loading -> Unit
+            is TransactionCompleteUiState.Success ->{
+                onCompleteClick()
+                makeToast(context,"거래완료 성공")
+            }
+            is TransactionCompleteUiState.Error ->{
+                makeToast(context,"거래완료 실패")
+            }
+        }
     }
 
     when (getMySpecificInformationUiState) {
@@ -93,6 +113,14 @@ internal fun ReviewPostDetailRoute(
                         onEditClick(post.id, post.type, post.mode)
                     },
                     onCompleteClick = onCompleteClick,
+                    onTransactionCompleteCallBack = {
+                        viewModel.transactionComplete(
+                            body = TransactionCompleteRequestModel(
+                                productId = postId,
+                                otherMemberId = (getMySpecificInformationUiState).data.id
+                            )
+                        )
+                    }
                 )
         }
     }
@@ -104,7 +132,8 @@ fun ReviewPostDetailScreen(
     data: Post,
     onBackClick: () -> Unit,
     onEditClick: () -> Unit,
-    onCompleteClick: () -> Unit
+    onCompleteClick: () -> Unit,
+    onTransactionCompleteCallBack: () -> Unit,
 ) {
     GwangSanTheme { colors, _ ->
 
@@ -236,7 +265,9 @@ fun ReviewPostDetailScreen(
 
                     GwangSanStateButton(
                         text = "거래완료",
-                        onClick = { onCompleteClick() },
+                        onClick = {
+                            onTransactionCompleteCallBack()
+                                  },
                         modifier = Modifier
                             .weight(1f)
                             .border(

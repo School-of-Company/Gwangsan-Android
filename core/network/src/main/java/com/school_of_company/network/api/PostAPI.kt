@@ -1,6 +1,7 @@
 package com.school_of_company.network.api
 
 import com.school_of_company.network.dto.post.request.PostAllRequest
+import com.school_of_company.network.dto.post.request.TransactionCompleteRequest
 import com.school_of_company.network.dto.post.response.PostDto
 import com.school_of_company.network.dto.post.response.PostModifyResponse
 import retrofit2.http.Body
@@ -44,5 +45,10 @@ interface PostAPI {
     @DELETE("/api/post/{post_id}")
     suspend fun deletePostInformation(
         @Path("post_id") postId: Long
+    )
+
+    @POST("/api/post/trade")
+    suspend fun transactionComplete(
+        @Body body: TransactionCompleteRequest
     )
 }

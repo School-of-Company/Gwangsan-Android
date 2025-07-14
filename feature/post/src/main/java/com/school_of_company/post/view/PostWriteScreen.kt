@@ -4,9 +4,9 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
@@ -15,8 +15,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -106,6 +108,7 @@ private fun PostWriteScreen(
     onNextClick: (String, String) -> Unit,
     onBackClick: () -> Unit,
 ) {
+    val focusManager = LocalFocusManager.current
     val isNextEnabled = subject.isNotBlank() && content.isNotBlank()
 
     GwangSanTheme { colors, typography ->
@@ -115,6 +118,11 @@ private fun PostWriteScreen(
                 .fillMaxSize()
                 .background(colors.white)
                 .padding(horizontal = 24.dp)
+                .pointerInput(Unit) {
+                    detectTapGestures {
+                        focusManager.clearFocus()
+                    }
+                }
         ) {
             GwangSanTextField(
                 value = subject,
@@ -159,7 +167,7 @@ private fun PostWriteScreen(
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .clip(CircleShape)
-                            .size(50.dp)
+                            .size(60.dp)
                             .GwangSanClickable {
                                 onExistingImageRemove(index)
                             }
@@ -173,7 +181,7 @@ private fun PostWriteScreen(
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .clip(CircleShape)
-                            .size(50.dp)
+                            .size(60.dp)
                             .GwangSanClickable { onImageRemove(index) }
                     )
                 }

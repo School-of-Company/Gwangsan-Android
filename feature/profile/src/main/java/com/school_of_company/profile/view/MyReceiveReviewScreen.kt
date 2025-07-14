@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -73,12 +72,12 @@ private fun MyReceiveReviewScreen(
                 .background(color = colors.white)
                 .padding(24.dp)
         ) {
+            Spacer(modifier = Modifier.padding(top = 56.dp))
+
             GwangSanSubTopBar(
                 startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { onBackClick() }) },
                 betweenText = "내가 받은 후기",
             )
-
-            Spacer(modifier = Modifier.padding(bottom = 56.dp))
 
             SwipeRefresh(
                 state = swipeRefreshState,
