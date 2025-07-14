@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -67,6 +68,10 @@ internal fun ReadMoreRoute(
     val (openReportBottomSheet, setOpenReportBottomSheet) = rememberSaveable { mutableStateOf(false) }
     val (openReviewBottomSheet, setOpenReviewBottomSheet) = rememberSaveable { mutableStateOf(false) }
 
+    val (buttonText, setButtonText) = remember { mutableStateOf("거래완료") }
+
+    val isPostTradeState = transactionCompleteUiState is TransactionCompleteUiState.Success
+
     LaunchedEffect(postId) {
         viewModel.getSpecificPost(postId)
     }
@@ -78,6 +83,7 @@ internal fun ReadMoreRoute(
                 makeToast(context, "신고 성공")
                 setOpenReportBottomSheet(false)
             }
+
             is ReportPostUiState.Error -> {
                 makeToast(context, "신고 실패")
             }
@@ -91,27 +97,31 @@ internal fun ReadMoreRoute(
                 makeToast(context, "리뷰를 성공하였습니다.")
                 setOpenReviewBottomSheet(false)
             }
+
             is ReviewPostUiState.Error -> {
                 makeToast(context, "리뷰를 실패하였습니다.")
             }
         }
     }
 
-    LaunchedEffect (transactionCompleteUiState){
-        when(transactionCompleteUiState){
+    LaunchedEffect(transactionCompleteUiState) {
+        when (transactionCompleteUiState) {
             is TransactionCompleteUiState.Loading -> Unit
-            is TransactionCompleteUiState.Success ->{
+            is TransactionCompleteUiState.Success -> {
+                setButtonText("리뷰쓰기")
                 setOpenReviewBottomSheet(false)
-                makeToast(context,"거래완료 성공")
+                makeToast(context, "거래완료 성공")
             }
-            is TransactionCompleteUiState.Error ->{
-                makeToast(context,"거래완료 실패")
+
+            is TransactionCompleteUiState.Error -> {
+                makeToast(context, "거래완료 실패")
             }
         }
     }
 
     ReadMoreScreen(
         getSpecificPostUiState = getSpecificPostUiState,
+        buttonText = buttonText,
         onBackClick = onBackClick,
         onOtherProfileClick = onOtherProfileClick,
         onChatClick = onChatClick,
@@ -147,7 +157,7 @@ internal fun ReadMoreRoute(
         openReviewBottomSheet = openReviewBottomSheet,
         setOpenReportBottomSheet = setOpenReportBottomSheet,
         setOpenReviewBottomSheet = setOpenReviewBottomSheet,
-
+        isPostTradeState = isPostTradeState
     )
 }
 
@@ -155,7 +165,9 @@ internal fun ReadMoreRoute(
 @Composable
 private fun ReadMoreScreen(
     modifier: Modifier = Modifier,
+    isPostTradeState: Boolean = false,
     getSpecificPostUiState: GetSpecificPostUiState,
+    buttonText: String,
     onBackClick: () -> Unit,
     onOtherProfileClick: (Long) -> Unit,
     onChatClick: () -> Unit,
@@ -258,7 +270,9 @@ private fun ReadMoreScreen(
                         )
 
                         Spacer(
-                            modifier = Modifier.height(1.dp).fillMaxWidth()
+                            modifier = Modifier
+                                .height(1.dp)
+                                .fillMaxWidth()
                                 .background(colors.gray100)
                         )
 
@@ -300,15 +314,26 @@ private fun ReadMoreScreen(
                                     .border(1.dp, colors.main500, RoundedCornerShape(8.dp))
                             )
 
-                            GwangSanStateButton(
-                                text = "거래완료",
-                                onClick = {
-                                    onTransactionCompleteCallBack()
-                                    setOpenReviewBottomSheet(true) },
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .border(1.dp, colors.main500, RoundedCornerShape(8.dp))
-                            )
+
+                            if (isPostTradeState) {
+                                GwangSanStateButton(
+                                    text = "리뷰쓰기",
+                                    onClick = {
+                                        setOpenReviewBottomSheet(true)
+                                    },
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .border(1.dp, colors.main500, RoundedCornerShape(8.dp))
+                                )
+                            } else {
+                                GwangSanStateButton(
+                                    text = "거래하기",
+                                    onClick = { onTransactionCompleteCallBack() },
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .border(1.dp, colors.main500, RoundedCornerShape(8.dp))
+                                )
+                            }
                         }
                     }
                 }
@@ -329,7 +354,9 @@ private fun ReadMoreScreen(
                         style = typography.titleMedium2,
                         color = colors.gray500
                     )
+
                     Spacer(modifier = Modifier.height(8.dp))
+
                     Text(
                         text = "뒤로가기",
                         style = typography.body3.copy(textDecoration = TextDecoration.Underline),
@@ -407,12 +434,14 @@ private fun PreviewReadMoreScreen() {
         onReportClick = { _, _ -> },
         onReviewClick = { _, _ -> },
         getSpecificPostUiState = GetSpecificPostUiState.Success(dummyPost),
-        onReportCallBack = {_, _ ->},
+        onReportCallBack = { _, _ -> },
         setOpenReportBottomSheet = {},
         setOpenReviewBottomSheet = {},
         openReportBottomSheet = false,
         openReviewBottomSheet = false,
-        onReviewCallBack = {_, _ ->},
-        onTransactionCompleteCallBack = {}
+        onReviewCallBack = { _, _ -> },
+        onTransactionCompleteCallBack = {},
+        isPostTradeState = true,
+        buttonText = ""
     )
 }
