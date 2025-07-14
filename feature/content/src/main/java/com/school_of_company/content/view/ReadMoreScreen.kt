@@ -23,6 +23,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -314,7 +315,6 @@ private fun ReadMoreScreen(
                                     .border(1.dp, colors.main500, RoundedCornerShape(8.dp))
                             )
 
-
                             if (isPostTradeState) {
                                 GwangSanStateButton(
                                     text = "리뷰쓰기",
@@ -335,6 +335,8 @@ private fun ReadMoreScreen(
                                 )
                             }
                         }
+
+                        Spacer(modifier = Modifier.padding(bottom = 40.dp))
                     }
                 }
             }
@@ -390,8 +392,7 @@ private fun ReadMoreScreen(
     }
 }
 
-
-@GwangsanPreviews
+@Preview
 @Composable
 private fun PreviewReadMoreScreen() {
     val dummyPost = com.school_of_company.model.post.response.Post(

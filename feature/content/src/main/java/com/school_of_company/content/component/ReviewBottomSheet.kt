@@ -1,5 +1,6 @@
 package com.school_of_company.content.view
 
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -19,6 +20,8 @@ import com.school_of_company.content.component.RatingSlider
 import com.yourpackage.design_system.component.textField.GwangSanTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,6 +36,8 @@ internal fun ReviewBottomSheet(
         var rating by remember { mutableIntStateOf(1) }
         var reviewText by remember { mutableStateOf("") }
         val isButtonEnabled = reviewText.isNotBlank()
+
+        val focusManager = LocalFocusManager.current
 
         ModalBottomSheet(
             onDismissRequest = { onDismiss() },
@@ -50,6 +55,11 @@ internal fun ReviewBottomSheet(
                         horizontal = 24.dp,
                         vertical = 16.dp
                     )
+                    .pointerInput(Unit) {
+                        detectTapGestures {
+                            focusManager.clearFocus()
+                        }
+                    }
             ) {
                 GwangSanSubTopBar(
                     startIcon = { Box(modifier = Modifier.size(24.dp)) },
@@ -86,7 +96,8 @@ internal fun ReviewBottomSheet(
                         .height(185.dp)
                 )
 
-                Spacer(modifier = Modifier.height(81.dp))
+                // 고정된 높이 대신 weight 사용으로 유연한 공간 확보
+                Spacer(modifier = Modifier.weight(1f))
 
                 GwangSanEnableButton(
                     text = "작성완료",

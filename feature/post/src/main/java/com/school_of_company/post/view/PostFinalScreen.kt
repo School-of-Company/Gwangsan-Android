@@ -69,7 +69,7 @@ internal fun PostFinalRoute(
             is PostUiState.Loading -> Unit
 
             is PostUiState.Success -> {
-                onErrorToast(null, R.string.success_post)
+                makeToast(context, "게시를 성공하였습니다.")
                 onSubmitClick()
             }
 
