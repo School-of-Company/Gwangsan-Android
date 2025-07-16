@@ -17,11 +17,8 @@ class ReviewDataSourceImpl @Inject constructor(
     override fun postReview(body: ReviewRequest): Flow<Unit> =
         performApiRequest { reviewApi.postReview(body = body) }
 
-    override fun getMyWriteReview(type: String?, mode: String?): Flow<ReviewResponse> =
-        performApiRequest { reviewApi.getMyWriteReview(
-            type = type,
-            mode = mode
-        ) }
+    override fun getMyWriteReview(): Flow<List<ReviewResponse>> =
+        performApiRequest { reviewApi.getMyWriteReview() }
 
     override fun getOtherReview(memberId: Long): Flow<ReviewResponse> =
         performApiRequest { reviewApi.getOtherReview(memberId = memberId) }

@@ -114,7 +114,7 @@ internal fun ReportBottomSheet(
                     text = "신고하기",
                     onClick = {
                         selectedReportType?.let { type ->
-                            onSubmit(type.name, reportContent) // 서버에 Enum name 전송
+                            onSubmit(type.name, reportContent)
                         }
                     },
                     backgroundColor = if (isButtonEnabled) colors.error else colors.gray300,

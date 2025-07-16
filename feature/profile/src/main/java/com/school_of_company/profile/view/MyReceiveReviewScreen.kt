@@ -79,6 +79,8 @@ private fun MyReceiveReviewScreen(
                 betweenText = "내가 받은 후기",
             )
 
+            Spacer(modifier = Modifier.padding(bottom = 16.dp))
+
             SwipeRefresh(
                 state = swipeRefreshState,
                 onRefresh = { getMyReceiveCallBack() },
@@ -134,7 +136,22 @@ private fun MyReceiveReviewScreen(
                         }
                     }
 
-                    is GetMyReviewUiState.Loading -> Unit
+                    is GetMyReviewUiState.Loading -> {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .verticalScroll(rememberScrollState())
+                                .background(color = colors.white)
+                        ) {
+                            Text(
+                                text = "리뷰 로딩중..",
+                                style = typography.titleMedium2,
+                                color = colors.gray500
+                            )
+                        }
+                    }
                 }
             }
         }

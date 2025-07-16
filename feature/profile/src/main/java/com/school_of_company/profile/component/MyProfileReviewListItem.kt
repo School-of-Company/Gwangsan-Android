@@ -54,11 +54,31 @@ internal fun MyProfileReviewListItem(
             modifier = modifier.fillMaxWidth()
         ) {
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
+                Box(
+                    modifier = Modifier
+                        .size(100.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                ) {
+                    if (data.images.isEmpty()) {
+                        Image(
+                            painter = painterResource(id = R.drawable.gwangsan),
+                            contentDescription = "기본 이미지",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    } else {
+                        Image(
+                            painter = rememberAsyncImagePainter(model = data.images.first().imageUrl),
+                            contentDescription = "후기 이미지",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
+                }
+
                 Column(
                     modifier = Modifier
                         .weight(1f)
@@ -90,6 +110,8 @@ internal fun MyProfileReviewListItem(
                 }
             }
         }
+
+        Spacer(modifier = Modifier.padding(bottom = 16.dp))
     }
 }
 
@@ -136,7 +158,8 @@ private fun MyProfileReviewListItemPreview() {
             productId = 0L,
             content = "adsfasdf",
             light = 19,
-            reviewerName = "김치라"
+            reviewerName = "김치라",
+            images = listOf()
         )
     )
 }

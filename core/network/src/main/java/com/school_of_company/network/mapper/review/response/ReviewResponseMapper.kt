@@ -1,6 +1,8 @@
 package com.school_of_company.network.mapper.review.response
 
+import com.school_of_company.model.review.response.ImagesList
 import com.school_of_company.model.review.response.ReviewResponseModel
+import com.school_of_company.network.dto.review.response.ImagesListResponse
 import com.school_of_company.network.dto.review.response.ReviewResponse
 
 fun ReviewResponse.toModel() : ReviewResponseModel =
@@ -8,5 +10,12 @@ fun ReviewResponse.toModel() : ReviewResponseModel =
         reviewerName = this.reviewerName,
         productId = this.productId,
         light = this.light,
-        content = this.content
+        content = this.content,
+        images = this.images.map { it.toModel() }
 )
+
+fun ImagesListResponse.toModel(): ImagesList =
+    ImagesList(
+        imageId = this.imageId,
+        imageUrl = this.imageUrl
+    )
