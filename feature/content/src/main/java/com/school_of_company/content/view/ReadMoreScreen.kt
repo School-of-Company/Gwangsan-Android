@@ -132,7 +132,7 @@ internal fun ReadMoreRoute(
             viewModel.transactionComplete(
                 body = TransactionCompleteRequestModel(
                     productId = postId,
-                    otherMemberId = (getSpecificPostUiState as GetSpecificPostUiState.Success).post.id
+                    otherMemberId = (getSpecificPostUiState as GetSpecificPostUiState.Success).post.member.memberId
                 )
             )
         },

@@ -15,10 +15,7 @@ interface ReviewAPI {
     )
 
     @GET("/api/review")
-    suspend fun getMyWriteReview(
-        @Query("type") type: String? = null,
-        @Query("mode") mode: String? = null
-    ) : ReviewResponse
+    suspend fun getMyWriteReview() : List<ReviewResponse>
 
     @GET("/api/review/current")
     suspend fun getMyReview() : List<ReviewResponse>

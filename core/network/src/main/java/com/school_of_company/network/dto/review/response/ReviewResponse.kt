@@ -9,4 +9,11 @@ data class ReviewResponse (
     @Json(name = "content") val content: String,
     @Json(name = "light") val light: Int,
     @Json(name = "reviewerName") val reviewerName: String,
+    @Json(name = "imageUrls") val images: List<ImagesListResponse>
+)
+
+@JsonClass(generateAdapter = true)
+data class ImagesListResponse(
+    @Json(name = "imageId") val imageId: Long,
+    @Json(name = "imageUrl") val imageUrl: String
 )

@@ -209,18 +209,26 @@ internal class MyProfileViewModel @Inject constructor(
         }
     }
 
-    internal fun getMyWriteReview(type: String? = null, mode: String? = null) = viewModelScope.launch {
-        reviewRepository.getMyWriteReview(
-            type = type,
-            mode = mode
-        )
+    internal fun getMyWriteReview() = viewModelScope.launch {
+        _getMyWriteReviewUiState.value = GetMyReviewWriteUiState.Loading
+        _swipeRefreshLoading.value = true
+
+        reviewRepository.getMyWriteReview()
             .asResult()
             .collectLatest {
                 result ->
                 when (result) {
                     is Result.Loading -> _getMyWriteReviewUiState.value = GetMyReviewWriteUiState.Loading
-                    is Result.Success -> _getMyWriteReviewUiState.value = GetMyReviewWriteUiState.Success(result.data)
-                    is Result.Error -> _getMyWriteReviewUiState.value = GetMyReviewWriteUiState.Error(result.exception)
+                    is Result.Success -> {
+                        _getMyWriteReviewUiState.value =
+                            GetMyReviewWriteUiState.Success(result.data)
+                        _swipeRefreshLoading.value = false
+                    }
+                    is Result.Error -> {
+                        _getMyWriteReviewUiState.value =
+                            GetMyReviewWriteUiState.Error(result.exception)
+                        _swipeRefreshLoading.value = false
+                    }
                 }
             }
     }
@@ -248,6 +256,8 @@ internal class MyProfileViewModel @Inject constructor(
                     is Result.Error -> {
                         _getMyReviewUiState.value = GetMyReviewUiState.Error(result.exception)
                         _swipeRefreshLoading.value = false
+
+                        Log.e("getMyReview", result.exception.message.toString())
                     }
                 }
             }

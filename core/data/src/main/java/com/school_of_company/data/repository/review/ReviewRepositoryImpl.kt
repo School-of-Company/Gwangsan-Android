@@ -29,11 +29,7 @@ class ReviewRepositoryImpl @Inject constructor(
         return reviewDataSource.postReview(body = body.toDto())
     }
 
-    override fun getMyWriteReview(type: String?, mode: String?): Flow<ReviewResponseModel> {
-       return reviewDataSource.getMyWriteReview(
-           type = type,
-           mode = mode
-       ).map { it.toModel() }
+    override fun getMyWriteReview(): Flow<List<ReviewResponseModel>> {
+       return reviewDataSource.getMyWriteReview().map { it.map { list -> list.toModel() } }
     }
-
 }

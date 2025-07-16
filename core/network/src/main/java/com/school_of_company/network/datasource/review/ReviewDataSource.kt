@@ -6,10 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface ReviewDataSource {
     fun postReview(body: ReviewRequest) : Flow<Unit>
-    fun getMyWriteReview(
-        type: String? = null,
-        mode: String? = null
-    ) : Flow<ReviewResponse>
+    fun getMyWriteReview() : Flow<List<ReviewResponse>>
     fun getMyReview() : Flow<List<ReviewResponse>>
     fun getOtherReview(memberId: Long) : Flow<ReviewResponse>
 }

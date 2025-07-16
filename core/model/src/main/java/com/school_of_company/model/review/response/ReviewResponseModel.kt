@@ -5,4 +5,10 @@ data class ReviewResponseModel(
     val content: String,
     val light: Int,
     val reviewerName: String,
+    val images: List<ImagesList>
+)
+
+data class ImagesList(
+    val imageId: Long,
+    val imageUrl: String
 )
