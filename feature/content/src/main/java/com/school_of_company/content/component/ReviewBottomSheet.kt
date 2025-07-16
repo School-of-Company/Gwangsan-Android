@@ -2,7 +2,9 @@ package com.school_of_company.content.view
 
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
@@ -51,6 +53,7 @@ internal fun ReviewBottomSheet(
             Column(
                 modifier = modifier
                     .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
                     .padding(
                         horizontal = 24.dp,
                         vertical = 16.dp
@@ -96,8 +99,7 @@ internal fun ReviewBottomSheet(
                         .height(185.dp)
                 )
 
-                // 고정된 높이 대신 weight 사용으로 유연한 공간 확보
-                Spacer(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.height(81.dp))
 
                 GwangSanEnableButton(
                     text = "작성완료",
