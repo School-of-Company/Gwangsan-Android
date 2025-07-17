@@ -1,6 +1,5 @@
 package com.school_of_company.main.view
 
-import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -22,11 +21,14 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.school_of_company.design_system.R
 import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.icons.BellIcon
@@ -36,6 +38,8 @@ import com.school_of_company.design_system.componet.icons.ServiceIcon
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.main.component.MainButton
+import com.school_of_company.main.viewmodel.MainViewModel
+import com.school_of_company.main.viewmodel.uistate.MemberUiState
 import com.school_of_company.ui.previews.GwangsanPreviews
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -44,10 +48,19 @@ import kotlinx.coroutines.launch
 internal fun MainStartRoute(
     navigationToService: () -> Unit,
     navigationToObject: () -> Unit,
+    viewModel: MainViewModel = hiltViewModel()
 ) {
+
+    val getMyProfileUiState by viewModel.myProfileUiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.getMyProfile()
+    }
+
     MainStartScreen(
         navigationToService = navigationToService,
         navigationToObject = navigationToObject,
+        getMyProfileUiState = getMyProfileUiState
     )
 }
 
@@ -56,6 +69,7 @@ private fun MainStartScreen(
     modifier: Modifier = Modifier,
     navigationToService: () -> Unit,
     navigationToObject: () -> Unit,
+    getMyProfileUiState: MemberUiState
 ) {
     GwangSanTheme { colors, typography ->
 
@@ -132,11 +146,31 @@ private fun MainStartScreen(
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                Text(
-                    text = "신가",
-                    style = typography.body4,
-                    color = colors.black
-                )
+                when (getMyProfileUiState) {
+                    is MemberUiState.Loading -> {
+                        Text(
+                            text = "로딩중..",
+                            style = typography.body4,
+                            color = colors.gray500
+                        )
+                    }
+
+                    is MemberUiState.Success -> {
+                        Text(
+                            text = getMyProfileUiState.data.placeName,
+                            style = typography.body4,
+                            color = colors.black
+                        )
+                    }
+
+                    is MemberUiState.Error -> {
+                        Text(
+                            text = "요청 실패..",
+                            style = typography.body4,
+                            color = colors.gray500
+                        )
+                    }
+                }
 
                 Spacer(modifier = Modifier.padding(bottom = 62.dp))
 
@@ -205,6 +239,7 @@ fun MainStartScreenPreview() {
     MainStartScreen(
         navigationToService = {},
         navigationToObject = {},
+        getMyProfileUiState = MemberUiState.Loading
     )
 }
 

@@ -23,7 +23,9 @@ import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.inform.component.InformList
 import com.school_of_company.inform.viewmodel.NoticeViewModel
 import com.school_of_company.inform.viewmodel.uistate.GetAllNoticeUiState
+import com.school_of_company.inform.viewmodel.uistate.MemberUiState
 import com.school_of_company.model.notice.response.GetAllNoticeResponseModel
+import com.school_of_company.model.post.response.Member
 import com.school_of_company.ui.previews.GwangsanPreviews
 
 @Composable
@@ -35,16 +37,19 @@ internal fun InformRoute(
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = swipeRefreshLoading)
 
     val getAllNoticeUiState by viewModel.getAllNoticeUiState.collectAsStateWithLifecycle()
+    val getMyProfileUiState by viewModel.getMyProfileUiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.getAllNotice()
+        viewModel.getMyProfile()
     }
 
     InformScreen(
         swipeRefreshState = swipeRefreshState,
         getAllNotice = { viewModel.getAllNotice() },
         informList = getAllNoticeUiState,
-        onNextClick = onNextClick
+        onNextClick = onNextClick,
+        getMyProfileUiState = getMyProfileUiState
     )
 }
 
@@ -54,6 +59,7 @@ private fun InformScreen(
     swipeRefreshState: SwipeRefreshState,
     getAllNotice: () -> Unit,
     informList: GetAllNoticeUiState,
+    getMyProfileUiState: MemberUiState,
     onNextClick: (Long) -> Unit
 ) {
     GwangSanTheme { colors, typography ->
@@ -75,19 +81,55 @@ private fun InformScreen(
                 modifier = Modifier.padding(bottom = 16.dp)
             )
 
-            Text(
-                text = "신가지점 공지입니다",
-                style = typography.titleMedium2,
-                color = colors.black
-            )
+            when (getMyProfileUiState) {
+                is MemberUiState.Loading -> {
+                    Text(
+                        text = "지점명 가져오는 중..",
+                        style = typography.titleMedium2,
+                        color = colors.black
+                    )
 
-            Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
 
-            Text(
-                text = "신가",
-                style = typography.body5,
-                color = colors.gray400,
-            )
+                    Text(
+                        text = "지점명 가져오는 중..",
+                        style = typography.body5,
+                        color = colors.gray400,
+                    )
+                }
+
+                is MemberUiState.Success -> {
+                    Text(
+                        text = "${getMyProfileUiState.data.placeName} 공지입니다",
+                        style = typography.titleMedium2,
+                        color = colors.black
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = getMyProfileUiState.data.placeName,
+                        style = typography.body5,
+                        color = colors.gray400,
+                    )
+                }
+
+                is MemberUiState.Error -> {
+                    Text(
+                        text = "지점을 찾을 수 없습니다..",
+                        style = typography.titleMedium2,
+                        color = colors.black
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = "지점을 찾을 수 없습니다..",
+                        style = typography.body5,
+                        color = colors.gray400,
+                    )
+                }
+            }
 
             Spacer(modifier = Modifier.height(24.dp))
 
@@ -167,6 +209,7 @@ private fun InformScreenPreview() {
         onNextClick = {},
         swipeRefreshState = SwipeRefreshState(isRefreshing = false),
         getAllNotice = {},
-        modifier = Modifier
+        modifier = Modifier,
+        getMyProfileUiState = MemberUiState.Loading
     )
 }
