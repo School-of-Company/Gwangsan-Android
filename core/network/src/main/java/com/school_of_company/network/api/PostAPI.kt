@@ -51,4 +51,11 @@ interface PostAPI {
     suspend fun transactionComplete(
         @Body body: TransactionCompleteRequest
     )
+
+    @GET("/api/post/member/{member_id}")
+    suspend fun otherPostInformation(
+        @Path("member_id") memberId: Long,
+        @Query("type") type: String? = null,
+        @Query("mode") mode: String? = null,
+    ) : List<PostDto>
 }
