@@ -2,9 +2,11 @@ package com.school_of_company.inform.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.school_of_company.data.repository.member.MemberRepository
 import com.school_of_company.data.repository.notice.NoticeRepository
 import com.school_of_company.inform.viewmodel.uistate.GetAllNoticeUiState
 import com.school_of_company.inform.viewmodel.uistate.GetSpecificNoticeUiState
+import com.school_of_company.inform.viewmodel.uistate.MemberUiState
 import com.school_of_company.result.Result
 import com.school_of_company.result.asResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NoticeViewModel @Inject constructor(
-    private val noticeRepository: NoticeRepository
+    private val noticeRepository: NoticeRepository,
+    private val memberRepository: MemberRepository
 ) : ViewModel() {
 
     private val _getAllNoticeUiState = MutableStateFlow<GetAllNoticeUiState>(GetAllNoticeUiState.Loading)
@@ -24,6 +27,9 @@ class NoticeViewModel @Inject constructor(
 
     private val _getSpecificNoticeUiState = MutableStateFlow<GetSpecificNoticeUiState>(GetSpecificNoticeUiState.Loading)
     internal val getSpecificNoticeUiState = _getSpecificNoticeUiState.asStateFlow()
+
+    private val _getMyProfileUiState = MutableStateFlow<MemberUiState>(MemberUiState.Loading)
+    internal val getMyProfileUiState = _getMyProfileUiState.asStateFlow()
 
     private val _swipeRefreshLoading = MutableStateFlow(false)
     val swipeRefreshLoading = _swipeRefreshLoading.asStateFlow()
@@ -64,6 +70,18 @@ class NoticeViewModel @Inject constructor(
                     is Result.Loading -> _getSpecificNoticeUiState.value = GetSpecificNoticeUiState.Loading
                     is Result.Success -> _getSpecificNoticeUiState.value = GetSpecificNoticeUiState.Success(result.data)
                     is Result.Error -> _getSpecificNoticeUiState.value = GetSpecificNoticeUiState.Error(result.exception)
+                }
+            }
+    }
+
+    internal fun getMyProfile() = viewModelScope.launch {
+        memberRepository.getMyProfileInformation()
+            .asResult()
+            .collectLatest { result ->
+                when (result) {
+                    is Result.Loading -> _getMyProfileUiState.value = MemberUiState.Loading
+                    is Result.Success -> _getMyProfileUiState.value = MemberUiState.Success(result.data)
+                    is Result.Error -> _getMyProfileUiState.value = MemberUiState.Error(result.exception)
                 }
             }
     }
