@@ -19,6 +19,7 @@ import com.school_of_company.profile.viewmodel.uistate.GetMySpecificInformationU
 import com.school_of_company.profile.viewmodel.uistate.LogoutUiState
 import com.school_of_company.profile.viewmodel.uistate.MemberUiState
 import com.school_of_company.profile.viewmodel.uistate.MyInForMatIonPeTchUiState
+import com.school_of_company.profile.viewmodel.uistate.OtherGetPostUiState
 import com.school_of_company.profile.viewmodel.uistate.OtherPersonGetUistate
 import com.school_of_company.profile.viewmodel.uistate.OtherReviewUIState
 import com.school_of_company.profile.viewmodel.uistate.TransactionCompleteUiState
@@ -55,6 +56,9 @@ internal class MyProfileViewModel @Inject constructor(
 
     private val _swipeRefreshLoading = MutableStateFlow(false)
     val swipeRefreshLoading = _swipeRefreshLoading.asStateFlow()
+
+    private val _otherGetPostUiState = MutableStateFlow<OtherGetPostUiState>(OtherGetPostUiState.Loading)
+    internal val otherGetPostUiState = _otherGetPostUiState.asStateFlow()
 
     private val _logoutUiState = MutableStateFlow<LogoutUiState>(LogoutUiState.Loading)
     internal val logoutUiState = _logoutUiState.asStateFlow()
@@ -195,6 +199,31 @@ internal class MyProfileViewModel @Inject constructor(
 
                     is Result.Error -> _getMyPostUiState.value =
                         GetMyPostUiState.Error(result.exception)
+                }
+            }
+    }
+
+    internal fun otherGetPost(memberId: Long) = viewModelScope.launch {
+        postRepository.otherPostInformation(
+            type = null,
+            mode = null,
+            memberId = memberId
+        )
+            .asResult()
+            .collectLatest {
+                result ->
+                when (result) {
+                    is Result.Loading -> _otherGetPostUiState.value = OtherGetPostUiState.Loading
+                    is Result.Success ->
+                        if (result.data.isEmpty()) {
+                            _otherGetPostUiState.value = OtherGetPostUiState.Empty
+                        }else{
+                            _otherGetPostUiState.value = OtherGetPostUiState.Success(result.data)
+                        }
+                    is Result.Error -> {
+                        Log.e("OtherGetPost", "게시글 불러오기 실패", result.exception) // ✅ 로그 추가
+                        _otherGetPostUiState.value = OtherGetPostUiState.Error(result.exception)
+                    }
                 }
             }
     }
