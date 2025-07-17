@@ -22,14 +22,16 @@ internal fun OtherPersonIntroduce(
     data: GetAllMemberResponseModel
 ) {
     GwangSanTheme { colors, typography ->
+
         Column(modifier = modifier
             .fillMaxSize()
-            .padding(horizontal = 24.dp)
+            .padding(top = 24.dp)
         ) {
             Text(
                 text = "소개",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
+                color = colors.black,
                 modifier = Modifier
             )
 
@@ -61,6 +63,7 @@ internal fun OtherPersonIntroduce(
             Text(
                 text = data.description,
                 style = typography.body5,
+                color = colors.black
             )
         }
     }
