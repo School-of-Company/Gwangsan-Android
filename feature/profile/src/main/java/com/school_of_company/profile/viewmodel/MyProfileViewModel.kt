@@ -4,14 +4,12 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.school_of_company.data.repository.auth.AuthRepository
 import com.school_of_company.data.repository.member.MemberRepository
 import com.school_of_company.data.repository.post.PostRepository
 import com.school_of_company.data.repository.review.ReviewRepository
 import com.school_of_company.model.member.request.ModifyMemberInformationRequestModel
 import com.school_of_company.model.post.request.TransactionCompleteRequestModel
-import com.school_of_company.profile.viewmodel.uistate.DeletePostUiState
 import com.school_of_company.profile.viewmodel.uistate.GetMyPostUiState
 import com.school_of_company.profile.viewmodel.uistate.GetMyReviewUiState
 import com.school_of_company.profile.viewmodel.uistate.GetMyReviewWriteUiState
@@ -19,7 +17,6 @@ import com.school_of_company.profile.viewmodel.uistate.GetMySpecificInformationU
 import com.school_of_company.profile.viewmodel.uistate.LogoutUiState
 import com.school_of_company.profile.viewmodel.uistate.MemberUiState
 import com.school_of_company.profile.viewmodel.uistate.MyInForMatIonPeTchUiState
-import com.school_of_company.profile.viewmodel.uistate.OtherGetPostUiState
 import com.school_of_company.profile.viewmodel.uistate.OtherPersonGetUistate
 import com.school_of_company.profile.viewmodel.uistate.OtherReviewUIState
 import com.school_of_company.profile.viewmodel.uistate.TransactionCompleteUiState
