@@ -25,10 +25,13 @@ import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.theme.GwangSanTheme
 
 @Composable
-internal fun LogoutDialog(
+internal fun ProfileDialog(
     modifier: Modifier = Modifier,
     onLogout: () -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    titleText: String = "로그아웃",
+    contentText: String = "정말 로그아웃 하시겠어요?",
+    buttonText: String = "로그아웃"
 ) {
     GwangSanTheme { colors, typography ->
 
@@ -41,7 +44,7 @@ internal fun LogoutDialog(
                 .padding(all = 16.dp)
         ) {
             Text(
-                text = "로그아웃",
+                text = titleText,
                 style = TextStyle(
                     fontSize = 20.sp,
                     lineHeight = 34.sp,
@@ -55,7 +58,7 @@ internal fun LogoutDialog(
             Spacer(modifier = Modifier.padding(bottom = 12.dp))
 
             Text(
-                text = "정말 로그아웃 하시겠어요?",
+                text = contentText,
                 style = typography.body5,
                 color = colors.gray300,
                 modifier = Modifier.padding(end = 100.dp)
@@ -77,7 +80,7 @@ internal fun LogoutDialog(
                 )
 
                 Text(
-                    text = "로그아웃",
+                    text = buttonText,
                     style = typography.body5,
                     color = colors.error,
                     textAlign = TextAlign.Center,
@@ -93,7 +96,7 @@ internal fun LogoutDialog(
 @Preview
 @Composable
 private fun LogoutDialogPreview() {
-    LogoutDialog(
+    ProfileDialog(
         onLogout = {},
         onDismiss = {}
     )

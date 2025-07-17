@@ -4,12 +4,14 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.school_of_company.data.repository.auth.AuthRepository
 import com.school_of_company.data.repository.member.MemberRepository
 import com.school_of_company.data.repository.post.PostRepository
 import com.school_of_company.data.repository.review.ReviewRepository
 import com.school_of_company.model.member.request.ModifyMemberInformationRequestModel
 import com.school_of_company.model.post.request.TransactionCompleteRequestModel
+import com.school_of_company.profile.viewmodel.uistate.DeletePostUiState
 import com.school_of_company.profile.viewmodel.uistate.GetMyPostUiState
 import com.school_of_company.profile.viewmodel.uistate.GetMyReviewUiState
 import com.school_of_company.profile.viewmodel.uistate.GetMyReviewWriteUiState
@@ -44,6 +46,9 @@ internal class MyProfileViewModel @Inject constructor(
         private const val SPECIALTY_LIST = "specialty_list"
         private const val NICKNAME = "nickname"
     }
+
+    private val _deletePostUiState = MutableStateFlow<DeletePostUiState>(DeletePostUiState.Loading)
+    internal val deletePostUiState = _deletePostUiState.asStateFlow()
 
     private val _transactionCompleteUiState = MutableStateFlow<TransactionCompleteUiState>(TransactionCompleteUiState.Loading)
     internal val transactionCompleteUiState = _transactionCompleteUiState.asStateFlow()
@@ -82,6 +87,20 @@ internal class MyProfileViewModel @Inject constructor(
     internal val specialty = savedStateHandle.getStateFlow(SPECIALTY, "")
     internal val specialtyList = savedStateHandle.getStateFlow(SPECIALTY_LIST, emptyList<String>())
     internal val description = savedStateHandle.getStateFlow(DESCRIPTION, "")
+
+    internal fun deletePost(postId: Long) = viewModelScope.launch {
+        postRepository.deletePostInformation(postId)
+            .asResult()
+            .collectLatest { result ->
+                when (result) {
+                    is Result.Loading -> _deletePostUiState.value = DeletePostUiState.Loading
+
+                    is Result.Success -> _deletePostUiState.value = DeletePostUiState.Success
+
+                    is Result.Error -> _deletePostUiState.value = DeletePostUiState.Error(result.exception)
+                }
+            }
+    }
 
     internal fun logout() = viewModelScope.launch {
         authRepository.logout()
