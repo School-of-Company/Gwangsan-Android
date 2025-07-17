@@ -121,8 +121,8 @@ private fun OtherPersonProfileScreen(
 
             item {
                 HorizontalDivider(
-                thickness = 12.dp,
-                color = colors.gray200)
+                    thickness = 12.dp,
+                    color = colors.gray200)
             }
 
             item { Spacer(modifier = Modifier.height(16.dp)) }
