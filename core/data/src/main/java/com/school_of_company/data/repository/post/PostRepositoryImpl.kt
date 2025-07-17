@@ -57,6 +57,18 @@ class PostRepositoryImpl @Inject constructor (
     }
 
     override fun transactionComplete(body: TransactionCompleteRequestModel): Flow<Unit> {
-        return  postDataSource.transactionComplete(body = body.toDto())
+        return postDataSource.transactionComplete(body = body.toDto())
+    }
+
+    override fun otherPostInformation(
+        type: String?,
+        mode: String?,
+        memberId: Long
+    ): Flow<List<Post>> {
+        return postDataSource.otherPostInformation(
+            type = type,
+            mode = mode,
+            memberId = memberId
+        ).map {it.map { list -> list.toModel() }}
     }
 }
