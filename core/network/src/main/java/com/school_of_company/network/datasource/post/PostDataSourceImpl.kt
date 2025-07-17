@@ -44,4 +44,17 @@ class PostDataSourceImpl @Inject constructor(
 
     override fun transactionComplete(body: TransactionCompleteRequest): Flow<Unit> =
         performApiRequest { postAPI.transactionComplete(body = body) }
+
+    override fun otherPostInformation(
+        type: String?,
+        mode: String?,
+        memberId: Long,
+        ): Flow<List<PostDto>> =
+        performApiRequest {
+            postAPI.otherPostInformation(
+                type = type,
+                mode = mode,
+                memberId = memberId
+            )
+        }
 }
