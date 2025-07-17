@@ -24,4 +24,9 @@ interface PostDataSource {
     ) : Flow<List<PostDto>>
     fun deletePostInformation(postId: Long) : Flow<Unit>
     fun transactionComplete(body: TransactionCompleteRequest) : Flow<Unit>
+    fun otherPostInformation(
+        type: String? = null,
+        mode: String? = null,
+        memberId: Long
+    ) : Flow<List<PostDto>>
 }
