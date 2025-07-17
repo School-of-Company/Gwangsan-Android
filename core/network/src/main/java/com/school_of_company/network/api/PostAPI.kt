@@ -42,9 +42,9 @@ interface PostAPI {
         @Query("mode") mode: String? = null,
     ) : List<PostDto>
 
-    @DELETE("/api/post/{post_id}")
+    @DELETE("/api/post/{product_id}")
     suspend fun deletePostInformation(
-        @Path("post_id") postId: Long
+        @Path("product_id") postId: Long
     )
 
     @POST("/api/post/trade")
