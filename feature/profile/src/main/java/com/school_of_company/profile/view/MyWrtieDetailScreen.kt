@@ -147,9 +147,7 @@ internal fun ReviewPostDetailRoute(
                     },
                     openDeleteBottomSheet = openDeleteBottomSheet,
                     setOpenDeleteBottomSheet = setOpenDeleteBottomSheet,
-                    onDeleteCallBack = {
-                        viewModel.deletePost(postId)
-                    }
+                    onDeleteCallBack = { viewModel.deletePost(postId) }
                 )
         }
     }
