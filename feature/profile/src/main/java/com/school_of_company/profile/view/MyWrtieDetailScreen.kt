@@ -1,3 +1,5 @@
+package com.school_of_company.profile.view
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -20,12 +22,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
@@ -33,14 +39,15 @@ import com.school_of_company.design_system.componet.button.GwangSanEnableButton
 import com.school_of_company.design_system.componet.button.GwangSanStateButton
 import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.icons.DownArrowIcon
+import com.school_of_company.design_system.componet.recycle.CleaningRequestCard
 import com.school_of_company.design_system.componet.toast.makeToast
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
-import com.school_of_company.model.enum.Mode
-import com.school_of_company.model.enum.Type
 import com.school_of_company.model.post.request.TransactionCompleteRequestModel
 import com.school_of_company.model.post.response.Post
+import com.school_of_company.profile.component.ProfileDialog
 import com.school_of_company.profile.viewmodel.MyProfileViewModel
+import com.school_of_company.profile.viewmodel.uistate.DeletePostUiState
 import com.school_of_company.profile.viewmodel.uistate.GetMySpecificInformationUiState
 import com.school_of_company.profile.viewmodel.uistate.TransactionCompleteUiState
 
@@ -55,17 +62,34 @@ internal fun ReviewPostDetailRoute(
 ){
     val transactionCompleteUiState by viewModel.transactionCompleteUiState.collectAsStateWithLifecycle()
     val getMySpecificInformationUiState = viewModel.getMySpecificInformationUiState.collectAsStateWithLifecycle().value
+    val deletePostUiState by viewModel.deletePostUiState.collectAsStateWithLifecycle()
+
+    val (openDeleteBottomSheet, setOpenDeleteBottomSheet) = remember { mutableStateOf(false) }
 
     val context = LocalContext.current
+
     LaunchedEffect(postId) {
         viewModel.getMyPostDetail(postId = postId)
+    }
+
+    LaunchedEffect(deletePostUiState) {
+        when (deletePostUiState) {
+            is DeletePostUiState.Loading -> Unit
+            is DeletePostUiState.Success -> {
+                setOpenDeleteBottomSheet(false)
+                makeToast(context, "게시글이 삭제되었습니다.")
+                onCompleteClick()
+            }
+            is DeletePostUiState.Error -> {
+                makeToast(context, "게시글 삭제 실패")
+            }
+        }
     }
 
     LaunchedEffect (transactionCompleteUiState){
         when(transactionCompleteUiState){
             is TransactionCompleteUiState.Loading -> Unit
             is TransactionCompleteUiState.Success ->{
-                onCompleteClick()
                 makeToast(context,"거래완료 성공")
             }
             is TransactionCompleteUiState.Error ->{
@@ -112,7 +136,7 @@ internal fun ReviewPostDetailRoute(
                     onEditClick = {
                         onEditClick(post.id, post.type, post.mode)
                     },
-                    onCompleteClick = onCompleteClick,
+                    onDeleteCompleteClick = onCompleteClick,
                     onTransactionCompleteCallBack = {
                         viewModel.transactionComplete(
                             body = TransactionCompleteRequestModel(
@@ -120,7 +144,10 @@ internal fun ReviewPostDetailRoute(
                                 otherMemberId = (getMySpecificInformationUiState).data.id
                             )
                         )
-                    }
+                    },
+                    openDeleteBottomSheet = openDeleteBottomSheet,
+                    setOpenDeleteBottomSheet = setOpenDeleteBottomSheet,
+                    onDeleteCallBack = { viewModel.deletePost(postId) }
                 )
         }
     }
@@ -132,10 +159,13 @@ fun ReviewPostDetailScreen(
     data: Post,
     onBackClick: () -> Unit,
     onEditClick: () -> Unit,
-    onCompleteClick: () -> Unit,
+    onDeleteCompleteClick: () -> Unit,
+    onDeleteCallBack: () -> Unit,
     onTransactionCompleteCallBack: () -> Unit,
+    openDeleteBottomSheet: Boolean,
+    setOpenDeleteBottomSheet: (Boolean) -> Unit
 ) {
-    GwangSanTheme { colors, _ ->
+    GwangSanTheme { colors, typography ->
 
         val pagerState = rememberPagerState(pageCount = { data.images.size })
 
@@ -229,11 +259,22 @@ fun ReviewPostDetailScreen(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                com.school_of_company.design_system.componet.recycle.CleaningRequestCard(
+                CleaningRequestCard(
                     title = data.title,
                     priceAndLocation = "${data.gwangsan} 광산",
                     description = data.content,
                     modifier = Modifier.padding(horizontal = 24.dp)
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Text(
+                    text = "이 게시글 삭제하기",
+                    style = typography.label.copy(textDecoration = TextDecoration.Underline),
+                    color = colors.error,
+                    modifier = Modifier
+                        .GwangSanClickable { setOpenDeleteBottomSheet(true) }
+                        .padding(horizontal = 24.dp)
                 )
 
                 Spacer(modifier = Modifier.weight(1f))
@@ -277,6 +318,23 @@ fun ReviewPostDetailScreen(
                             )
                     )
                 }
+            }
+        }
+
+        if (openDeleteBottomSheet) {
+            Dialog(onDismissRequest = { setOpenDeleteBottomSheet(false) }) {
+                ProfileDialog(
+                    onLogout = {
+                        onDeleteCallBack()
+                        setOpenDeleteBottomSheet(false)
+                    },
+                    onDismiss = {
+                        setOpenDeleteBottomSheet(false)
+                    },
+                    titleText = "게시글 삭제",
+                    contentText = "이 게시글을 삭제하시겠습니까?",
+                    buttonText = "삭제하기"
+                )
             }
         }
     }

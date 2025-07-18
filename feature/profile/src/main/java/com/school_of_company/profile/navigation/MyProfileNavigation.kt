@@ -1,20 +1,17 @@
 package com.school_of_company.profile.navigation
 
 import MyReviewRoute
-import ReviewPostDetailRoute
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.school_of_company.model.enum.Mode
-import com.school_of_company.model.enum.Type
 import com.school_of_company.profile.view.MyInformationEditRoute
 import com.school_of_company.profile.view.MyProfileRoute
 import com.school_of_company.profile.view.MyReceiveReviewRoute
 import com.school_of_company.profile.view.OtherPersonProfileRoute
 import com.school_of_company.profile.view.OtherReviewRoute
+import com.school_of_company.profile.view.ReviewPostDetailRoute
 import com.school_of_company.profile.view.TransactionHistoryRoute
-
 
 const val MyProfileRoute = "my_profile"
 const val MyReviewRoute = "my_review"
@@ -181,5 +178,3 @@ fun NavGraphBuilder.otherReviewScreen(
         )
     }
 }
-
-
