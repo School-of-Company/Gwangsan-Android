@@ -9,6 +9,7 @@ import com.school_of_company.network.api.NoticeAPI
 import com.school_of_company.network.api.PostAPI
 import com.school_of_company.network.api.ReportAPI
 import com.school_of_company.network.api.ReviewAPI
+import com.school_of_company.network.api.WebhookAPI
 import com.school_of_company.network.util.AuthInterceptor
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -112,5 +113,9 @@ object NetworkModule {
     fun provideReviewAPI(retrofit: Retrofit): ReviewAPI =
         retrofit.create(ReviewAPI::class.java)
 
+    @Provides
+    @Singleton
+    fun provideWebhookAPI(retrofit: Retrofit): WebhookAPI =
+        retrofit.create(WebhookAPI::class.java)
 }
 
