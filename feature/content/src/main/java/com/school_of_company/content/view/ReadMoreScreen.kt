@@ -48,7 +48,6 @@ import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.model.post.request.TransactionCompleteRequestModel
 import com.school_of_company.model.report.request.ReportRequestModel
 import com.school_of_company.model.review.request.ReviewRequestModel
-import com.school_of_company.ui.previews.GwangsanPreviews
 
 @Composable
 internal fun ReadMoreRoute(
@@ -362,7 +361,8 @@ private fun ReadMoreScreen(
                     Text(
                         text = "뒤로가기",
                         style = typography.body3.copy(textDecoration = TextDecoration.Underline),
-                        color = colors.main500
+                        color = colors.main500,
+                        modifier = Modifier.GwangSanClickable { onBackClick() }
                     )
                 }
             }

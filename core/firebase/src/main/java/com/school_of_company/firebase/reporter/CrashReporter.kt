@@ -65,7 +65,7 @@ class CrashReporter @Inject constructor(
                 DiscordField("기기 모델", crashInfo.deviceModel, true),
                 DiscordField("발생 시간", crashInfo.timestamp, true),
                 DiscordField("스택 트레이스", crashInfo.stackTrace, false),
-                DiscordField("확인해줘...", "<@930099449307467786> <@1214533557326979078>", false),
+                DiscordField("확인해줘...", BuildConfig.DISCORD_MEMBER_ID, false),
                 DiscordField(
                     "Firebase Crashlytics",
                     "[Crashlytics에서 보기](${BuildConfig.FIREBASE_CRASHLYTICS_ISSUE_URL})",

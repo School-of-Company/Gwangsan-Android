@@ -13,10 +13,8 @@ android {
         buildConfig = true
         defaultConfig {
             buildConfigField("String", "FIREBASE_CRASHLYTICS_ISSUE_URL",  getApiKey("FIREBASE_CRASHLYTICS_ISSUE_URL"))
-        }
-
-        defaultConfig {
             buildConfigField("String", "DISCORD_WEBHOOK_URL", getApiKey("DISCORD_WEBHOOK_URL"))
+            buildConfigField("String", "DISCORD_MEMBER_ID", getApiKey("DISCORD_MEMBER_ID"))
         }
     }
 }
