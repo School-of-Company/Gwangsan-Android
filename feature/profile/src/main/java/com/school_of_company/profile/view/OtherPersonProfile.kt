@@ -63,9 +63,7 @@ internal fun OtherPersonProfileRoute(
     }
 
     when (otherPersonUiState) {
-        is OtherPersonGetUistate.Loading -> {
-            makeToast(context = context, "로딩중")
-        }
+        is OtherPersonGetUistate.Loading -> Unit
 
         is OtherPersonGetUistate.Error -> {
             makeToast(context = context, "정보를 볼러오는데 실패했습니다.")
@@ -244,10 +242,10 @@ private fun OtherPersonProfileScreen(
                 is OtherGetPostUiState.Empty -> {
                     item {
                         Box(
+                            contentAlignment = Alignment.Center,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(150.dp),
-                            contentAlignment = Alignment.Center
                         ) {
                             Text(
                                 text = "게시물이 없습니다.",
