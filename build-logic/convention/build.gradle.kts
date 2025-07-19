@@ -20,6 +20,7 @@ dependencies {
     implementation(libs.android.gradlePlugin)
     implementation(libs.kotlin.gradlePlugin)
     implementation(libs.ksp.gradlePlugin)
+    implementation(libs.firebase.crashlytics.gradlePlugin)
 }
 
 gradlePlugin {
@@ -51,6 +52,10 @@ gradlePlugin {
         register("jvmLibrary") {
             id = "gwangsan.jvm.library"
             implementationClass = "com.school_of_company.convention.JvmLibraryConventionPlugin"
+        }
+        register("androidFirebase") {
+            id = "gwangsan.android.firebase"
+            implementationClass = "com.school_of_company.convention.AndroidFirebaseConventionPlugin"
         }
     }
 }
