@@ -2,7 +2,6 @@ package com.school_of_company.firebase.di
 
 import com.school_of_company.firebase.reporter.CrashReporter
 import com.school_of_company.network.api.WebhookAPI
-import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
