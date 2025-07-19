@@ -96,10 +96,9 @@ fun NoticeListItem(
             }
         }
 
-        Spacer(modifier = Modifier.padding(bottom = 16.dp))
+        Spacer(modifier = Modifier.padding(bottom = 32.dp))
     }
 }
-
 
 @Composable
 fun NoticeList(
