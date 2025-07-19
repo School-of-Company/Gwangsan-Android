@@ -202,7 +202,6 @@ internal class MyProfileViewModel @Inject constructor(
                             _otherGetPostUiState.value = OtherGetPostUiState.Success(result.data)
                         }
                     is Result.Error -> {
-                        Log.e("OtherGetPost", "게시글 불러오기 실패", result.exception) // ✅ 로그 추가
                         _otherGetPostUiState.value = OtherGetPostUiState.Error(result.exception)
                     }
                 }
