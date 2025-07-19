@@ -11,9 +11,7 @@ import com.school_of_company.network.dto.webhook.message.DiscordField
 import com.school_of_company.network.dto.webhook.message.DiscordFooter
 import com.school_of_company.network.dto.webhook.message.DiscordMessage
 import com.school_of_company.network.api.WebhookAPI
-import com.squareup.moshi.Moshi
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withTimeout
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -30,16 +28,13 @@ class CrashReporter @Inject constructor(
             try {
                 Log.e("CrashReporter", "앱 크래시 발생", exception)
 
-                // Firebase Crashlytics에 기록
                 FirebaseCrashlytics.getInstance().recordException(exception)
 
-                // 즉시 웹훅 전송 시도
                 try {
                     runBlocking {
-                        withTimeout(3000L) {
-                            sendDiscordWebhook(exception, context)
-                            Log.d("CrashReporter", "크래시 웹훅 전송 성공")
-                        }
+                        sendDiscordWebhook(exception, context)
+                        Log.d("CrashReporter", "크래시 웹훅 전송 성공")
+
                     }
                 } catch (e: Exception) {
                     Log.e("CrashReporter", "크래시 웹훅 전송 실패", e)
@@ -70,9 +65,17 @@ class CrashReporter @Inject constructor(
                 DiscordField("기기 모델", crashInfo.deviceModel, true),
                 DiscordField("발생 시간", crashInfo.timestamp, true),
                 DiscordField("스택 트레이스", crashInfo.stackTrace, false),
-                DiscordField("Firebase Crashlytics", "[Crashlytics에서 보기](${BuildConfig.FIREBASE_CRASHLYTICS_ISSUE_URL})", false)
+                DiscordField("확인해줘...", "<@930099449307467786> <@1214533557326979078>", false),
+                DiscordField(
+                    "Firebase Crashlytics",
+                    "[Crashlytics에서 보기](${BuildConfig.FIREBASE_CRASHLYTICS_ISSUE_URL})",
+                    false
+                )
             ),
-            timestamp = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault()).format(Date()),
+            timestamp = SimpleDateFormat(
+                "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+                Locale.getDefault()
+            ).format(Date()),
             footer = DiscordFooter("Firebase Crashlytics")
         )
 
