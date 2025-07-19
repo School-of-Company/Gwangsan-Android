@@ -48,6 +48,7 @@ import kotlinx.coroutines.launch
 internal fun MainStartRoute(
     navigationToService: () -> Unit,
     navigationToObject: () -> Unit,
+    navigationToNotice: () -> Unit,
     viewModel: MainViewModel = hiltViewModel()
 ) {
 
@@ -60,7 +61,8 @@ internal fun MainStartRoute(
     MainStartScreen(
         navigationToService = navigationToService,
         navigationToObject = navigationToObject,
-        getMyProfileUiState = getMyProfileUiState
+        getMyProfileUiState = getMyProfileUiState,
+        navigationToNotice = navigationToNotice
     )
 }
 
@@ -68,6 +70,7 @@ internal fun MainStartRoute(
 private fun MainStartScreen(
     modifier: Modifier = Modifier,
     navigationToService: () -> Unit,
+    navigationToNotice: () -> Unit,
     navigationToObject: () -> Unit,
     getMyProfileUiState: MemberUiState
 ) {
@@ -91,7 +94,7 @@ private fun MainStartScreen(
         ) {
             GwangSanSubTopBar(
                 startIcon = { MainTitle(modifier = Modifier.GwangSanClickable { }) },
-                endIcon = { BellIcon(modifier = Modifier.GwangSanClickable { }) },
+                endIcon = { BellIcon(modifier = Modifier.GwangSanClickable { navigationToNotice()}) },
                 modifier = Modifier.padding(
                     top = 56.dp,
                     start = 24.dp,
@@ -239,7 +242,8 @@ fun MainStartScreenPreview() {
     MainStartScreen(
         navigationToService = {},
         navigationToObject = {},
-        getMyProfileUiState = MemberUiState.Loading
+        getMyProfileUiState = MemberUiState.Loading,
+        navigationToNotice = {}
     )
 }
 
