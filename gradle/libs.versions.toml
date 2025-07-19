@@ -1,5 +1,6 @@
 [versions]
 firebaseBom = "32.7.3"
+firebaseCrashlyticsPlugin = "2.9.2"
 kotlin = "1.9.22"
 agp = "8.6.0"
 androidxComposeCompiler = "1.5.8"
@@ -45,8 +46,11 @@ converter-moshi = "2.9.0"
 transportRuntime = "4.0.0"
 firebaseMessaging = "23.4.1"
 exifinterface = "1.3.6"
+firebaseCrashlytic = "18.5.0"
 
 [libraries]
+firebase-crashlytics-gradlePlugin = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "firebaseCrashlyticsPlugin" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx", version.ref = "firebaseCrashlytic" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 swiperefresh = { group = "com.google.accompanist", name = "accompanist-swiperefresh", version.ref = "swiperefresh" }
@@ -118,6 +122,7 @@ jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrai
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "kspVersion" }
 google-services = { id = "com.google.gms.google-services", version = "4.4.3" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsPlugin" }
 
 [bundles]
 compose = [
