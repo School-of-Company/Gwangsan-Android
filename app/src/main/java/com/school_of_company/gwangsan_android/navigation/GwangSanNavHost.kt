@@ -28,6 +28,8 @@ import com.school_of_company.main.navgation.mainScreen
 import com.school_of_company.main.navgation.mainStartScreen
 import com.school_of_company.main.navgation.navigateToMain
 import com.school_of_company.main.navgation.navigateToMainStart
+import com.school_of_company.main.navgation.navigateToNoticeScreen
+import com.school_of_company.main.navgation.noticeScreen
 import com.school_of_company.model.enum.Mode
 import com.school_of_company.model.enum.Type
 import com.school_of_company.post.navigation.navigateToPost
@@ -178,7 +180,8 @@ fun GwangsanNavHost(
         )
         mainStartScreen(
             navigationToService = { navController.navigateToMain("SERVICE") },
-            navigationToObject = { navController.navigateToMain("OBJECT") }
+            navigationToObject = { navController.navigateToMain("OBJECT") },
+            navigationToNotice = {navController.navigateToNoticeScreen()}
         )
 
         chatScreen(
@@ -261,5 +264,7 @@ fun GwangsanNavHost(
         )
 
         otherReviewScreen(onBackClick = { navController.popBackStack() })
+
+        noticeScreen(onBackClick ={ navController.popBackStack() })
     }
 }
