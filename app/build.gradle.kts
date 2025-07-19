@@ -4,7 +4,7 @@ import java.util.Properties
 plugins {
     id("gwangsan.android.application")
     id("gwangsan.android.hilt")
-    alias(libs.plugins.google.services)
+    id("gwangsan.android.firebase")
 }
 
 android {
@@ -19,7 +19,6 @@ android {
         }
     }
 
-
     namespace = "com.school_of_company.gwangsan_android"
 }
 
@@ -27,21 +26,23 @@ dependencies {
 
     implementation(project(":core:ui"))
     implementation(project(":core:design-system"))
-    implementation(project(":feature:signin"))
-    implementation(project(":feature:signup"))
-    implementation(project(":feature:profile"))
     implementation(project(":core:data"))
     implementation(project(":core:local"))
     implementation(project(":core:device"))
     implementation(project(":core:network"))
     implementation(project(":core:model"))
     implementation(project(":core:common"))
-    implementation(project(":feature:post"))
+    implementation(project(":core:firebase"))
 
     implementation(project(":feature:content"))
     implementation(project(":feature:chat"))
     implementation(project(":feature:inform"))
     implementation(project(":feature:main"))
+    implementation(project(":feature:post"))
+    implementation(project(":feature:signin"))
+    implementation(project(":feature:signup"))
+    implementation(project(":feature:profile"))
+
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.messaging)
