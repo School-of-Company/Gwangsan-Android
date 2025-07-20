@@ -23,4 +23,9 @@ interface PostRepository {
     ) : Flow<List<Post>>
     fun deletePostInformation(postId: Long) : Flow<Unit>
     fun transactionComplete(body: TransactionCompleteRequestModel) : Flow<Unit>
+    fun otherPostInformation(
+        type: String? = null,
+        mode: String? = null,
+        memberId: Long
+    ) : Flow<List<Post>>
 }

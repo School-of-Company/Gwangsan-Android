@@ -19,14 +19,17 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.school_of_company.design_system.componet.toast.makeToast
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.model.member.response.GetAllMemberResponseModel
@@ -38,6 +41,8 @@ import com.school_of_company.profile.component.MyReviewListItem
 import com.school_of_company.profile.component.OtherInformation
 import com.school_of_company.profile.component.OtherPersonIntroduce
 import com.school_of_company.profile.viewmodel.MyProfileViewModel
+import com.school_of_company.profile.viewmodel.uistate.GetMyPostUiState
+import com.school_of_company.profile.viewmodel.uistate.OtherGetPostUiState
 import com.school_of_company.profile.viewmodel.uistate.OtherPersonGetUistate
 
 @Composable
@@ -48,52 +53,35 @@ internal fun OtherPersonProfileRoute(
     viewModel: MyProfileViewModel = hiltViewModel(),
 ) {
     val otherPersonUiState = viewModel.otherPersonUiState.collectAsStateWithLifecycle().value
+    val otherGetPostUiState by viewModel.otherGetPostUiState.collectAsStateWithLifecycle()
+
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         viewModel.otherPersonGetMyProfile(memberId = memberId)
+        viewModel.otherGetPost(memberId = memberId)
     }
 
     when (otherPersonUiState) {
-        is OtherPersonGetUistate.Loading -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = "로딩 중입니다...")
-            }
-        }
+        is OtherPersonGetUistate.Loading -> Unit
 
         is OtherPersonGetUistate.Error -> {
-            onErrorToast(
-                otherPersonUiState.exception,
-                com.school_of_company.design_system.R.string.main_error
-            )
-
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = "프로필 정보를 불러오는 데 실패했습니다.")
-            }
-        }
-
-        is OtherPersonGetUistate.Empty -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = "해당 유저의 프로필이 존재하지 않습니다.")
-            }
+            makeToast(context = context, "정보를 볼러오는데 실패했습니다.")
         }
 
         is OtherPersonGetUistate.Success -> {
             OtherPersonProfileScreen(
                 data = otherPersonUiState.data,
-                item = listOf(),
-                onOtherReviewClick = onOtherReviewClick
+                onOtherReviewClick = onOtherReviewClick,
+                otherGetPostUiState = otherGetPostUiState,
             )
         }
+
+        is OtherPersonGetUistate.Empty -> {
+            makeToast(context = context, "정보가 없습니다.")
+        }
     }
+
 }
 
 @Composable
@@ -101,7 +89,7 @@ private fun OtherPersonProfileScreen(
     modifier: Modifier = Modifier,
     data: GetAllMemberResponseModel,
     onOtherReviewClick: (Long) -> Unit,
-    item: List<Post>
+    otherGetPostUiState: OtherGetPostUiState,
 ) {
 
     GwangSanTheme { colors, typography ->
@@ -112,11 +100,13 @@ private fun OtherPersonProfileScreen(
             modifier = modifier
                 .fillMaxSize()
                 .background(color = colors.white)
+                .padding(top = 80.dp)
         ) {
             item {
                 GwangSanSubTopBar(
                     startIcon = { Box(modifier = Modifier.size(24.dp)) },
-                    betweenText = "프로필",
+                    betweenText = "프로필" ,
+                    modifier = Modifier.padding(horizontal = 24.dp),
                 )
             }
 
@@ -133,26 +123,23 @@ private fun OtherPersonProfileScreen(
 
             item {
                 HorizontalDivider(
-                    thickness = 12.dp,
-                    color = colors.gray200
-                )
+                thickness = 12.dp,
+                color = colors.gray200)
             }
 
-            item { Spacer(modifier = Modifier.height(24.dp)) }
-
+            item { Spacer(modifier = Modifier.height(16.dp)) }
 
             item {
                 OtherPersonIntroduce(
                     data = data,
+                    modifier = Modifier.padding(24.dp)
                 )
             }
-
-            item { Spacer(modifier = Modifier.height(40.dp)) }
 
             item {
                 HorizontalDivider(
                     thickness = 12.dp,
-                    color = colors.gray200
+                    color = colors.gray200,
                 )
             }
 
@@ -162,7 +149,7 @@ private fun OtherPersonProfileScreen(
                 BrightnessProgressBar(
                     brightnessLevel = data.light,
                     maxLevel = 10,
-                    modifier = Modifier.padding(24.dp),
+                    modifier = Modifier.padding(24.dp)
                 )
             }
 
@@ -176,10 +163,10 @@ private fun OtherPersonProfileScreen(
             item { Spacer(modifier = Modifier.height(24.dp)) }
 
             item {
-                Column (
+                Column(
                     modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp)
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp)
                 ) {
 
                     Text(
@@ -191,7 +178,7 @@ private fun OtherPersonProfileScreen(
                     )
 
                     MyProfileExerciseButton(
-                        onClick = {  onOtherReviewClick(data.memberId) },
+                        onClick = { onOtherReviewClick(data.memberId) },
                         buttonText = "내가 작성한 후기",
                         modifier = Modifier
                             .fillMaxWidth()
@@ -217,18 +204,69 @@ private fun OtherPersonProfileScreen(
                     color = colors.black,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(24.dp),
+                        .padding(24.dp)
                 )
             }
+            when (otherGetPostUiState) {
+                is OtherGetPostUiState.Loading -> {
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(150.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "로딩 중...",
+                                style = typography.body2,
+                                color = colors.gray600
+                            )
+                        }
+                    }
+                }
 
-            items(
-                items = item,
-                key = { it.id }
-            ) { items ->
-                MyReviewListItem(
-                    data = items,
-                    onClick = {  }
-                )
+                is OtherGetPostUiState.Error -> {
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(150.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "게시글을 불러오지 못했습니다.",
+                                style = typography.body2,
+                                color = colors.gray600
+                            )
+                        }
+                    }
+                }
+
+                is OtherGetPostUiState.Empty -> {
+                    item {
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(150.dp),
+                        ) {
+                            Text(
+                                text = "게시물이 없습니다.",
+                                style = typography.body2,
+                                color = colors.gray600,
+                            )
+                        }
+                    }
+                }
+
+                is OtherGetPostUiState.Success -> {
+                    items(otherGetPostUiState.data) { item ->
+                        MyReviewListItem(
+                            onClick = { onOtherReviewClick(item.id) },
+                            data = item
+                        )
+                    }
+                }
             }
         }
     }

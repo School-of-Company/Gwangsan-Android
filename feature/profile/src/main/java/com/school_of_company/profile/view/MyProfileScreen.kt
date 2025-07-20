@@ -315,11 +315,11 @@ private fun MyProfileScreen(
                 }
 
                 is GetMyPostUiState.Success -> {
-                        items(getMyPostUiState.data) { item ->
-                            MyReviewListItem(
-                                onClick = { onMyWritingDetailClick(item.id) },
-                                data = item
-                            )
+                    items(getMyPostUiState.data) { item ->
+                        MyReviewListItem(
+                            onClick = { onMyWritingDetailClick(item.id) },
+                            data = item
+                        )
                     }
                 }
             }
