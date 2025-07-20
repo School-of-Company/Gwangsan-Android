@@ -17,6 +17,7 @@ import com.school_of_company.profile.viewmodel.uistate.GetMySpecificInformationU
 import com.school_of_company.profile.viewmodel.uistate.LogoutUiState
 import com.school_of_company.profile.viewmodel.uistate.MemberUiState
 import com.school_of_company.profile.viewmodel.uistate.MyInForMatIonPeTchUiState
+import com.school_of_company.profile.viewmodel.uistate.OtherGetPostUiState
 import com.school_of_company.profile.viewmodel.uistate.OtherPersonGetUistate
 import com.school_of_company.profile.viewmodel.uistate.OtherReviewUIState
 import com.school_of_company.profile.viewmodel.uistate.TransactionCompleteUiState

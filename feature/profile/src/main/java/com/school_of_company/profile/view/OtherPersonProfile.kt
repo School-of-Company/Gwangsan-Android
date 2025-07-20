@@ -91,7 +91,9 @@ private fun OtherPersonProfileScreen(
     onOtherReviewClick: (Long) -> Unit,
     otherGetPostUiState: OtherGetPostUiState,
 ) {
+
     GwangSanTheme { colors, typography ->
+
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top,
@@ -121,8 +123,8 @@ private fun OtherPersonProfileScreen(
 
             item {
                 HorizontalDivider(
-                    thickness = 12.dp,
-                    color = colors.gray200)
+                thickness = 12.dp,
+                color = colors.gray200)
             }
 
             item { Spacer(modifier = Modifier.height(16.dp)) }
@@ -166,6 +168,7 @@ private fun OtherPersonProfileScreen(
                         .fillMaxWidth()
                         .padding(horizontal = 24.dp)
                 ) {
+
                     Text(
                         text = "후기",
                         fontSize = 20.sp,
@@ -265,10 +268,8 @@ private fun OtherPersonProfileScreen(
                     }
                 }
             }
-
         }
     }
 }
-
 
 
