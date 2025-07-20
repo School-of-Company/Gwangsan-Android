@@ -1,20 +1,15 @@
 package com.school_of_company.inform.util
 
-import java.text.SimpleDateFormat
-import java.util.Locale
-import java.util.TimeZone
-
-fun formatIsoWithoutTimezone(isoDate: String): String {
+import android.util.Log
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+fun formatIsoWithoutTimezone(isoDate: String?): String {
+    if (isoDate.isNullOrBlank()) return ""
     return try {
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
-        inputFormat.timeZone = TimeZone.getDefault()
-
-        val outputFormat = SimpleDateFormat("yyyy.MM.dd / HH:mm", Locale.getDefault())
-        outputFormat.timeZone = TimeZone.getDefault()
-
-        val date = inputFormat.parse(isoDate)
-        date?.let { outputFormat.format(it) } ?: ""
+        val parsed = LocalDateTime.parse(isoDate)
+        parsed.format(DateTimeFormatter.ofPattern("yyyy.MM.dd / HH:mm"))
     } catch (e: Exception) {
+        Log.w("DateFormatter", "Failed to parse date: $isoDate", e)
         ""
     }
 }
