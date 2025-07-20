@@ -26,6 +26,7 @@ import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.icons.DownArrowIcon
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.inform.util.formatIsoWithoutTimezone
 import com.school_of_company.inform.viewmodel.NoticeViewModel
 import com.school_of_company.inform.viewmodel.uistate.GetSpecificNoticeUiState
 import com.school_of_company.model.notice.response.SpecificNoticeImageModel
@@ -164,6 +165,14 @@ private fun InformDetailScreen(
                                 style = typography.body4,
                                 color = colors.black
                             )
+
+                            Spacer(modifier = Modifier.height(32.dp))
+
+                            Text(
+                                text = formatIsoWithoutTimezone(getSpecificNoticeUiState.data.createdAt),
+                                style = typography.body5,
+                                color = colors.gray400
+                            )
                         }
                     }
                 }
@@ -208,7 +217,7 @@ private fun InformDetailScreenPreview() {
                     imageUrl = "https://via.placeholder.com/600x400"
                 ),
             ),
-            createdAt = "2023-10-01",
+            createdAt = "2023-10-01 / 12:00",
             role = "ADMIN"
         )
     )
