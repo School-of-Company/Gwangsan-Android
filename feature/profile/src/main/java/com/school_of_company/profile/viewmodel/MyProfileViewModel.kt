@@ -10,6 +10,7 @@ import com.school_of_company.data.repository.post.PostRepository
 import com.school_of_company.data.repository.review.ReviewRepository
 import com.school_of_company.model.member.request.ModifyMemberInformationRequestModel
 import com.school_of_company.model.post.request.TransactionCompleteRequestModel
+import com.school_of_company.profile.viewmodel.uistate.DeletePostUiState
 import com.school_of_company.profile.viewmodel.uistate.GetMyPostUiState
 import com.school_of_company.profile.viewmodel.uistate.GetMyReviewUiState
 import com.school_of_company.profile.viewmodel.uistate.GetMyReviewWriteUiState
@@ -314,7 +315,15 @@ internal class MyProfileViewModel @Inject constructor(
             .collectLatest { result ->
                 when (result) {
                     is Result.Loading -> _otherReviewUIState.value =  OtherReviewUIState.Loading
-                    is Result.Success -> _otherReviewUIState.value = OtherReviewUIState.Success(result.data)
+                    is Result.Success -> {
+                        if (result.data.isEmpty()) {
+                            _otherReviewUIState.value = OtherReviewUIState.Empty
+                            _swipeRefreshLoading.value = false
+                        } else {
+                            _otherReviewUIState.value = OtherReviewUIState.Success(result.data)
+                            _swipeRefreshLoading.value = false
+                        }
+                    }
                     is Result.Error ->  _otherReviewUIState.value = OtherReviewUIState.Error(result.exception)
                 }
             }
