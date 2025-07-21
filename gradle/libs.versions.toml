@@ -35,6 +35,7 @@ navigationRuntimeAndroid = "2.9.0"
 navigationComposeAndroid = "2.9.0"
 kotlinxSerializationJson = "1.7.3"
 retrofit = "2.9.0"
+socketIoClient = "2.1.2"
 swiperefresh = "0.27.0"
 okhttp = "4.11.0"
 retrofitKotlinxSerializableJson = "1.0.0"
@@ -53,6 +54,7 @@ firebase-crashlytics-gradlePlugin = { group = "com.google.firebase", name = "fir
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx", version.ref = "firebaseCrashlytic" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+socket-io-client = { module = "io.socket:socket.io-client", version.ref = "socketIoClient" }
 swiperefresh = { group = "com.google.accompanist", name = "accompanist-swiperefresh", version.ref = "swiperefresh" }
 androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version = "1.1.0" }
 protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
