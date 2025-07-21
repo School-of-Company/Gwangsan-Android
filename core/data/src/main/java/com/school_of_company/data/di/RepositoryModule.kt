@@ -2,6 +2,8 @@ package com.school_of_company.data.di
 
 import com.school_of_company.data.repository.auth.AuthRepository
 import com.school_of_company.data.repository.auth.AuthRepositoryImpl
+import com.school_of_company.data.repository.chat.ChatRepository
+import com.school_of_company.data.repository.chat.ChatRepositoryImpl
 import com.school_of_company.data.repository.image.ImageRepository
 import com.school_of_company.data.repository.image.ImageRepositoryImpl
 import com.school_of_company.data.repository.local.LocalRepository
@@ -64,4 +66,8 @@ abstract class RepositoryModule {
         reviewRepositoryImpl: ReviewRepositoryImpl
     ) : ReviewRepository
 
+    @Binds
+    abstract fun bindChatRepository(
+        chatRepositoryImpl: ChatRepositoryImpl
+    ) : ChatRepository
 }

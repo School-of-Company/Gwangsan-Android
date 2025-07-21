@@ -2,6 +2,8 @@ package com.school_of_company.network.di
 
 import com.school_of_company.network.datasource.auth.AuthDataSource
 import com.school_of_company.network.datasource.auth.AuthDataSourceImpl
+import com.school_of_company.network.datasource.chat.ChatDataSource
+import com.school_of_company.network.datasource.chat.ChatDataSourceImpl
 import com.school_of_company.network.datasource.image.ImageDataSource
 import com.school_of_company.network.datasource.image.ImageDataSourceImpl
 import com.school_of_company.network.datasource.member.MemberDataSource
@@ -56,4 +58,9 @@ abstract class RemoteDataSourceModule {
     abstract fun bindReviewDataSource(
         reviewDataSourceImpl: ReviewDataSourceImpl
     ) : ReviewDataSource
+
+    @Binds
+    abstract fun bindChatDataSource(
+        chatDataSourceImpl: ChatDataSourceImpl
+    ) : ChatDataSource
 }
