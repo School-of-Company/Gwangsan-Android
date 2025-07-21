@@ -1,5 +1,6 @@
 package com.school_of_company.network.dto.post.response
 
+import com.school_of_company.model.post.response.AllImage
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -11,8 +12,8 @@ data class AllPostDto(
     @Json(name = "title") val title: String,
     @Json(name = "content") val content: String,
     @Json(name = "gwangsan") val gwangsan: Int,
-    @Json(name = "member") val member: MemberDto,
-    @Json(name = "images") val images: List<ImageDto>,
+    @Json(name = "member") val member: AllMemberDto,
+    @Json(name = "images") val images: List<AllImageDto>,
 )
 
 @JsonClass(generateAdapter = true)

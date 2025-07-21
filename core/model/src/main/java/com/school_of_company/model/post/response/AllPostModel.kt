@@ -7,8 +7,8 @@ data class AllPost(
     val gwangsan: Int,
     val type: String,
     val mode: String,
-    val member: Member,
-    val images: List<Image>,
+    val member: AllMember,
+    val images: List<AllImage>,
 )
 
 data class AllMember(
