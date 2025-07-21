@@ -38,6 +38,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation(libs.socket.io.client)
 }
 
 fun getApiKey(propertyKey: String): String {
