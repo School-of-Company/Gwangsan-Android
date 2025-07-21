@@ -50,6 +50,7 @@ internal fun OtherPersonProfileRoute(
     onErrorToast: (Throwable, Int) -> Unit,
     memberId: Long,
     onOtherReviewClick: (Long) -> Unit,
+    onOtherWritingDetailClick: (Long) -> Unit,
     viewModel: MyProfileViewModel = hiltViewModel(),
 ) {
     val otherPersonUiState = viewModel.otherPersonUiState.collectAsStateWithLifecycle().value
@@ -74,6 +75,7 @@ internal fun OtherPersonProfileRoute(
                 data = otherPersonUiState.data,
                 onOtherReviewClick = onOtherReviewClick,
                 otherGetPostUiState = otherGetPostUiState,
+                onOtherWritingDetailClick = onOtherWritingDetailClick
             )
         }
 
@@ -89,6 +91,7 @@ private fun OtherPersonProfileScreen(
     modifier: Modifier = Modifier,
     data: GetAllMemberResponseModel,
     onOtherReviewClick: (Long) -> Unit,
+    onOtherWritingDetailClick: (Long) -> Unit,
     otherGetPostUiState: OtherGetPostUiState,
 ) {
 
@@ -179,7 +182,7 @@ private fun OtherPersonProfileScreen(
 
                     MyProfileExerciseButton(
                         onClick = { onOtherReviewClick(data.memberId) },
-                        buttonText = "내가 작성한 후기",
+                        buttonText = "${data.nickname}의 후기",
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(bottom = 40.dp)
@@ -262,7 +265,7 @@ private fun OtherPersonProfileScreen(
                 is OtherGetPostUiState.Success -> {
                     items(otherGetPostUiState.data) { item ->
                         MyReviewListItem(
-                            onClick = { onOtherReviewClick(item.id) },
+                            onClick = { onOtherWritingDetailClick(item.id) },
                             data = item
                         )
                     }
