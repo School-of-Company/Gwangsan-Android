@@ -121,7 +121,24 @@ private fun PostScreen(
                 modifier = Modifier.fillMaxSize()
             ) { page ->
                 when(page) {
-                    0 -> PostInputRoute(
+
+                    0 -> PostWriteRoute(
+                        type = type,
+                        mode = mode,
+                        onBackClick = {
+                            coroutineScope.launch {
+                                pagerState.animateScrollToPage(page = 0)
+                            }
+                        },
+                        onNextClick = { _, _ ->
+                            coroutineScope.launch {
+                                pagerState.animateScrollToPage(page = 2)
+                            }
+                        },
+                        viewModel = viewModel
+                    )
+
+                    1 -> PostInputRoute(
                         type = type,
                         mode = mode,
                         onBackClick = {
@@ -136,22 +153,6 @@ private fun PostScreen(
                         onNextClick = {
                             coroutineScope.launch {
                                 pagerState.animateScrollToPage(page = 1)
-                            }
-                        },
-                        viewModel = viewModel
-                    )
-
-                    1 -> PostWriteRoute(
-                        type = type,
-                        mode = mode,
-                        onBackClick = {
-                            coroutineScope.launch {
-                                pagerState.animateScrollToPage(page = 0)
-                            }
-                        },
-                        onNextClick = { _, _ ->
-                            coroutineScope.launch {
-                                pagerState.animateScrollToPage(page = 2)
                             }
                         },
                         viewModel = viewModel
