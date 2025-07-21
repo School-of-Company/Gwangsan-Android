@@ -324,7 +324,10 @@ internal class MyProfileViewModel @Inject constructor(
                             _swipeRefreshLoading.value = false
                         }
                     }
-                    is Result.Error ->  _otherReviewUIState.value = OtherReviewUIState.Error(result.exception)
+                    is Result.Error ->  {
+                        _swipeRefreshLoading.value = false
+                        _otherReviewUIState.value = OtherReviewUIState.Error(result.exception)
+                    }
                 }
             }
     }
