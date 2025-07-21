@@ -30,7 +30,7 @@ interface ChatAPI {
     suspend fun getChatMessageList(
         @Path("roomId") roomId: Long,
         @Query("lastCreatedAt") lastCreatedAt: String? = null,
-        @Query("lastMessageId") lastMessageId: String? = null,
+        @Query("lastMessageId") lastMessageId: Long? = null,
         @Query("limit") limit: Int = 20
     ) : List<GetChatMessageResponse>
 
