@@ -88,7 +88,11 @@ private fun OtherReviewScreen(
                 startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { onBackClick() }) },
                 betweenText = if (otherReviewUIState is OtherReviewUIState.Success) {
                     val data = otherReviewUIState as OtherReviewUIState.Success
-                    "${data.data.first().reviewerName}님의 후기"
+                    if (data.data.isNotEmpty()) {
+                        "${data.data.first().reviewerName}님의 후기"
+                    } else {
+                        "받은 후기"
+                    }
                 } else {
                     "받은 후기"
                 },
