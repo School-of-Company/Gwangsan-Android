@@ -28,7 +28,7 @@ interface ChatAPI {
 
     @GET("/api/chat/{room_id}")
     suspend fun getChatMessageList(
-        @Path("roomId") roomId: Long,
+        @Path("room_id") roomId: Long,
         @Query("lastCreatedAt") lastCreatedAt: String? = null,
         @Query("lastMessageId") lastMessageId: Long? = null,
         @Query("limit") limit: Int = 20

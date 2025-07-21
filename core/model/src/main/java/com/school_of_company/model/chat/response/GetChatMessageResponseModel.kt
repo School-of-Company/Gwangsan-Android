@@ -6,7 +6,7 @@ data class GetChatMessageResponseModel(
     val content: String,
     val messageType: String,
     val createdAt: String,
-    val images: List<GetChatMessageImageModel>,
+    val images: List<GetChatMessageImageModel>?,
     val senderNickname: String,
     val senderId: String,
     val checked: Boolean,

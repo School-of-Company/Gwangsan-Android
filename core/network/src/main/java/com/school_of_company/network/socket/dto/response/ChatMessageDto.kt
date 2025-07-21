@@ -10,7 +10,7 @@ data class ChatMessageDto(
     @Json(name = "content") val content: String,
     @Json(name = "messageType") val messageType: String,
     @Json(name = "createdAt") val createdAt: String,
-    @Json(name = "images") val images: List<MessageImageDto>,
+    @Json(name = "images") val images: List<MessageImageDto>?,
     @Json(name = "senderNickname") val senderNickname: String,
     @Json(name = "senderId") val senderId: String,
     @Json(name = "checked") val checked: Boolean,

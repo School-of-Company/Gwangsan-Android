@@ -6,7 +6,7 @@ data class ChatMessage(
     val content: String,
     val messageType: String,
     val createdAt: String,
-    val images: List<MessageImage>,
+    val images: List<MessageImage>?,
     val senderNickname: String,
     val senderId: String,
     val checked: Boolean,
