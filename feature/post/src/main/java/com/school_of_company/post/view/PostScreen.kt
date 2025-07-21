@@ -127,12 +127,16 @@ private fun PostScreen(
                         mode = mode,
                         onBackClick = {
                             coroutineScope.launch {
-                                pagerState.animateScrollToPage(page = 0)
+                                if (pagerState.currentPage > 0) {
+                                    pagerState.animateScrollToPage(page = pagerState.currentPage - 1)
+                                } else {
+                                    onBackClick()
+                                }
                             }
                         },
                         onNextClick = { _, _ ->
                             coroutineScope.launch {
-                                pagerState.animateScrollToPage(page = 2)
+                                pagerState.animateScrollToPage(page = 1)
                             }
                         },
                         viewModel = viewModel
@@ -143,16 +147,12 @@ private fun PostScreen(
                         mode = mode,
                         onBackClick = {
                             coroutineScope.launch {
-                                if (pagerState.currentPage > 0) {
-                                    pagerState.animateScrollToPage(page = pagerState.currentPage - 1)
-                                } else {
-                                    onBackClick()
-                                }
+                                pagerState.animateScrollToPage(page = 0)
                             }
                         },
                         onNextClick = {
                             coroutineScope.launch {
-                                pagerState.animateScrollToPage(page = 1)
+                                pagerState.animateScrollToPage(page = 2)
                             }
                         },
                         viewModel = viewModel
