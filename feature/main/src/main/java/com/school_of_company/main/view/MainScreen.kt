@@ -91,7 +91,8 @@ internal fun MainRoute(
         onSwitchStateChange = { switchState = it },
         swipeRefreshState = swipeRefreshState,
         betweenText = betweenText,
-        navigationToDetail = navigationToDetail
+        navigationToDetail = navigationToDetail,
+        moDeselectedType = moDeselectedType
     )
 }
 
@@ -103,6 +104,7 @@ private fun MainScreen(
     mainCallBack: () -> Unit,
     onBackClick: () -> Unit,
     getMainListUiState: GetMainListUiState,
+    moDeselectedType: Type,
     switchState: GwangSanSwitchState,
     swipeRefreshState: SwipeRefreshState,
     onSwitchStateChange: (GwangSanSwitchState) -> Unit,
@@ -139,6 +141,7 @@ private fun MainScreen(
                 Spacer(modifier = Modifier.height(38.dp))
 
                 GwangSanSwitchButton(
+                    type = moDeselectedType,
                     stateOn = GwangSanSwitchState.NEED,
                     stateOff = GwangSanSwitchState.REQUEST,
                     initialValue = switchState,
@@ -242,22 +245,4 @@ private fun MainScreen(
             }
         }
     }
-}
-
-@Preview
-@Composable
-private fun MainScreenPreview() {
-    val dummyState = rememberSwipeRefreshState(isRefreshing = false)
-
-    MainScreen(
-        navigationToPostService = {},
-        mainCallBack = {},
-        getMainListUiState = GetMainListUiState.Loading,
-        switchState = GwangSanSwitchState.NEED,
-        onSwitchStateChange = {},
-        swipeRefreshState = dummyState,
-        betweenText = "물건",
-        navigationToDetail = {},
-        onBackClick = {}
-    )
 }
