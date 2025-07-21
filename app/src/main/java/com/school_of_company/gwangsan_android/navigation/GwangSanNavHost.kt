@@ -240,7 +240,11 @@ fun GwangsanNavHost(
             onErrorToast = onErrorToast,
             onOtherReviewClick = {
                 id ->
-                navController.navigateToOtherReview(id) }
+                navController.navigateToOtherReview(id) },
+            onOtherWritingDetailClick = {
+                id ->
+                navController.navigateToPostDetail(id)
+            }
         )
 
         myInformationEditScreen(
