@@ -5,14 +5,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.school_of_company.design_system.componet.clickable.GwangSanClickable
-import com.school_of_company.design_system.componet.dropdown.ServiceTypeDropdown
-import com.school_of_company.design_system.componet.icons.CloseIcon
-import com.school_of_company.design_system.componet.recycle.MyWriteItem
-import com.school_of_company.design_system.componet.recycle.MyWriteList
-import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
+import com.school_of_company.design_system.component.clickable.GwangSanClickable
+import com.school_of_company.design_system.component.dropdown.ServiceTypeDropdown
+import com.school_of_company.design_system.component.icons.CloseIcon
+import com.school_of_company.design_system.component.recycle.MyWriteItem
+import com.school_of_company.design_system.component.recycle.MyWriteList
+import com.school_of_company.design_system.component.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.ui.previews.GwangsanPreviews
 

@@ -1,14 +1,11 @@
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,11 +14,10 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.school_of_company.design_system.R
-import com.school_of_company.design_system.componet.button.GwangSanEnableButton
-import com.school_of_company.design_system.componet.button.GwangSanStateButton
+import com.school_of_company.design_system.component.button.GwangSanEnableButton
+import com.school_of_company.design_system.component.button.GwangSanStateButton
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.ui.previews.GwangsanPreviews
 

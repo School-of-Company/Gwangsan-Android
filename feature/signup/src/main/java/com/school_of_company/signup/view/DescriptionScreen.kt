@@ -27,11 +27,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.school_of_company.design_system.componet.button.GwangSanStateButton
-import com.school_of_company.design_system.componet.button.state.ButtonState
-import com.school_of_company.design_system.componet.clickable.GwangSanClickable
-import com.school_of_company.design_system.componet.icons.DownArrowIcon
-import com.school_of_company.design_system.componet.topbar.GwangSanTopBar
+import com.school_of_company.design_system.component.button.GwangSanStateButton
+import com.school_of_company.design_system.component.button.state.ButtonState
+import com.school_of_company.design_system.component.clickable.GwangSanClickable
+import com.school_of_company.design_system.component.icons.DownArrowIcon
+import com.school_of_company.design_system.component.topbar.GwangSanTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.signup.viewmodel.SignUpViewModel
 import com.yourpackage.design_system.component.textField.GwangSanTextField

@@ -10,7 +10,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -18,14 +17,13 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
 import com.google.accompanist.swiperefresh.SwipeRefreshState
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
+import com.school_of_company.design_system.component.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.inform.component.InformList
 import com.school_of_company.inform.viewmodel.NoticeViewModel
 import com.school_of_company.inform.viewmodel.uistate.GetAllNoticeUiState
 import com.school_of_company.inform.viewmodel.uistate.MemberUiState
 import com.school_of_company.model.notice.response.GetAllNoticeResponseModel
-import com.school_of_company.model.post.response.Member
 import com.school_of_company.ui.previews.GwangsanPreviews
 
 @Composable

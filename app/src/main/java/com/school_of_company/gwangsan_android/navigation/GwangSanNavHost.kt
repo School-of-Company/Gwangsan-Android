@@ -17,7 +17,7 @@ import com.school_of_company.common.UnKnownException
 import com.school_of_company.content.navigation.contentScreen
 import com.school_of_company.content.navigation.navigateToReadMore
 import com.school_of_company.content.navigation.readMoreScreen
-import com.school_of_company.design_system.componet.toast.makeToast
+import com.school_of_company.design_system.component.toast.makeToast
 import com.school_of_company.gwangsan_android.ui.GwangSanAppState
 import com.school_of_company.gwangsan_android.ui.navigateToHomeAndClearLogin
 import com.school_of_company.gwangsan_android.ui.navigationPopUpToLogin
@@ -46,10 +46,8 @@ import com.school_of_company.profile.navigation.navigateToMyReview
 import com.school_of_company.profile.navigation.navigateToMyWriting
 import com.school_of_company.profile.navigation.navigateToOtherPersonProfile
 import com.school_of_company.profile.navigation.navigateToOtherReview
-import com.school_of_company.profile.navigation.navigateToPostDetail
 import com.school_of_company.profile.navigation.otherPersonProfileScreen
 import com.school_of_company.profile.navigation.otherReviewScreen
-import com.school_of_company.profile.navigation.transactionHistoryScreen
 import com.school_of_company.signin.navigation.StartRoute
 import com.school_of_company.signin.navigation.navigateToSignIn
 import com.school_of_company.signin.navigation.signInScreen

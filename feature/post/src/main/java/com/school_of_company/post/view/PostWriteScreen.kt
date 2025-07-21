@@ -23,10 +23,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import com.school_of_company.design_system.componet.button.GwangSanStateButton
-import com.school_of_company.design_system.componet.button.state.ButtonState
-import com.school_of_company.design_system.componet.clickable.GwangSanClickable
-import com.school_of_company.design_system.componet.icons.PlussIcon
+import com.school_of_company.design_system.component.button.GwangSanStateButton
+import com.school_of_company.design_system.component.button.state.ButtonState
+import com.school_of_company.design_system.component.clickable.GwangSanClickable
+import com.school_of_company.design_system.component.icons.PlussIcon
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.model.enum.Mode
 import com.school_of_company.model.enum.Type

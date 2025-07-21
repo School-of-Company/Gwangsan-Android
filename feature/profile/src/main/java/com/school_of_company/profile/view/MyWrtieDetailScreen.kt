@@ -35,14 +35,14 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import com.school_of_company.design_system.componet.button.GwangSanEnableButton
-import com.school_of_company.design_system.componet.button.GwangSanStateButton
-import com.school_of_company.design_system.componet.clickable.GwangSanClickable
-import com.school_of_company.design_system.componet.dialog.GwangsanDialog
-import com.school_of_company.design_system.componet.icons.DownArrowIcon
-import com.school_of_company.design_system.componet.recycle.CleaningRequestCard
-import com.school_of_company.design_system.componet.toast.makeToast
-import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
+import com.school_of_company.design_system.component.button.GwangSanEnableButton
+import com.school_of_company.design_system.component.button.GwangSanStateButton
+import com.school_of_company.design_system.component.clickable.GwangSanClickable
+import com.school_of_company.design_system.component.dialog.GwangsanDialog
+import com.school_of_company.design_system.component.icons.DownArrowIcon
+import com.school_of_company.design_system.component.recycle.CleaningRequestCard
+import com.school_of_company.design_system.component.toast.makeToast
+import com.school_of_company.design_system.component.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.model.post.request.TransactionCompleteRequestModel
 import com.school_of_company.model.post.response.Post
@@ -241,7 +241,7 @@ fun ReviewPostDetailScreen(
                     }
                 }
 
-                com.school_of_company.design_system.componet.recycle.MyProfileUserLevel(
+                com.school_of_company.design_system.component.recycle.MyProfileUserLevel(
                     modifier = Modifier.padding(
                         horizontal = 24.dp,
                         vertical = 12.dp

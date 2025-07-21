@@ -26,18 +26,14 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
 import com.google.accompanist.swiperefresh.SwipeRefreshState
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.school_of_company.design_system.componet.clickable.GwangSanClickable
-import com.school_of_company.design_system.componet.icons.CloseIcon
-import com.school_of_company.design_system.componet.icons.DownArrowIcon
-import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
+import com.school_of_company.design_system.component.clickable.GwangSanClickable
+import com.school_of_company.design_system.component.icons.DownArrowIcon
+import com.school_of_company.design_system.component.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
-import com.school_of_company.model.post.response.Post
 import com.school_of_company.model.review.response.ImagesList
 import com.school_of_company.model.review.response.ReviewResponseModel
 import com.school_of_company.profile.component.MyProfileReviewListItem
 import com.school_of_company.profile.viewmodel.MyProfileViewModel
-import com.school_of_company.profile.viewmodel.uistate.GetMyReviewUiState
-import com.school_of_company.profile.viewmodel.uistate.GetMySpecificInformationUiState
 import com.school_of_company.profile.viewmodel.uistate.OtherReviewUIState
 
 @Composable
