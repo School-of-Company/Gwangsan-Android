@@ -23,5 +23,5 @@ interface ReviewAPI {
     @GET("/api/review/{memberId}")
     suspend fun getOtherReview(
         @Path("memberId") memberId: Long
-    ) : ReviewResponse
+    ) : List<ReviewResponse>
 }
