@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.school_of_company.design_system.componet.dialog.GwangsanDialog
 import com.school_of_company.design_system.componet.toast.makeToast
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
@@ -41,7 +42,6 @@ import com.school_of_company.profile.component.MyInformation
 import com.school_of_company.profile.component.MyProfileExerciseButton
 import com.school_of_company.profile.component.MyReviewListItem
 import com.school_of_company.profile.component.MySpecialListScreen
-import com.school_of_company.profile.component.ProfileDialog
 import com.school_of_company.profile.viewmodel.MyProfileViewModel
 import com.school_of_company.profile.viewmodel.uistate.GetMyPostUiState
 import com.school_of_company.profile.viewmodel.uistate.LogoutUiState
@@ -327,7 +327,7 @@ private fun MyProfileScreen(
 
         if (openLogoutDialog) {
             Dialog(onDismissRequest = { setOpenLogoutDialog(false) }) {
-                ProfileDialog(
+                GwangsanDialog(
                     onLogout = {
                         onLogoutCallBack()
                         setOpenLogoutDialog(false)
