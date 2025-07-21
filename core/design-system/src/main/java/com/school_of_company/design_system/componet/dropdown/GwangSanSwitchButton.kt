@@ -38,6 +38,7 @@ import androidx.wear.compose.material.swipeable
 import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.componet.dropdown.state.GwangSanSwitchState
 import com.school_of_company.design_system.theme.color.GwangSanColor
+import com.school_of_company.model.enum.Type
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
@@ -48,6 +49,7 @@ fun GwangSanSwitchButton(
     height: Dp = 45.dp,
     stateOn: GwangSanSwitchState,
     stateOff: GwangSanSwitchState,
+    type: Type,
     initialValue: GwangSanSwitchState,
     onCheckedChanged: (GwangSanSwitchState) -> Unit
 ) {
@@ -110,7 +112,7 @@ fun GwangSanSwitchButton(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "해주세요",
+                        text = if (type == Type.SERVICE) "해주세요" else "필요해요",
                         color = if (swipeableState.currentValue == GwangSanSwitchState.REQUEST) Color.Black else Color.Gray
                     )
                 }
@@ -119,25 +121,11 @@ fun GwangSanSwitchButton(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "필요해요",
+                        text = if (type == Type.SERVICE) "할수있어요" else "팔아요",
                         color = if (swipeableState.currentValue == GwangSanSwitchState.NEED) Color.Black else Color.Gray
                     )
                 }
             }
-        }
-    }
-}
-@Preview
-@Composable
-fun GwangSanSwitchButtonPreview() {
-    GwangSanSwitchButton(
-        stateOn = GwangSanSwitchState.NEED,
-        stateOff = GwangSanSwitchState.REQUEST,
-        initialValue = GwangSanSwitchState.REQUEST
-    ) {
-        when (it) {
-            GwangSanSwitchState.REQUEST -> println("현재 상태: 해주세요")
-            GwangSanSwitchState.NEED -> println("현재 상태: 필요해요")
         }
     }
 }
