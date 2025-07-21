@@ -65,6 +65,7 @@ fun NavController.navigateToMyPeTchWritingDetail(navOptions: NavOptions? = null)
 }
 
 fun NavGraphBuilder.otherPersonProfileScreen(
+    onBackClick: () -> Unit,
     onErrorToast: (Throwable, Int) -> Unit,
     onOtherReviewClick: (Long) -> Unit,
     onOtherWritingDetailClick: (Long) -> Unit,
@@ -74,6 +75,7 @@ fun NavGraphBuilder.otherPersonProfileScreen(
 
         OtherPersonProfileRoute(
             memberId = memberId,
+            onBackClick = onBackClick,
             onErrorToast = onErrorToast,
             onOtherReviewClick = onOtherReviewClick,
             onOtherWritingDetailClick = onOtherWritingDetailClick

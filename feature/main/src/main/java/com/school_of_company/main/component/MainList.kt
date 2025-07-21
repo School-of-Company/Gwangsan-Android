@@ -26,15 +26,15 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import com.school_of_company.design_system.componet.clickable.GwangSanClickable
+import com.school_of_company.design_system.component.clickable.GwangSanClickable
 import com.school_of_company.design_system.theme.GwangSanTheme
-import com.school_of_company.model.post.response.Post
+import com.school_of_company.model.post.response.AllPost
 
 @Composable
 fun MainListItem(
     modifier: Modifier = Modifier,
     onClick: (Long) -> Unit,
-    data: Post
+    data: AllPost
 ) {
     GwangSanTheme { color, typography ->
         val firstImageUrl = data.images.firstOrNull()?.imageUrl
@@ -103,7 +103,7 @@ fun MainListItem(
 @Composable
 fun MainList(
     modifier: Modifier = Modifier,
-    items: List<Post>,
+    items: List<AllPost>,
     onClick: (Long) -> Unit
 ) {
     GwangSanTheme { color, _ ->

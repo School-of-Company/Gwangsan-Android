@@ -23,7 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.school_of_company.design_system.R
-import com.school_of_company.design_system.componet.clickable.GwangSanClickable
+import com.school_of_company.design_system.component.clickable.GwangSanClickable
 import com.school_of_company.design_system.theme.GwangSanTheme
 
 @Composable

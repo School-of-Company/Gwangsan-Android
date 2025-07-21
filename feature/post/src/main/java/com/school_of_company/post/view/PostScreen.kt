@@ -17,9 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.school_of_company.design_system.component.progress.GwangSanTopBarProgress
-import com.school_of_company.design_system.componet.clickable.GwangSanClickable
-import com.school_of_company.design_system.componet.icons.DownArrowIcon
-import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
+import com.school_of_company.design_system.component.clickable.GwangSanClickable
+import com.school_of_company.design_system.component.icons.DownArrowIcon
+import com.school_of_company.design_system.component.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.model.enum.Mode
 import com.school_of_company.model.enum.Type

@@ -1,7 +1,6 @@
 package com.school_of_company.post.view
 
 import android.net.Uri
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -25,12 +24,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.school_of_company.design_system.R
-import com.school_of_company.design_system.componet.button.GwangSanEnableButton
-import com.school_of_company.design_system.componet.button.GwangSanStateButton
-import com.school_of_company.design_system.componet.button.state.ButtonState
-import com.school_of_company.design_system.componet.icon.AddImageButton
-import com.school_of_company.design_system.componet.icons.PlussIcon
-import com.school_of_company.design_system.componet.toast.makeToast
+import com.school_of_company.design_system.component.button.GwangSanEnableButton
+import com.school_of_company.design_system.component.button.GwangSanStateButton
+import com.school_of_company.design_system.component.button.state.ButtonState
+import com.school_of_company.design_system.component.icon.AddImageButton
+import com.school_of_company.design_system.component.icons.PlussIcon
+import com.school_of_company.design_system.component.toast.makeToast
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.design_system.theme.color.GwangSanColor
 import com.school_of_company.model.enum.Mode
@@ -38,7 +37,6 @@ import com.school_of_company.model.enum.Type
 import com.school_of_company.post.viewmodel.PostViewModel
 import com.school_of_company.post.viewmodel.uiState.ModifyPostUiState
 import com.school_of_company.post.viewmodel.uiState.PostUiState
-import com.school_of_company.ui.previews.GwangsanPreviews
 
 @Composable
 internal fun PostFinalRoute(

@@ -31,19 +31,22 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.school_of_company.content.component.ReportBottomSheet
 import com.school_of_company.content.viewmodel.ContentViewModel
+import com.school_of_company.content.viewmodel.uistate.DeletePostUiState
 import com.school_of_company.content.viewmodel.uistate.GetSpecificPostUiState
 import com.school_of_company.content.viewmodel.uistate.ReportPostUiState
 import com.school_of_company.content.viewmodel.uistate.ReviewPostUiState
 import com.school_of_company.content.viewmodel.uistate.TransactionCompleteUiState
 import com.school_of_company.design_system.R
-import com.school_of_company.design_system.componet.button.GwangSanEnableButton
-import com.school_of_company.design_system.componet.button.GwangSanStateButton
-import com.school_of_company.design_system.componet.clickable.GwangSanClickable
-import com.school_of_company.design_system.componet.icons.DownArrowIcon
-import com.school_of_company.design_system.componet.recycle.CleaningRequestCard
-import com.school_of_company.design_system.componet.recycle.MyProfileUserLevel
-import com.school_of_company.design_system.componet.toast.makeToast
-import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
+import com.school_of_company.design_system.component.button.GwangSanEnableButton
+import com.school_of_company.design_system.component.button.GwangSanStateButton
+import com.school_of_company.design_system.component.button.state.ButtonState
+import com.school_of_company.design_system.component.clickable.GwangSanClickable
+import com.school_of_company.design_system.component.dialog.GwangsanDialog
+import com.school_of_company.design_system.component.icons.DownArrowIcon
+import com.school_of_company.design_system.component.recycle.CleaningRequestCard
+import com.school_of_company.design_system.component.recycle.MyProfileUserLevel
+import com.school_of_company.design_system.component.toast.makeToast
+import com.school_of_company.design_system.component.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.model.post.request.TransactionCompleteRequestModel
 import com.school_of_company.model.report.request.ReportRequestModel
@@ -57,16 +60,19 @@ internal fun ReadMoreRoute(
     onChatClick: () -> Unit,
     onReviewClick: (Int, String) -> Unit,
     onReportClick: (String, String) -> Unit,
+    onEditClick: (Long, String, String) -> Unit,
     viewModel: ContentViewModel = hiltViewModel()
 ) {
     val getSpecificPostUiState by viewModel.getSpecificPostUiState.collectAsStateWithLifecycle()
     val reportPostUiState by viewModel.reportPostUiState.collectAsStateWithLifecycle()
     val reviewPostUiState by viewModel.reviewPostUiState.collectAsStateWithLifecycle()
     val transactionCompleteUiState by viewModel.transactionCompleteUiState.collectAsStateWithLifecycle()
+    val deletePostUiState by viewModel.deletePostUiState.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
     val (openReportBottomSheet, setOpenReportBottomSheet) = rememberSaveable { mutableStateOf(false) }
     val (openReviewBottomSheet, setOpenReviewBottomSheet) = rememberSaveable { mutableStateOf(false) }
+    val (openDeleteBottomSheet, setOpenDeleteBottomSheet) = rememberSaveable { mutableStateOf(false) }
 
     val (buttonText, setButtonText) = remember { mutableStateOf("거래완료") }
 
@@ -74,6 +80,20 @@ internal fun ReadMoreRoute(
 
     LaunchedEffect(postId) {
         viewModel.getSpecificPost(postId)
+    }
+
+    LaunchedEffect(deletePostUiState) {
+        when (deletePostUiState) {
+            is DeletePostUiState.Loading -> Unit
+            is DeletePostUiState.Success -> {
+                makeToast(context, "내 게시물 삭제 성공")
+                setOpenDeleteBottomSheet(false)
+                onBackClick()
+            }
+            is DeletePostUiState.Error -> {
+                makeToast(context, "내 게시물 삭제 실패")
+            }
+        }
     }
 
     LaunchedEffect(reportPostUiState) {
@@ -119,46 +139,58 @@ internal fun ReadMoreRoute(
         }
     }
 
-    ReadMoreScreen(
-        getSpecificPostUiState = getSpecificPostUiState,
-        buttonText = buttonText,
-        onBackClick = onBackClick,
-        onOtherProfileClick = onOtherProfileClick,
-        onChatClick = onChatClick,
-        onReviewClick = onReviewClick,
-        onReportClick = onReportClick,
-        onTransactionCompleteCallBack = {
-            viewModel.transactionComplete(
-                body = TransactionCompleteRequestModel(
-                    productId = postId,
-                    otherMemberId = (getSpecificPostUiState as GetSpecificPostUiState.Success).post.member.memberId
-                )
+    when (getSpecificPostUiState) {
+
+        is GetSpecificPostUiState.Success -> {
+            val post = (getSpecificPostUiState as GetSpecificPostUiState.Success).post
+            ReadMoreScreen(
+                getSpecificPostUiState = getSpecificPostUiState,
+                buttonText = buttonText,
+                onBackClick = onBackClick,
+                onEditClick = {
+                    onEditClick(post.id, post.type, post.mode)
+                },
+                onOtherProfileClick = onOtherProfileClick,
+                onChatClick = onChatClick,
+                onReviewClick = onReviewClick,
+                onReportClick = onReportClick,
+                onTransactionCompleteCallBack = {
+                    viewModel.transactionComplete(
+                        body = TransactionCompleteRequestModel(
+                            productId = postId,
+                            otherMemberId = (getSpecificPostUiState as GetSpecificPostUiState.Success).post.member.memberId
+                        )
+                    )
+                },
+                onReviewCallBack = { light, content ->
+                    viewModel.reviewPost(
+                        body = ReviewRequestModel(
+                            productId = postId,
+                            content = content,
+                            light = light
+                        )
+                    )
+                },
+                onReportCallBack = { reportType, reportContent ->
+                    viewModel.reportPost(
+                        body = ReportRequestModel(
+                            productId = postId,
+                            reportType = reportType,
+                            content = reportContent
+                        )
+                    )
+                },
+                onDeleteCallBack = { viewModel.deletePost(postId = postId) },
+                openReportBottomSheet = openReportBottomSheet,
+                openReviewBottomSheet = openReviewBottomSheet,
+                openDeleteBottomSheet = openDeleteBottomSheet,
+                setOpenReportBottomSheet = setOpenReportBottomSheet,
+                setOpenReviewBottomSheet = setOpenReviewBottomSheet,
+                setOpenDeleteBottomSheet = setOpenDeleteBottomSheet,
+                isPostTradeState = isPostTradeState
             )
-        },
-        onReviewCallBack = { light, content ->
-            viewModel.reviewPost(
-                body = ReviewRequestModel(
-                    productId = postId,
-                    content = content,
-                    light = light
-                )
-            )
-        },
-        onReportCallBack = { reportType, reportContent ->
-            viewModel.reportPost(
-                body = ReportRequestModel(
-                    productId = postId,
-                    reportType = reportType,
-                    content = reportContent
-                )
-            )
-        },
-        openReportBottomSheet = openReportBottomSheet,
-        openReviewBottomSheet = openReviewBottomSheet,
-        setOpenReportBottomSheet = setOpenReportBottomSheet,
-        setOpenReviewBottomSheet = setOpenReviewBottomSheet,
-        isPostTradeState = isPostTradeState
-    )
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -169,6 +201,7 @@ private fun ReadMoreScreen(
     getSpecificPostUiState: GetSpecificPostUiState,
     buttonText: String,
     onBackClick: () -> Unit,
+    onEditClick: () -> Unit,
     onOtherProfileClick: (Long) -> Unit,
     onChatClick: () -> Unit,
     onReviewClick: (Int, String) -> Unit,
@@ -176,10 +209,13 @@ private fun ReadMoreScreen(
     onTransactionCompleteCallBack: () -> Unit,
     onReportCallBack: (String, String) -> Unit,
     onReviewCallBack: (Int, String) -> Unit,
+    onDeleteCallBack: () -> Unit,
     openReportBottomSheet: Boolean,
     openReviewBottomSheet: Boolean,
+    openDeleteBottomSheet: Boolean,
     setOpenReportBottomSheet: (Boolean) -> Unit,
     setOpenReviewBottomSheet: (Boolean) -> Unit,
+    setOpenDeleteBottomSheet: (Boolean) -> Unit
 ) {
     val scrollState = rememberScrollState()
 
@@ -288,11 +324,13 @@ private fun ReadMoreScreen(
                         Spacer(modifier = Modifier.height(24.dp))
 
                         Text(
-                            text = "이 게시글 신고하기",
+                            text = if (getSpecificPostUiState.post.isMine) "이 게시글 삭제하기" else "이 게시글 신고하기",
                             style = typography.label.copy(textDecoration = TextDecoration.Underline),
                             color = colors.error,
                             modifier = Modifier
-                                .GwangSanClickable { setOpenReportBottomSheet(true) }
+                                .GwangSanClickable {
+                                    if (getSpecificPostUiState.post.isMine) setOpenDeleteBottomSheet(true) else setOpenReportBottomSheet(true)
+                                }
                                 .padding(horizontal = 24.dp)
                         )
 
@@ -305,10 +343,10 @@ private fun ReadMoreScreen(
                                 .padding(24.dp)
                         ) {
                             GwangSanEnableButton(
-                                text = "채팅하기",
+                                text = if (getSpecificPostUiState.post.isMine) "수정" else "채팅하기",
                                 backgroundColor = colors.white,
                                 textColor = colors.main500,
-                                onClick = onChatClick,
+                                onClick = if (getSpecificPostUiState.post.isMine) onEditClick else onChatClick,
                                 modifier = Modifier
                                     .weight(1f)
                                     .border(1.dp, colors.main500, RoundedCornerShape(8.dp))
@@ -327,6 +365,11 @@ private fun ReadMoreScreen(
                             } else {
                                 GwangSanStateButton(
                                     text = "거래하기",
+                                    state = when {
+                                        getSpecificPostUiState.post.isCompleted -> ButtonState.Disable
+                                        getSpecificPostUiState.post.isCompletable -> ButtonState.Enable
+                                        else -> ButtonState.Disable
+                                    },
                                     onClick = { onTransactionCompleteCallBack() },
                                     modifier = Modifier
                                         .weight(1f)
@@ -390,6 +433,18 @@ private fun ReadMoreScreen(
             )
         }
     }
+
+    if (openDeleteBottomSheet) {
+        Dialog(onDismissRequest = { setOpenDeleteBottomSheet(false) }) {
+            GwangsanDialog(
+                onDismiss = { setOpenDeleteBottomSheet(false) },
+                onLogout = { onDeleteCallBack() },
+                titleText = "게시글 삭제",
+                contentText = "이 게시글을 삭제하시겠습니까?",
+                buttonText = "삭제"
+            )
+        }
+    }
 }
 
 @Preview
@@ -425,7 +480,10 @@ private fun PreviewReadMoreScreen() {
                 imageId = 4L,
                 imageUrl = "https://via.placeholder.com/600/d32776"
             )
-        )
+        ),
+        isCompletable = true,
+        isCompleted = false,
+        isMine = false
     )
 
     ReadMoreScreen(
@@ -443,6 +501,10 @@ private fun PreviewReadMoreScreen() {
         onReviewCallBack = { _, _ -> },
         onTransactionCompleteCallBack = {},
         isPostTradeState = true,
-        buttonText = ""
+        buttonText = "",
+        openDeleteBottomSheet = false,
+        setOpenDeleteBottomSheet = {},
+        onDeleteCallBack = {},
+        onEditClick = {}
     )
 }

@@ -19,14 +19,13 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.school_of_company.gwangsan_android.navigation.GwangsanNavHost
 import com.school_of_company.gwangsan_android.navigation.TopLevelDestination
-import com.school_of_company.design_system.componet.bottombar.GwangSanNavigationBar
-import com.school_of_company.design_system.componet.bottombar.GwangSanNavigationBarItem
+import com.school_of_company.design_system.component.bottombar.GwangSanNavigationBar
+import com.school_of_company.design_system.component.bottombar.GwangSanNavigationBarItem
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.inform.navigation.InformRoute
 import com.school_of_company.main.navgation.MainRoute
 import com.school_of_company.main.navgation.MainStartRoute
 import com.school_of_company.profile.navigation.MyProfileRoute
-import com.school_of_company.profile.navigation.MyReviewRoute
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable

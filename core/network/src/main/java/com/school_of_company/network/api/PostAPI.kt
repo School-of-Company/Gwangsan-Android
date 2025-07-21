@@ -2,6 +2,7 @@ package com.school_of_company.network.api
 
 import com.school_of_company.network.dto.post.request.PostAllRequest
 import com.school_of_company.network.dto.post.request.TransactionCompleteRequest
+import com.school_of_company.network.dto.post.response.AllPostDto
 import com.school_of_company.network.dto.post.response.PostDto
 import com.school_of_company.network.dto.post.response.PostModifyResponse
 import retrofit2.http.Body
@@ -34,13 +35,13 @@ interface PostAPI {
     suspend fun getAllPostInformation(
         @Query("type") type: String,
         @Query("mode") mode: String
-    ) : List<PostDto>
+    ) : List<AllPostDto>
 
     @GET("/api/post/current")
     suspend fun getMyPostInformation(
         @Query("type") type: String? = null,
         @Query("mode") mode: String? = null,
-    ) : List<PostDto>
+    ) : List<AllPostDto>
 
     @DELETE("/api/post/{product_id}")
     suspend fun deletePostInformation(
@@ -57,5 +58,5 @@ interface PostAPI {
         @Path("member_id") memberId: Long,
         @Query("type") type: String? = null,
         @Query("mode") mode: String? = null,
-    ) : List<PostDto>
+    ) : List<AllPostDto>
 }

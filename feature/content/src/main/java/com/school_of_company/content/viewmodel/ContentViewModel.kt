@@ -3,6 +3,7 @@ package com.school_of_company.content.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.school_of_company.content.viewmodel.uistate.DeletePostUiState
 import com.school_of_company.content.viewmodel.uistate.GetSpecificPostUiState
 import com.school_of_company.content.viewmodel.uistate.ReportPostUiState
 import com.school_of_company.content.viewmodel.uistate.ReviewPostUiState
@@ -31,8 +32,10 @@ class ContentViewModel @Inject constructor(
     private val reviewRepository: ReviewRepository
 ) : ViewModel() {
 
-    private val _getSpecificPostUiState =
-        MutableStateFlow<GetSpecificPostUiState>(GetSpecificPostUiState.Loading)
+    private val _deletePostUiState = MutableStateFlow<DeletePostUiState>(DeletePostUiState.Loading)
+    internal val deletePostUiState = _deletePostUiState.asStateFlow()
+
+    private val _getSpecificPostUiState = MutableStateFlow<GetSpecificPostUiState>(GetSpecificPostUiState.Loading)
     internal val getSpecificPostUiState = _getSpecificPostUiState.asStateFlow()
 
     private val _reportPostUiState = MutableStateFlow<ReportPostUiState>(ReportPostUiState.Loading)
@@ -43,6 +46,20 @@ class ContentViewModel @Inject constructor(
 
     private val _reviewPostUiState = MutableStateFlow<ReviewPostUiState>(ReviewPostUiState.Loading)
     internal val reviewPostUiState = _reviewPostUiState.asStateFlow()
+
+    internal fun deletePost(postId: Long) = viewModelScope.launch {
+        postRepository.deletePostInformation(postId)
+            .asResult()
+            .collectLatest { result ->
+                when (result) {
+                    is Result.Loading -> _deletePostUiState.value = DeletePostUiState.Loading
+
+                    is Result.Success -> _deletePostUiState.value = DeletePostUiState.Success
+
+                    is Result.Error -> _deletePostUiState.value = DeletePostUiState.Error(result.exception)
+                }
+            }
+    }
 
     internal fun getSpecificPost(postId: Long) = viewModelScope.launch {
         _getSpecificPostUiState.value = GetSpecificPostUiState.Loading

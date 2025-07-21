@@ -22,7 +22,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -30,12 +29,12 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
 import com.google.accompanist.swiperefresh.SwipeRefreshState
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.school_of_company.design_system.componet.button.gwangsanfloatingbutton.GwangSanFloatingButton
-import com.school_of_company.design_system.componet.clickable.GwangSanClickable
-import com.school_of_company.design_system.componet.dropdown.GwangSanSwitchButton
-import com.school_of_company.design_system.componet.dropdown.state.GwangSanSwitchState
-import com.school_of_company.design_system.componet.icons.DownArrowIcon
-import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
+import com.school_of_company.design_system.component.button.gwangsanfloatingbutton.GwangSanFloatingButton
+import com.school_of_company.design_system.component.clickable.GwangSanClickable
+import com.school_of_company.design_system.component.dropdown.GwangSanSwitchButton
+import com.school_of_company.design_system.component.dropdown.state.GwangSanSwitchState
+import com.school_of_company.design_system.component.icons.DownArrowIcon
+import com.school_of_company.design_system.component.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.main.component.MainList
 import com.school_of_company.main.viewmodel.MainViewModel

@@ -12,9 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.school_of_company.design_system.componet.clickable.GwangSanClickable
-import com.school_of_company.design_system.componet.icons.CloseIcon
-import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
+import com.school_of_company.design_system.component.clickable.GwangSanClickable
+import com.school_of_company.design_system.component.icons.CloseIcon
+import com.school_of_company.design_system.component.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.main.component.Notice
 import com.school_of_company.main.component.NoticeList

@@ -1,6 +1,5 @@
 package com.school_of_company.signin.view
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -26,21 +25,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.school_of_company.design_system.R
-import com.school_of_company.design_system.componet.button.GwangSanStateButton
-import com.school_of_company.design_system.componet.button.state.ButtonState
-import com.school_of_company.design_system.componet.clickable.GwangSanClickable
-import com.school_of_company.design_system.componet.icons.DownArrowIcon
-import com.school_of_company.design_system.componet.toast.makeToast
-import com.school_of_company.design_system.componet.topbar.GwangSanTopBar
+import com.school_of_company.design_system.component.button.GwangSanStateButton
+import com.school_of_company.design_system.component.button.state.ButtonState
+import com.school_of_company.design_system.component.clickable.GwangSanClickable
+import com.school_of_company.design_system.component.icons.DownArrowIcon
+import com.school_of_company.design_system.component.toast.makeToast
+import com.school_of_company.design_system.component.topbar.GwangSanTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.network.util.DeviceIdManager
 import com.school_of_company.signin.viewmodel.SignInViewModel
-import com.school_of_company.signin.viewmodel.uistate.SaveTokenUiState
 import com.school_of_company.signin.viewmodel.uistate.SignInUiState
 import com.school_of_company.ui.previews.GwangsanPreviews
 import com.yourpackage.design_system.component.textField.GwangSanTextField
