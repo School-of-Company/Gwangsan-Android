@@ -206,7 +206,10 @@ fun GwangsanNavHost(
             },
             onChatClick = { navController.navigateToChatRoom() },
             onReviewClick = { _, _ -> },
-            onReportClick = { _, _ -> }
+            onReportClick = { _, _ -> },
+            onEditClick = { id, type, mode ->
+                navController.navigateToPostEdit(id, type, mode)
+            }
         )
 
         informScreen(
@@ -230,20 +233,21 @@ fun GwangsanNavHost(
             onMyWritingClick = { navController.navigateToMyWriting() },
             onErrorToast = onErrorToast,
             onMyWritingDetailClick = { id ->
-                navController.navigateToPostDetail(id)
+                navController.navigateToReadMore(id)
             },
             onMyInformationEditClick = { navController.navigateToMyPeTchWritingDetail() },
             onLogoutClick = { navController.navigationPopUpToLogin(loginRoute = StartRoute) }
         )
 
         otherPersonProfileScreen(
+            onBackClick = { navController.popBackStack() },
             onErrorToast = onErrorToast,
             onOtherReviewClick = {
                 id ->
                 navController.navigateToOtherReview(id) },
             onOtherWritingDetailClick = {
                 id ->
-                navController.navigateToPostDetail(id)
+                navController.navigateToReadMore(id)
             }
         )
 

@@ -41,7 +41,8 @@ fun NavGraphBuilder.readMoreScreen(
     onOtherProfileClick: (Long) -> Unit,
     onChatClick: () -> Unit,
     onReviewClick: (Int, String) -> Unit,
-    onReportClick: (String, String) -> Unit
+    onReportClick: (String, String) -> Unit,
+    onEditClick: (Long, String, String) -> Unit,
 ) {
     composable(route = "${ReadMoreRoute}/{postId}") { backStackEntry ->
         val postId = backStackEntry.arguments?.getString("postId")?.toLongOrNull()
@@ -54,7 +55,7 @@ fun NavGraphBuilder.readMoreScreen(
                 onReviewClick = onReviewClick,
                 onReportClick = onReportClick,
                 postId = postId,
-
+                onEditClick = onEditClick
             )
         }
     }
