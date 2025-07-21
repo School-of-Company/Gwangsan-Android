@@ -3,6 +3,7 @@ package com.school_of_company.network.di
 import android.util.Log
 import com.school_of_company.network.BuildConfig
 import com.school_of_company.network.api.AuthAPI
+import com.school_of_company.network.api.ChatAPI
 import com.school_of_company.network.api.ImageAPI
 import com.school_of_company.network.api.MemberAPI
 import com.school_of_company.network.api.NoticeAPI
@@ -117,5 +118,10 @@ object NetworkModule {
     @Singleton
     fun provideWebhookAPI(retrofit: Retrofit): WebhookAPI =
         retrofit.create(WebhookAPI::class.java)
+
+    @Provides
+    @Singleton
+    fun provideChatAPI(retrofit: Retrofit): ChatAPI =
+        retrofit.create(ChatAPI::class.java)
 }
 
