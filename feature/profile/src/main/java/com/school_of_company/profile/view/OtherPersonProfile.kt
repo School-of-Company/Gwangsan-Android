@@ -29,6 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.school_of_company.design_system.componet.clickable.GwangSanClickable
+import com.school_of_company.design_system.componet.icons.DownArrowIcon
 import com.school_of_company.design_system.componet.toast.makeToast
 import com.school_of_company.design_system.componet.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
@@ -48,6 +50,7 @@ import com.school_of_company.profile.viewmodel.uistate.OtherPersonGetUistate
 @Composable
 internal fun OtherPersonProfileRoute(
     onErrorToast: (Throwable, Int) -> Unit,
+    onBackClick: () -> Unit,
     memberId: Long,
     onOtherReviewClick: (Long) -> Unit,
     onOtherWritingDetailClick: (Long) -> Unit,
@@ -73,6 +76,7 @@ internal fun OtherPersonProfileRoute(
         is OtherPersonGetUistate.Success -> {
             OtherPersonProfileScreen(
                 data = otherPersonUiState.data,
+                onBackClick = onBackClick,
                 onOtherReviewClick = onOtherReviewClick,
                 otherGetPostUiState = otherGetPostUiState,
                 onOtherWritingDetailClick = onOtherWritingDetailClick
@@ -90,6 +94,7 @@ internal fun OtherPersonProfileRoute(
 private fun OtherPersonProfileScreen(
     modifier: Modifier = Modifier,
     data: GetAllMemberResponseModel,
+    onBackClick: () -> Unit,
     onOtherReviewClick: (Long) -> Unit,
     onOtherWritingDetailClick: (Long) -> Unit,
     otherGetPostUiState: OtherGetPostUiState,
@@ -107,8 +112,10 @@ private fun OtherPersonProfileScreen(
         ) {
             item {
                 GwangSanSubTopBar(
-                    startIcon = { Box(modifier = Modifier.size(24.dp)) },
-                    betweenText = "프로필" ,
+                    startIcon = {
+                        DownArrowIcon(modifier = Modifier.GwangSanClickable { onBackClick() })
+                    },
+                    betweenText = "프로필",
                     modifier = Modifier.padding(horizontal = 24.dp),
                 )
             }
