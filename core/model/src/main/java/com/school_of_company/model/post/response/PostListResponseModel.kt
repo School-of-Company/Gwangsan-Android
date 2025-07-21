@@ -8,7 +8,10 @@ data class Post(
     val type: String,
     val mode: String,
     val member: Member,
-    val images: List<Image>
+    val images: List<Image>,
+    val isMine: Boolean,
+    val isCompletable: Boolean,
+    val isCompleted: Boolean,
 )
 
 data class Member(

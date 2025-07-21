@@ -2,6 +2,7 @@ package com.school_of_company.data.repository.post
 
 import com.school_of_company.model.post.request.PostAllRequestModel
 import com.school_of_company.model.post.request.TransactionCompleteRequestModel
+import com.school_of_company.model.post.response.AllPost
 import com.school_of_company.model.post.response.Post
 import com.school_of_company.network.datasource.post.PostDataSource
 import com.school_of_company.network.dto.post.response.PostModifyResponse
@@ -35,7 +36,7 @@ class PostRepositoryImpl @Inject constructor (
     override fun getAllPostInformation(
         type: String,
         mode: String
-    ): Flow<List<Post>> {
+    ): Flow<List<AllPost>> {
         return postDataSource.getAllPostInformation(
             type = type,
             mode = mode
@@ -45,7 +46,7 @@ class PostRepositoryImpl @Inject constructor (
     override fun getMyPostInformation(
         type: String?,
         mode: String?
-    ): Flow<List<Post>> {
+    ): Flow<List<AllPost>> {
         return postDataSource.getMyPostInformation(
             type = type,
             mode = mode
@@ -64,7 +65,7 @@ class PostRepositoryImpl @Inject constructor (
         type: String?,
         mode: String?,
         memberId: Long
-    ): Flow<List<Post>> {
+    ): Flow<List<AllPost>> {
         return postDataSource.otherPostInformation(
             type = type,
             mode = mode,

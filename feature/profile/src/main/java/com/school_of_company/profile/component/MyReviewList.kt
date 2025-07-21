@@ -22,13 +22,14 @@ import coil.compose.rememberAsyncImagePainter
 import com.school_of_company.design_system.R
 import com.school_of_company.design_system.componet.clickable.GwangSanClickable
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.model.post.response.AllPost
 import com.school_of_company.model.post.response.Post
 
 @Composable
 internal fun MyReviewListItem(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    data: Post
+    data: AllPost
 ) {
     GwangSanTheme { color, typography ->
 

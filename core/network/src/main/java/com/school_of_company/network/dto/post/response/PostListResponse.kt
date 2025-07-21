@@ -12,7 +12,10 @@ data class PostDto(
     @Json(name = "content") val content: String,
     @Json(name = "gwangsan") val gwangsan: Int,
     @Json(name = "member") val member: MemberDto,
-    @Json(name = "images") val images: List<ImageDto>
+    @Json(name = "images") val images: List<ImageDto>,
+    @Json(name = "isMine") val isMine: Boolean,
+    @Json(name = "isCompletable") val isCompletable: Boolean,
+    @Json(name = "isCompleted") val isCompleted: Boolean
 )
 
 @JsonClass(generateAdapter = true)

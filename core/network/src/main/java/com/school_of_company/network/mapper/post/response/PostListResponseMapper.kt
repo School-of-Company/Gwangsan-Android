@@ -17,7 +17,10 @@ fun PostDto.toModel(): Post {
         content = this.content,
         gwangsan = this.gwangsan,
         member = this.member.toModel(),
-        images = this.images.map { it.toModel() }
+        images = this.images.map { it.toModel() },
+        isMine = this.isMine,
+        isCompletable = this.isCompletable,
+        isCompleted = this.isCompleted
     )
 }
 
