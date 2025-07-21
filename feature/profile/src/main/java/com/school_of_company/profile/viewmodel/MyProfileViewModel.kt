@@ -210,7 +210,7 @@ internal class MyProfileViewModel @Inject constructor(
         )
             .asResult()
             .collectLatest {
-                result ->
+                    result ->
                 when (result) {
                     is Result.Loading -> _otherGetPostUiState.value = OtherGetPostUiState.Loading
                     is Result.Success ->
@@ -262,7 +262,7 @@ internal class MyProfileViewModel @Inject constructor(
         reviewRepository.getMyWriteReview()
             .asResult()
             .collectLatest {
-                result ->
+                    result ->
                 when (result) {
                     is Result.Loading -> _getMyWriteReviewUiState.value = GetMyReviewWriteUiState.Loading
                     is Result.Success -> {
@@ -315,7 +315,15 @@ internal class MyProfileViewModel @Inject constructor(
             .collectLatest { result ->
                 when (result) {
                     is Result.Loading -> _otherReviewUIState.value =  OtherReviewUIState.Loading
-                    is Result.Success -> _otherReviewUIState.value = OtherReviewUIState.Success(result.data)
+                    is Result.Success -> {
+                        if (result.data.isEmpty()) {
+                            _otherReviewUIState.value = OtherReviewUIState.Empty
+                            _swipeRefreshLoading.value = false
+                        } else {
+                            _otherReviewUIState.value = OtherReviewUIState.Success(result.data)
+                            _swipeRefreshLoading.value = false
+                        }
+                    }
                     is Result.Error ->  _otherReviewUIState.value = OtherReviewUIState.Error(result.exception)
                 }
             }
