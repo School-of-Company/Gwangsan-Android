@@ -8,5 +8,5 @@ interface ReviewRepository {
     fun postReview(body: ReviewRequestModel) : Flow<Unit>
     fun getMyWriteReview() : Flow<List<ReviewResponseModel>>
     fun getMyReview() : Flow<List<ReviewResponseModel>>
-    fun getOtherReview(memberId: Long) : Flow<ReviewResponseModel>
+    fun getOtherReview(memberId: Long) : Flow<List<ReviewResponseModel>>
 }
