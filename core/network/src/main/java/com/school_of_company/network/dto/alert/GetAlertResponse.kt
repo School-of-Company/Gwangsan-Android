@@ -10,6 +10,7 @@ data class GetAlertResponse(
     @Json(name = "id") val id: Long,
     @Json(name = "title") val title: String,
     @Json(name = "content") val content: String,
+    @Json(name = "sendMemberId") val sendMemberId: Long? = null,
     @Json(name = "createdAt") val createdAt: String,
     @Json(name = "alertType") val alertType: AlertType,
     @Json(name = "images") val images: List<GetAlertImages>
