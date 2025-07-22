@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.school_of_company.chat.BuildConfig
 import com.school_of_company.chat.util.getMultipartFile
 import com.school_of_company.chat.viewmodel.uistate.ChatMessageUiState
 import com.school_of_company.chat.viewmodel.uistate.ImageUpLoadUiState
@@ -192,7 +193,7 @@ class ChatViewModel @Inject constructor(
         val token = authRepository.getAccessToken().first()
         if (token.isNotBlank()) {
             chatRepository.connectSocket(
-                baseUrl = "https://api.gwangsan.io.kr/api/chat",
+                baseUrl = "${BuildConfig.BASE_URL}/api/chat",
                 accessToken = token
             )
         }
