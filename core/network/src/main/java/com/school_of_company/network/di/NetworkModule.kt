@@ -2,6 +2,7 @@ package com.school_of_company.network.di
 
 import android.util.Log
 import com.school_of_company.network.BuildConfig
+import com.school_of_company.network.api.AlertAPI
 import com.school_of_company.network.api.AuthAPI
 import com.school_of_company.network.api.ChatAPI
 import com.school_of_company.network.api.ImageAPI
@@ -123,5 +124,10 @@ object NetworkModule {
     @Singleton
     fun provideChatAPI(retrofit: Retrofit): ChatAPI =
         retrofit.create(ChatAPI::class.java)
+
+    @Provides
+    @Singleton
+    fun provideAlertAPI(retrofit: Retrofit): AlertAPI =
+        retrofit.create(AlertAPI::class.java)
 }
 
