@@ -1,6 +1,5 @@
 package com.school_of_company.chat.viewmodel.uistate
 
-import com.school_of_company.model.chat.response.GetChatMessageResponseModel
 import com.school_of_company.network.socket.model.response.ChatMessage
 
 sealed interface ChatMessageUiState {

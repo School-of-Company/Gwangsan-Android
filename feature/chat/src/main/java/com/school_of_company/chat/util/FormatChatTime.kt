@@ -4,16 +4,23 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-fun formatChatTimeToDate(rawTime: String): String {
-    val parsed = LocalDateTime.parse(rawTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+private val CHAT_TIME_FORMATTER = DateTimeFormatter.ofPattern("a hh:mm", Locale.KOREA)
+private val CHAT_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 a hh시 mm분", Locale.KOREA)
 
-    val outputFormatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 a hh시 mm분", Locale.KOREA)
-    return parsed.format(outputFormatter)
+fun formatChatTimeToDate(rawTime: String): String {
+    return try {
+        val parsed = LocalDateTime.parse(rawTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+        parsed.format(CHAT_TIME_FORMATTER)
+    } catch (e: Exception) {
+        rawTime
+    }
 }
 
 fun formatChatTime(rawTime: String): String {
-    val parsed = LocalDateTime.parse(rawTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-
-    val outputFormatter = DateTimeFormatter.ofPattern("a hh:mm", Locale.KOREA)
-    return parsed.format(outputFormatter)
+    return try {
+        val parsed = LocalDateTime.parse(rawTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+        parsed.format(CHAT_DATE_FORMATTER)
+    } catch (e: Exception) {
+        rawTime
+    }
 }

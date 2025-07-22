@@ -64,7 +64,7 @@ internal fun ChatRoomRoute(
         }
     )
 
-    LaunchedEffect(selectedImages.size) {
+    LaunchedEffect(selectedImages.toList()) {
         selectedImages.forEach { uri ->
             if (!uploadedUris.contains(uri)) {
                 try {
@@ -77,7 +77,7 @@ internal fun ChatRoomRoute(
             }
         }
     }
-    
+
     LaunchedEffect(productId) {
         viewModel.joinOrCreateChatRoom(productId)
     }
@@ -291,24 +291,19 @@ private fun ChatRoomScreen(
 
                 Spacer(modifier = Modifier.width(8.dp))
 
-                ChatSendButton(
-                    onClick = {
-                        if ((text.isNotBlank() || uploadedUris.isNotEmpty()) &&
+                val canSendMessage = (text.isNotBlank() || uploadedUris.isNotEmpty()) &&
                             selectedImages.size == uploadedUris.size &&
                             connectionStatus == ConnectionStatus.CONNECTED
-                        ) {
+
+                ChatSendButton(
+                    onClick = {
+                        if (canSendMessage) {
                             onSendClick(text.trim())
                             text = ""
                         }
                     },
-                    enabled = (
-                            (text.isNotBlank() || uploadedUris.isNotEmpty()) &&
-                                    selectedImages.size == uploadedUris.size &&
-                                    connectionStatus == ConnectionStatus.CONNECTED
-                            )
-
+                    enabled = canSendMessage
                 )
-
             }
         }
     }

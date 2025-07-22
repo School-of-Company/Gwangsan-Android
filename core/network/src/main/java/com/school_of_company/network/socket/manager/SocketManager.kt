@@ -91,9 +91,6 @@ class SocketManager @Inject constructor(
                     messageDto?.let {
                         _messageEvents.trySend(it.toModel())
                     }
-                    if (messageDto != null) {
-                        _messageEvents.trySend(messageDto.toModel())
-                    }
 
                 } catch (e: Exception) {
                     Log.e("SocketManager", "Error parsing message", e)
@@ -107,9 +104,6 @@ class SocketManager @Inject constructor(
                     val roomUpdateDto = roomUpdateAdapter.fromJson(jsonObject.toString())
                     roomUpdateDto?.let {
                         _roomUpdateEvents.trySend(it.toModel())
-                    }
-                    if (roomUpdateDto != null) {
-                        _roomUpdateEvents.trySend(roomUpdateDto.toModel())
                     }
 
                 } catch (e: Exception) {

@@ -124,7 +124,7 @@ private fun ChatScreen(
                             ) { item ->
                                 ChatListItem(
                                     item = item,
-                                    onClick = { onChatClick(item.messageId) }
+                                    onClick = { onChatClick(item.roomId) }
                                 )
                             }
                         }

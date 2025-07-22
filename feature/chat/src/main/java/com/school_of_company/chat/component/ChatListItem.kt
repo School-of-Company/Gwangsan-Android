@@ -30,7 +30,7 @@ internal fun ChatListItem(
             verticalAlignment = Alignment.CenterVertically,
             modifier = modifier
                 .fillMaxWidth()
-                .GwangSanClickable { onClick(item.messageId) }
+                .GwangSanClickable { onClick(item.roomId) }
                 .padding(
                     horizontal = 16.dp,
                     vertical = 12.dp
