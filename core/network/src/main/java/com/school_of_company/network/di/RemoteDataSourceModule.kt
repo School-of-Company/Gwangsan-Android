@@ -1,5 +1,7 @@
 package com.school_of_company.network.di
 
+import com.school_of_company.network.datasource.alert.AlertDataSource
+import com.school_of_company.network.datasource.alert.AlertDataSourceImpl
 import com.school_of_company.network.datasource.auth.AuthDataSource
 import com.school_of_company.network.datasource.auth.AuthDataSourceImpl
 import com.school_of_company.network.datasource.chat.ChatDataSource
@@ -63,4 +65,9 @@ abstract class RemoteDataSourceModule {
     abstract fun bindChatDataSource(
         chatDataSourceImpl: ChatDataSourceImpl
     ) : ChatDataSource
+
+    @Binds
+    abstract fun bindAlertDataSource(
+        alertDataSourceImpl: AlertDataSourceImpl
+    ) : AlertDataSource
 }
