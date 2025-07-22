@@ -4,7 +4,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.school_of_company.chat.view.ChatRoom
 import com.school_of_company.chat.view.ChatRoomRoute
 import com.school_of_company.chat.view.ChatRoute
 

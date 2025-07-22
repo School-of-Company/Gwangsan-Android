@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.school_of_company.chat.BuildConfig
 import com.school_of_company.chat.util.getMultipartFile
 import com.school_of_company.chat.viewmodel.uistate.ChatMessageUiState
+import com.school_of_company.chat.viewmodel.uistate.GetChatRoomUiState
 import com.school_of_company.chat.viewmodel.uistate.ImageUpLoadUiState
 import com.school_of_company.chat.viewmodel.uistate.JoinChatUiState
 import com.school_of_company.data.repository.auth.AuthRepository
@@ -32,6 +33,9 @@ class ChatViewModel @Inject constructor(
     private val imageRepository: ImageRepository
 ) : ViewModel() {
 
+    private val _swipeRefreshLoading = MutableStateFlow(false)
+    val swipeRefreshLoading = _swipeRefreshLoading.asStateFlow()
+
     private val _joinChatUiState = MutableStateFlow<JoinChatUiState>(JoinChatUiState.Loading)
     val joinChatUiState = _joinChatUiState.asStateFlow()
 
@@ -43,6 +47,9 @@ class ChatViewModel @Inject constructor(
 
     private val _imageUpLoadUiState = MutableStateFlow<ImageUpLoadUiState>(ImageUpLoadUiState.Loading)
     internal val imageUpLoadUiState = _imageUpLoadUiState.asStateFlow()
+
+    private val _getChatRoomUiState = MutableStateFlow<GetChatRoomUiState>(GetChatRoomUiState.Loading)
+    internal val getChatRoomUiState = _getChatRoomUiState.asStateFlow()
 
     private var isSocketConnected = false
 
@@ -77,6 +84,32 @@ class ChatViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    internal fun getChatRoom() = viewModelScope.launch {
+        _swipeRefreshLoading.value = true
+        _getChatRoomUiState.value = GetChatRoomUiState.Loading
+
+        chatRepository.getChatRoomList()
+            .asResult()
+            .collectLatest { result ->
+                when (result) {
+                    is Result.Loading -> _getChatRoomUiState.value = GetChatRoomUiState.Loading
+                    is Result.Success -> {
+                        if (result.data.isEmpty()) {
+                            _getChatRoomUiState.value = GetChatRoomUiState.Empty
+                            _swipeRefreshLoading.value = false
+                        } else {
+                        _getChatRoomUiState.value = GetChatRoomUiState.Success(result.data)
+                        _swipeRefreshLoading.value = false
+                        }
+                    }
+                    is Result.Error -> {
+                        _getChatRoomUiState.value = GetChatRoomUiState.Error(result.exception)
+                        _swipeRefreshLoading.value = false
+                    }
+                }
+            }
     }
 
     internal suspend fun imageUpLoad(context: Context, image: Uri): Long {
