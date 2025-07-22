@@ -36,6 +36,7 @@ fun NoticeListItem(
     data: GetAlertResponseModel
 ) {
     GwangSanTheme { color, typography ->
+        val firstImageUrl = data.images.firstOrNull()?.imageUrl
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -53,7 +54,7 @@ fun NoticeListItem(
                     )
                     .clip(RoundedCornerShape(10.dp))
             ) {
-                if (data.images.isEmpty()) {
+                if (firstImageUrl.isNullOrEmpty()) {
                     Image(
                         painter = painterResource(id = R.drawable.gwangsan),
                         contentDescription = "기본 이미지",
@@ -62,7 +63,7 @@ fun NoticeListItem(
                     )
                 } else {
                     Image(
-                        painter = rememberAsyncImagePainter(model = data.images),
+                        painter = rememberAsyncImagePainter(model = firstImageUrl),
                         contentDescription = "네트워크 이미지",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
