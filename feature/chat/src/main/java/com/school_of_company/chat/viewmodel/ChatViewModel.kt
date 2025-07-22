@@ -142,6 +142,16 @@ class ChatViewModel @Inject constructor(
         }
     }
 
+    suspend fun joinDirectChatRoom(roomId: Long) {
+        if (!isSocketConnected) {
+            connectSocket()
+        }
+
+        chatRepository.emitJoinRoom(roomId)
+
+        loadChatMessages(roomId)
+    }
+
     fun joinOrCreateChatRoom(productId: Long) = viewModelScope.launch {
         _joinChatUiState.value = JoinChatUiState.Loading
 
@@ -187,7 +197,7 @@ class ChatViewModel @Inject constructor(
             }
     }
 
-    private fun loadChatMessages(roomId: Long) = viewModelScope.launch {
+    fun loadChatMessages(roomId: Long) = viewModelScope.launch {
         _chatMessageUiState.value = ChatMessageUiState.Loading
 
         chatRepository.getChatMessageList(

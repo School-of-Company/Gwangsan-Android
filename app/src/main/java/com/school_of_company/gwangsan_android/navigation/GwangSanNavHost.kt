@@ -5,9 +5,11 @@ import androidx.compose.ui.Modifier
 import com.school_of_company.gwangsan_android.R
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
+import com.school_of_company.chat.navigation.chatRoomIdScreen
 import com.school_of_company.chat.navigation.chatRoomScreen
 import com.school_of_company.chat.navigation.chatScreen
 import com.school_of_company.chat.navigation.navigateToChatRoom
+import com.school_of_company.chat.navigation.navigateToChatRoomId
 import com.school_of_company.common.ForBiddenException
 import com.school_of_company.common.NoInternetException
 import com.school_of_company.common.OtherHttpException
@@ -183,10 +185,14 @@ fun GwangsanNavHost(
             navigationToNotice = { navController.navigateToNoticeScreen() }
         )
 
+        chatRoomIdScreen(
+            onBackClick = { navController.popBackStack() },
+        )
+
         chatScreen(
             onCloseClick = { navController.popBackStack() },
             onChatClick = { id ->
-                navController.navigateToChatRoom(id)
+                navController.navigateToChatRoomId(id)
             }
         )
 

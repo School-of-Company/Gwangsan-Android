@@ -10,7 +10,7 @@ private val CHAT_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy년 MM월 dd�
 fun formatChatTimeToDate(rawTime: String): String {
     return try {
         val parsed = LocalDateTime.parse(rawTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-        parsed.format(CHAT_TIME_FORMATTER)
+        parsed.format(CHAT_DATE_FORMATTER)
     } catch (e: Exception) {
         rawTime
     }
@@ -19,7 +19,7 @@ fun formatChatTimeToDate(rawTime: String): String {
 fun formatChatTime(rawTime: String): String {
     return try {
         val parsed = LocalDateTime.parse(rawTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-        parsed.format(CHAT_DATE_FORMATTER)
+        parsed.format(CHAT_TIME_FORMATTER)
     } catch (e: Exception) {
         rawTime
     }
