@@ -29,7 +29,6 @@ import com.school_of_company.chat.component.ChatMessageItem
 import com.school_of_company.chat.util.formatChatTimeToDate
 import com.school_of_company.chat.viewmodel.ChatViewModel
 import com.school_of_company.chat.viewmodel.uistate.ChatMessageUiState
-import com.school_of_company.chat.viewmodel.uistate.JoinChatUiState
 import com.school_of_company.design_system.R
 import com.school_of_company.design_system.component.button.ChatSendButton
 import com.school_of_company.design_system.component.clickable.GwangSanClickable
