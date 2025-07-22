@@ -27,7 +27,7 @@ data class ChatRoom(
 @Composable
 internal fun ChatRoute(
     onCloseClick: () -> Unit,
-    onChatClick: (ChatRoom) -> Unit
+    onChatClick: (Long) -> Unit
 ) {
     ChatScreen(
         chatList = listOf(
@@ -68,7 +68,7 @@ internal fun ChatRoute(
 private fun ChatScreen(
     chatList: List<ChatRoom>,
     onCloseClick: () -> Unit,
-    onChatClick: (ChatRoom) -> Unit = {},
+    onChatClick: (Long) -> Unit = {},
 ) {
     GwangSanTheme { colors, _ ->
         Column(
@@ -102,7 +102,7 @@ private fun ChatScreen(
                 ) { item ->
                     ChatListItem(
                         item = item,
-                        modifier = Modifier.GwangSanClickable { onChatClick(item) }
+                        modifier = Modifier.GwangSanClickable { onChatClick(item.id.toLong()) }
                     )
                 }
             }

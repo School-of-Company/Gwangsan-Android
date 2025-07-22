@@ -223,11 +223,15 @@ fun ChatInputTextField(
     value: String,
     onValueChange: (String) -> Unit,
     onImageClick: () -> Unit = {},
+    enabled: Boolean = true
 ) {
     GwangSanTheme { colors, typography ->
         Row(
             modifier = modifier
-                .background(color = colors.gray200, shape = RoundedCornerShape(24.dp))
+                .background(
+                    color = if (enabled) colors.gray200 else colors.gray100,
+                    shape = RoundedCornerShape(24.dp)
+                )
                 .padding(horizontal = 16.dp, vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -259,8 +263,14 @@ fun ChatInputTextField(
                 contentDescription = "이미지 첨부",
                 modifier = Modifier
                     .size(24.dp)
-                    .GwangSanClickable { onImageClick() },
-                tint = colors.black
+                    .then(
+                        if (enabled) {
+                            Modifier.GwangSanClickable { onImageClick() }
+                        } else {
+                            Modifier
+                        }
+                    ),
+                tint = if (enabled) colors.black else colors.gray400
             )
         }
     }

@@ -15,13 +15,19 @@ fun NavController.navigateToChat(navOptions: NavOptions? = null) {
     this.navigate(ChatRoute, navOptions)
 }
 
-fun NavController.navigateToChatRoom(navOptions: NavOptions? = null) {
-    this.navigate(ChatRoomRoute, navOptions)
+fun NavController.navigateToChatRoom(
+    productId: Long,
+    navOptions: NavOptions? = null
+) {
+    this.navigate(
+        route = "$ChatRoomRoute/${productId}",
+        navOptions = navOptions
+    )
 }
 
 fun NavGraphBuilder.chatScreen(
     onCloseClick: () -> Unit,
-    onChatClick: (ChatRoom) -> Unit
+    onChatClick: (Long) -> Unit
 ) {
     composable(ChatRoute) {
         ChatRoute(
@@ -33,12 +39,15 @@ fun NavGraphBuilder.chatScreen(
 
 fun NavGraphBuilder.chatRoomScreen(
     onBackClick: () -> Unit,
-    onSendClick: (String) -> Unit
 ) {
-    composable(ChatRoomRoute) {
-        ChatRoomRoute(
-            onBackClick = onBackClick,
-            onSendClick = onSendClick
-        )
+    composable(route = "$ChatRoomRoute/{productId}") { backStackEntry ->
+        val productId = backStackEntry.arguments?.getString("productId")?.toLongOrNull()
+
+        if (productId != null) {
+            ChatRoomRoute(
+                productId = productId,
+                onBackClick = onBackClick,
+            )
+        }
     }
 }

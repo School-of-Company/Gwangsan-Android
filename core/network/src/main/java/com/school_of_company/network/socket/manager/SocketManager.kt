@@ -21,9 +21,11 @@ enum class ConnectionStatus {
 }
 
 class SocketManager @Inject constructor(
-    private val moshi: Moshi
+    moshi: Moshi
 ) {
     private var socket: Socket? = null
+
+    private var pendingJoinRoomId: Long? = null
 
     private val messageAdapter = moshi.adapter(ChatMessageDto::class.java)
     private val roomUpdateAdapter = moshi.adapter(RoomUpdateDto::class.java)
@@ -40,26 +42,38 @@ class SocketManager @Inject constructor(
 
     fun connectChatting(baseUrl: String, accessToken: String) {
         try {
+            disconnect()
+
             val options = IO.Options().apply {
-                path = "/api/chat"
                 auth = mapOf("token" to "Bearer $accessToken")
-                transports = arrayOf("websocket", "polling")
+                transports = arrayOf("websocket")
+                forceNew = true
+                reconnection = true
+                timeout = 10000
             }
 
             socket = IO.socket(baseUrl, options)
+
             setupEventListeners()
             socket?.connect()
-            _connectionEvents.trySend(ConnectionStatus.CONNECTING)
 
+            _connectionEvents.trySend(ConnectionStatus.CONNECTING)
         } catch (e: Exception) {
+            Log.e("SocketManager", "Exception during socket connection", e)
             _connectionEvents.trySend(ConnectionStatus.ERROR)
         }
     }
 
     private fun setupEventListeners() {
         socket?.apply {
+
             on(Socket.EVENT_CONNECT) {
                 _connectionEvents.trySend(ConnectionStatus.CONNECTED)
+
+                pendingJoinRoomId?.let {
+                    emitJoinRoom(it)
+                    pendingJoinRoomId = null
+                }
             }
 
             on(Socket.EVENT_CONNECT_ERROR) {
@@ -77,24 +91,49 @@ class SocketManager @Inject constructor(
                     messageDto?.let {
                         _messageEvents.trySend(it.toModel())
                     }
+                    if (messageDto != null) {
+                        _messageEvents.trySend(messageDto.toModel())
+                    }
+
                 } catch (e: Exception) {
                     Log.e("SocketManager", "Error parsing message", e)
                 }
             }
 
             on("updateRoomList") { args ->
+
                 try {
                     val jsonObject = (args.getOrNull(0) as? JSONObject) ?: return@on
                     val roomUpdateDto = roomUpdateAdapter.fromJson(jsonObject.toString())
                     roomUpdateDto?.let {
                         _roomUpdateEvents.trySend(it.toModel())
                     }
+                    if (roomUpdateDto != null) {
+                        _roomUpdateEvents.trySend(roomUpdateDto.toModel())
+                    }
+
                 } catch (e: Exception) {
                     Log.e("SocketManager", "Error parsing room update", e)
                 }
             }
         }
     }
+
+    fun emitJoinRoom(roomId: Long) {
+        if (socket?.connected() == true) {
+            try {
+                val data = JSONObject().apply {
+                    put("roomId", roomId)
+                }
+                socket?.emit("joinRoom", data)
+            } catch (e: Exception) {
+                Log.e("SocketManager", "Failed to emit joinRoom", e)
+            }
+        } else {
+            pendingJoinRoomId = roomId
+        }
+    }
+
 
     fun sendMessage(message: SendMessageDto) {
         try {

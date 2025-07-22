@@ -4,6 +4,7 @@ import com.school_of_company.network.dto.chat.request.ReadMessageRequest
 import com.school_of_company.network.dto.chat.response.GetChatMessageResponse
 import com.school_of_company.network.dto.chat.response.GetChatRoomResponse
 import com.school_of_company.network.dto.chat.response.JoinChatResponse
+import com.school_of_company.network.socket.dto.response.ChatMessageDto
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PATCH
@@ -32,7 +33,7 @@ interface ChatAPI {
         @Query("lastCreatedAt") lastCreatedAt: String? = null,
         @Query("lastMessageId") lastMessageId: Long? = null,
         @Query("limit") limit: Int = 20
-    ) : List<GetChatMessageResponse>
+    ) : List<ChatMessageDto>
 
     @PATCH("/api/chat/read")
     suspend fun readChatMessage(

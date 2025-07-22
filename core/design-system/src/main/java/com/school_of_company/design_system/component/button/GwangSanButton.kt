@@ -142,14 +142,17 @@ fun GwangSanEnableButton(
 @Composable
 fun ChatSendButton(
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true
 ) {
     GwangSanTheme { colors, _ ->
         Box(
             modifier = modifier
                 .size(44.dp)
                 .background(color = colors.subYellow500, shape = CircleShape)
-                .GwangSanClickable { onClick() },
+                .GwangSanClickable {
+                    if (enabled) onClick()
+                },
             contentAlignment = Alignment.Center
         ) {
             Icon(
@@ -163,7 +166,7 @@ fun ChatSendButton(
 
 @Preview
 @Composable
-fun ButtonPreView(){
+fun ButtonPreView() {
     GwangSanStateButton(
         text = "버튼",
         state = ButtonState.Enable,

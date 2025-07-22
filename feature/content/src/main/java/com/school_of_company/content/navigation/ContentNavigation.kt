@@ -39,7 +39,7 @@ fun NavGraphBuilder.contentScreen(
 fun NavGraphBuilder.readMoreScreen(
     onBackClick: () -> Unit,
     onOtherProfileClick: (Long) -> Unit,
-    onChatClick: () -> Unit,
+    onChatClick: (Long) -> Unit,
     onReviewClick: (Int, String) -> Unit,
     onReportClick: (String, String) -> Unit,
     onEditClick: (Long, String, String) -> Unit,

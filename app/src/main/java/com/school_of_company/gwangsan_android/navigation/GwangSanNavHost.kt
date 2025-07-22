@@ -176,20 +176,22 @@ fun GwangsanNavHost(
             onBackClick = { navController.popBackStack() },
             onErrorToast = onErrorToast
         )
+
         mainStartScreen(
             navigationToService = { navController.navigateToMain("SERVICE") },
             navigationToObject = { navController.navigateToMain("OBJECT") },
-            navigationToNotice = {navController.navigateToNoticeScreen()}
+            navigationToNotice = { navController.navigateToNoticeScreen() }
         )
 
         chatScreen(
             onCloseClick = { navController.popBackStack() },
-            onChatClick = { navController.navigateToChatRoom() }
+            onChatClick = { id ->
+                navController.navigateToChatRoom(id)
+            }
         )
 
         chatRoomScreen(
             onBackClick = { navController.popBackStack() },
-            onSendClick = { }
         )
 
         contentScreen(
@@ -202,7 +204,9 @@ fun GwangsanNavHost(
             onOtherProfileClick = { memberId ->
                 navController.navigateToOtherPersonProfile(memberId = memberId)
             },
-            onChatClick = { navController.navigateToChatRoom() },
+            onChatClick = { id ->
+                navController.navigateToChatRoom(id)
+            },
             onReviewClick = { _, _ -> },
             onReportClick = { _, _ -> },
             onEditClick = { id, type, mode ->
@@ -240,11 +244,10 @@ fun GwangsanNavHost(
         otherPersonProfileScreen(
             onBackClick = { navController.popBackStack() },
             onErrorToast = onErrorToast,
-            onOtherReviewClick = {
-                id ->
-                navController.navigateToOtherReview(id) },
-            onOtherWritingDetailClick = {
-                id ->
+            onOtherReviewClick = { id ->
+                navController.navigateToOtherReview(id)
+            },
+            onOtherWritingDetailClick = { id ->
                 navController.navigateToReadMore(id)
             }
         )
@@ -252,7 +255,8 @@ fun GwangsanNavHost(
         myInformationEditScreen(
             onBackClick = { navController.popBackStack() },
             onSubmitComplete = {
-                navController.navigateToMyProfile() },
+                navController.navigateToMyProfile()
+            },
             onErrorToast = onErrorToast
         )
 
@@ -271,6 +275,6 @@ fun GwangsanNavHost(
 
         otherReviewScreen(onBackClick = { navController.popBackStack() })
 
-        noticeScreen(onBackClick ={ navController.popBackStack() })
+        noticeScreen(onBackClick = { navController.popBackStack() })
     }
 }
