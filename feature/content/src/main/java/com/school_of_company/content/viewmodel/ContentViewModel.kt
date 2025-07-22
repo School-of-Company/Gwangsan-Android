@@ -1,13 +1,19 @@
 package com.school_of_company.content.viewmodel
 
+import android.content.Context
+import android.net.Uri
 import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.school_of_company.content.until.getMultipartFile
 import com.school_of_company.content.viewmodel.uistate.DeletePostUiState
 import com.school_of_company.content.viewmodel.uistate.GetSpecificPostUiState
+import com.school_of_company.content.viewmodel.uistate.ImageUpLoadUiState
 import com.school_of_company.content.viewmodel.uistate.ReportPostUiState
 import com.school_of_company.content.viewmodel.uistate.ReviewPostUiState
 import com.school_of_company.content.viewmodel.uistate.TransactionCompleteUiState
+import com.school_of_company.data.repository.image.ImageRepository
 import com.school_of_company.data.repository.post.PostRepository
 import com.school_of_company.data.repository.report.ReportRepository
 import com.school_of_company.data.repository.review.ReviewRepository
@@ -29,8 +35,26 @@ import javax.inject.Inject
 class ContentViewModel @Inject constructor(
     private val postRepository: PostRepository,
     private val reportRepository: ReportRepository,
-    private val reviewRepository: ReviewRepository
+    private val imageRepository: ImageRepository,
+    private val reviewRepository: ReviewRepository,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+    companion object {
+        private const val IMAGE_IDS = "imageIds"
+    }
+
+    private val _existingImageUrls = MutableStateFlow<List<String>>(emptyList())
+    internal val existingImageUrls = _existingImageUrls.asStateFlow()
+
+    private val _selectedImages = MutableStateFlow<List<Uri>>(emptyList())
+    internal val selectedImages = _selectedImages.asStateFlow()
+
+    fun addImage(uri: Uri) {
+        _selectedImages.value += uri
+    }
+
+    private val _imageUpLoadUiState = MutableStateFlow<ImageUpLoadUiState>(ImageUpLoadUiState.Loading)
+    internal val imageUpLoadUiState = _imageUpLoadUiState.asStateFlow()
 
     private val _deletePostUiState = MutableStateFlow<DeletePostUiState>(DeletePostUiState.Loading)
     internal val deletePostUiState = _deletePostUiState.asStateFlow()
@@ -46,6 +70,8 @@ class ContentViewModel @Inject constructor(
 
     private val _reviewPostUiState = MutableStateFlow<ReviewPostUiState>(ReviewPostUiState.Loading)
     internal val reviewPostUiState = _reviewPostUiState.asStateFlow()
+
+    internal val imageIds = savedStateHandle.getStateFlow(IMAGE_IDS, emptyList<Long>())
 
     internal fun deletePost(postId: Long) = viewModelScope.launch {
         postRepository.deletePostInformation(postId)
@@ -117,5 +143,67 @@ class ContentViewModel @Inject constructor(
                     is Result.Error -> _transactionCompleteUiState.value = TransactionCompleteUiState.Error(result.exception)
                 }
             }
+    }
+
+    fun onImageIdAdded(id: Long) {
+        val currentList = imageIds.value.toMutableList()
+        currentList.add(id)
+        savedStateHandle[IMAGE_IDS] = currentList
+    }
+
+    internal fun removeNewImage(index: Int) {
+        val currentImages = _selectedImages.value.toMutableList()
+        if (index < currentImages.size) {
+            currentImages.removeAt(index)
+            _selectedImages.value = currentImages
+        }
+
+    }
+
+
+    internal fun removeExistingImage(index: Int) {
+        val currentUrls = _existingImageUrls.value.toMutableList()
+        val currentIds = imageIds.value.toMutableList()
+
+        if (index < currentUrls.size) {
+            currentUrls.removeAt(index)
+            currentIds.removeAt(index)
+
+            _existingImageUrls.value = currentUrls
+            onImageIdsChange(currentIds)
+        }
+    }
+
+    internal suspend fun imageUpLoad(context: Context, image: Uri): Long {
+        val multipartFile = getMultipartFile(context, image)
+            ?: throw IllegalStateException("이미지 파일 변환 실패")
+
+        var imageId: Long = -1
+
+        imageRepository.imageUpLoad(multipartFile)
+            .asResult()
+            .collectLatest { result ->
+                when (result) {
+                    is Result.Loading -> {
+                        _imageUpLoadUiState.value = ImageUpLoadUiState.Loading
+                    }
+
+                    is Result.Success -> {
+                        _imageUpLoadUiState.value = ImageUpLoadUiState.Success(result.data)
+                        imageId = result.data.imageId
+                    }
+
+                    is Result.Error -> {
+                        _imageUpLoadUiState.value = ImageUpLoadUiState.Error(result.exception)
+                        throw result.exception
+                    }
+                }
+            }
+
+        return imageId
+    }
+
+    internal fun onImageIdsChange(value: List<Long>) {
+        savedStateHandle[IMAGE_IDS] = value
     }
 }
