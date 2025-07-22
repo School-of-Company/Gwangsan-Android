@@ -24,6 +24,8 @@ interface AuthRepository {
 
     suspend fun deleteTokenData()
 
+    suspend fun getAccessToken() : Flow<String>
+
     fun signUpCertificationNumberCertification(body: SmsVerifyCodeRequestModel) : Flow<Unit>
 
     fun signUpCertificationNumberSend(body: SignUpCertificationNumberSendRequestModel) : Flow<Unit>

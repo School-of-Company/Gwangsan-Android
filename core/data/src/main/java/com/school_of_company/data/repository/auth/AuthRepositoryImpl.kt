@@ -62,6 +62,10 @@ class AuthRepositoryImpl @Inject constructor(
         localDataSource.removeRefreshTokenExp()
     }
 
+    override suspend fun getAccessToken(): Flow<String> {
+        return localDataSource.getAccessToken()
+    }
+
     override fun signUpCertificationNumberCertification(body: SmsVerifyCodeRequestModel): Flow<Unit> {
         return remoteDatasource.signUpCertificationNumberCertification(body = body.toModel())
     }
