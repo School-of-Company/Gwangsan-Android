@@ -27,17 +27,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.model.alert.response.GetAlertResponseModel
 
-data class Notice(
-    val id: Long,
-    val title: String,
-    val content: String,
-    val image: String?,
-)
+
 @Composable
 fun NoticeListItem(
     modifier: Modifier = Modifier,
-    data: Notice
+    data: GetAlertResponseModel
 ) {
     GwangSanTheme { color, typography ->
 
@@ -57,7 +53,7 @@ fun NoticeListItem(
                     )
                     .clip(RoundedCornerShape(10.dp))
             ) {
-                if (data.image.isNullOrBlank()) {
+                if (data.images.isEmpty()) {
                     Image(
                         painter = painterResource(id = R.drawable.gwangsan),
                         contentDescription = "기본 이미지",
@@ -66,7 +62,7 @@ fun NoticeListItem(
                     )
                 } else {
                     Image(
-                        painter = rememberAsyncImagePainter(model = data.image),
+                        painter = rememberAsyncImagePainter(model = data.images),
                         contentDescription = "네트워크 이미지",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
@@ -103,7 +99,7 @@ fun NoticeListItem(
 @Composable
 fun NoticeList(
     modifier: Modifier = Modifier,
-    items: List<Notice>,
+    items: List<GetAlertResponseModel>,
 ) {
     GwangSanTheme { color, _ ->
 
