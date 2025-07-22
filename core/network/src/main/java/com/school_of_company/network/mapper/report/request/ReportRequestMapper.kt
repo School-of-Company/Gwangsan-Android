@@ -5,7 +5,7 @@ import com.school_of_company.network.dto.report.request.ReportRequest
 
 fun ReportRequestModel.toDto() : ReportRequest =
     ReportRequest(
-        productId = this.productId,
+        sourceId = this.sourceId,
         reportType = this.reportType,
         content = this.content
     )

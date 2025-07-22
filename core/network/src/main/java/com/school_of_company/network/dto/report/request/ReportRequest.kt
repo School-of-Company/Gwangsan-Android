@@ -5,7 +5,7 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class ReportRequest(
-    @Json(name = "productId") val productId: Long,
+    @Json(name = "sourceId") val sourceId: Long,
     @Json(name = "reportType") val reportType: String,
     @Json(name = "content") val content: String
 )
