@@ -12,7 +12,6 @@ fun GetAlertResponse.toModel() = GetAlertResponseModel(
     content = this.content,
     images = this.images.map { it.toModel() },
     alertType = this.alertType,
-    place = this.place
 )
 
 fun GetAlertImages.toModel(): GetAlertImagesModel =
