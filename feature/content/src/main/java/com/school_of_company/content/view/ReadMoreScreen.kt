@@ -172,9 +172,15 @@ internal fun ReadMoreRoute(
                     )
                 },
                 onReportCallBack = { reportType, reportContent ->
+                    val sourceId = if (reportType != "FRAUD") {
+                        (getSpecificPostUiState as GetSpecificPostUiState.Success).post.member.memberId
+                    } else {
+                        postId
+                    }
+
                     viewModel.reportPost(
                         body = ReportRequestModel(
-                            productId = postId,
+                            sourceId = sourceId,
                             reportType = reportType,
                             content = reportContent
                         )
