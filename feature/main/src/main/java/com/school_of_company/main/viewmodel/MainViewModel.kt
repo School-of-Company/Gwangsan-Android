@@ -76,16 +76,16 @@ internal class MainViewModel @Inject constructor(
                     is Result.Loading -> _getAlertUiState.value = GetAlertUiState.Loading
                     is Result.Success -> {
                         if (result.data.isEmpty()) {
+                            _swipeRefreshLoading.value = false
                             _getAlertUiState.value = GetAlertUiState.Empty
-                            _swipeRefreshLoading.value = false
                         } else {
-                            _getAlertUiState.value = GetAlertUiState.Success(result.data)
                             _swipeRefreshLoading.value = false
+                            _getAlertUiState.value = GetAlertUiState.Success(result.data)
                         }
                     }
                     is Result.Error -> {
-                        _getAlertUiState.value = GetAlertUiState.Error(result.exception)
                         _swipeRefreshLoading.value = false
+                        _getAlertUiState.value = GetAlertUiState.Error(result.exception)
                     }
                 }
             }
