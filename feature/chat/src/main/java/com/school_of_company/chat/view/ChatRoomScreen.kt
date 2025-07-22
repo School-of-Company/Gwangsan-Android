@@ -77,8 +77,7 @@ internal fun ChatRoomRoute(
             }
         }
     }
-
-
+    
     LaunchedEffect(productId) {
         viewModel.joinOrCreateChatRoom(productId)
     }
