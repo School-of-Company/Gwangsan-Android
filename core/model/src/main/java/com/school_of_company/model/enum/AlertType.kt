@@ -1,7 +1,7 @@
 package com.school_of_company.model.enum
 
 enum class AlertType(val value: String) {
-    CHTTING_REQUEST("채팅 요청"),
+    CHATTING_REQUEST("채팅 요청"),
     NOTICE("공지사항 관련"),
     TRADE_COMPLETE("거래 완료"),
     TRADE_COMPLETE_REJECT("거래 완료 거절"),
