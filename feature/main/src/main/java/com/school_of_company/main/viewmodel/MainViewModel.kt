@@ -1,16 +1,15 @@
 package com.school_of_company.main.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.school_of_company.data.repository.alert.AlertRepository
 import com.school_of_company.data.repository.member.MemberRepository
 import com.school_of_company.data.repository.post.PostRepository
-import com.school_of_company.data.repository.review.ReviewRepository
+import com.school_of_company.main.viewmodel.uistate.GetAlertUiState
 import com.school_of_company.main.viewmodel.uistate.GetMainListUiState
 import com.school_of_company.main.viewmodel.uistate.MemberUiState
 import com.school_of_company.model.enum.Mode
 import com.school_of_company.model.enum.Type
-import com.school_of_company.model.post.response.Member
 import com.school_of_company.result.asResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +22,8 @@ import com.school_of_company.result.Result
 @HiltViewModel
 internal class MainViewModel @Inject constructor(
     private val postRepository: PostRepository,
-    private val memberRepository: MemberRepository
+    private val memberRepository: MemberRepository,
+    private val alertRepository: AlertRepository,
 ) : ViewModel() {
 
     private val _swipeRefreshLoading = MutableStateFlow(false)
@@ -31,6 +31,9 @@ internal class MainViewModel @Inject constructor(
 
     private val _getMainListUiState = MutableStateFlow<GetMainListUiState>(GetMainListUiState.Loading)
     val getMainListUiState = _getMainListUiState.asStateFlow()
+
+    private val _getAlertUiState = MutableStateFlow<GetAlertUiState>(GetAlertUiState.Loading)
+    val getAlertUiState = _getAlertUiState.asStateFlow()
 
     private val _myProfileUiState = MutableStateFlow<MemberUiState>(MemberUiState.Loading)
     internal val myProfileUiState = _myProfileUiState.asStateFlow()
@@ -59,6 +62,29 @@ internal class MainViewModel @Inject constructor(
                     }
                     is Result.Error -> {
                         _getMainListUiState.value = GetMainListUiState.Error(result.exception)
+                        _swipeRefreshLoading.value = false
+                    }
+                }
+            }
+    }
+
+    internal fun getAlert() = viewModelScope.launch {
+        alertRepository.getAlert()
+            .asResult()
+            .collectLatest { result ->
+                when (result) {
+                    is Result.Loading -> _getAlertUiState.value = GetAlertUiState.Loading
+                    is Result.Success -> {
+                        if (result.data.isEmpty()) {
+                            _getAlertUiState.value = GetAlertUiState.Empty
+                            _swipeRefreshLoading.value = false
+                        } else {
+                            _getAlertUiState.value = GetAlertUiState.Success(result.data)
+                            _swipeRefreshLoading.value = false
+                        }
+                    }
+                    is Result.Error -> {
+                        _getAlertUiState.value = GetAlertUiState.Error(result.exception)
                         _swipeRefreshLoading.value = false
                     }
                 }
