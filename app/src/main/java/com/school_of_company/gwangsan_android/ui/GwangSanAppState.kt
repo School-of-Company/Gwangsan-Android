@@ -14,6 +14,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.school_of_company.chat.navigation.navigateToChat
 import com.school_of_company.gwangsan_android.navigation.TopLevelDestination
 import com.school_of_company.inform.navigation.navigateToInform
 import com.school_of_company.main.navgation.MainRoute
@@ -72,7 +73,7 @@ class GwangSanAppState(
             }
             when (topLevelDestination) {
                 TopLevelDestination.MAIN -> navController.navigateToMainStart(topLevelNavOptions)
-                TopLevelDestination.CHAT -> {}
+                TopLevelDestination.CHAT -> navController.navigateToChat(topLevelNavOptions)
                 TopLevelDestination.INFORM -> navController.navigateToInform(topLevelNavOptions)
                 TopLevelDestination.PROFILE -> navController.navigateToMyProfile(topLevelNavOptions)
             }
