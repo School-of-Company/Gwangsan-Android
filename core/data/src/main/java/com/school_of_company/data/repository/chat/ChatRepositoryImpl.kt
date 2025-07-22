@@ -1,7 +1,6 @@
 package com.school_of_company.data.repository.chat
 
 import com.school_of_company.model.chat.request.ReadMessageRequestModel
-import com.school_of_company.model.chat.response.GetChatMessageResponseModel
 import com.school_of_company.model.chat.response.GetChatRoomResponseModel
 import com.school_of_company.model.chat.response.JoinChatResponseModel
 import com.school_of_company.network.datasource.chat.ChatDataSource
@@ -9,6 +8,7 @@ import com.school_of_company.network.mapper.chat.request.toDto
 import com.school_of_company.network.mapper.chat.response.toModel
 import com.school_of_company.network.socket.manager.ConnectionStatus
 import com.school_of_company.network.socket.mapper.request.toDto
+import com.school_of_company.network.socket.mapper.response.toModel
 import com.school_of_company.network.socket.model.request.SendMessage
 import com.school_of_company.network.socket.model.response.ChatMessage
 import com.school_of_company.network.socket.model.response.RoomUpdate
@@ -36,7 +36,7 @@ class ChatRepositoryImpl @Inject constructor(
         lastCreatedAt: String?,
         lastMessageId: Long?,
         limit: Int
-    ): Flow<List<GetChatMessageResponseModel>> {
+    ): Flow<List<ChatMessage>> {
         return chatDataSource.getChatMessageList(
             roomId = roomId,
             lastCreatedAt = lastCreatedAt,
@@ -59,6 +59,10 @@ class ChatRepositoryImpl @Inject constructor(
 
     override fun disconnectSocket() {
         return chatDataSource.disconnectSocket()
+    }
+
+    override fun emitJoinRoom(roomId: Long) {
+        return chatDataSource.emitJoinRoom(roomId = roomId)
     }
 
     override val messageEvents: Flow<ChatMessage> = chatDataSource.messageEvents

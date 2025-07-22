@@ -4,61 +4,50 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
+import com.google.accompanist.swiperefresh.SwipeRefreshState
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.school_of_company.chat.component.ChatListItem
+import com.school_of_company.chat.viewmodel.ChatViewModel
+import com.school_of_company.chat.viewmodel.uistate.GetChatRoomUiState
 import com.school_of_company.design_system.R
 import com.school_of_company.design_system.component.clickable.GwangSanClickable
 import com.school_of_company.design_system.component.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
-import com.school_of_company.ui.previews.GwangsanPreviews
-
-// 임시 모델 (API 나오면 model 패키지로 이동)
-data class ChatRoom(
-    val id: String,
-    val name: String,
-    val lastMessage: String,
-    val unreadCount: Int
-)
 
 @Composable
 internal fun ChatRoute(
     onCloseClick: () -> Unit,
-    onChatClick: (ChatRoom) -> Unit
+    onChatClick: (Long) -> Unit,
+    viewModel: ChatViewModel = hiltViewModel()
 ) {
+    val swipeRefreshLoading by viewModel.swipeRefreshLoading.collectAsStateWithLifecycle()
+    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = swipeRefreshLoading)
+
+    val getChatRoomUiState by viewModel.getChatRoomUiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.getChatRoom()
+    }
+
     ChatScreen(
-        chatList = listOf(
-            ChatRoom(
-                id = "string_id",
-                name = "김치라",
-                lastMessage = "안녕하세욤",
-                unreadCount = 1
-            ),
-            ChatRoom(
-                id = "string_id",
-                name = "김치라",
-                lastMessage = "안녕하세욤",
-                unreadCount = 1
-            ),ChatRoom(
-                id = "string_id",
-                name = "김치라",
-                lastMessage = "안녕하세욤",
-                unreadCount = 1
-            ),ChatRoom(
-                id = "string_id",
-                name = "김치라",
-                lastMessage = "안녕하세욤",
-                unreadCount = 1
-            ),ChatRoom(
-                id = "string_id",
-                name = "김치라",
-                lastMessage = "안녕하세욤",
-                unreadCount = 1
-            )
-        ),
+        swipeRefreshState = swipeRefreshState,
+        getChatRoom = viewModel::getChatRoom,
+        getChatRoomUiState = getChatRoomUiState,
         onCloseClick = onCloseClick,
         onChatClick = onChatClick
     )
@@ -66,13 +55,16 @@ internal fun ChatRoute(
 
 @Composable
 private fun ChatScreen(
-    chatList: List<ChatRoom>,
+    modifier: Modifier = Modifier,
+    swipeRefreshState: SwipeRefreshState,
+    getChatRoom: () -> Unit,
+    getChatRoomUiState: GetChatRoomUiState,
     onCloseClick: () -> Unit,
-    onChatClick: (ChatRoom) -> Unit = {},
+    onChatClick: (Long) -> Unit,
 ) {
-    GwangSanTheme { colors, _ ->
+    GwangSanTheme { colors, typography ->
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .background(color = colors.white)
                 .padding(bottom = 56.dp)
@@ -95,37 +87,84 @@ private fun ChatScreen(
                 modifier = Modifier.padding(all = 24.dp),
             )
 
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(
-                    items = chatList,
-                    key = { it.id }
-                ) { item ->
-                    ChatListItem(
-                        item = item,
-                        modifier = Modifier.GwangSanClickable { onChatClick(item) }
+            SwipeRefresh(
+                state = swipeRefreshState,
+                onRefresh = { getChatRoom() },
+                indicator = { state, refreshTrigger ->
+                    SwipeRefreshIndicator(
+                        state = state,
+                        refreshTriggerDistance = refreshTrigger,
+                        contentColor = colors.main500
                     )
+                }
+            ) {
+                when (getChatRoomUiState) {
+                    is GetChatRoomUiState.Loading -> {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .verticalScroll(rememberScrollState())
+                                .background(color = colors.white)
+                        ) {
+                            Text(
+                                text = "채팅방 가져오는중..",
+                                style = typography.titleMedium2,
+                                color = colors.gray500
+                            )
+                        }
+                    }
+
+                    is GetChatRoomUiState.Success -> {
+                        LazyColumn(modifier = Modifier.fillMaxSize()) {
+                            items(
+                                items = getChatRoomUiState.data,
+                                key = { it.roomId }
+                            ) { item ->
+                                ChatListItem(
+                                    item = item,
+                                    onClick = { onChatClick(item.roomId) }
+                                )
+                            }
+                        }
+                    }
+
+                    is GetChatRoomUiState.Empty -> {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .verticalScroll(rememberScrollState())
+                                .background(color = colors.white)
+                        ) {
+                            Text(
+                                text = "채팅방이 없어요..",
+                                style = typography.titleMedium2,
+                                color = colors.gray500
+                            )
+                        }
+                    }
+
+                    is GetChatRoomUiState.Error -> {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .verticalScroll(rememberScrollState())
+                                .background(color = colors.white)
+                        ) {
+                            Text(
+                                text = "채팅방를 불러오는데 실패했어요..",
+                                style = typography.titleMedium2,
+                                color = colors.gray500
+                            )
+                        }
+                    }
                 }
             }
         }
     }
-}
-
-@GwangsanPreviews
-@Composable
-private fun ChatScreenPreview() {
-    val dummyList = listOf(
-        ChatRoom("1", "모태환", "안녕하세요 ~.~^^", 1),
-        ChatRoom("2", "모태환", "안녕하세요 ~.~^^", 1),
-        ChatRoom("3", "모태환", "안녕하세요 ~.~^^", 0),
-        ChatRoom("4", "모태환", "안녕하세요 ~.~^^", 0),
-        ChatRoom("5", "모태환", "안녕하세요 ~.~^^", 0),
-        ChatRoom("6", "모태환", "안녕하세요 ~.~^^", 0),
-        ChatRoom("7", "모태환", "안녕하세요 ~.~^^", 0),
-        ChatRoom("8", "모태환", "안녕하세요 ~.~^^", 0),
-    )
-
-    ChatScreen(
-        chatList = dummyList,
-        onCloseClick = {}
-    )
 }

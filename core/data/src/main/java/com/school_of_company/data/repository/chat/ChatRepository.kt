@@ -21,12 +21,13 @@ interface ChatRepository {
         lastCreatedAt: String? = null,
         lastMessageId: Long? = null,
         limit: Int = 20
-    ) : Flow<List<GetChatMessageResponseModel>>
+    ) : Flow<List<ChatMessage>>
     fun readChatMessage(body: ReadMessageRequestModel) : Flow<Unit>
 
     fun connectSocket(baseUrl: String, accessToken: String)
     fun sendMessage(message: SendMessage)
     fun disconnectSocket()
+    fun emitJoinRoom(roomId: Long)
 
     val messageEvents: Flow<ChatMessage>
     val roomUpdateEvents: Flow<RoomUpdate>

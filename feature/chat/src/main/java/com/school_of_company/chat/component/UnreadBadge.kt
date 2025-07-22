@@ -13,20 +13,15 @@ import androidx.compose.foundation.shape.CircleShape
 import com.school_of_company.design_system.theme.GwangSanTheme
 
 @Composable
-internal fun UnreadBadge() {
+internal fun UnreadBadge(
+    modifier: Modifier = Modifier
+) {
     GwangSanTheme { colors, _ ->
         Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
+            modifier = modifier
                 .size(16.dp)
                 .clip(CircleShape)
                 .background(colors.subYellow500),
-        ) {
-            Text(
-                text = "1",
-                color = colors.black,
-                fontSize = 10.sp
-            )
-        }
+        )
     }
 }

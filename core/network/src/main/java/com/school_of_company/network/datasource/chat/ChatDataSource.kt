@@ -5,6 +5,7 @@ import com.school_of_company.network.dto.chat.response.GetChatMessageResponse
 import com.school_of_company.network.dto.chat.response.GetChatRoomResponse
 import com.school_of_company.network.dto.chat.response.JoinChatResponse
 import com.school_of_company.network.socket.dto.request.SendMessageDto
+import com.school_of_company.network.socket.dto.response.ChatMessageDto
 import com.school_of_company.network.socket.manager.ConnectionStatus
 import com.school_of_company.network.socket.model.response.ChatMessage
 import com.school_of_company.network.socket.model.response.RoomUpdate
@@ -20,12 +21,13 @@ interface ChatDataSource {
         lastCreatedAt: String? = null,
         lastMessageId: Long? = null,
         limit: Int = 20
-    ) : Flow<List<GetChatMessageResponse>>
+    ) : Flow<List<ChatMessageDto>>
     fun readChatMessage(body: ReadMessageRequest) : Flow<Unit>
 
     fun connectSocket(baseUrl: String, accessToken: String)
     fun sendMessage(message: SendMessageDto)
     fun disconnectSocket()
+    fun emitJoinRoom(roomId: Long)
 
     val messageEvents: Flow<ChatMessage>
     val roomUpdateEvents: Flow<RoomUpdate>

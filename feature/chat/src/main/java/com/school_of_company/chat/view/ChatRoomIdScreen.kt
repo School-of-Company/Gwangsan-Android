@@ -29,7 +29,6 @@ import com.school_of_company.chat.component.ChatMessageItem
 import com.school_of_company.chat.util.formatChatTimeToDate
 import com.school_of_company.chat.viewmodel.ChatViewModel
 import com.school_of_company.chat.viewmodel.uistate.ChatMessageUiState
-import com.school_of_company.chat.viewmodel.uistate.JoinChatUiState
 import com.school_of_company.design_system.R
 import com.school_of_company.design_system.component.button.ChatSendButton
 import com.school_of_company.design_system.component.clickable.GwangSanClickable
@@ -37,31 +36,26 @@ import com.school_of_company.design_system.component.icons.DownArrowIcon
 import com.school_of_company.design_system.component.topbar.GwangSanTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.network.socket.manager.ConnectionStatus
-import com.school_of_company.ui.previews.GwangsanPreviews
 import com.yourpackage.design_system.component.textField.ChatInputTextField
 import kotlinx.coroutines.launch
 
 @Composable
-internal fun ChatRoomRoute(
-    productId: Long,
+internal fun ChatRoomIdRoute(
+    roomId: Long,
     onBackClick: () -> Unit,
     viewModel: ChatViewModel = hiltViewModel()
 ) {
-    val joinChatUiState by viewModel.joinChatUiState.collectAsStateWithLifecycle()
     val chatMessageUiState by viewModel.chatMessageUiState.collectAsStateWithLifecycle()
     val connectionStatus by viewModel.connectionStatus.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
     val selectedImages = remember { mutableStateListOf<Uri>() }
     val uploadedUris = remember { mutableStateListOf<Uri>() }
-
     val imageIdMap = remember { mutableStateMapOf<Uri, Long>() }
 
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetMultipleContents(),
-        onResult = { uris ->
-            selectedImages.addAll(uris)
-        }
+        onResult = { uris -> selectedImages.addAll(uris) }
     )
 
     LaunchedEffect(selectedImages.toList()) {
@@ -78,23 +72,19 @@ internal fun ChatRoomRoute(
         }
     }
 
-    LaunchedEffect(productId) {
-        viewModel.joinOrCreateChatRoom(productId)
+    LaunchedEffect(roomId) {
+        viewModel.joinDirectChatRoom(roomId)
     }
 
-    when {
-        joinChatUiState is JoinChatUiState.Loading || chatMessageUiState is ChatMessageUiState.Loading -> {
+    when (chatMessageUiState) {
+        is ChatMessageUiState.Loading -> {
             LoadingScreen()
         }
 
-        joinChatUiState is JoinChatUiState.Success && chatMessageUiState is ChatMessageUiState.Success -> {
-            val roomId = (joinChatUiState as JoinChatUiState.Success).data.roomId
-            val userName =
-                (chatMessageUiState as ChatMessageUiState.Success).data.firstOrNull { !it.isMine }?.senderNickname.orEmpty()
-            val latestMessageTime =
-                (chatMessageUiState as ChatMessageUiState.Success).data.lastOrNull()?.createdAt?.let {
-                    formatChatTimeToDate(it)
-                }
+        is ChatMessageUiState.Success -> {
+            val messages = (chatMessageUiState as ChatMessageUiState.Success).data
+            val userName = messages.firstOrNull { !it.isMine }?.senderNickname.orEmpty()
+            val latestMessageTime = messages.lastOrNull()?.createdAt?.let { formatChatTimeToDate(it) }
 
             ChatRoomScreen(
                 userName = userName,
@@ -104,14 +94,12 @@ internal fun ChatRoomRoute(
                 onBackClick = onBackClick,
                 onSendClick = { message ->
                     val imageIds = uploadedUris.mapNotNull { imageIdMap[it] }
-
                     if (message.isNotEmpty() || imageIds.isNotEmpty()) {
                         viewModel.sendMessage(
                             roomId = roomId,
                             content = message,
                             imageIds = imageIds
                         )
-
                         uploadedUris.clear()
                         selectedImages.clear()
                         imageIdMap.clear()
@@ -123,10 +111,10 @@ internal fun ChatRoomRoute(
             )
         }
 
-        joinChatUiState is JoinChatUiState.Error -> {
+        is ChatMessageUiState.Error -> {
             ErrorScreen(
-                error = (joinChatUiState as JoinChatUiState.Error).exception,
-                onRetry = { viewModel.joinOrCreateChatRoom(productId) }
+                error = (chatMessageUiState as ChatMessageUiState.Error).exception,
+                onRetry = { viewModel.loadChatMessages(roomId) }
             )
         }
     }
@@ -146,7 +134,6 @@ private fun ChatRoomScreen(
     onImageAdd: () -> Unit,
 ) {
     var text by rememberSaveable { mutableStateOf("") }
-
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
 
@@ -158,7 +145,7 @@ private fun ChatRoomScreen(
                 .background(colors.white)
                 .padding(horizontal = 24.dp)
         ) {
-            Spacer(modifier = Modifier.height(60.dp))
+            Spacer(Modifier.height(60.dp))
 
             GwangSanTopBar(
                 startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { onBackClick() }) },
@@ -170,7 +157,7 @@ private fun ChatRoomScreen(
                 }
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(Modifier.height(12.dp))
 
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -186,7 +173,7 @@ private fun ChatRoomScreen(
                         .clip(CircleShape)
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(Modifier.height(16.dp))
 
                 Text(
                     text = userName,
@@ -194,14 +181,9 @@ private fun ChatRoomScreen(
                     color = colors.black
                 )
 
-                Spacer(modifier = Modifier.height(34.dp))
+                Spacer(Modifier.height(34.dp))
 
-                when (connectionStatus) {
-                    ConnectionStatus.CONNECTED -> lastTime
-                    ConnectionStatus.CONNECTING -> "연결 중..."
-                    ConnectionStatus.DISCONNECTED -> "오프라인"
-                    ConnectionStatus.ERROR -> "에러.."
-                }?.let {
+                lastTime?.let {
                     Text(
                         text = it,
                         style = typography.label,
@@ -211,27 +193,21 @@ private fun ChatRoomScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(Modifier.height(16.dp))
 
             when (chatMessageUiState) {
-                is ChatMessageUiState.Loading -> {
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxWidth(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text("메시지 로딩 중...", style = typography.body3)
-                    }
+                is ChatMessageUiState.Loading -> Box(
+                    modifier = Modifier.weight(1f).fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("메시지 로딩 중...", style = typography.body3)
                 }
 
                 is ChatMessageUiState.Success -> {
                     LazyColumn(
                         state = listState,
                         verticalArrangement = Arrangement.spacedBy(10.dp),
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxWidth()
+                        modifier = Modifier.weight(1f).fillMaxWidth()
                     ) {
                         items(
                             items = chatMessageUiState.data,
@@ -250,59 +226,51 @@ private fun ChatRoomScreen(
                     }
                 }
 
-                is ChatMessageUiState.Error -> {
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxWidth(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "전송 실패..",
-                            style = typography.body3,
-                            color = colors.error
-                        )
-                    }
+                is ChatMessageUiState.Error -> Box(
+                    modifier = Modifier.weight(1f).fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "메시지 로딩 실패..",
+                        style = typography.body3,
+                        color = colors.error
+                    )
                 }
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(Modifier.height(12.dp))
 
             ImagePreviewRow(
                 uploadedUris = uploadedUris,
-                modifier = Modifier
-                    .padding(bottom = 8.dp)
+                modifier = Modifier.padding(bottom = 8.dp)
             )
-
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 24.dp),
+                modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp)
             ) {
                 ChatInputTextField(
                     value = text,
                     onValueChange = { text = it },
-                    onImageClick = { onImageAdd() },
+                    onImageClick = onImageAdd,
                     enabled = connectionStatus == ConnectionStatus.CONNECTED,
                     modifier = Modifier.weight(1f)
                 )
 
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(Modifier.width(8.dp))
 
-                val canSendMessage = (text.isNotBlank() || uploadedUris.isNotEmpty()) &&
-                            selectedImages.size == uploadedUris.size &&
-                            connectionStatus == ConnectionStatus.CONNECTED
+                val canSend = (text.isNotBlank() || uploadedUris.isNotEmpty()) &&
+                        selectedImages.size == uploadedUris.size &&
+                        connectionStatus == ConnectionStatus.CONNECTED
 
                 ChatSendButton(
                     onClick = {
-                        if (canSendMessage) {
+                        if (canSend) {
                             onSendClick(text.trim())
                             text = ""
                         }
                     },
-                    enabled = canSendMessage
+                    enabled = canSend
                 )
             }
         }
@@ -313,9 +281,7 @@ private fun ChatRoomScreen(
 private fun LoadingScreen() {
     GwangSanTheme { colors, typography ->
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(colors.white),
+            Modifier.fillMaxSize().background(colors.white),
             contentAlignment = Alignment.Center
         ) {
             Text("채팅방 준비 중...", style = typography.body3)
@@ -330,28 +296,17 @@ private fun ErrorScreen(
 ) {
     GwangSanTheme { colors, typography ->
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(colors.white)
-                .padding(24.dp),
+            Modifier.fillMaxSize().background(colors.white).padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(
-                "채팅방 입장 실패",
-                style = typography.titleSmall,
-                color = colors.error
-            )
+            Text("채팅방 입장 실패", style = typography.titleSmall, color = colors.error)
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(Modifier.height(8.dp))
 
-            Text(
-                error.message ?: "알 수 없는 오류",
-                style = typography.body3,
-                color = colors.gray400
-            )
+            Text(error.message ?: "알 수 없는 오류", style = typography.body3, color = colors.gray400)
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(Modifier.height(16.dp))
 
             ChatSendButton(onClick = onRetry)
         }
@@ -366,25 +321,15 @@ private fun ImagePreviewRow(
     if (uploadedUris.isEmpty()) return
 
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
+        modifier = modifier.fillMaxWidth().padding(vertical = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         uploadedUris.forEach { uri ->
             Image(
                 painter = rememberAsyncImagePainter(uri),
                 contentDescription = "Uploaded Image Preview",
-                modifier = Modifier
-                    .size(64.dp)
-                    .clip(RoundedCornerShape(8.dp))
+                modifier = Modifier.size(64.dp).clip(RoundedCornerShape(8.dp))
             )
         }
     }
-}
-
-@GwangsanPreviews
-@Composable
-private fun ChatRoomScreenPreview() {
-
 }

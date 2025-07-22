@@ -6,6 +6,7 @@ import com.school_of_company.network.dto.chat.response.GetChatMessageResponse
 import com.school_of_company.network.dto.chat.response.GetChatRoomResponse
 import com.school_of_company.network.dto.chat.response.JoinChatResponse
 import com.school_of_company.network.socket.dto.request.SendMessageDto
+import com.school_of_company.network.socket.dto.response.ChatMessageDto
 import com.school_of_company.network.socket.manager.ConnectionStatus
 import com.school_of_company.network.socket.manager.SocketManager
 import com.school_of_company.network.socket.model.response.ChatMessage
@@ -32,7 +33,7 @@ class ChatDataSourceImpl @Inject constructor(
         lastCreatedAt: String?,
         lastMessageId: Long?,
         limit: Int
-    ): Flow<List<GetChatMessageResponse>> =
+    ): Flow<List<ChatMessageDto>> =
         performApiRequest { chatAPI.getChatMessageList(
             roomId = roomId,
             lastCreatedAt = lastCreatedAt,
@@ -53,6 +54,10 @@ class ChatDataSourceImpl @Inject constructor(
 
     override fun disconnectSocket() {
         socketManager.disconnect()
+    }
+
+    override fun emitJoinRoom(roomId: Long) {
+        socketManager.emitJoinRoom(roomId = roomId)
     }
 
     override val messageEvents: Flow<ChatMessage> = socketManager.messageEvents

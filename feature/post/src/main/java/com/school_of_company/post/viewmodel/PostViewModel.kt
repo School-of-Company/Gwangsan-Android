@@ -32,7 +32,6 @@ import kotlinx.coroutines.flow.StateFlow
 class PostViewModel @Inject constructor(
     private val postRepository: PostRepository,
     private val imageRepository: ImageRepository,
-    @ApplicationContext private val context: Context,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 

@@ -1,5 +1,6 @@
 package com.school_of_company.gwangsan_android.navigation
 
+import com.school_of_company.chat.navigation.ChatRoute
 import com.school_of_company.design_system.R
 import com.school_of_company.inform.navigation.InformRoute
 import com.school_of_company.main.navgation.MainStartRoute
@@ -19,7 +20,7 @@ enum class TopLevelDestination(
     CHAT(
         unSelectedIcon = R.drawable.chat,
         iconText = "채팅",
-        routeName = ""
+        routeName = ChatRoute
     ),
 
     INFORM(

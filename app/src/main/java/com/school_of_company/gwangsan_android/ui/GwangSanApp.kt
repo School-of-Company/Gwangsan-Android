@@ -17,6 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.school_of_company.chat.navigation.ChatRoute
 import com.school_of_company.gwangsan_android.navigation.GwangsanNavHost
 import com.school_of_company.gwangsan_android.navigation.TopLevelDestination
 import com.school_of_company.design_system.component.bottombar.GwangSanNavigationBar
@@ -41,10 +42,9 @@ fun GwangSanApp(
     // 여기에 보여주고 싶은 탑 레벨 목적지만 넣으세요.
     val topLevelDestinationRoute = listOf(
         MainStartRoute,
-        MainRoute,
+        ChatRoute,
         InformRoute,
         MyProfileRoute
-        // 필요 시 여기에 추가
     )
 
     // 현재 화면의 라우트와 topLevelDestination을 비교해서 BottomBar 표시 여부 결정
