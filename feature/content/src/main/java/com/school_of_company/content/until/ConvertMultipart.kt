@@ -26,11 +26,13 @@ private fun uriToJpeg(
     context: Context,
     uri: Uri
 ): File? {
-    val inputStream = context.contentResolver.openInputStream(uri) ?: return null
-    val bitmap = getExifData(context = context, uri = uri)?.let { exifData ->
-        rotateImage(BitmapFactory.decodeStream(inputStream), exifData)
-    } ?: BitmapFactory.decodeStream(inputStream)
-    inputStream.close()
+    val bitmap = context.contentResolver.openInputStream(uri)?.use { stream ->
+        BitmapFactory.decodeStream(stream)
+    } ?: return null
+
+    val rotatedBitmap = getExifData(context = context, uri = uri)?.let { exifData ->
+        rotateImage(bitmap, exifData)
+    } ?: bitmap
 
     val outputFile = createTempJpegFile(context) ?: return null
 
@@ -38,6 +40,9 @@ private fun uriToJpeg(
     bitmap.compress(Bitmap.CompressFormat.JPEG, 90, outputStream)
     outputStream.close()
     bitmap.recycle()
+    if (rotatedBitmap != bitmap) {
+        rotatedBitmap.recycle()
+    }
 
     return outputFile
 }
