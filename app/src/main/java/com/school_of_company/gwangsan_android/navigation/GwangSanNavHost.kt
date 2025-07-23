@@ -275,6 +275,11 @@ fun GwangsanNavHost(
 
         otherReviewScreen(onBackClick = { navController.popBackStack() })
 
-        noticeScreen(onBackClick = { navController.popBackStack() })
+        noticeScreen(
+            onBackClick = { navController.popBackStack() },
+            navigationToDetail = { id ->
+                navController.navigateToReadMore(id)
+            }
+        )
     }
 }
