@@ -55,7 +55,7 @@ internal fun ChatListItem(
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .size(50.dp)
+                        .size(80.dp)
                         .clip(CircleShape)
                 )
             }
