@@ -146,9 +146,7 @@ private fun NoticeScreen(
                                     selectedMemberId.value = sendMemberId
                                     setOpenBottomSheet(true)
                                 },
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(horizontal = 16.dp)
+                                modifier = Modifier.fillMaxSize()
                             )
                         }
 
