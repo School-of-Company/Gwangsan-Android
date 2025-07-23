@@ -26,26 +26,25 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import com.school_of_company.design_system.component.clickable.GwangSanClickable
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.model.alert.response.GetAlertResponseModel
 
-data class Notice(
-    val id: Long,
-    val title: String,
-    val content: String,
-    val image: String?,
-)
 @Composable
 fun NoticeListItem(
+    onClick: (Long, Long?) -> Unit,
     modifier: Modifier = Modifier,
-    data: Notice
+    data: GetAlertResponseModel
 ) {
     GwangSanTheme { color, typography ->
+        val firstImageUrl = data.images.firstOrNull()?.imageUrl
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = modifier
                 .background(color = color.white)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .GwangSanClickable { onClick(data.sourceId, data.sendMemberId) }
         ) {
             Box(
                 modifier = Modifier
@@ -57,7 +56,7 @@ fun NoticeListItem(
                     )
                     .clip(RoundedCornerShape(10.dp))
             ) {
-                if (data.image.isNullOrBlank()) {
+                if (firstImageUrl.isNullOrEmpty()) {
                     Image(
                         painter = painterResource(id = R.drawable.gwangsan),
                         contentDescription = "기본 이미지",
@@ -66,7 +65,7 @@ fun NoticeListItem(
                     )
                 } else {
                     Image(
-                        painter = rememberAsyncImagePainter(model = data.image),
+                        painter = rememberAsyncImagePainter(model = firstImageUrl),
                         contentDescription = "네트워크 이미지",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
@@ -102,8 +101,9 @@ fun NoticeListItem(
 
 @Composable
 fun NoticeList(
+    onClick: (Long, Long?) -> Unit,
     modifier: Modifier = Modifier,
-    items: List<Notice>,
+    items: List<GetAlertResponseModel>,
 ) {
     GwangSanTheme { color, _ ->
 
@@ -115,6 +115,7 @@ fun NoticeList(
             items(items) { item ->
                 NoticeListItem(
                     data = item,
+                    onClick = onClick
                 )
             }
         }

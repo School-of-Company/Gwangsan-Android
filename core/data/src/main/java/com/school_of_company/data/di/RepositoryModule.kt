@@ -1,5 +1,7 @@
 package com.school_of_company.data.di
 
+import com.school_of_company.data.repository.alert.AlertRepository
+import com.school_of_company.data.repository.alert.AlertRepositoryImpl
 import com.school_of_company.data.repository.auth.AuthRepository
 import com.school_of_company.data.repository.auth.AuthRepositoryImpl
 import com.school_of_company.data.repository.chat.ChatRepository
@@ -70,4 +72,10 @@ abstract class RepositoryModule {
     abstract fun bindChatRepository(
         chatRepositoryImpl: ChatRepositoryImpl
     ) : ChatRepository
+
+    @Binds
+    abstract fun bindAlertRepository(
+        alertRepositoryImpl: AlertRepositoryImpl
+    ) : AlertRepository
+
 }

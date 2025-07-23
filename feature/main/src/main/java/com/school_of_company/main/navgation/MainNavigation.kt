@@ -70,7 +70,7 @@ fun NavGraphBuilder.noticeScreen(
 ){
     composable(route = NoticeRoute){
         NoticeRoute(
-            onBackClick = onBackClick
+            onBackClick = onBackClick,
         )
     }
 }
