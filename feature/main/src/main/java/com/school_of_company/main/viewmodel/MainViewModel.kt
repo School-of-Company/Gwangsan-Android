@@ -40,9 +40,6 @@ internal class MainViewModel @Inject constructor(
     private val _transactionCompleteUiState = MutableStateFlow<TransactionCompleteUiState>(TransactionCompleteUiState.Loading)
     internal val transactionCompleteUiState = _transactionCompleteUiState.asStateFlow()
 
-    private val _getAlertUiState = MutableStateFlow<GetAlertUiState>(GetAlertUiState.Loading)
-    val getAlertUiState = _getAlertUiState.asStateFlow()
-
     private val _myProfileUiState = MutableStateFlow<MemberUiState>(MemberUiState.Loading)
     internal val myProfileUiState = _myProfileUiState.asStateFlow()
 
@@ -71,29 +68,6 @@ internal class MainViewModel @Inject constructor(
                     is Result.Error -> {
                         _getMainListUiState.value = GetMainListUiState.Error(result.exception)
                         _swipeRefreshLoading.value = false
-                    }
-                }
-            }
-    }
-
-    internal fun getAlert() = viewModelScope.launch {
-        alertRepository.getAlert()
-            .asResult()
-            .collectLatest { result ->
-                when (result) {
-                    is Result.Loading -> _getAlertUiState.value = GetAlertUiState.Loading
-                    is Result.Success -> {
-                        if (result.data.isEmpty()) {
-                            _swipeRefreshLoading.value = false
-                            _getAlertUiState.value = GetAlertUiState.Empty
-                        } else {
-                            _swipeRefreshLoading.value = false
-                            _getAlertUiState.value = GetAlertUiState.Success(result.data)
-                        }
-                    }
-                    is Result.Error -> {
-                        _swipeRefreshLoading.value = false
-                        _getAlertUiState.value = GetAlertUiState.Error(result.exception)
                     }
                 }
             }
