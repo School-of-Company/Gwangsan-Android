@@ -230,6 +230,7 @@ private fun NoticeScreen(
                                 selectedSourceId.value ?: return@GwangsanDialog,
                                 selectedMemberId.value ?: 0L
                             )
+                            setOpenBottomSheet(false)
                         },
                         onDismiss = {
                             setOpenBottomSheet(false)
