@@ -239,6 +239,10 @@ class ChatViewModel @Inject constructor(
         }
     }
 
+    fun disconnect() {
+        chatRepository.disconnectSocket()
+    }
+
     override fun onCleared() {
         super.onCleared()
         chatRepository.disconnectSocket()

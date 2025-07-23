@@ -82,6 +82,12 @@ internal fun ChatRoomRoute(
         viewModel.joinOrCreateChatRoom(productId)
     }
 
+    DisposableEffect(Unit) {
+        onDispose {
+            viewModel.disconnect()
+        }
+    }
+
     when {
         joinChatUiState is JoinChatUiState.Loading || chatMessageUiState is ChatMessageUiState.Loading -> {
             LoadingScreen()
@@ -119,7 +125,7 @@ internal fun ChatRoomRoute(
                 },
                 onImageAdd = { galleryLauncher.launch("image/*") },
                 uploadedUris = uploadedUris,
-                selectedImages = selectedImages
+                selectedImages = selectedImages,
             )
         }
 
