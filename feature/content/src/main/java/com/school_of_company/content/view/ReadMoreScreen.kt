@@ -230,10 +230,6 @@ private fun ReadMoreScreen(
                 val post = getSpecificPostUiState.post
                 val pagerState = rememberPagerState(pageCount = { post.images.size })
 
-                Log.d("ReadMoreScreen", "✅ isCompleted: ${post.isCompleted}")
-                Log.d("ReadMoreScreen", "✅ isCompletable: ${post.isCompletable}")
-                Log.d("ReadMoreScreen", "✅ isPostTradeState: $isPostTradeState")
-
                 Box(
                     modifier = modifier
                         .fillMaxSize()

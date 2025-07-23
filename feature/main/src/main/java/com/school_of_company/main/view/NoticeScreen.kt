@@ -229,7 +229,6 @@ private fun NoticeScreen(
 
             }
             if (openBottomSheet) {
-
                 Dialog(onDismissRequest = { setOpenBottomSheet(false) }) {
                     GwangsanDialog(
                         onLogout = {
