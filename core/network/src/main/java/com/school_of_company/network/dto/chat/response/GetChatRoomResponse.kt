@@ -11,7 +11,21 @@ data class GetChatRoomResponse(
     @Json(name = "lastMessage") val lastMessage: String,
     @Json(name = "lastMessageType") val lastMessageType: String,
     @Json(name = "lastMessageTime") val lastMessageTime: String,
-    @Json(name = "unreadMessageCount") val unreadMessageCount: Long
+    @Json(name = "unreadMessageCount") val unreadMessageCount: Long,
+    @Json(name = "product") val product: GetProductResponse
+)
+
+@JsonClass(generateAdapter = true)
+data class GetProductResponse(
+    @Json(name = "productId") val productId: Long,
+    @Json(name = "title") val title: String,
+    @Json(name = "images") val images: List<GetImageResponse>?,
+)
+
+@JsonClass(generateAdapter = true)
+data class GetImageResponse(
+    @Json(name = "imageId") val imageId: Long,
+    @Json(name = "imageUrl") val imageUrl: String,
 )
 
 @JsonClass(generateAdapter = true)
