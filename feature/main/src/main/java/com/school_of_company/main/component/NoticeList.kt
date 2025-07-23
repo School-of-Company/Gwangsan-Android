@@ -26,12 +26,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import com.school_of_company.design_system.component.clickable.GwangSanClickable
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.model.alert.response.GetAlertResponseModel
 
-
 @Composable
 fun NoticeListItem(
+    onClick: (Long, Long?) -> Unit,
     modifier: Modifier = Modifier,
     data: GetAlertResponseModel
 ) {
@@ -42,7 +43,8 @@ fun NoticeListItem(
             verticalAlignment = Alignment.CenterVertically,
             modifier = modifier
                 .background(color = color.white)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .GwangSanClickable { onClick(data.sourceId, data.sendMemberId) }
         ) {
             Box(
                 modifier = Modifier
@@ -99,6 +101,7 @@ fun NoticeListItem(
 
 @Composable
 fun NoticeList(
+    onClick: (Long, Long?) -> Unit,
     modifier: Modifier = Modifier,
     items: List<GetAlertResponseModel>,
 ) {
@@ -112,6 +115,7 @@ fun NoticeList(
             items(items) { item ->
                 NoticeListItem(
                     data = item,
+                    onClick = onClick
                 )
             }
         }
