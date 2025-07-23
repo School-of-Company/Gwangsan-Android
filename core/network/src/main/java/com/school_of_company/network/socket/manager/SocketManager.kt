@@ -25,7 +25,6 @@ class SocketManager @Inject constructor(
 ) {
     private var socket: Socket? = null
 
-    private var pendingJoinRoomId: Long? = null
 
     private val messageAdapter = moshi.adapter(ChatMessageDto::class.java)
     private val roomUpdateAdapter = moshi.adapter(RoomUpdateDto::class.java)
@@ -69,11 +68,6 @@ class SocketManager @Inject constructor(
 
             on(Socket.EVENT_CONNECT) {
                 _connectionEvents.trySend(ConnectionStatus.CONNECTED)
-
-                pendingJoinRoomId?.let {
-                    emitJoinRoom(it)
-                    pendingJoinRoomId = null
-                }
             }
 
             on(Socket.EVENT_CONNECT_ERROR) {
@@ -112,22 +106,6 @@ class SocketManager @Inject constructor(
             }
         }
     }
-
-    fun emitJoinRoom(roomId: Long) {
-        if (socket?.connected() == true) {
-            try {
-                val data = JSONObject().apply {
-                    put("roomId", roomId)
-                }
-                socket?.emit("joinRoom", data)
-            } catch (e: Exception) {
-                Log.e("SocketManager", "Failed to emit joinRoom", e)
-            }
-        } else {
-            pendingJoinRoomId = roomId
-        }
-    }
-
 
     fun sendMessage(message: SendMessageDto) {
         try {

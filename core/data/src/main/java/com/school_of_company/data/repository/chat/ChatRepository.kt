@@ -1,10 +1,8 @@
 package com.school_of_company.data.repository.chat
 
 import com.school_of_company.model.chat.request.ReadMessageRequestModel
-import com.school_of_company.model.chat.response.GetChatMessageResponseModel
 import com.school_of_company.model.chat.response.GetChatRoomResponseModel
 import com.school_of_company.model.chat.response.JoinChatResponseModel
-import com.school_of_company.network.socket.dto.request.SendMessageDto
 import com.school_of_company.network.socket.manager.ConnectionStatus
 import com.school_of_company.network.socket.model.request.SendMessage
 import com.school_of_company.network.socket.model.response.ChatMessage
@@ -27,7 +25,6 @@ interface ChatRepository {
     fun connectSocket(baseUrl: String, accessToken: String)
     fun sendMessage(message: SendMessage)
     fun disconnectSocket()
-    fun emitJoinRoom(roomId: Long)
 
     val messageEvents: Flow<ChatMessage>
     val roomUpdateEvents: Flow<RoomUpdate>

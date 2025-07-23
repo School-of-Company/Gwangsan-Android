@@ -2,6 +2,7 @@ package com.school_of_company.chat.viewmodel
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.school_of_company.chat.BuildConfig
@@ -147,8 +148,6 @@ class ChatViewModel @Inject constructor(
             connectSocket()
         }
 
-        chatRepository.emitJoinRoom(roomId)
-
         loadChatMessages(roomId)
     }
 
@@ -166,8 +165,6 @@ class ChatViewModel @Inject constructor(
                     is Result.Loading -> _joinChatUiState.value = JoinChatUiState.Loading
                     is Result.Success -> {
                         _joinChatUiState.value = JoinChatUiState.Success(result.data)
-
-                        chatRepository.emitJoinRoom(result.data.roomId)
 
                         loadChatMessages(result.data.roomId)
                     }
