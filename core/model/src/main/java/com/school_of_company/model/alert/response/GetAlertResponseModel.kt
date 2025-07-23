@@ -9,6 +9,7 @@ data class GetAlertResponseModel(
     val sendMemberId: Long? = null,
     val createdAt :String,
     val alertType: AlertType,
+    val sourceId: Long,
     val images: List<GetAlertImagesModel>
 )
 

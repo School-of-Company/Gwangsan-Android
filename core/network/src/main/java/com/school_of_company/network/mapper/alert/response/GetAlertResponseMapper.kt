@@ -12,7 +12,8 @@ fun GetAlertResponse.toModel() = GetAlertResponseModel(
     content = this.content,
     images = this.images.map { it.toModel() },
     alertType = this.alertType,
-    sendMemberId = this.sendMemberId
+    sendMemberId = this.sendMemberId,
+    sourceId = this.sourceId
 )
 
 fun GetAlertImages.toModel(): GetAlertImagesModel =

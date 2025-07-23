@@ -9,6 +9,7 @@ import kotlinx.datetime.LocalDateTime
 data class GetAlertResponse(
     @Json(name = "id") val id: Long,
     @Json(name = "title") val title: String,
+    @Json(name = "sourceId") val sourceId: Long,
     @Json(name = "content") val content: String,
     @Json(name = "sendMemberId") val sendMemberId: Long? = null,
     @Json(name = "createdAt") val createdAt: String,

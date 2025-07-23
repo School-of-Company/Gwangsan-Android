@@ -15,9 +15,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -25,18 +30,24 @@ import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
 import com.google.accompanist.swiperefresh.SwipeRefreshState
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.school_of_company.design_system.component.clickable.GwangSanClickable
+import com.school_of_company.design_system.component.dialog.GwangsanDialog
 import com.school_of_company.design_system.component.icons.CloseIcon
+import com.school_of_company.design_system.component.toast.makeToast
 import com.school_of_company.design_system.component.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.main.component.NoticeList
 import com.school_of_company.main.viewmodel.MainViewModel
 import com.school_of_company.main.viewmodel.uistate.GetAlertUiState
+import com.school_of_company.main.viewmodel.uistate.TransactionCompleteUiState
+import com.school_of_company.model.alert.response.GetAlertResponseModel
+import com.school_of_company.model.post.request.TransactionCompleteRequestModel
 
 @Composable
 internal  fun NoticeRoute(
     onBackClick: () -> Unit,
     viewModel: MainViewModel = hiltViewModel()
 ){
+
     val swipeRefreshLoading by viewModel.swipeRefreshLoading.collectAsStateWithLifecycle(
         initialValue = false
     )
@@ -44,6 +55,9 @@ internal  fun NoticeRoute(
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = swipeRefreshLoading)
 
     val getAlertUiState by viewModel.getAlertUiState.collectAsStateWithLifecycle()
+    val transactionCompleteUiState by viewModel.transactionCompleteUiState.collectAsStateWithLifecycle()
+
+    val (openBottomSheet, setOpenBottomSheet) = rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.getAlert()
@@ -53,18 +67,38 @@ internal  fun NoticeRoute(
         onBackClick = onBackClick,
         swipeRefreshState = swipeRefreshState,
         getAlertCallBack = {viewModel.getAlert()},
-        getAlertUiState = getAlertUiState
+        getAlertUiState = getAlertUiState,
+        transactionCompletedCallBack = { sourceId, sendMemberId: Long ->
+            viewModel.transactionComplete(
+                body = TransactionCompleteRequestModel(
+                    productId = sourceId,
+                    otherMemberId =  sendMemberId
+                )
+            )
+        },
+        transactionCompleteUiState = transactionCompleteUiState,
+        openBottomSheet = openBottomSheet,
+        setOpenBottomSheet = setOpenBottomSheet
     )
 }
 
 @Composable
 private fun NoticeScreen(
     modifier: Modifier = Modifier,
+    transactionCompletedCallBack: (Long, Long) -> Unit,
     getAlertUiState: GetAlertUiState,
     swipeRefreshState: SwipeRefreshState,
+    openBottomSheet: Boolean,
+    setOpenBottomSheet: (Boolean) -> Unit,
+    transactionCompleteUiState: TransactionCompleteUiState,
     getAlertCallBack: () -> Unit,
     onBackClick: () -> Unit,
 ) {
+    val context = LocalContext.current
+
+    val selectedSourceId = remember { mutableStateOf<Long?>(null) }
+    val selectedMemberId = remember { mutableStateOf<Long?>(null) }
+
     GwangSanTheme { colors, typography ->
         Box(
             modifier = modifier
@@ -107,6 +141,11 @@ private fun NoticeScreen(
                         is GetAlertUiState.Success -> {
                             NoticeList(
                                 items = getAlertUiState.data,
+                                onClick = { sourceId, sendMemberId ->
+                                    selectedSourceId.value = sourceId
+                                    selectedMemberId.value = sendMemberId
+                                    setOpenBottomSheet(true)
+                                },
                                 modifier = Modifier
                                     .fillMaxSize()
                                     .padding(horizontal = 16.dp)
@@ -164,8 +203,42 @@ private fun NoticeScreen(
                             }
                         }
                     }
+
+                    when (transactionCompleteUiState) {
+                        is TransactionCompleteUiState.Loading -> Unit
+
+                        is TransactionCompleteUiState.Success -> {
+                           makeToast(context = LocalContext.current, "거래 완료")
+                        }
+
+                        is TransactionCompleteUiState.Error -> {
+                            makeToast(context = LocalContext.current, "거래 실패")
+                        }
+
+                        else -> Unit
+                    }
                 }
 
+
+            }
+            if (openBottomSheet) {
+
+                Dialog(onDismissRequest = { setOpenBottomSheet(false) }) {
+                    GwangsanDialog(
+                        onLogout = {
+                            transactionCompletedCallBack(
+                                selectedSourceId.value ?: return@GwangsanDialog,
+                                selectedMemberId.value ?: 0L
+                            )
+                        },
+                        onDismiss = {
+                            setOpenBottomSheet(false)
+                        },
+                        titleText = "거래 완료",
+                        contentText = "정말 거래 완료를 하시겠습니까?",
+                        buttonText = "거래 완료"
+                    )
+                }
             }
         }
     }
