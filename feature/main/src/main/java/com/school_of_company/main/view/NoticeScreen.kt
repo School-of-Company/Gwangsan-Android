@@ -208,7 +208,7 @@ private fun NoticeScreen(
                         is TransactionCompleteUiState.Loading -> Unit
 
                         is TransactionCompleteUiState.Success -> {
-                           makeToast(context = LocalContext.current, "거래 완료")
+                            makeToast(context = LocalContext.current, "거래 완료")
                         }
 
                         is TransactionCompleteUiState.Error -> {
