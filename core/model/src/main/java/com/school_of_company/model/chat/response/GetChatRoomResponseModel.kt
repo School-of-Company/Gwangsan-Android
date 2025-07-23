@@ -7,7 +7,19 @@ data class GetChatRoomResponseModel(
     val lastMessage: String,
     val lastMessageType: String,
     val lastMessageTime: String,
-    val unreadMessageCount: Long
+    val unreadMessageCount: Long,
+    val product: GetProductResponseModel
+)
+
+data class GetProductResponseModel(
+    val productId: Long,
+    val title: String,
+    val images: List<GetImageResponseModel>?
+)
+
+data class GetImageResponseModel(
+    val imageId: Long,
+    val imageUrl: String
 )
 
 data class GetMemberResponseModel(

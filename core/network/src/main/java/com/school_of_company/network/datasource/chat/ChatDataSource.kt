@@ -27,7 +27,6 @@ interface ChatDataSource {
     fun connectSocket(baseUrl: String, accessToken: String)
     fun sendMessage(message: SendMessageDto)
     fun disconnectSocket()
-    fun emitJoinRoom(roomId: Long)
 
     val messageEvents: Flow<ChatMessage>
     val roomUpdateEvents: Flow<RoomUpdate>

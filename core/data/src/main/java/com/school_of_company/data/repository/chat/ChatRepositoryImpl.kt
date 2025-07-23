@@ -61,10 +61,6 @@ class ChatRepositoryImpl @Inject constructor(
         return chatDataSource.disconnectSocket()
     }
 
-    override fun emitJoinRoom(roomId: Long) {
-        return chatDataSource.emitJoinRoom(roomId = roomId)
-    }
-
     override val messageEvents: Flow<ChatMessage> = chatDataSource.messageEvents
     override val roomUpdateEvents: Flow<RoomUpdate> = chatDataSource.roomUpdateEvents
     override val connectionEvents: Flow<ConnectionStatus> = chatDataSource.connectionEvents
