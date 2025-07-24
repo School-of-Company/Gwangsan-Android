@@ -333,7 +333,9 @@ private fun ReadMoreScreen(
                             color = colors.error,
                             modifier = Modifier
                                 .GwangSanClickable {
-                                    if (getSpecificPostUiState.post.isMine) setOpenDeleteBottomSheet(true) else setOpenReportBottomSheet(true)
+                                    if (getSpecificPostUiState.post.isMine) setOpenDeleteBottomSheet(
+                                        true
+                                    ) else setOpenReportBottomSheet(true)
                                 }
                                 .padding(horizontal = 24.dp)
                         )
@@ -369,10 +371,10 @@ private fun ReadMoreScreen(
                             } else {
                                 GwangSanStateButton(
                                     text = "거래하기",
-                                    state = when {
-                                        getSpecificPostUiState.post.isCompleted -> ButtonState.Disable
-                                        getSpecificPostUiState.post.isCompletable -> ButtonState.Enable
-                                        else -> ButtonState.Disable
+                                    state = if (getSpecificPostUiState.post.isCompletable == true) {
+                                        ButtonState.Enable
+                                    } else {
+                                        ButtonState.Disable
                                     },
                                     onClick = { onTransactionCompleteCallBack() },
                                     modifier = Modifier
