@@ -67,10 +67,12 @@ fun NavGraphBuilder.mainStartScreen(
 
 fun NavGraphBuilder.noticeScreen(
     onBackClick: () -> Unit,
+    navigationToDetail: (Long) -> Unit
 ){
     composable(route = NoticeRoute){
         NoticeRoute(
             onBackClick = onBackClick,
+            navigationToDetail = navigationToDetail
         )
     }
 }

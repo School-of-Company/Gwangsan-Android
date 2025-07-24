@@ -40,11 +40,13 @@ import com.school_of_company.main.viewmodel.MainViewModel
 import com.school_of_company.main.viewmodel.uistate.GetAlertUiState
 import com.school_of_company.main.viewmodel.uistate.TransactionCompleteUiState
 import com.school_of_company.model.alert.response.GetAlertResponseModel
+import com.school_of_company.model.enum.AlertType
 import com.school_of_company.model.post.request.TransactionCompleteRequestModel
 
 @Composable
 internal  fun NoticeRoute(
     onBackClick: () -> Unit,
+    navigationToDetail: (Long) -> Unit,
     viewModel: MainViewModel = hiltViewModel()
 ){
 
@@ -78,7 +80,8 @@ internal  fun NoticeRoute(
         },
         transactionCompleteUiState = transactionCompleteUiState,
         openBottomSheet = openBottomSheet,
-        setOpenBottomSheet = setOpenBottomSheet
+        setOpenBottomSheet = setOpenBottomSheet,
+        navigationToDetail = navigationToDetail
     )
 }
 
@@ -90,12 +93,11 @@ private fun NoticeScreen(
     swipeRefreshState: SwipeRefreshState,
     openBottomSheet: Boolean,
     setOpenBottomSheet: (Boolean) -> Unit,
+    navigationToDetail: (Long) -> Unit,
     transactionCompleteUiState: TransactionCompleteUiState,
     getAlertCallBack: () -> Unit,
     onBackClick: () -> Unit,
 ) {
-    val context = LocalContext.current
-
     val selectedSourceId = remember { mutableStateOf<Long?>(null) }
     val selectedMemberId = remember { mutableStateOf<Long?>(null) }
 
@@ -141,10 +143,16 @@ private fun NoticeScreen(
                         is GetAlertUiState.Success -> {
                             NoticeList(
                                 items = getAlertUiState.data,
-                                onClick = { sourceId, sendMemberId ->
-                                    selectedSourceId.value = sourceId
-                                    selectedMemberId.value = sendMemberId
-                                    setOpenBottomSheet(true)
+                                onClick = { sourceId, sendMemberId, alertType ->
+                                    if (alertType == AlertType.TRADE_COMPLETE) {
+                                        navigationToDetail(sourceId)
+                                    }else if(alertType == AlertType.OTHER_MEMBER_TRADE_COMPLETE) {
+                                        selectedSourceId.value = sourceId
+                                        selectedMemberId.value = sendMemberId
+                                        setOpenBottomSheet(true)
+                                    }else {
+                                        Unit
+                                    }
                                 },
                                 modifier = Modifier.fillMaxSize()
                             )
@@ -215,12 +223,12 @@ private fun NoticeScreen(
 
                         else -> Unit
                     }
+
                 }
 
 
             }
             if (openBottomSheet) {
-
                 Dialog(onDismissRequest = { setOpenBottomSheet(false) }) {
                     GwangsanDialog(
                         onLogout = {

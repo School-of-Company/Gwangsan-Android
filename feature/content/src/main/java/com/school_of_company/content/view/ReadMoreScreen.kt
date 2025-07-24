@@ -1,5 +1,6 @@
 package com.school_of_company.content.view
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -75,8 +76,6 @@ internal fun ReadMoreRoute(
     val (openDeleteBottomSheet, setOpenDeleteBottomSheet) = rememberSaveable { mutableStateOf(false) }
 
     val (buttonText, setButtonText) = remember { mutableStateOf("거래완료") }
-
-    val isPostTradeState = transactionCompleteUiState is TransactionCompleteUiState.Success
 
     LaunchedEffect(postId) {
         viewModel.getSpecificPost(postId)
@@ -193,7 +192,6 @@ internal fun ReadMoreRoute(
                 setOpenReportBottomSheet = setOpenReportBottomSheet,
                 setOpenReviewBottomSheet = setOpenReviewBottomSheet,
                 setOpenDeleteBottomSheet = setOpenDeleteBottomSheet,
-                isPostTradeState = isPostTradeState
             )
         }
     }
@@ -335,7 +333,9 @@ private fun ReadMoreScreen(
                             color = colors.error,
                             modifier = Modifier
                                 .GwangSanClickable {
-                                    if (getSpecificPostUiState.post.isMine) setOpenDeleteBottomSheet(true) else setOpenReportBottomSheet(true)
+                                    if (getSpecificPostUiState.post.isMine) setOpenDeleteBottomSheet(
+                                        true
+                                    ) else setOpenReportBottomSheet(true)
                                 }
                                 .padding(horizontal = 24.dp)
                         )
@@ -358,7 +358,7 @@ private fun ReadMoreScreen(
                                     .border(1.dp, colors.main500, RoundedCornerShape(8.dp))
                             )
 
-                            if (isPostTradeState) {
+                            if (post.isCompleted) {
                                 GwangSanStateButton(
                                     text = "리뷰쓰기",
                                     onClick = {
@@ -371,10 +371,10 @@ private fun ReadMoreScreen(
                             } else {
                                 GwangSanStateButton(
                                     text = "거래하기",
-                                    state = when {
-                                        getSpecificPostUiState.post.isCompleted -> ButtonState.Disable
-                                        getSpecificPostUiState.post.isCompletable -> ButtonState.Enable
-                                        else -> ButtonState.Disable
+                                    state = if (getSpecificPostUiState.post.isCompletable == true) {
+                                        ButtonState.Enable
+                                    } else {
+                                        ButtonState.Disable
                                     },
                                     onClick = { onTransactionCompleteCallBack() },
                                     modifier = Modifier

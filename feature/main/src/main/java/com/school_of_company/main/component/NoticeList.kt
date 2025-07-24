@@ -29,10 +29,11 @@ import coil.compose.rememberAsyncImagePainter
 import com.school_of_company.design_system.component.clickable.GwangSanClickable
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.model.alert.response.GetAlertResponseModel
+import com.school_of_company.model.enum.AlertType
 
 @Composable
 fun NoticeListItem(
-    onClick: (Long, Long?) -> Unit,
+    onClick: (Long, Long?, alertType: AlertType) -> Unit,
     modifier: Modifier = Modifier,
     data: GetAlertResponseModel
 ) {
@@ -44,7 +45,7 @@ fun NoticeListItem(
             modifier = modifier
                 .background(color = color.white)
                 .fillMaxWidth()
-                .GwangSanClickable { onClick(data.sourceId, data.sendMemberId) }
+                .GwangSanClickable { onClick(data.sourceId, data.sendMemberId, data.alertType) }
         ) {
             Box(
                 modifier = Modifier
@@ -101,7 +102,7 @@ fun NoticeListItem(
 
 @Composable
 fun NoticeList(
-    onClick: (Long, Long?) -> Unit,
+    onClick: (Long, Long?, alertType: AlertType) -> Unit,
     modifier: Modifier = Modifier,
     items: List<GetAlertResponseModel>,
 ) {
