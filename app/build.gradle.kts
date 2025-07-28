@@ -52,7 +52,7 @@ dependencies {
     implementation(libs.androidx.material3)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext)
-
+    implementation(libs.kotlinx.immutable)
 }
 fun getApiKey(propertyKey: String) : String {
     val propFile = rootProject.file("./local.properties")

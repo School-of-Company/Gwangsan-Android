@@ -22,6 +22,7 @@ import com.school_of_company.main.navgation.MainStartRoute
 import com.school_of_company.main.navgation.navigateToMainStart
 import com.school_of_company.profile.navigation.navigateToMyProfile
 import com.school_of_company.signin.navigation.SignInRoute
+import kotlinx.collections.immutable.PersistentList
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
@@ -49,20 +50,11 @@ class GwangSanAppState(
     val navController: NavHostController,
     val coroutineScope: CoroutineScope
 ) {
-    val currentDestination: NavDestination?
+    val currentDestination: String?
         @Composable get() = navController
-            .currentBackStackEntryAsState().value?.destination
+            .currentBackStackEntryAsState().value?.destination?.route
 
-    val currentTopLevelDestination: TopLevelDestination?
-        @Composable get() = when (currentDestination?.route) {
-            // add TopLevelDestination Route
-            else -> null
-        }
-
-    val shouldShowBottomBar: Boolean
-        get() = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact
-
-    val topLevelDestinations: List<TopLevelDestination> = TopLevelDestination.values().asList()
+    val topLevelDestinations: PersistentList<TopLevelDestination> = TopLevelDestination.topLevelDestinations
 
     fun navigateToTopLevelDestination(topLevelDestination: TopLevelDestination) {
         trace("Navigation: ${topLevelDestination.name}") {
