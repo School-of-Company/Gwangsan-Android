@@ -1,6 +1,7 @@
 package com.school_of_company.data.repository.alert
 
 import com.school_of_company.model.alert.response.GetAlertResponseModel
+import com.school_of_company.model.alert.response.GetReadAlertModel
 import com.school_of_company.network.datasource.alert.AlertDataSource
 import com.school_of_company.network.mapper.alert.response.toModel
 import kotlinx.coroutines.flow.Flow
@@ -12,5 +13,13 @@ class AlertRepositoryImpl  @Inject constructor(
 ) : AlertRepository{
     override fun getAlert(): Flow<List<GetAlertResponseModel>> {
         return alertDataSource.getAlert().map { it.map { list -> list.toModel()} }
+    }
+
+    override fun getUnReadAlert(): Flow<GetReadAlertModel> {
+        return alertDataSource.getUnReadAlert().map { it.toModel() }
+    }
+
+    override fun getReadAlert(alertId: Long): Flow<Unit> {
+       return alertDataSource.getReadAlert(alertId)
     }
 }
