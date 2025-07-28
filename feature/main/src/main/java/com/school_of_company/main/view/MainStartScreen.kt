@@ -35,10 +35,12 @@ import com.school_of_company.design_system.component.icons.BellIcon
 import com.school_of_company.design_system.component.icons.MainTitle
 import com.school_of_company.design_system.component.icons.ObjectIcon
 import com.school_of_company.design_system.component.icons.ServiceIcon
+import com.school_of_company.design_system.component.icons.UnReadBellIcon
 import com.school_of_company.design_system.component.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.main.component.MainButton
 import com.school_of_company.main.viewmodel.MainViewModel
+import com.school_of_company.main.viewmodel.uistate.GetUnReadAlertUiState
 import com.school_of_company.main.viewmodel.uistate.MemberUiState
 import com.school_of_company.ui.previews.GwangsanPreviews
 import kotlinx.coroutines.delay
@@ -53,16 +55,19 @@ internal fun MainStartRoute(
 ) {
 
     val getMyProfileUiState by viewModel.myProfileUiState.collectAsStateWithLifecycle()
+    val getUnReadAlertUiState by viewModel.getUnReadAlertUiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.getMyProfile()
+        viewModel.getUnReadAlert()
     }
 
     MainStartScreen(
         navigationToService = navigationToService,
         navigationToObject = navigationToObject,
         getMyProfileUiState = getMyProfileUiState,
-        navigationToNotice = navigationToNotice
+        navigationToNotice = navigationToNotice,
+        getUnReadAlertUiState = getUnReadAlertUiState
     )
 }
 
@@ -72,6 +77,7 @@ private fun MainStartScreen(
     navigationToService: () -> Unit,
     navigationToNotice: () -> Unit,
     navigationToObject: () -> Unit,
+    getUnReadAlertUiState: GetUnReadAlertUiState,
     getMyProfileUiState: MemberUiState
 ) {
     GwangSanTheme { colors, typography ->
@@ -94,7 +100,19 @@ private fun MainStartScreen(
         ) {
             GwangSanSubTopBar(
                 startIcon = { MainTitle(modifier = Modifier.GwangSanClickable { }) },
-                endIcon = { BellIcon(modifier = Modifier.GwangSanClickable { navigationToNotice()}) },
+                endIcon = {
+                    when (getUnReadAlertUiState) {
+                        is GetUnReadAlertUiState.Success -> {
+                            if (getUnReadAlertUiState.data.unread) {
+                                UnReadBellIcon(modifier = Modifier.GwangSanClickable { navigationToNotice() })
+                            } else {
+                                BellIcon(modifier = Modifier.GwangSanClickable { navigationToNotice() })
+                            }
+                        }
+                        else -> BellIcon(modifier = Modifier.GwangSanClickable { navigationToNotice() })
+
+                    }
+                },
                 modifier = Modifier.padding(
                     top = 56.dp,
                     start = 24.dp,
@@ -123,8 +141,8 @@ private fun MainStartScreen(
                     AutoSlideBanner(
                         imageIds = bannerImages,
                         modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
+                            .fillMaxWidth()
+                            .weight(1f),
                     )
 
                     Divider(
@@ -243,7 +261,8 @@ fun MainStartScreenPreview() {
         navigationToService = {},
         navigationToObject = {},
         getMyProfileUiState = MemberUiState.Loading,
-        navigationToNotice = {}
+        navigationToNotice = {},
+        getUnReadAlertUiState = GetUnReadAlertUiState.Loading
     )
 }
 
