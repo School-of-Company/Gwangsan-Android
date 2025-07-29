@@ -17,13 +17,17 @@ import coil.compose.AsyncImage
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.design_system.R
 import com.school_of_company.design_system.component.clickable.GwangSanClickable
+import com.school_of_company.inform.ui.model.GetAllNoticeResponseUi
+import com.school_of_company.inform.ui.model.ImageModelUi
 import com.school_of_company.model.notice.response.GetAllNoticeResponseModel
 import com.school_of_company.model.notice.response.ImageModel
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 internal fun InformItem(
     modifier: Modifier = Modifier,
-    item: GetAllNoticeResponseModel,
+    item: GetAllNoticeResponseUi,
     onClick: (Long) -> Unit
 ) {
     GwangSanTheme { colors, typography ->
@@ -70,7 +74,7 @@ internal fun InformItem(
 @Composable
 internal fun InformList(
     modifier: Modifier = Modifier,
-    items: List<GetAllNoticeResponseModel>,
+    items: PersistentList<GetAllNoticeResponseUi>,
     onClick: (Long) -> Unit
 ) {
     LazyColumn(
@@ -94,11 +98,11 @@ internal fun InformList(
 @Composable
 private fun InformItemPreviewWithImage() {
     InformItem(
-        item = GetAllNoticeResponseModel(
+        item = GetAllNoticeResponseUi(
             id = 1,
             title = "거래 중지 안내",
             content = "거래 중지 안내 내용입니다.",
-            images = listOf(ImageModel(
+            images = persistentListOf(ImageModelUi(
                 imageId = 1,
                 imageUrl = "https://example.com/image.jpg"
             ))

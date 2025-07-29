@@ -25,6 +25,8 @@ import com.school_of_company.inform.viewmodel.uistate.GetAllNoticeUiState
 import com.school_of_company.inform.viewmodel.uistate.MemberUiState
 import com.school_of_company.model.notice.response.GetAllNoticeResponseModel
 import com.school_of_company.ui.previews.GwangsanPreviews
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 internal fun InformRoute(
@@ -146,7 +148,7 @@ private fun InformScreen(
                     is GetAllNoticeUiState.Loading -> Unit
                     is GetAllNoticeUiState.Success -> {
                         InformList(
-                            items = informList.data,
+                            items = informList.data.toPersistentList(),
                             onClick = onNextClick
                         )
                     }
@@ -197,7 +199,7 @@ private fun InformScreenPreview() {
         GetAllNoticeResponseModel(
             title = "당분간 거래중지입니다",
             content = "어떤 이의 거래 중지 의사로 인해 요청사항...",
-            images = emptyList(),
+            images = persistentListOf(),
             id = 0
         )
     )
