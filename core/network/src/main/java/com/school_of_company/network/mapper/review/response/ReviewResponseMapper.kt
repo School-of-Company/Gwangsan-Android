@@ -4,6 +4,7 @@ import com.school_of_company.model.review.response.ImagesList
 import com.school_of_company.model.review.response.ReviewResponseModel
 import com.school_of_company.network.dto.review.response.ImagesListResponse
 import com.school_of_company.network.dto.review.response.ReviewResponse
+import kotlinx.collections.immutable.toPersistentList
 
 fun ReviewResponse.toModel() : ReviewResponseModel =
     ReviewResponseModel(
@@ -11,7 +12,7 @@ fun ReviewResponse.toModel() : ReviewResponseModel =
         productId = this.productId,
         light = this.light,
         content = this.content,
-        images = this.images.map { it.toModel() }
+        images = this.images.map { it.toModel() }.toPersistentList()
 )
 
 fun ImagesListResponse.toModel(): ImagesList =

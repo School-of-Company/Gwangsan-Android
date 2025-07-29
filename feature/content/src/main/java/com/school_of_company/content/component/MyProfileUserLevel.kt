@@ -15,15 +15,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.school_of_company.content.ui.model.MemberUi
 import com.school_of_company.design_system.component.clickable.GwangSanClickable
 import com.school_of_company.design_system.component.icons.EllipseIcon
 import com.school_of_company.design_system.theme.GwangSanTheme
-import com.school_of_company.model.post.response.Member
 
 @Composable
 fun MyProfileUserLevel(
     modifier: Modifier = Modifier,
-    data: Member,
+    data: MemberUi,
     onClick: (Long) -> Unit,
 ) {
     GwangSanTheme { colors, typography ->

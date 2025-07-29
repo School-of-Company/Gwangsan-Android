@@ -29,8 +29,12 @@ import com.school_of_company.design_system.component.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.model.review.response.ReviewResponseModel
 import com.school_of_company.profile.component.MyProfileReviewListItem
+import com.school_of_company.profile.ui.model.ReviewResponseUi
 import com.school_of_company.profile.viewmodel.MyProfileViewModel
 import com.school_of_company.profile.viewmodel.uistate.GetMyReviewUiState
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.toPersistentList
+import kotlinx.collections.immutable.toPersistentSet
 
 @Composable
 internal fun MyReceiveReviewRoute(
@@ -95,7 +99,7 @@ private fun MyReceiveReviewScreen(
                 when (getMyReviewUiState) {
                     is GetMyReviewUiState.Success -> {
                         MyReceiveReviewProfileList(
-                            items = getMyReviewUiState.review,
+                            items = getMyReviewUiState.review.toPersistentList(),
                             modifier = Modifier
                                 .fillMaxSize()
                                 .padding(horizontal = 16.dp)
@@ -160,7 +164,7 @@ private fun MyReceiveReviewScreen(
 
 @Composable
 fun MyReceiveReviewProfileList(
-    items: List<ReviewResponseModel>,
+    items: PersistentList<ReviewResponseUi>,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(

@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.school_of_company.content.ui.mapper.toUi
 import com.school_of_company.content.until.getMultipartFile
 import com.school_of_company.content.viewmodel.uistate.DeletePostUiState
 import com.school_of_company.content.viewmodel.uistate.GetSpecificPostUiState
@@ -97,7 +98,7 @@ class ContentViewModel @Inject constructor(
                         GetSpecificPostUiState.Loading
 
                     is Result.Success -> _getSpecificPostUiState.value =
-                        GetSpecificPostUiState.Success(result.data)
+                        GetSpecificPostUiState.Success(result.data.toUi())
 
                     is Result.Error -> _getSpecificPostUiState.value =
                         GetSpecificPostUiState.Error(result.exception)

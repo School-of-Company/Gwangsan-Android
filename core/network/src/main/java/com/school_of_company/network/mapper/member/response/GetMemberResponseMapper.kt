@@ -2,6 +2,7 @@ package com.school_of_company.network.mapper.member.response
 
 import com.school_of_company.model.member.response.GetMemberResponseModel
 import com.school_of_company.network.dto.member.response.GetMemberResponse
+import kotlinx.collections.immutable.toPersistentList
 
 fun GetMemberResponse.toModel(): GetMemberResponseModel =
     GetMemberResponseModel(
@@ -11,5 +12,5 @@ fun GetMemberResponse.toModel(): GetMemberResponseModel =
         light = this.light,
         gwangsan = this.gwangsan,
         description = this.description,
-        specialties = this.specialties
+        specialties = this.specialties.toPersistentList()
     )

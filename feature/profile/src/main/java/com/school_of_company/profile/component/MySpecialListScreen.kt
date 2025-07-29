@@ -14,12 +14,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.model.member.response.GetMemberResponseModel
-
+import com.school_of_company.profile.ui.model.GetMemberResponseUi
 
 @Composable
 fun MySpecialListScreen(
     modifier: Modifier = Modifier,
-    data: GetMemberResponseModel
+    data: GetMemberResponseUi
 ) {
     GwangSanTheme { colors, typography ->
         Column(

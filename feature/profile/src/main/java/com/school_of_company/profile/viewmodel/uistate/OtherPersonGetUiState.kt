@@ -1,8 +1,7 @@
 package com.school_of_company.profile.viewmodel.uistate
 
 import androidx.compose.runtime.Stable
-import com.school_of_company.profile.ui.model.ReviewResponseUi
-import kotlinx.collections.immutable.PersistentList
+import com.school_of_company.profile.ui.model.GetAllMemberResponseUi
 
 /**
  * 각 상태 구현체에 @Stable을 명시하여 Compose recomposition 시 안정성 최적화를 보장합니다.
@@ -11,17 +10,17 @@ import kotlinx.collections.immutable.PersistentList
  */
 
 @Stable
-sealed interface GetMyReviewWriteUiState {
+sealed interface OtherPersonGetUiState {
 
     @Stable
-    data object Loading : GetMyReviewWriteUiState
+    data object Loading : OtherPersonGetUiState
 
     @Stable
-    data object Empty : GetMyReviewWriteUiState
+    data object Empty : OtherPersonGetUiState
 
     @Stable
-    data class Success(val data: PersistentList<ReviewResponseUi>) : GetMyReviewWriteUiState
+    data class Success(val data: GetAllMemberResponseUi) : OtherPersonGetUiState
 
     @Stable
-    data class Error(val exception: Throwable) : GetMyReviewWriteUiState
+    data class Error(val exception: Throwable) : OtherPersonGetUiState
 }

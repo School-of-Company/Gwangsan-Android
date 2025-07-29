@@ -32,6 +32,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.school_of_company.content.component.MyProfileUserLevel
 import com.school_of_company.content.component.ReportBottomSheet
+import com.school_of_company.content.ui.model.ImageUi
+import com.school_of_company.content.ui.model.MemberUi
+import com.school_of_company.content.ui.model.PostUi
 import com.school_of_company.content.viewmodel.ContentViewModel
 import com.school_of_company.content.viewmodel.uistate.DeletePostUiState
 import com.school_of_company.content.viewmodel.uistate.GetSpecificPostUiState
@@ -52,6 +55,7 @@ import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.model.post.request.TransactionCompleteRequestModel
 import com.school_of_company.model.report.request.ReportRequestModel
 import com.school_of_company.model.review.request.ReviewRequestModel
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 internal fun ReadMoreRoute(
@@ -144,15 +148,12 @@ internal fun ReadMoreRoute(
             val post = (getSpecificPostUiState as GetSpecificPostUiState.Success).post
             ReadMoreScreen(
                 getSpecificPostUiState = getSpecificPostUiState,
-                buttonText = buttonText,
                 onBackClick = onBackClick,
                 onEditClick = {
                     onEditClick(post.id, post.type, post.mode)
                 },
                 onOtherProfileClick = onOtherProfileClick,
                 onChatClick = onChatClick,
-                onReviewClick = onReviewClick,
-                onReportClick = onReportClick,
                 onTransactionCompleteCallBack = {
                     viewModel.transactionComplete(
                         body = TransactionCompleteRequestModel(
@@ -201,15 +202,11 @@ internal fun ReadMoreRoute(
 @Composable
 private fun ReadMoreScreen(
     modifier: Modifier = Modifier,
-    isPostTradeState: Boolean = false,
     getSpecificPostUiState: GetSpecificPostUiState,
-    buttonText: String,
     onBackClick: () -> Unit,
     onEditClick: () -> Unit,
     onOtherProfileClick: (Long) -> Unit,
     onChatClick: (Long) -> Unit,
-    onReviewClick: (Int, String) -> Unit,
-    onReportClick: (String, String) -> Unit,
     onTransactionCompleteCallBack: () -> Unit,
     onReportCallBack: (String, String) -> Unit,
     onReviewCallBack: (Int, String) -> Unit,
@@ -456,35 +453,23 @@ private fun ReadMoreScreen(
 @Preview
 @Composable
 private fun PreviewReadMoreScreen() {
-    val dummyPost = com.school_of_company.model.post.response.Post(
+    val dummyPost = PostUi(
         id = 1L,
         type = "SERVICE",
         mode = "RECEIVER",
         title = "에어컨 청소 부탁드립니다",
         content = "에어컨 청소가 필요합니다. 더운 여름이라 빠른 시일 내에 부탁드려요.",
         gwangsan = 10000,
-        member = com.school_of_company.model.post.response.Member(
+        member = MemberUi(
             memberId = 10L,
             nickname = "광산이",
             placeName = "광산구 수완동",
             light = 3
         ),
-        images = listOf(
-            com.school_of_company.model.post.response.Image(
+        images = persistentListOf(
+            ImageUi(
                 imageId = 1L,
                 imageUrl = "https://via.placeholder.com/600/92c952"
-            ),
-            com.school_of_company.model.post.response.Image(
-                imageId = 2L,
-                imageUrl = "https://via.placeholder.com/600/771796"
-            ),
-            com.school_of_company.model.post.response.Image(
-                imageId = 3L,
-                imageUrl = "https://via.placeholder.com/600/24f355"
-            ),
-            com.school_of_company.model.post.response.Image(
-                imageId = 4L,
-                imageUrl = "https://via.placeholder.com/600/d32776"
             )
         ),
         isCompletable = true,
@@ -496,8 +481,6 @@ private fun PreviewReadMoreScreen() {
         onChatClick = {},
         onBackClick = {},
         onOtherProfileClick = {},
-        onReportClick = { _, _ -> },
-        onReviewClick = { _, _ -> },
         getSpecificPostUiState = GetSpecificPostUiState.Success(dummyPost),
         onReportCallBack = { _, _ -> },
         setOpenReportBottomSheet = {},
@@ -506,8 +489,6 @@ private fun PreviewReadMoreScreen() {
         openReviewBottomSheet = false,
         onReviewCallBack = { _, _ -> },
         onTransactionCompleteCallBack = {},
-        isPostTradeState = true,
-        buttonText = "",
         openDeleteBottomSheet = false,
         setOpenDeleteBottomSheet = {},
         onDeleteCallBack = {},

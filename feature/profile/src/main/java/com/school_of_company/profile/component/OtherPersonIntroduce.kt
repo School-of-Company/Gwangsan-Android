@@ -14,12 +14,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.model.member.response.GetAllMemberResponseModel
-
+import com.school_of_company.profile.ui.model.GetAllMemberResponseUi
 
 @Composable
 internal fun OtherPersonIntroduce(
     modifier: Modifier = Modifier,
-    data: GetAllMemberResponseModel
+    data: GetAllMemberResponseUi
 ) {
     GwangSanTheme { colors, typography ->
 

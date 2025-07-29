@@ -1,6 +1,5 @@
 package com.school_of_company.profile.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,6 +9,7 @@ import com.school_of_company.data.repository.post.PostRepository
 import com.school_of_company.data.repository.review.ReviewRepository
 import com.school_of_company.model.member.request.ModifyMemberInformationRequestModel
 import com.school_of_company.model.post.request.TransactionCompleteRequestModel
+import com.school_of_company.profile.ui.mapper.toUi
 import com.school_of_company.profile.viewmodel.uistate.DeletePostUiState
 import com.school_of_company.profile.viewmodel.uistate.GetMyPostUiState
 import com.school_of_company.profile.viewmodel.uistate.GetMyReviewUiState
@@ -19,12 +19,13 @@ import com.school_of_company.profile.viewmodel.uistate.LogoutUiState
 import com.school_of_company.profile.viewmodel.uistate.MemberUiState
 import com.school_of_company.profile.viewmodel.uistate.MyInForMatIonPeTchUiState
 import com.school_of_company.profile.viewmodel.uistate.OtherGetPostUiState
-import com.school_of_company.profile.viewmodel.uistate.OtherPersonGetUistate
+import com.school_of_company.profile.viewmodel.uistate.OtherPersonGetUiState
 import com.school_of_company.profile.viewmodel.uistate.OtherReviewUIState
 import com.school_of_company.profile.viewmodel.uistate.TransactionCompleteUiState
 import com.school_of_company.result.asResult
 import com.school_of_company.result.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -50,13 +51,15 @@ internal class MyProfileViewModel @Inject constructor(
     private val _deletePostUiState = MutableStateFlow<DeletePostUiState>(DeletePostUiState.Loading)
     internal val deletePostUiState = _deletePostUiState.asStateFlow()
 
-    private val _transactionCompleteUiState = MutableStateFlow<TransactionCompleteUiState>(TransactionCompleteUiState.Loading)
+    private val _transactionCompleteUiState =
+        MutableStateFlow<TransactionCompleteUiState>(TransactionCompleteUiState.Loading)
     internal val transactionCompleteUiState = _transactionCompleteUiState.asStateFlow()
 
     private val _swipeRefreshLoading = MutableStateFlow(false)
     val swipeRefreshLoading = _swipeRefreshLoading.asStateFlow()
 
-    private val _otherGetPostUiState = MutableStateFlow<OtherGetPostUiState>(OtherGetPostUiState.Loading)
+    private val _otherGetPostUiState =
+        MutableStateFlow<OtherGetPostUiState>(OtherGetPostUiState.Loading)
     internal val otherGetPostUiState = _otherGetPostUiState.asStateFlow()
 
     private val _logoutUiState = MutableStateFlow<LogoutUiState>(LogoutUiState.Loading)
@@ -65,25 +68,31 @@ internal class MyProfileViewModel @Inject constructor(
     private val _myProfileUiState = MutableStateFlow<MemberUiState>(MemberUiState.Loading)
     internal val myProfileUiState = _myProfileUiState.asStateFlow()
 
-    private val _otherReviewUIState = MutableStateFlow<OtherReviewUIState>(OtherReviewUIState.Loading)
+    private val _otherReviewUIState =
+        MutableStateFlow<OtherReviewUIState>(OtherReviewUIState.Loading)
     internal val otherReviewUIState = _otherReviewUIState.asStateFlow()
 
-    private val _getMySpecificInformationUiState = MutableStateFlow<GetMySpecificInformationUiState>(GetMySpecificInformationUiState.Loading)
+    private val _getMySpecificInformationUiState =
+        MutableStateFlow<GetMySpecificInformationUiState>(GetMySpecificInformationUiState.Loading)
     internal val getMySpecificInformationUiState = _getMySpecificInformationUiState.asStateFlow()
 
-    private val _getMyWriteReviewUiState = MutableStateFlow<GetMyReviewWriteUiState>(GetMyReviewWriteUiState.Loading)
+    private val _getMyWriteReviewUiState =
+        MutableStateFlow<GetMyReviewWriteUiState>(GetMyReviewWriteUiState.Loading)
     internal val getMyWriteReviewUiState = _getMyWriteReviewUiState.asStateFlow()
 
     private val _getMyPostUiState = MutableStateFlow<GetMyPostUiState>(GetMyPostUiState.Loading)
     internal val getMyPostUiState = _getMyPostUiState.asStateFlow()
 
-    private val _otherPersonUiState = MutableStateFlow<OtherPersonGetUistate>(OtherPersonGetUistate.Loading)
+    private val _otherPersonUiState =
+        MutableStateFlow<OtherPersonGetUiState>(OtherPersonGetUiState.Loading)
     internal val otherPersonUiState = _otherPersonUiState.asStateFlow()
 
-    private val _getMyReviewUiState = MutableStateFlow<GetMyReviewUiState>(GetMyReviewUiState.Loading)
+    private val _getMyReviewUiState =
+        MutableStateFlow<GetMyReviewUiState>(GetMyReviewUiState.Loading)
     internal val getMyReviewUiState = _getMyReviewUiState.asStateFlow()
 
-    private val _myInformationPatchUiState = MutableStateFlow<MyInForMatIonPeTchUiState?>(MyInForMatIonPeTchUiState.Loading)
+    private val _myInformationPatchUiState =
+        MutableStateFlow<MyInForMatIonPeTchUiState?>(MyInForMatIonPeTchUiState.Loading)
     internal val myInformationPatchUiState = _myInformationPatchUiState.asStateFlow()
 
     internal val nickname = savedStateHandle.getStateFlow(NICKNAME, "")
@@ -100,7 +109,8 @@ internal class MyProfileViewModel @Inject constructor(
 
                     is Result.Success -> _deletePostUiState.value = DeletePostUiState.Success
 
-                    is Result.Error -> _deletePostUiState.value = DeletePostUiState.Error(result.exception)
+                    is Result.Error -> _deletePostUiState.value =
+                        DeletePostUiState.Error(result.exception)
                 }
             }
     }
@@ -127,7 +137,7 @@ internal class MyProfileViewModel @Inject constructor(
                     is Result.Loading -> _myProfileUiState.value = MemberUiState.Loading
 
                     is Result.Success -> {
-                        _myProfileUiState.value = MemberUiState.Success(result.data)
+                        _myProfileUiState.value = MemberUiState.Success(result.data.toUi())
 
                         result.data.let { profileText ->
                             onNickNameChange(profileText.nickname)
@@ -150,13 +160,13 @@ internal class MyProfileViewModel @Inject constructor(
             .asResult()
             .collectLatest { result ->
                 when (result) {
-                    is Result.Loading -> _otherPersonUiState.value = OtherPersonGetUistate.Loading
+                    is Result.Loading -> _otherPersonUiState.value = OtherPersonGetUiState.Loading
 
                     is Result.Success -> _otherPersonUiState.value =
-                        OtherPersonGetUistate.Success(result.data)
+                        OtherPersonGetUiState.Success(result.data.toUi())
 
                     is Result.Error -> _otherPersonUiState.value =
-                        OtherPersonGetUistate.Error(result.exception)
+                        OtherPersonGetUiState.Error(result.exception)
                 }
             }
     }
@@ -209,16 +219,16 @@ internal class MyProfileViewModel @Inject constructor(
             memberId = memberId
         )
             .asResult()
-            .collectLatest {
-                    result ->
+            .collectLatest { result ->
                 when (result) {
                     is Result.Loading -> _otherGetPostUiState.value = OtherGetPostUiState.Loading
                     is Result.Success ->
                         if (result.data.isEmpty()) {
                             _otherGetPostUiState.value = OtherGetPostUiState.Empty
-                        }else{
+                        } else {
                             _otherGetPostUiState.value = OtherGetPostUiState.Success(result.data)
                         }
+
                     is Result.Error -> {
                         _otherGetPostUiState.value = OtherGetPostUiState.Error(result.exception)
                     }
@@ -261,15 +271,18 @@ internal class MyProfileViewModel @Inject constructor(
 
         reviewRepository.getMyWriteReview()
             .asResult()
-            .collectLatest {
-                result ->
+            .collectLatest { result ->
                 when (result) {
-                    is Result.Loading -> _getMyWriteReviewUiState.value = GetMyReviewWriteUiState.Loading
+                    is Result.Loading -> _getMyWriteReviewUiState.value =
+                        GetMyReviewWriteUiState.Loading
+
                     is Result.Success -> {
                         _getMyWriteReviewUiState.value =
-                            GetMyReviewWriteUiState.Success(result.data)
+                            GetMyReviewWriteUiState.Success(result.data.map { it.toUi() }
+                                .toPersistentList())
                         _swipeRefreshLoading.value = false
                     }
+
                     is Result.Error -> {
                         _getMyWriteReviewUiState.value =
                             GetMyReviewWriteUiState.Error(result.exception)
@@ -294,7 +307,9 @@ internal class MyProfileViewModel @Inject constructor(
                             _getMyReviewUiState.value = GetMyReviewUiState.Empty
                             _swipeRefreshLoading.value = false
                         } else {
-                            _getMyReviewUiState.value = GetMyReviewUiState.Success(result.data)
+                            _getMyReviewUiState.value =
+                                GetMyReviewUiState.Success(result.data.map { it.toUi() }
+                                    .toPersistentList())
                             _swipeRefreshLoading.value = false
                         }
                     }
@@ -302,8 +317,6 @@ internal class MyProfileViewModel @Inject constructor(
                     is Result.Error -> {
                         _getMyReviewUiState.value = GetMyReviewUiState.Error(result.exception)
                         _swipeRefreshLoading.value = false
-
-                        Log.e("getMyReview", result.exception.message.toString())
                     }
                 }
             }
@@ -314,63 +327,45 @@ internal class MyProfileViewModel @Inject constructor(
             .asResult()
             .collectLatest { result ->
                 when (result) {
-                    is Result.Loading -> _otherReviewUIState.value =  OtherReviewUIState.Loading
+                    is Result.Loading -> _otherReviewUIState.value = OtherReviewUIState.Loading
                     is Result.Success -> {
                         if (result.data.isEmpty()) {
                             _otherReviewUIState.value = OtherReviewUIState.Empty
                             _swipeRefreshLoading.value = false
                         } else {
-                            _otherReviewUIState.value = OtherReviewUIState.Success(result.data)
+                            _otherReviewUIState.value =
+                                OtherReviewUIState.Success(result.data.map { it.toUi() }
+                                    .toPersistentList())
                             _swipeRefreshLoading.value = false
                         }
                     }
-                    is Result.Error ->  {
+
+                    is Result.Error -> {
                         _swipeRefreshLoading.value = false
                         _otherReviewUIState.value = OtherReviewUIState.Error(result.exception)
                     }
-                    is Result.Success -> {
-                        if (result.data.isEmpty()) {
-                            _otherReviewUIState.value = OtherReviewUIState.Empty
-                            _swipeRefreshLoading.value = false
-                        } else {
-                            _otherReviewUIState.value = OtherReviewUIState.Success(result.data)
-                            _swipeRefreshLoading.value = false
-                        }
-                    }
-                    is Result.Error ->  {
-                        _swipeRefreshLoading.value = false
-                        _otherReviewUIState.value = OtherReviewUIState.Error(result.exception)
-                    }
-                    is Result.Error ->  {
-                        _swipeRefreshLoading.value = false
-                        _otherReviewUIState.value = OtherReviewUIState.Error(result.exception)
-                    }
-                    is Result.Success -> {
-                        if (result.data.isEmpty()) {
-                            _otherReviewUIState.value = OtherReviewUIState.Empty
-                            _swipeRefreshLoading.value = false
-                        } else {
-                            _otherReviewUIState.value = OtherReviewUIState.Success(result.data)
-                            _swipeRefreshLoading.value = false
-                        }
-                    }
-                    is Result.Error ->  _otherReviewUIState.value = OtherReviewUIState.Error(result.exception)
                 }
             }
     }
 
-    internal fun transactionComplete(body: TransactionCompleteRequestModel) = viewModelScope.launch {
-        _transactionCompleteUiState.value = TransactionCompleteUiState.Loading
-        postRepository.transactionComplete(body = body)
-            .asResult()
-            .collectLatest { result ->
-                when (result){
-                    is Result.Loading -> _transactionCompleteUiState.value = TransactionCompleteUiState.Loading
-                    is Result.Success -> _transactionCompleteUiState.value = TransactionCompleteUiState.Success
-                    is Result.Error -> _transactionCompleteUiState.value = TransactionCompleteUiState.Error(result.exception)
+    internal fun transactionComplete(body: TransactionCompleteRequestModel) =
+        viewModelScope.launch {
+            _transactionCompleteUiState.value = TransactionCompleteUiState.Loading
+            postRepository.transactionComplete(body = body)
+                .asResult()
+                .collectLatest { result ->
+                    when (result) {
+                        is Result.Loading -> _transactionCompleteUiState.value =
+                            TransactionCompleteUiState.Loading
+
+                        is Result.Success -> _transactionCompleteUiState.value =
+                            TransactionCompleteUiState.Success
+
+                        is Result.Error -> _transactionCompleteUiState.value =
+                            TransactionCompleteUiState.Error(result.exception)
+                    }
                 }
-            }
-    }
+        }
 
     fun removeSpecialty(item: String) {
         savedStateHandle[SPECIALTY_LIST] = specialtyList.value - item

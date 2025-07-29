@@ -1,5 +1,7 @@
 package com.school_of_company.model.post.response
 
+import kotlinx.collections.immutable.PersistentList
+
 data class Post(
     val id: Long,
     val title: String,
@@ -8,7 +10,7 @@ data class Post(
     val type: String,
     val mode: String,
     val member: Member,
-    val images: List<Image>,
+    val images: PersistentList<Image>,
     val isMine: Boolean,
     val isCompletable: Boolean,
     val isCompleted: Boolean,

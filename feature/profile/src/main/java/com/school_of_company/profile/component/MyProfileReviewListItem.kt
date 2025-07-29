@@ -3,10 +3,7 @@ package com.school_of_company.profile.component
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.school_of_company.design_system.R
@@ -33,18 +30,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.design_system.theme.color.GwangSanColor
-import com.school_of_company.model.post.response.Image
-import com.school_of_company.model.post.response.Post
-import com.school_of_company.model.review.response.ReviewResponseModel
+import com.school_of_company.profile.ui.model.ReviewResponseUi
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 internal fun MyProfileReviewListItem(
     modifier: Modifier = Modifier,
-    data : ReviewResponseModel,
+    data : ReviewResponseUi,
     onClick: () -> Unit = {}
 ) {
     GwangSanTheme { colors, typography ->
@@ -154,12 +149,12 @@ private fun MyProfileReviewProgressBar(
 @Composable
 private fun MyProfileReviewListItemPreview() {
     MyProfileReviewListItem(
-        data = ReviewResponseModel(
+        data = ReviewResponseUi(
             productId = 0L,
             content = "adsfasdf",
             light = 19,
             reviewerName = "김치라",
-            images = listOf()
+            images = persistentListOf()
         )
     )
 }

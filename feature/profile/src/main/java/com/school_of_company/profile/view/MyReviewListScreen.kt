@@ -1,12 +1,8 @@
-package com.school_of_company.profile.view
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -18,7 +14,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -30,49 +25,44 @@ import com.school_of_company.design_system.component.clickable.GwangSanClickable
 import com.school_of_company.design_system.component.icons.DownArrowIcon
 import com.school_of_company.design_system.component.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
-import com.school_of_company.model.review.response.ImagesList
-import com.school_of_company.model.review.response.ReviewResponseModel
 import com.school_of_company.profile.component.MyProfileReviewListItem
 import com.school_of_company.profile.ui.model.ReviewResponseUi
 import com.school_of_company.profile.viewmodel.MyProfileViewModel
-import com.school_of_company.profile.viewmodel.uistate.OtherReviewUIState
-import kotlinx.collections.immutable.PersistentList
-import kotlinx.collections.immutable.persistentListOf
+import com.school_of_company.profile.viewmodel.uistate.GetMyReviewWriteUiState
 import kotlinx.collections.immutable.toPersistentList
 
+
 @Composable
-internal fun OtherReviewRoute(
+internal fun MyReviewRoute(
     onBackClick: () -> Unit,
-    memberId: Long,
     viewModel: MyProfileViewModel = hiltViewModel()
 ) {
+    val getMyWriteReviewUiState by viewModel.getMyWriteReviewUiState.collectAsStateWithLifecycle()
 
     val swipeRefreshLoading by viewModel.swipeRefreshLoading.collectAsStateWithLifecycle(
         initialValue = false
     )
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = swipeRefreshLoading)
 
-    val getOtherReviewUiState by viewModel.otherReviewUIState.collectAsStateWithLifecycle()
-
     LaunchedEffect(Unit) {
-        viewModel.getOtherReview(memberId = memberId)
+        viewModel.getMyWriteReview()
     }
 
-    OtherReviewScreen(
+    MyReviewScreen(
         onBackClick = onBackClick,
-        otherReviewUIState = getOtherReviewUiState,
-        getMyReceiveCallBack = {viewModel.getOtherReview(memberId = memberId )},
-        swipeRefreshState = swipeRefreshState,
+        getMyReviewUiState = getMyWriteReviewUiState,
+        getMyReviewList = { viewModel.getMyWriteReview() },
+        swipeRefreshState = swipeRefreshState
     )
 }
 
 @Composable
-private fun OtherReviewScreen(
+private fun MyReviewScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
-    otherReviewUIState: OtherReviewUIState,
-    getMyReceiveCallBack: () -> Unit,
+    getMyReviewUiState: GetMyReviewWriteUiState,
     swipeRefreshState: SwipeRefreshState,
+    getMyReviewList: () -> Unit
 ) {
     GwangSanTheme { colors, typography ->
 
@@ -82,28 +72,19 @@ private fun OtherReviewScreen(
                 .background(color = colors.white)
                 .padding(24.dp)
         ) {
-            Spacer(modifier = Modifier.padding(top = 56.dp))
+
+            Spacer(modifier = Modifier.padding(bottom = 56.dp))
 
             GwangSanSubTopBar(
                 startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { onBackClick() }) },
-                betweenText = if (otherReviewUIState is OtherReviewUIState.Success) {
-                    val data = otherReviewUIState as OtherReviewUIState.Success
-                    if (data.data.isNotEmpty()) {
-                        "${data.data.first().reviewerName}님의 후기"
-                    } else {
-                        "받은 후기"
-                    }
-                } else {
-                    "받은 후기"
-                },
-                modifier = Modifier.fillMaxWidth()
+                betweenText = "내가 작성한 후기",
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.padding(bottom = 16.dp))
 
             SwipeRefresh(
                 state = swipeRefreshState,
-                onRefresh = { getMyReceiveCallBack() },
+                onRefresh = { getMyReviewList() },
                 indicator = { state, refreshTrigger ->
                     SwipeRefreshIndicator(
                         state = state,
@@ -112,17 +93,17 @@ private fun OtherReviewScreen(
                     )
                 }
             ) {
-                when (otherReviewUIState) {
-                    is OtherReviewUIState.Success -> {
-                        OtherReviewScreenList(
-                            items = otherReviewUIState.data.toPersistentList(),
+                when (getMyReviewUiState) {
+                    is GetMyReviewWriteUiState.Success -> {
+                        MyReviewProfileList(
+                            items = getMyReviewUiState.data.toPersistentList(),
                             modifier = Modifier
                                 .fillMaxSize()
                                 .padding(horizontal = 16.dp)
                         )
                     }
 
-                    is OtherReviewUIState.Error -> {
+                    is GetMyReviewWriteUiState.Error -> {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center,
@@ -139,7 +120,7 @@ private fun OtherReviewScreen(
                         }
                     }
 
-                    is OtherReviewUIState.Empty -> {
+                    is GetMyReviewWriteUiState.Empty -> {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center,
@@ -156,7 +137,7 @@ private fun OtherReviewScreen(
                         }
                     }
 
-                    is OtherReviewUIState.Loading -> {
+                    is GetMyReviewWriteUiState.Loading -> {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center,
@@ -179,8 +160,8 @@ private fun OtherReviewScreen(
 }
 
 @Composable
-fun OtherReviewScreenList(
-    items: PersistentList<ReviewResponseUi>,
+fun MyReviewProfileList(
+    items: List<ReviewResponseUi>,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -193,15 +174,4 @@ fun OtherReviewScreenList(
             )
         }
     }
-}
-@Preview(showBackground = true)
-@Composable
-private fun OtherReviewScreenPreview() {
-
-    OtherReviewScreen(
-        otherReviewUIState = OtherReviewUIState.Loading,
-        onBackClick = {},
-        getMyReceiveCallBack = {},
-        swipeRefreshState = rememberSwipeRefreshState(isRefreshing = false)
-    )
 }

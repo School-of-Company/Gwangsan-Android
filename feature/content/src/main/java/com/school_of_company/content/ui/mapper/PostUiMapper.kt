@@ -1,42 +1,42 @@
-package com.school_of_company.network.mapper.post.response
+package com.school_of_company.content.ui.mapper
 
+import com.school_of_company.content.ui.model.ImageUi
+import com.school_of_company.content.ui.model.MemberUi
+import com.school_of_company.content.ui.model.PostUi
 import com.school_of_company.model.post.response.Image
 import com.school_of_company.model.post.response.Member
 import com.school_of_company.model.post.response.Post
-import com.school_of_company.network.dto.post.response.ImageDto
-import com.school_of_company.network.dto.post.response.MemberDto
-import com.school_of_company.network.dto.post.response.PostDto
 import kotlinx.collections.immutable.toPersistentList
 
+/**
+ * API 응답 → UI 모델 변환
+ */
 
-fun PostDto.toModel(): Post {
-    return Post(
+fun Post.toUi() : PostUi =
+    PostUi(
         id = this.id,
-        type = this.type,
-        mode = this.mode,
         title = this.title,
         content = this.content,
         gwangsan = this.gwangsan,
-        member = this.member.toModel(),
-        images = this.images.map { it.toModel() }.toPersistentList(),
+        type = this.type,
+        mode = this.mode,
+        member = this.member.toUi(),
+        images = this.images.map { it.toUi() }.toPersistentList(),
         isMine = this.isMine,
         isCompletable = this.isCompletable,
         isCompleted = this.isCompleted
     )
-}
 
-fun MemberDto.toModel(): Member {
-    return Member(
+fun Member.toUi() : MemberUi =
+    MemberUi(
         memberId = this.memberId,
         nickname = this.nickname,
         placeName = this.placeName,
         light = this.light
     )
-}
 
-fun ImageDto.toModel(): Image {
-    return Image(
+fun Image.toUi() : ImageUi =
+    ImageUi(
         imageId = this.imageId,
         imageUrl = this.imageUrl
     )
-}
