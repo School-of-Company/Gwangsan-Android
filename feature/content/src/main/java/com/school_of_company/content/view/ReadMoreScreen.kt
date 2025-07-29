@@ -30,6 +30,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import com.school_of_company.content.component.MyProfileUserLevel
 import com.school_of_company.content.component.ReportBottomSheet
 import com.school_of_company.content.viewmodel.ContentViewModel
 import com.school_of_company.content.viewmodel.uistate.DeletePostUiState
@@ -45,7 +46,6 @@ import com.school_of_company.design_system.component.clickable.GwangSanClickable
 import com.school_of_company.design_system.component.dialog.GwangsanDialog
 import com.school_of_company.design_system.component.icons.DownArrowIcon
 import com.school_of_company.design_system.component.recycle.CleaningRequestCard
-import com.school_of_company.design_system.component.recycle.MyProfileUserLevel
 import com.school_of_company.design_system.component.toast.makeToast
 import com.school_of_company.design_system.component.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme

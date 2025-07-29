@@ -1,4 +1,4 @@
-package com.school_of_company.profile.component
+package com.school_of_company.content.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -21,7 +21,7 @@ import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.model.post.response.Member
 
 @Composable
-internal fun MyProfileUserLevel(
+fun MyProfileUserLevel(
     modifier: Modifier = Modifier,
     data: Member,
     onClick: (Long) -> Unit,

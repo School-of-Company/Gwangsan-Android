@@ -12,12 +12,13 @@ import androidx.compose.ui.unit.dp
 import com.school_of_company.design_system.component.clickable.GwangSanClickable
 import com.school_of_company.design_system.component.icons.CheckIcon
 import com.school_of_company.design_system.theme.GwangSanTheme
+import kotlinx.collections.immutable.PersistentList
 
 @Composable
 fun MultiSelectDropdown(
     modifier: Modifier = Modifier,
-    options: List<String>,
-    selectedOptions: List<String>,
+    options: PersistentList<String>,
+    selectedOptions: PersistentList<String>,
     onSelectionChange: (List<String>) -> Unit,
     onDismissRequest: () -> Unit
 ) {
@@ -71,7 +72,7 @@ fun MultiSelectDropdown(
 @Composable
 fun SingleSelectDropdown(
     modifier: Modifier = Modifier,
-    options: List<String>,
+    options: PersistentList<String>,
     selectedOption: String?,
     onOptionClick: (String) -> Unit,
     onDismissRequest: () -> Unit

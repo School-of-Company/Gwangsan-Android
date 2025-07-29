@@ -14,7 +14,6 @@ import com.school_of_company.common.OtherHttpException
 import com.school_of_company.common.ServerException
 import com.school_of_company.common.TimeOutException
 import com.school_of_company.common.UnKnownException
-import com.school_of_company.content.navigation.contentScreen
 import com.school_of_company.content.navigation.navigateToReadMore
 import com.school_of_company.content.navigation.readMoreScreen
 import com.school_of_company.design_system.component.toast.makeToast
@@ -192,11 +191,6 @@ fun GwangsanNavHost(
 
         chatRoomScreen(
             onBackClick = { navController.popBackStack() },
-        )
-
-        contentScreen(
-            onMyProfileClick = { navController.navigateToMyProfile() },
-            onItemClick = { }
         )
 
         readMoreScreen(

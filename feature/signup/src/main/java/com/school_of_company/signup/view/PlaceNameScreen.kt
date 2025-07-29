@@ -42,6 +42,7 @@ import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.design_system.theme.color.GwangSanColor
 import com.school_of_company.signup.viewmodel.SignUpViewModel
 import com.yourpackage.design_system.component.textField.GwangSanSelectTextField
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 internal fun PlaceNameRoute(
@@ -153,7 +154,7 @@ private fun PlaceNameScreen(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     SingleSelectDropdown(
-                        options = listOf("수완세영", "수완에너지", "신가", "신창", "도산", "우산", "월곡1", "첨단1", "평동", "월곡2", "하남"),
+                        options = persistentListOf("수완세영", "수완에너지", "신가", "신창", "도산", "우산", "월곡1", "첨단1", "평동", "월곡2", "하남"),
                         selectedOption = placeName,
                         onOptionClick = onPlaceNameChange,
                         onDismissRequest = { isDropdownVisible.value = false },

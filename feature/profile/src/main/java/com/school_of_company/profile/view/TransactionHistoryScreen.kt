@@ -26,6 +26,7 @@ import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.profile.component.DataTransactionHistoryItem
 import com.school_of_company.profile.component.TransactionHistoryList
 import com.school_of_company.ui.previews.GwangsanPreviews
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 internal fun TransactionHistoryRoute(
@@ -81,14 +82,14 @@ private fun TransactionHistoryScreen(
                     ServiceTypeDropdown(
                         modifier = Modifier.weight(1f),
                         selected = selectedType,
-                        items = listOf("서비스", "물건"),
+                        items = persistentListOf("서비스", "물건"),
                         onItemSelected = { selectedType = it }
                     )
 
                     ServiceTypeDropdown(
                         modifier = Modifier.weight(1f),
                         selected = selectedDetail,
-                        items = listOf("해주세요", "필요해요"),
+                        items = persistentListOf("해주세요", "필요해요"),
                         onItemSelected = { selectedDetail = it }
                     )
                 }

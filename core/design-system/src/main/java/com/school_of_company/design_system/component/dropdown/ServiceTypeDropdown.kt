@@ -23,12 +23,14 @@ import androidx.compose.ui.unit.dp
 import com.school_of_company.design_system.component.clickable.GwangSanClickable
 import com.school_of_company.design_system.component.icons.DropDownIcon
 import com.school_of_company.design_system.theme.GwangSanTheme
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun ServiceTypeDropdown(
     modifier: Modifier = Modifier,
     selected: String,
-    items: List<String>,
+    items: PersistentList<String>,
     onItemSelected: (String) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -86,7 +88,7 @@ fun ServiceTypeDropdown(
 fun ServiceTypeDropdownPreview(){
     ServiceTypeDropdown(
         selected = "선택",
-        items = listOf("서비스", "물건"),
+        items = persistentListOf("서비스", "물건"),
         onItemSelected = {}
 
     )
