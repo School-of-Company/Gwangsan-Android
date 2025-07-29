@@ -13,4 +13,5 @@ dependencies {
     implementation(libs.retrofit.moshi.converter)
     implementation(libs.moshi)
     ksp(libs.retrofit.moshi.codegen)
+    implementation(libs.kotlinx.immutable)
 }
