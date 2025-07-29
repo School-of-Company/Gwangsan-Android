@@ -32,6 +32,9 @@ import com.school_of_company.signup.viewmodel.SignUpViewModel
 import com.yourpackage.design_system.component.textField.GwangSanSelectTextField
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.school_of_company.ui.previews.GwangsanPreviews
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 internal fun IntroduceRoute(
@@ -57,9 +60,9 @@ internal fun IntroduceRoute(
     val isDropdownVisible by viewModel.specialtyDropdownVisible.collectAsStateWithLifecycle()
 
     IntroduceScreen(
-        specialty = specialty,
+        specialty = specialty.toPersistentList(),
         specialtyText = specialtyText,
-        specialtyOptionList = specialtyOptionList,
+        specialtyOptionList = specialtyOptionList.toPersistentList(),
         removeSpecialty = viewModel::removeSpecialty,
         isDropdownVisible = isDropdownVisible,
         onBackClick = onBackClick,
@@ -74,10 +77,10 @@ internal fun IntroduceRoute(
 @Composable
 private fun IntroduceScreen(
     modifier: Modifier = Modifier,
-    specialty: List<String>,
+    specialty: PersistentList<String>,
     specialtyText: String,
     removeSpecialty: (String) -> Unit,
-    specialtyOptionList: List<String>,
+    specialtyOptionList: PersistentList<String>,
     onSpecialtyTextChange: (String) -> Unit,
     addSpecialty: () -> Unit,
     isDropdownVisible: Boolean,
@@ -239,7 +242,7 @@ private fun IntroduceScreen(
 @Composable
 private fun IntroduceScreenPreview() {
     IntroduceScreen(
-        specialty = listOf(),
+        specialty = persistentListOf(),
         specialtyText = "",
         isDropdownVisible = false,
         onBackClick = {},
@@ -247,7 +250,7 @@ private fun IntroduceScreenPreview() {
         onSpecialtyChange = {},
         onSpecialtyTextChange = {},
         addSpecialty = {},
-        specialtyOptionList = listOf(),
+        specialtyOptionList = persistentListOf(),
         removeSpecialty = {}
     )
 }
