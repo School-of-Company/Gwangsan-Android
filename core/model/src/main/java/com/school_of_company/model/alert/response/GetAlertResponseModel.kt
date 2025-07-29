@@ -1,6 +1,7 @@
 package com.school_of_company.model.alert.response
 
 import com.school_of_company.model.enum.AlertType
+import kotlinx.collections.immutable.PersistentList
 
 data class GetAlertResponseModel(
     val id: Long,
@@ -10,7 +11,7 @@ data class GetAlertResponseModel(
     val createdAt :String,
     val alertType: AlertType,
     val sourceId: Long,
-    val images: List<GetAlertImagesModel>
+    val images: PersistentList<GetAlertImagesModel>
 )
 
 data class GetAlertImagesModel(

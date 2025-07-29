@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.school_of_company.data.repository.alert.AlertRepository
 import com.school_of_company.data.repository.member.MemberRepository
 import com.school_of_company.data.repository.post.PostRepository
+import com.school_of_company.main.ui.mapper.toUi
 import com.school_of_company.main.viewmodel.uistate.GetAlertUiState
 import com.school_of_company.main.viewmodel.uistate.GetMainListUiState
 import com.school_of_company.main.viewmodel.uistate.MemberUiState
@@ -20,6 +21,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.school_of_company.result.Result
+import kotlinx.collections.immutable.toPersistentList
 
 @HiltViewModel
 internal class MainViewModel @Inject constructor(
@@ -61,7 +63,7 @@ internal class MainViewModel @Inject constructor(
                             _getMainListUiState.value = GetMainListUiState.Empty
                             _swipeRefreshLoading.value = false
                         } else {
-                            _getMainListUiState.value = GetMainListUiState.Success(result.data)
+                            _getMainListUiState.value = GetMainListUiState.Success(result.data.map { it.toUi() }.toPersistentList())
                             _swipeRefreshLoading.value = false
                         }
                     }
@@ -85,7 +87,7 @@ internal class MainViewModel @Inject constructor(
                             _getAlertUiState.value = GetAlertUiState.Empty
                         } else {
                             _swipeRefreshLoading.value = false
-                            _getAlertUiState.value = GetAlertUiState.Success(result.data)
+                            _getAlertUiState.value = GetAlertUiState.Success(result.data.map { it.toUi() }.toPersistentList())
                         }
                     }
                     is Result.Error -> {

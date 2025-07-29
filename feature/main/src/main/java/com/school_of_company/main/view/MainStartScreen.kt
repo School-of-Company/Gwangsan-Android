@@ -41,6 +41,8 @@ import com.school_of_company.main.component.MainButton
 import com.school_of_company.main.viewmodel.MainViewModel
 import com.school_of_company.main.viewmodel.uistate.MemberUiState
 import com.school_of_company.ui.previews.GwangsanPreviews
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -78,7 +80,7 @@ private fun MainStartScreen(
 
         val scrollState = rememberScrollState()
 
-        val bannerImages = listOf(
+        val bannerImages = persistentListOf(
             R.drawable.main2,
             R.drawable.main3,
             R.drawable.main4,
@@ -205,7 +207,7 @@ private fun MainStartScreen(
 @Composable
 private fun AutoSlideBanner(
     modifier: Modifier = Modifier,
-    imageIds: List<Int>,
+    imageIds: PersistentList<Int>,
     durationMillis: Long = 2650L
 ) {
     val pagerState = rememberPagerState(pageCount = { imageIds.size })
