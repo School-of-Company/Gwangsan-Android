@@ -1,39 +1,43 @@
-package com.school_of_company.network.mapper.chat.response
+package com.school_of_company.chat.ui.mapper
 
+import com.school_of_company.chat.ui.model.GetChatRoomResponseUi
+import com.school_of_company.chat.ui.model.GetImageResponseUi
+import com.school_of_company.chat.ui.model.GetMemberResponseUi
+import com.school_of_company.chat.ui.model.GetProductResponseUi
 import com.school_of_company.model.chat.response.GetChatRoomResponseModel
 import com.school_of_company.model.chat.response.GetImageResponseModel
 import com.school_of_company.model.chat.response.GetMemberResponseModel
 import com.school_of_company.model.chat.response.GetProductResponseModel
-import com.school_of_company.network.dto.chat.response.GetChatRoomResponse
-import com.school_of_company.network.dto.chat.response.GetImageResponse
-import com.school_of_company.network.dto.chat.response.GetMemberResponse
-import com.school_of_company.network.dto.chat.response.GetProductResponse
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
-fun GetChatRoomResponse.toModel() = GetChatRoomResponseModel(
+/**
+ * API 응답 → UI 모델 변환
+ */
+
+fun GetChatRoomResponseModel.toUi() = GetChatRoomResponseUi(
     roomId = this.roomId,
-    member = this.member.toModel(),
+    member = this.member.toUi(),
     messageId = this.messageId,
     lastMessage = this.lastMessage,
     lastMessageType = this.lastMessageType,
     lastMessageTime = this.lastMessageTime,
     unreadMessageCount = this.unreadMessageCount,
-    product = this.product.toModel()
+    product = this.product.toUi()
 )
 
-fun GetProductResponse.toModel() = GetProductResponseModel(
+fun GetProductResponseModel.toUi() = GetProductResponseUi(
     productId = this.productId,
     title = this.title,
-    images = images?.map { it.toModel() }?.toPersistentList() ?: persistentListOf(),
+    images = this.images?.map { it.toUi() }?.toPersistentList() ?: persistentListOf()
 )
 
-fun GetImageResponse.toModel() = GetImageResponseModel(
+fun GetImageResponseModel.toUi() = GetImageResponseUi(
     imageId = this.imageId,
     imageUrl = this.imageUrl
 )
 
-fun GetMemberResponse.toModel() = GetMemberResponseModel(
+fun GetMemberResponseModel.toUi() = GetMemberResponseUi(
     memberId = this.memberId,
     nickname = this.nickname
 )

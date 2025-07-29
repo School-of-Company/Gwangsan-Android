@@ -17,15 +17,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.school_of_company.chat.ui.model.ChatMessageUi
+import com.school_of_company.chat.ui.model.MessageImageUi
 import com.school_of_company.chat.util.formatChatTime
 import com.school_of_company.design_system.R
 import com.school_of_company.design_system.theme.GwangSanTheme
-import com.school_of_company.network.socket.model.response.ChatMessage
-import com.school_of_company.network.socket.model.response.MessageImage
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 internal fun ChatMessageItem(
-    message: ChatMessage,
+    message: ChatMessageUi,
     modifier: Modifier = Modifier
 ) {
     GwangSanTheme { colors, typography ->
@@ -78,11 +79,10 @@ internal fun ChatMessageItem(
 
                     if (message.images?.isNotEmpty() == true) {
                         Row(
-                            modifier = Modifier
-                                .horizontalScroll(rememberScrollState()),
+                            modifier = Modifier.horizontalScroll(rememberScrollState()),
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            message.images?.forEach { image ->
+                            message.images.forEach { image ->
                                 AsyncImage(
                                     model = image.imageUrl,
                                     contentDescription = null,
@@ -117,30 +117,30 @@ internal fun ChatMessageItem(
 @Composable
 private fun ChatMessageItemPreview() {
     val dummyMessages = listOf(
-        ChatMessage(
+        ChatMessageUi(
             messageId = 1L,
             roomId = 100L,
             content = "안녕하세요! 반갑습니다.",
             messageType = "TEXT",
             createdAt = "2025-07-22T10:15:00",
-            images = null,
+            images = persistentListOf(),
             senderNickname = "홍길동",
             senderId = "user_001",
             checked = true,
             isMine = false
         ),
-        ChatMessage(
+        ChatMessageUi(
             messageId = 2L,
             roomId = 100L,
             content = "이 사진 보세요!",
             messageType = "IMAGE",
             createdAt = "2025-07-22T10:16:00",
-            images = listOf(
-                MessageImage(
+            images = persistentListOf(
+                MessageImageUi(
                     imageId = 101L,
                     imageUrl = "https://via.placeholder.com/150"
                 ),
-                MessageImage(
+                MessageImageUi(
                     imageId = 102L,
                     imageUrl = "https://via.placeholder.com/200"
                 )
@@ -150,14 +150,14 @@ private fun ChatMessageItemPreview() {
             checked = true,
             isMine = true
         ),
-        ChatMessage(
+        ChatMessageUi(
             messageId = 3L,
             roomId = 100L,
             content = "",
             messageType = "IMAGE",
             createdAt = "2025-07-22T10:17:00",
-            images = listOf(
-                MessageImage(
+            images = persistentListOf(
+                MessageImageUi(
                     imageId = 103L,
                     imageUrl = "https://via.placeholder.com/180"
                 )
@@ -167,13 +167,13 @@ private fun ChatMessageItemPreview() {
             checked = true,
             isMine = false
         ),
-        ChatMessage(
+        ChatMessageUi(
             messageId = 4L,
             roomId = 100L,
             content = "좋아요~ 다음에 또 봐요!",
             messageType = "TEXT",
             createdAt = "2025-07-22T10:18:00",
-            images = null,
+            images = persistentListOf(),
             senderNickname = "나",
             senderId = "user_002",
             checked = true,

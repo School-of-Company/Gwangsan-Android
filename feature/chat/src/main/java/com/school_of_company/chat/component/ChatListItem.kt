@@ -14,6 +14,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.school_of_company.chat.ui.model.GetChatRoomResponseUi
+import com.school_of_company.chat.ui.model.GetMemberResponseUi
+import com.school_of_company.chat.ui.model.GetProductResponseUi
 import com.school_of_company.chat.util.formatChatTime
 import com.school_of_company.design_system.R
 import com.school_of_company.design_system.component.clickable.GwangSanClickable
@@ -21,12 +24,13 @@ import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.model.chat.response.GetChatRoomResponseModel
 import com.school_of_company.model.chat.response.GetMemberResponseModel
 import com.school_of_company.model.chat.response.GetProductResponseModel
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 internal fun ChatListItem(
     modifier: Modifier = Modifier,
     onClick: (Long) -> Unit,
-    item: GetChatRoomResponseModel,
+    item: GetChatRoomResponseUi,
 ) {
     GwangSanTheme { colors, typography ->
         Row(
@@ -51,7 +55,7 @@ internal fun ChatListItem(
                 )
             } else {
                 AsyncImage(
-                    model = item.product.images!!.first().imageUrl,
+                    model = item.product.images.first().imageUrl,
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -116,9 +120,9 @@ internal fun ChatListItem(
 @Preview(showBackground = true)
 @Composable
 private fun ChatListItemPreview() {
-    val dummyItem = GetChatRoomResponseModel(
+    val dummyItem = GetChatRoomResponseUi(
         roomId = 1L,
-        member = GetMemberResponseModel(
+        member = GetMemberResponseUi(
             memberId = 42L,
             nickname = "홍길동"
         ),
@@ -127,10 +131,10 @@ private fun ChatListItemPreview() {
         lastMessageType = "TEXT",
         lastMessageTime = "2025-07-22T12:34:56",
         unreadMessageCount = 2L,
-        product = GetProductResponseModel(
+        product = GetProductResponseUi(
             productId = 1000L,
             title = "상품 제목",
-            images = listOf()
+            images = persistentListOf()
         )
     )
 

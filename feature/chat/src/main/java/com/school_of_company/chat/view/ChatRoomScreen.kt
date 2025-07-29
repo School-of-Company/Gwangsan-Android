@@ -39,6 +39,8 @@ import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.network.socket.manager.ConnectionStatus
 import com.school_of_company.ui.previews.GwangsanPreviews
 import com.yourpackage.design_system.component.textField.ChatInputTextField
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
 
 @Composable
@@ -52,6 +54,7 @@ internal fun ChatRoomRoute(
     val connectionStatus by viewModel.connectionStatus.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
+
     val selectedImages = remember { mutableStateListOf<Uri>() }
     val uploadedUris = remember { mutableStateListOf<Uri>() }
 
@@ -124,16 +127,13 @@ internal fun ChatRoomRoute(
                     }
                 },
                 onImageAdd = { galleryLauncher.launch("image/*") },
-                uploadedUris = uploadedUris,
-                selectedImages = selectedImages,
+                uploadedUris = uploadedUris.map { it.toString() }.toPersistentList(),
+                selectedImages = selectedImages.map { it.toString() }.toPersistentList(),
             )
         }
 
         joinChatUiState is JoinChatUiState.Error -> {
-            ErrorScreen(
-                error = (joinChatUiState as JoinChatUiState.Error).exception,
-                onRetry = { viewModel.joinOrCreateChatRoom(productId) }
-            )
+            ErrorScreen(onRetry = { viewModel.joinOrCreateChatRoom(productId) })
         }
     }
 }
@@ -143,8 +143,8 @@ private fun ChatRoomScreen(
     modifier: Modifier = Modifier,
     userName: String,
     lastTime: String?,
-    uploadedUris: List<Uri>,
-    selectedImages: List<Uri>,
+    uploadedUris: PersistentList<String>,
+    selectedImages: PersistentList<String>,
     chatMessageUiState: ChatMessageUiState,
     connectionStatus: ConnectionStatus,
     onBackClick: () -> Unit,
@@ -330,10 +330,7 @@ private fun LoadingScreen() {
 }
 
 @Composable
-private fun ErrorScreen(
-    error: Throwable,
-    onRetry: () -> Unit
-) {
+private fun ErrorScreen(onRetry: () -> Unit) {
     GwangSanTheme { colors, typography ->
         Column(
             modifier = Modifier
@@ -349,14 +346,6 @@ private fun ErrorScreen(
                 color = colors.error
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                error.message ?: "알 수 없는 오류",
-                style = typography.body3,
-                color = colors.gray400
-            )
-
             Spacer(modifier = Modifier.height(16.dp))
 
             ChatSendButton(onClick = onRetry)
@@ -366,7 +355,7 @@ private fun ErrorScreen(
 
 @Composable
 private fun ImagePreviewRow(
-    uploadedUris: List<Uri>,
+    uploadedUris: PersistentList<String>,
     modifier: Modifier = Modifier
 ) {
     if (uploadedUris.isEmpty()) return
