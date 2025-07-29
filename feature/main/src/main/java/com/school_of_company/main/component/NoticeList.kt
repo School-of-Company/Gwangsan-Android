@@ -28,14 +28,16 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.school_of_company.design_system.component.clickable.GwangSanClickable
 import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.main.ui.model.GetAlertResponseUi
 import com.school_of_company.model.alert.response.GetAlertResponseModel
 import com.school_of_company.model.enum.AlertType
+import kotlinx.collections.immutable.PersistentList
 
 @Composable
 fun NoticeListItem(
     onClick: (Long, Long?, alertType: AlertType) -> Unit,
     modifier: Modifier = Modifier,
-    data: GetAlertResponseModel
+    data: GetAlertResponseUi
 ) {
     GwangSanTheme { color, typography ->
         val firstImageUrl = data.images.firstOrNull()?.imageUrl
@@ -104,7 +106,7 @@ fun NoticeListItem(
 fun NoticeList(
     onClick: (Long, Long?, alertType: AlertType) -> Unit,
     modifier: Modifier = Modifier,
-    items: List<GetAlertResponseModel>,
+    items: PersistentList<GetAlertResponseUi>,
 ) {
     GwangSanTheme { color, _ ->
 

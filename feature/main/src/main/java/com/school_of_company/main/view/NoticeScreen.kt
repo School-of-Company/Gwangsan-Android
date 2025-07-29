@@ -42,6 +42,7 @@ import com.school_of_company.main.viewmodel.uistate.TransactionCompleteUiState
 import com.school_of_company.model.alert.response.GetAlertResponseModel
 import com.school_of_company.model.enum.AlertType
 import com.school_of_company.model.post.request.TransactionCompleteRequestModel
+import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 internal  fun NoticeRoute(
@@ -149,7 +150,7 @@ private fun NoticeScreen(
                     when (getAlertUiState) {
                         is GetAlertUiState.Success -> {
                             NoticeList(
-                                items = getAlertUiState.data,
+                                items = getAlertUiState.data.toPersistentList(),
                                 onClick = { sourceId, sendMemberId, alertType ->
                                     if (alertType == AlertType.TRADE_COMPLETE) {
                                         navigationToDetail(sourceId)
