@@ -214,3 +214,16 @@ fun PlussIcon(
         tint = tint
     )
 }
+
+@Composable
+fun UnReadBellIcon(
+    modifier: Modifier = Modifier,
+    tint: Color = Color.Unspecified
+){
+    Icon(
+        painter = painterResource(id = R.drawable.mdi_bell_outline__1_),
+        contentDescription = "알림",
+        modifier = modifier,
+        tint = tint
+    )
+}

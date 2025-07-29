@@ -65,6 +65,13 @@ internal  fun NoticeRoute(
         viewModel.getAlert()
     }
 
+    LaunchedEffect(getAlertUiState) {
+        val successData = (getAlertUiState as? GetAlertUiState.Success)?.data
+        successData?.lastOrNull()?.let { lastAlert ->
+            viewModel.getReadPatchAlert(lastAlert.id)
+        }
+    }
+    
     NoticeScreen(
         onBackClick = onBackClick,
         swipeRefreshState = swipeRefreshState,

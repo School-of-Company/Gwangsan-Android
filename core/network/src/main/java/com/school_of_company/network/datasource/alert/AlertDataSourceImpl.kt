@@ -1,8 +1,10 @@
 package com.school_of_company.network.datasource.alert
 
+import android.util.Log
 import com.school_of_company.network.api.AlertAPI
 import com.school_of_company.network.api.AuthAPI
 import com.school_of_company.network.dto.alert.GetAlertResponse
+import com.school_of_company.network.dto.alert.GetReadAlert
 import com.school_of_company.network.util.performApiRequest
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -12,4 +14,12 @@ class AlertDataSourceImpl @Inject constructor(
 ) : AlertDataSource{
     override fun getAlert(): Flow<List<GetAlertResponse>> =
         performApiRequest { alertAPI.getAlert() }
+
+    override fun getUnReadAlert(): Flow<GetReadAlert> =
+        performApiRequest { alertAPI.getUnReadAlert() }
+
+    override fun getReadAlert(alertId: Long): Flow<Unit> =
+        performApiRequest { alertAPI.getReadAlert(alertId) }
+
 }
+

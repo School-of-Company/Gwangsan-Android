@@ -1,5 +1,6 @@
 package com.school_of_company.main.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.school_of_company.data.repository.alert.AlertRepository
@@ -7,6 +8,8 @@ import com.school_of_company.data.repository.member.MemberRepository
 import com.school_of_company.data.repository.post.PostRepository
 import com.school_of_company.main.viewmodel.uistate.GetAlertUiState
 import com.school_of_company.main.viewmodel.uistate.GetMainListUiState
+import com.school_of_company.main.viewmodel.uistate.GetReadAlertPatchUiState
+import com.school_of_company.main.viewmodel.uistate.GetUnReadAlertUiState
 import com.school_of_company.main.viewmodel.uistate.MemberUiState
 import com.school_of_company.main.viewmodel.uistate.TransactionCompleteUiState
 import com.school_of_company.model.enum.Mode
@@ -30,6 +33,13 @@ internal class MainViewModel @Inject constructor(
 
     private val _swipeRefreshLoading = MutableStateFlow(false)
     val swipeRefreshLoading = _swipeRefreshLoading.asStateFlow()
+
+
+    private val _getReadAlertPatchUiState = MutableStateFlow<GetReadAlertPatchUiState>(GetReadAlertPatchUiState.Loading)
+    val getReadAlertPatchUiState = _getReadAlertPatchUiState.asStateFlow()
+
+    private val _getUnReadAlertUiState = MutableStateFlow<GetUnReadAlertUiState>(GetUnReadAlertUiState.Loading)
+    val getUnReadAlertUiState = _getUnReadAlertUiState.asStateFlow()
 
     private val _getMainListUiState = MutableStateFlow<GetMainListUiState>(GetMainListUiState.Loading)
     val getMainListUiState = _getMainListUiState.asStateFlow()
@@ -117,6 +127,31 @@ internal class MainViewModel @Inject constructor(
                     is Result.Loading -> _transactionCompleteUiState.value = TransactionCompleteUiState.Loading
                     is Result.Success -> _transactionCompleteUiState.value = TransactionCompleteUiState.Success
                     is Result.Error -> _transactionCompleteUiState.value = TransactionCompleteUiState.Error(result.exception)
+                }
+            }
+    }
+
+    internal fun getReadPatchAlert(alertId: Long) = viewModelScope.launch {
+        alertRepository.getReadAlert(alertId)
+            .asResult()
+            .collectLatest { result ->
+                when (result) {
+                    is Result.Loading -> _getReadAlertPatchUiState.value = GetReadAlertPatchUiState.Loading
+                    is Result.Success -> _getReadAlertPatchUiState.value = GetReadAlertPatchUiState.Success
+                    is Result.Error -> _getReadAlertPatchUiState.value = GetReadAlertPatchUiState.Error(result.exception)
+
+                }
+            }
+    }
+
+    internal fun getUnReadAlert() = viewModelScope.launch {
+        alertRepository.getUnReadAlert()
+            .asResult()
+            .collectLatest { result ->
+                when (result) {
+                    is Result.Loading -> _getUnReadAlertUiState.value = GetUnReadAlertUiState.Loading
+                    is Result.Success -> _getUnReadAlertUiState.value = GetUnReadAlertUiState.Success(result.data)
+                    is Result.Error -> _getUnReadAlertUiState.value = GetUnReadAlertUiState.Error(result.exception)
                 }
             }
     }
