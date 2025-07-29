@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.school_of_company.result.Result
+import kotlinx.collections.immutable.persistentListOf
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
@@ -168,7 +169,7 @@ class SignUpViewModel @Inject constructor(
                 }
         }
 
-    private val allAreas = listOf(
+    private val allAreas = persistentListOf(
         "동곡동",
         "도산동",
         "평동",

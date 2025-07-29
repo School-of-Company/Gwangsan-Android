@@ -39,6 +39,10 @@ import com.school_of_company.signup.componet.AreaList
 import com.school_of_company.signup.viewmodel.SignUpViewModel
 import com.school_of_company.ui.previews.GwangsanPreviews
 import com.yourpackage.design_system.component.textField.GwangSanSearchTextField
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
+
 @Composable
 internal fun NeighborhoodSignupRoute(
     onBackClick: () -> Unit,
@@ -58,7 +62,7 @@ internal fun NeighborhoodSignupRoute(
 
     NeighborhoodSignupScreen(
         studentSearch = studentSearch,
-        filteredAreas = filteredAreas,
+        filteredAreas = filteredAreas.toPersistentList(),
         onStudentSearchChange = viewModel::onDongChange,
         onAreaClick = viewModel::onAreaSelected,
         onBackClick = onBackClick,
@@ -72,12 +76,13 @@ private fun NeighborhoodSignupScreen(
     onBackClick: () -> Unit,
     onIntroduceClick: () -> Unit,
     studentSearch: String,
-    filteredAreas: List<String>,
-    focusManager: FocusManager = LocalFocusManager.current,
+    filteredAreas: PersistentList<String>,
     scrollState: ScrollState = rememberScrollState(),
     onStudentSearchChange: (String) -> Unit,
     onAreaClick: (String) -> Unit,
 ) {
+    val focusManager: FocusManager = LocalFocusManager.current
+
     GwangSanTheme { colors, typography ->
 
         Column(
@@ -196,7 +201,7 @@ private val allAreas = listOf(
 private fun NeighborhoodSignupScreenPreview() {
     NeighborhoodSignupScreen(
         studentSearch = "",
-        filteredAreas = listOf("강남구", "강동구", "강북구", "강서구", "관악구", "광진구", "구로구", "금천구", "노원구", "도봉구",),
+        filteredAreas = persistentListOf("강남구", "강동구", "강북구", "강서구", "관악구", "광진구", "구로구", "금천구", "노원구", "도봉구",),
         onStudentSearchChange = {},
         onAreaClick = {},
         onBackClick = {},
