@@ -37,6 +37,9 @@ import com.school_of_company.model.enum.Type
 import com.school_of_company.post.viewmodel.PostViewModel
 import com.school_of_company.post.viewmodel.uiState.ModifyPostUiState
 import com.school_of_company.post.viewmodel.uiState.PostUiState
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 internal fun PostFinalRoute(
@@ -52,7 +55,10 @@ internal fun PostFinalRoute(
     val subject by actualViewModel.title.collectAsState()
     val content by actualViewModel.content.collectAsState()
     val price by actualViewModel.gwangsan.collectAsState()
-    val images by actualViewModel.selectedImages.collectAsStateWithLifecycle()
+    val selectedImageUris by actualViewModel.selectedImages.collectAsStateWithLifecycle()
+    val images = remember(selectedImageUris) {
+        selectedImageUris.map { it.toString() }.toPersistentList()
+    }
 
     val postUiState by actualViewModel.postUiState.collectAsState()
     val modifyPostUiState by actualViewModel.modifyPostUiStat.collectAsStateWithLifecycle()
@@ -105,7 +111,6 @@ internal fun PostFinalRoute(
         subject = subject,
         content = content,
         price = price,
-        imageContent = {},
         onEditClick = onEditClick,
         onSubmitClick = {
             if (isEditMode && editPostId != null) {
@@ -126,8 +131,7 @@ private fun PostFinalScreen(
     subject: String,
     content: String,
     price: String,
-    images: List<Uri>,
-    imageContent: @Composable () -> Unit,
+    images: PersistentList<String>,
     onEditClick: () -> Unit,
     onSubmitClick: () -> Unit,
     onBackClick: () -> Unit,
@@ -316,15 +320,9 @@ private fun PostFinalPreview() {
         subject = "예시 주제입니다.",
         content = "이곳은 게시글의 본문 내용을 미리 볼 수 있는 영역입니다.\n줄바꿈도 가능합니다.",
         price = "1,000",
-        imageContent = {
-            AddImageButton(
-                onClick = {},
-                rippleColor = GwangSanColor.main100
-            )
-        },
         onEditClick = {},
         onSubmitClick = {},
         onBackClick = {},
-        images = listOf()
+        images = persistentListOf()
     )
 }
