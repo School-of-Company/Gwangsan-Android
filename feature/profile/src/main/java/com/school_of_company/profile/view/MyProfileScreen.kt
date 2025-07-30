@@ -41,10 +41,12 @@ import com.school_of_company.profile.component.MyInformation
 import com.school_of_company.profile.component.MyProfileExerciseButton
 import com.school_of_company.profile.component.MyReviewListItem
 import com.school_of_company.profile.component.MySpecialListScreen
+import com.school_of_company.profile.ui.model.GetMemberResponseUi
 import com.school_of_company.profile.viewmodel.MyProfileViewModel
 import com.school_of_company.profile.viewmodel.uistate.GetMyPostUiState
 import com.school_of_company.profile.viewmodel.uistate.LogoutUiState
 import com.school_of_company.profile.viewmodel.uistate.MemberUiState
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 internal fun MyProfileRoute(
@@ -131,7 +133,7 @@ internal fun MyProfileRoute(
 private fun MyProfileScreen(
     modifier: Modifier = Modifier,
     onMyWritingDetailClick: (Long) -> Unit,
-    data: GetMemberResponseModel,
+    data: GetMemberResponseUi,
     onLogoutCallBack: () -> Unit,
     onMyInformationEditClick: () -> Unit,
     onMyWritingClick: () -> Unit,
@@ -341,12 +343,12 @@ private fun MyProfileScreen(
 @Preview(showBackground = true)
 @Composable
 private fun MyProfileScreenPreview() {
-    val mockData = GetMemberResponseModel(
+    val mockData = GetMemberResponseUi(
         memberId = 1L,
         nickname = "홍길동",
         light = 5,
         gwangsan = 300,
-        specialties = listOf("Android", "Kotlin", "Jetpack Compose"),
+        specialties = persistentListOf("Android", "Kotlin", "Jetpack Compose"),
         placeName = "광산",
         description = "안녕하세요, 홍길동입니다."
     )

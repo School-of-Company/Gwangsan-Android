@@ -35,9 +35,10 @@ import com.school_of_company.profile.component.MyProfileExerciseButton
 import com.school_of_company.profile.component.MyReviewListItem
 import com.school_of_company.profile.component.OtherInformation
 import com.school_of_company.profile.component.OtherPersonIntroduce
+import com.school_of_company.profile.ui.model.GetAllMemberResponseUi
 import com.school_of_company.profile.viewmodel.MyProfileViewModel
 import com.school_of_company.profile.viewmodel.uistate.OtherGetPostUiState
-import com.school_of_company.profile.viewmodel.uistate.OtherPersonGetUistate
+import com.school_of_company.profile.viewmodel.uistate.OtherPersonGetUiState
 
 @Composable
 internal fun OtherPersonProfileRoute(
@@ -59,13 +60,13 @@ internal fun OtherPersonProfileRoute(
     }
 
     when (otherPersonUiState) {
-        is OtherPersonGetUistate.Loading -> Unit
+        is OtherPersonGetUiState.Loading -> Unit
 
-        is OtherPersonGetUistate.Error -> {
+        is OtherPersonGetUiState.Error -> {
             makeToast(context = context, "정보를 볼러오는데 실패했습니다.")
         }
 
-        is OtherPersonGetUistate.Success -> {
+        is OtherPersonGetUiState.Success -> {
             OtherPersonProfileScreen(
                 data = otherPersonUiState.data,
                 onBackClick = onBackClick,
@@ -75,7 +76,7 @@ internal fun OtherPersonProfileRoute(
             )
         }
 
-        is OtherPersonGetUistate.Empty -> {
+        is OtherPersonGetUiState.Empty -> {
             makeToast(context = context, "정보가 없습니다.")
         }
     }
@@ -85,7 +86,7 @@ internal fun OtherPersonProfileRoute(
 @Composable
 private fun OtherPersonProfileScreen(
     modifier: Modifier = Modifier,
-    data: GetAllMemberResponseModel,
+    data: GetAllMemberResponseUi,
     onBackClick: () -> Unit,
     onOtherReviewClick: (Long) -> Unit,
     onOtherWritingDetailClick: (Long) -> Unit,

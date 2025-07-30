@@ -26,4 +26,5 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     implementation(libs.androidx.material.ripple)
     implementation(libs.androidx.material.ripple)
+    implementation(libs.kotlinx.immutable)
 }

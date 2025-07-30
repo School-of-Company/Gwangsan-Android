@@ -125,30 +125,6 @@ fun MyWriteListItem(
     }
 }
 
-@Composable
-fun MyWriteList(
-    modifier: Modifier = Modifier,
-    items: List<MyWriteItem>,
-    onClick: () -> Unit
-) {
-    GwangSanTheme { color, _ ->
-
-        LazyColumn(
-            modifier = modifier
-                .fillMaxSize()
-                .background(color.white),
-        ) {
-            items(items) { item ->
-                MyWriteListItem(
-                    coverImage = item.coverImage,
-                    title = item.title,
-                    price = item.price,
-                    onClick = onClick
-                )
-            }
-        }
-    }
-}
 @Preview
 @Composable
 private fun MainListItemPreview(){
@@ -159,9 +135,3 @@ private fun MainListItemPreview(){
         onClick = {}
     )
 }
-
-data class MyWriteItem(
-    val coverImage: String?,
-    val title: String,
-    val price: String
-)

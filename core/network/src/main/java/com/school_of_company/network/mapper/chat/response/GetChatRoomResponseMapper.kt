@@ -8,6 +8,8 @@ import com.school_of_company.network.dto.chat.response.GetChatRoomResponse
 import com.school_of_company.network.dto.chat.response.GetImageResponse
 import com.school_of_company.network.dto.chat.response.GetMemberResponse
 import com.school_of_company.network.dto.chat.response.GetProductResponse
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 
 fun GetChatRoomResponse.toModel() = GetChatRoomResponseModel(
     roomId = this.roomId,
@@ -23,7 +25,7 @@ fun GetChatRoomResponse.toModel() = GetChatRoomResponseModel(
 fun GetProductResponse.toModel() = GetProductResponseModel(
     productId = this.productId,
     title = this.title,
-    images = this.images?.map { it.toModel() }
+    images = images?.map { it.toModel() }?.toPersistentList() ?: persistentListOf(),
 )
 
 fun GetImageResponse.toModel() = GetImageResponseModel(

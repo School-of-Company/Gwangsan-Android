@@ -4,12 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.school_of_company.data.repository.member.MemberRepository
 import com.school_of_company.data.repository.notice.NoticeRepository
+import com.school_of_company.inform.ui.mapper.toUi
 import com.school_of_company.inform.viewmodel.uistate.GetAllNoticeUiState
 import com.school_of_company.inform.viewmodel.uistate.GetSpecificNoticeUiState
 import com.school_of_company.inform.viewmodel.uistate.MemberUiState
 import com.school_of_company.result.Result
 import com.school_of_company.result.asResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.toPersistentList
+import kotlinx.collections.immutable.toPersistentSet
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -49,7 +52,7 @@ class NoticeViewModel @Inject constructor(
                             _getAllNoticeUiState.value = GetAllNoticeUiState.Empty
                             _swipeRefreshLoading.value = false
                         } else {
-                            _getAllNoticeUiState.value = GetAllNoticeUiState.Success(result.data)
+                            _getAllNoticeUiState.value = GetAllNoticeUiState.Success(result.data.map { it.toUi() }.toPersistentList())
                             _swipeRefreshLoading.value = false
                         }
                     }

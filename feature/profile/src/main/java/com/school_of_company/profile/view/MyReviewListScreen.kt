@@ -25,10 +25,11 @@ import com.school_of_company.design_system.component.clickable.GwangSanClickable
 import com.school_of_company.design_system.component.icons.DownArrowIcon
 import com.school_of_company.design_system.component.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
-import com.school_of_company.model.review.response.ReviewResponseModel
 import com.school_of_company.profile.component.MyProfileReviewListItem
+import com.school_of_company.profile.ui.model.ReviewResponseUi
 import com.school_of_company.profile.viewmodel.MyProfileViewModel
 import com.school_of_company.profile.viewmodel.uistate.GetMyReviewWriteUiState
+import kotlinx.collections.immutable.toPersistentList
 
 
 @Composable
@@ -95,7 +96,7 @@ private fun MyReviewScreen(
                 when (getMyReviewUiState) {
                     is GetMyReviewWriteUiState.Success -> {
                         MyReviewProfileList(
-                            items = getMyReviewUiState.data,
+                            items = getMyReviewUiState.data.toPersistentList(),
                             modifier = Modifier
                                 .fillMaxSize()
                                 .padding(horizontal = 16.dp)
@@ -160,7 +161,7 @@ private fun MyReviewScreen(
 
 @Composable
 fun MyReviewProfileList(
-    items: List<ReviewResponseModel>,
+    items: List<ReviewResponseUi>,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(

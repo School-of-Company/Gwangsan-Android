@@ -41,6 +41,7 @@ import com.school_of_company.main.viewmodel.MainViewModel
 import com.school_of_company.main.viewmodel.uistate.GetMainListUiState
 import com.school_of_company.model.enum.Mode
 import com.school_of_company.model.enum.Type
+import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 internal fun MainRoute(
@@ -166,7 +167,7 @@ private fun MainScreen(
                     when (getMainListUiState) {
                         is GetMainListUiState.Success -> {
                             MainList(
-                                items = getMainListUiState.getMainListResponse,
+                                items = getMainListUiState.getMainListResponse.toPersistentList(),
                                 onClick = navigationToDetail
                             )
                         }

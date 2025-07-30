@@ -18,11 +18,12 @@ import androidx.compose.ui.unit.dp
 import com.school_of_company.design_system.component.icons.EllipseIcon
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.model.member.response.GetAllMemberResponseModel
+import com.school_of_company.profile.ui.model.GetAllMemberResponseUi
 
 @Composable
 internal fun OtherInformation(
     modifier: Modifier = Modifier,
-    data: GetAllMemberResponseModel,
+    data: GetAllMemberResponseUi,
 ) {
     GwangSanTheme { colors, typography ->
 

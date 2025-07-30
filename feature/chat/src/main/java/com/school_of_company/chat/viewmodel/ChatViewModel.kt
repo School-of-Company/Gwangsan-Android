@@ -2,10 +2,10 @@ package com.school_of_company.chat.viewmodel
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.school_of_company.chat.BuildConfig
+import com.school_of_company.chat.ui.mapper.toUi
 import com.school_of_company.chat.util.getMultipartFile
 import com.school_of_company.chat.viewmodel.uistate.ChatMessageUiState
 import com.school_of_company.chat.viewmodel.uistate.GetChatRoomUiState
@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.school_of_company.result.Result
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 
@@ -43,7 +44,7 @@ class ChatViewModel @Inject constructor(
     private val _chatMessageUiState = MutableStateFlow<ChatMessageUiState>(ChatMessageUiState.Loading)
     val chatMessageUiState = _chatMessageUiState.asStateFlow()
 
-    private val _connectionStatus = MutableStateFlow<ConnectionStatus>(ConnectionStatus.DISCONNECTED)
+    private val _connectionStatus = MutableStateFlow(ConnectionStatus.DISCONNECTED)
     val connectionStatus = _connectionStatus.asStateFlow()
 
     private val _imageUpLoadUiState = MutableStateFlow<ImageUpLoadUiState>(ImageUpLoadUiState.Loading)
@@ -64,22 +65,22 @@ class ChatViewModel @Inject constructor(
 
         viewModelScope.launch {
             chatRepository.messageEvents.collectLatest { newMessage ->
-
                 _chatMessageUiState.update { currentState ->
                     when (currentState) {
                         is ChatMessageUiState.Success -> {
                             val currentMessages = currentState.data
-                            val messageExists = currentMessages.any { it.messageId == newMessage.messageId }
+                            val newMessageUi = newMessage.toUi()
+                            val messageExists = currentMessages.any { it.messageId == newMessageUi.messageId }
 
                             if (messageExists) {
                                 currentState
                             } else {
-                                val updatedMessages = (currentMessages + newMessage).sortedBy { it.createdAt }
-                                ChatMessageUiState.Success(updatedMessages)
+                                val updatedMessages = (currentMessages + newMessageUi).sortedBy { it.createdAt }
+                                ChatMessageUiState.Success(updatedMessages.toPersistentList())
                             }
                         }
                         else -> {
-                            ChatMessageUiState.Success(listOf(newMessage))
+                            ChatMessageUiState.Success(listOf(newMessage.toUi()).toPersistentList())
                         }
                     }
                 }
@@ -101,7 +102,7 @@ class ChatViewModel @Inject constructor(
                             _getChatRoomUiState.value = GetChatRoomUiState.Empty
                             _swipeRefreshLoading.value = false
                         } else {
-                        _getChatRoomUiState.value = GetChatRoomUiState.Success(result.data)
+                        _getChatRoomUiState.value = GetChatRoomUiState.Success(result.data.map { it.toUi() }.toPersistentList())
                         _swipeRefreshLoading.value = false
                         }
                     }
@@ -207,8 +208,10 @@ class ChatViewModel @Inject constructor(
                 when (result) {
                     is Result.Loading -> _chatMessageUiState.value = ChatMessageUiState.Loading
                     is Result.Success -> {
-                        val sortedMessages = result.data.sortedBy { it.createdAt }
-                        _chatMessageUiState.value = ChatMessageUiState.Success(sortedMessages)
+                        val sortedMessages = result.data
+                            .sortedBy { it.createdAt }
+                            .map { it.toUi() }
+                        _chatMessageUiState.value = ChatMessageUiState.Success(sortedMessages.toPersistentList())
                     }
                     is Result.Error -> _chatMessageUiState.value = ChatMessageUiState.Error(result.exception)
                 }

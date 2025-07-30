@@ -33,8 +33,12 @@ import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.model.review.response.ImagesList
 import com.school_of_company.model.review.response.ReviewResponseModel
 import com.school_of_company.profile.component.MyProfileReviewListItem
+import com.school_of_company.profile.ui.model.ReviewResponseUi
 import com.school_of_company.profile.viewmodel.MyProfileViewModel
 import com.school_of_company.profile.viewmodel.uistate.OtherReviewUIState
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 internal fun OtherReviewRoute(
@@ -111,7 +115,7 @@ private fun OtherReviewScreen(
                 when (otherReviewUIState) {
                     is OtherReviewUIState.Success -> {
                         OtherReviewScreenList(
-                            items = otherReviewUIState.data,
+                            items = otherReviewUIState.data.toPersistentList(),
                             modifier = Modifier
                                 .fillMaxSize()
                                 .padding(horizontal = 16.dp)
@@ -176,7 +180,7 @@ private fun OtherReviewScreen(
 
 @Composable
 fun OtherReviewScreenList(
-    items: List<ReviewResponseModel>,
+    items: PersistentList<ReviewResponseUi>,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -193,36 +197,9 @@ fun OtherReviewScreenList(
 @Preview(showBackground = true)
 @Composable
 private fun OtherReviewScreenPreview() {
-    val dummyReviewList = listOf(
-        ReviewResponseModel(
-            productId = 101,
-            content = "정말 만족스러운 거래였습니다! 감사합니다.",
-            light = 5,
-            reviewerName = "김철수",
-            images = listOf(
-                ImagesList(
-                    imageId = 1,
-                    imageUrl = "https://via.placeholder.com/150"
-                ),
-                ImagesList(
-                    imageId = 2,
-                    imageUrl = "https://via.placeholder.com/150"
-                )
-            )
-        ),
-        ReviewResponseModel(
-            productId = 102,
-            content = "응답도 빠르고 친절했어요.",
-            light = 4,
-            reviewerName = "김철수",
-            images = emptyList()
-        )
-    )
-
-    val dummyUiState = OtherReviewUIState.Success(data = dummyReviewList)
 
     OtherReviewScreen(
-        otherReviewUIState = dummyUiState,
+        otherReviewUIState = OtherReviewUIState.Loading,
         onBackClick = {},
         getMyReceiveCallBack = {},
         swipeRefreshState = rememberSwipeRefreshState(isRefreshing = false)

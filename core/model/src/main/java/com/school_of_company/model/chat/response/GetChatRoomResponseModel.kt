@@ -1,5 +1,7 @@
 package com.school_of_company.model.chat.response
 
+import kotlinx.collections.immutable.PersistentList
+
 data class GetChatRoomResponseModel(
     val roomId: Long,
     val member: GetMemberResponseModel,
@@ -14,7 +16,7 @@ data class GetChatRoomResponseModel(
 data class GetProductResponseModel(
     val productId: Long,
     val title: String,
-    val images: List<GetImageResponseModel>?
+    val images: PersistentList<GetImageResponseModel>?
 )
 
 data class GetImageResponseModel(

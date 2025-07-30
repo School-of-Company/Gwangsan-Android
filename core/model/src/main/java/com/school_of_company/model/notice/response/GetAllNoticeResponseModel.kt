@@ -1,10 +1,12 @@
 package com.school_of_company.model.notice.response
 
+import kotlinx.collections.immutable.PersistentList
+
 data class GetAllNoticeResponseModel(
     val id: Long,
     val title: String,
     val content: String,
-    val images: List<ImageModel>
+    val images: PersistentList<ImageModel>
 )
 
 data class ImageModel(

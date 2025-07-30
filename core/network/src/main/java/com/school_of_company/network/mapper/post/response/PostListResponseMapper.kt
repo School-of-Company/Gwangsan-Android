@@ -6,6 +6,7 @@ import com.school_of_company.model.post.response.Post
 import com.school_of_company.network.dto.post.response.ImageDto
 import com.school_of_company.network.dto.post.response.MemberDto
 import com.school_of_company.network.dto.post.response.PostDto
+import kotlinx.collections.immutable.toPersistentList
 
 
 fun PostDto.toModel(): Post {
@@ -17,7 +18,7 @@ fun PostDto.toModel(): Post {
         content = this.content,
         gwangsan = this.gwangsan,
         member = this.member.toModel(),
-        images = this.images.map { it.toModel() },
+        images = this.images.map { it.toModel() }.toPersistentList(),
         isMine = this.isMine,
         isCompletable = this.isCompletable,
         isCompleted = this.isCompleted

@@ -20,12 +20,13 @@ import com.school_of_company.design_system.component.icons.ArrowDown
 import com.school_of_company.design_system.component.icons.EllipseIcon
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.model.member.response.GetMemberResponseModel
+import com.school_of_company.profile.ui.model.GetMemberResponseUi
 
 @Composable
 internal fun MyInformation(
     modifier: Modifier = Modifier,
     onModifyClick: () -> Unit,
-    data: GetMemberResponseModel,
+    data: GetMemberResponseUi,
     onLogoutClick: () -> Unit
 ) {
     GwangSanTheme { colors, typography ->

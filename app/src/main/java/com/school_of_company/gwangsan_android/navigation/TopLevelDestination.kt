@@ -5,6 +5,8 @@ import com.school_of_company.design_system.R
 import com.school_of_company.inform.navigation.InformRoute
 import com.school_of_company.main.navgation.MainStartRoute
 import com.school_of_company.profile.navigation.MyProfileRoute
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
 
 enum class TopLevelDestination(
     val unSelectedIcon: Int,
@@ -33,5 +35,11 @@ enum class TopLevelDestination(
         unSelectedIcon = R.drawable.person,
         iconText = "프로필",
         routeName = MyProfileRoute
-    )
+    );
+
+    companion object {
+        val topLevelDestinations: PersistentList<TopLevelDestination> = persistentListOf(
+            MAIN, CHAT, INFORM, PROFILE
+        )
+    }
 }

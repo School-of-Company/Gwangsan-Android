@@ -33,6 +33,9 @@ import com.school_of_company.model.enum.Type
 import com.school_of_company.post.viewmodel.PostViewModel
 import com.school_of_company.ui.previews.GwangsanPreviews
 import com.yourpackage.design_system.component.textField.GwangSanTextField
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 internal fun PostWriteRoute(
@@ -46,10 +49,15 @@ internal fun PostWriteRoute(
     val subject by actualViewModel.title.collectAsState()
     val content by actualViewModel.content.collectAsState()
 
-    val selectedImageUris by actualViewModel.selectedImages.collectAsStateWithLifecycle()
+    val selectedImages by actualViewModel.selectedImages.collectAsStateWithLifecycle()
     val existingImageUrls by actualViewModel.existingImageUrls.collectAsState()
 
-    val uploadedUris = remember { mutableStateListOf<Uri>() }
+    val selectedImageUris = remember(selectedImages) {
+        selectedImages.map { it.toString() }.toPersistentList()
+    }
+
+
+    val uploadedUris = remember { mutableStateListOf<String>() }
 
     val context = LocalContext.current
 
@@ -61,12 +69,13 @@ internal fun PostWriteRoute(
         }
 
     LaunchedEffect(selectedImageUris) {
-        selectedImageUris.forEach { uri ->
-            if (uploadedUris.contains(uri).not()) {
+        selectedImageUris.forEach { uriString ->
+            if (uploadedUris.contains(uriString).not()) {
                 try {
+                    val uri = Uri.parse(uriString)
                     val imageId = actualViewModel.imageUpLoad(context, uri)
                     actualViewModel.onImageIdAdded(imageId)
-                    uploadedUris.add(uri)
+                    uploadedUris.add(uriString)
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -78,7 +87,7 @@ internal fun PostWriteRoute(
         subject = subject,
         content = content,
         imageUri = selectedImageUris,
-        existingImageUrls = existingImageUrls,
+        existingImageUrls = existingImageUrls.toPersistentList(),
         onImageRemove = { index ->
             actualViewModel.removeNewImage(index)
         },
@@ -98,8 +107,8 @@ private fun PostWriteScreen(
     modifier: Modifier = Modifier,
     subject: String,
     content: String,
-    imageUri: List<Uri>,
-    existingImageUrls: List<String>,
+    imageUri: PersistentList<String>,
+    existingImageUrls: PersistentList<String>,
     onImageRemove: (Int) -> Unit,
     onExistingImageRemove: (Int) -> Unit,
     onSubjectChange: (String) -> Unit,
@@ -219,27 +228,6 @@ private fun PostWriteScreen(
     }
 }
 
-@Composable
-private fun ImageItem(
-    uri: Uri,
-    onRemove: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Box(
-        modifier = modifier.size(60.dp)
-    ) {
-        AsyncImage(
-            model = uri,
-            contentDescription = "선택된 이미지",
-            modifier = Modifier
-                .fillMaxSize()
-                .clip(CircleShape)
-                .size(50.dp),
-            contentScale = ContentScale.Crop
-        )
-    }
-}
-
 @GwangsanPreviews
 @Composable
 private fun PostWritePreview() {
@@ -251,9 +239,9 @@ private fun PostWritePreview() {
         onImageAdd = {},
         onNextClick = { _, _ -> },
         onBackClick = {},
-        imageUri = listOf(),
+        imageUri = persistentListOf(),
         onImageRemove = {},
-        existingImageUrls = listOf(),
+        existingImageUrls = persistentListOf(),
         onExistingImageRemove = {}
     )
 }

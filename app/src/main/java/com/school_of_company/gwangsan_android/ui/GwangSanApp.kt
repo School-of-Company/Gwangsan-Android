@@ -14,8 +14,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.navigation.NavDestination
-import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.school_of_company.chat.navigation.ChatRoute
 import com.school_of_company.gwangsan_android.navigation.GwangsanNavHost
@@ -24,9 +22,10 @@ import com.school_of_company.design_system.component.bottombar.GwangSanNavigatio
 import com.school_of_company.design_system.component.bottombar.GwangSanNavigationBarItem
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.inform.navigation.InformRoute
-import com.school_of_company.main.navgation.MainRoute
 import com.school_of_company.main.navgation.MainStartRoute
 import com.school_of_company.profile.navigation.MyProfileRoute
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -40,7 +39,7 @@ fun GwangSanApp(
     val navBackStackEntry by appState.navController.currentBackStackEntryAsState()
 
     // 여기에 보여주고 싶은 탑 레벨 목적지만 넣으세요.
-    val topLevelDestinationRoute = listOf(
+    val topLevelDestinationRoute = persistentListOf(
         MainStartRoute,
         ChatRoute,
         InformRoute,
@@ -77,31 +76,24 @@ fun GwangSanApp(
 }
 
 @Composable
-fun GwangSanBottomBar(
-    destinations: List<TopLevelDestination>,
+private fun GwangSanBottomBar(
+    destinations: PersistentList<TopLevelDestination>,
     onNavigateToDestination: (TopLevelDestination) -> Unit,
-    currentDestination: NavDestination?
+    currentDestination: String?
 ) {
     GwangSanTheme { _, typography ->
         GwangSanNavigationBar {
             destinations.forEach { destination ->
-                val selected = currentDestination.isTopLevelDestinationInHierarchy(destination)
+
+                val iconPainter = painterResource(id = destination.unSelectedIcon)
+
+                val isSelected = destination.routeName == currentDestination
 
                 GwangSanNavigationBarItem(
-                    selected = selected,
+                    selected = isSelected,
                     onClick = { onNavigateToDestination(destination) },
-                    icon = {
-                        Icon(
-                            painter = painterResource(id = destination.unSelectedIcon),
-                            contentDescription = null
-                        )
-                    },
-                    selectedIcon = {
-                        Icon(
-                            painter = painterResource(id = destination.unSelectedIcon),
-                            contentDescription = null
-                        )
-                    },
+                    icon = { Icon(painter = iconPainter, contentDescription = null) },
+                    selectedIcon = { Icon(painter = iconPainter, contentDescription = null) },
                     label = {
                         Text(
                             text = destination.iconText,
@@ -113,8 +105,3 @@ fun GwangSanBottomBar(
         }
     }
 }
-
-private fun NavDestination?.isTopLevelDestinationInHierarchy(destination: TopLevelDestination) =
-    this?.hierarchy?.any {
-        it.route?.contains(destination.name, ignoreCase = true) ?: false
-    } ?: false

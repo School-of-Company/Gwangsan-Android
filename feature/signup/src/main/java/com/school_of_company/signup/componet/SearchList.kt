@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.school_of_company.design_system.component.clickable.GwangSanClickable
 import com.school_of_company.design_system.theme.GwangSanTheme
+import kotlinx.collections.immutable.PersistentList
 
 @Composable
 fun AreaListItem(
@@ -45,7 +46,7 @@ fun AreaListItem(
 @Composable
 fun AreaList(
     modifier: Modifier = Modifier,
-    filteredAreas: List<String>,
+    filteredAreas: PersistentList<String>,
     onItemClick: (String) -> Unit
 ) {
     GwangSanTheme { colors, _ ->

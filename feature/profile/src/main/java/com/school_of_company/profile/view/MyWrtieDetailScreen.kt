@@ -35,6 +35,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import com.school_of_company.profile.component.MyProfileUserLevel
 import com.school_of_company.design_system.component.button.GwangSanEnableButton
 import com.school_of_company.design_system.component.button.GwangSanStateButton
 import com.school_of_company.design_system.component.clickable.GwangSanClickable
@@ -241,7 +242,7 @@ fun ReviewPostDetailScreen(
                     }
                 }
 
-                com.school_of_company.design_system.component.recycle.MyProfileUserLevel(
+                MyProfileUserLevel(
                     modifier = Modifier.padding(
                         horizontal = 24.dp,
                         vertical = 12.dp

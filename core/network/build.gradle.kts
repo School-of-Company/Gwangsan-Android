@@ -39,6 +39,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.socket.io.client)
+    implementation(libs.kotlinx.immutable)
 }
 
 fun getApiKey(propertyKey: String): String {
