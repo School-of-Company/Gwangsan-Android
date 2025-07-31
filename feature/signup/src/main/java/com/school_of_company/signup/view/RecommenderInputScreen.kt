@@ -66,6 +66,7 @@ internal fun ReCommenDerInputRoute(
                 onErrorToast((signUpUiState as SignUpUiState.Error).exception, R.string.error_generic)
             }
             is SignUpUiState.Loading -> Unit
+
             is SignUpUiState.Conflict -> {
                 onErrorToast(null, R.string.error_user_exists)
             }
@@ -75,14 +76,8 @@ internal fun ReCommenDerInputRoute(
             is SignUpUiState.PasswordNotValid -> {
                 onErrorToast(null, R.string.error_invalid_password)
             }
-            is SignUpUiState.BadRequest -> {
-                onErrorToast(null, R.string.error_bad_request)
-            }
-            is SignUpUiState.NotFound -> {
-                onErrorToast(null, R.string.error_resource_not_found)
-            }
-            is SignUpUiState.TooManyRequest -> {
-                onErrorToast(null, R.string.error_too_many_requests)
+            is SignUpUiState.Unauthorized -> {
+                onErrorToast(null, R.string.error_Unauthorized)
             }
         }
     }
