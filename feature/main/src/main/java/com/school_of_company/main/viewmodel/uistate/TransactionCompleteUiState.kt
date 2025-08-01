@@ -18,5 +18,8 @@ interface TransactionCompleteUiState {
     data object Success : TransactionCompleteUiState
 
     @Stable
+    data object Complete : TransactionCompleteUiState
+
+    @Stable
     data class Error(val exception: Throwable) : TransactionCompleteUiState
 }

@@ -1,5 +1,6 @@
 package com.school_of_company.signin.view
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -72,6 +73,11 @@ internal fun SignInRoute(
             is SignInUiState.NotFound -> {
                 idIsError = true
                 onErrorToast(null, R.string.error_user_missing)
+            }
+
+            is SignInUiState.BadRequest-> {
+                passwordIsError = true
+                onErrorToast(null, R.string.error_id_not_valid)
             }
 
             is SignInUiState.IdNotValid -> {

@@ -229,12 +229,14 @@ private fun NoticeScreen(
                             makeToast(context = LocalContext.current, "거래 실패")
                         }
 
+                        is TransactionCompleteUiState.Complete -> {
+                            makeToast(context = LocalContext.current, "이미 거래가 완료됬습니다.")
+                        }
+
                         else -> Unit
                     }
 
                 }
-
-
             }
             if (openBottomSheet) {
                 Dialog(onDismissRequest = { setOpenBottomSheet(false) }) {

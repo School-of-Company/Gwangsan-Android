@@ -94,15 +94,12 @@ class SignUpViewModel @Inject constructor(
                             is Result.Error -> {
                                 _signUpUiState.value = SignUpUiState.Error(result.exception)
                                 result.exception.errorHandling(
-                                    badRequestAction = { SignUpUiState.BadRequest },
-                                    notFoundAction = { SignUpUiState.NotFound },
-                                    tooManyRequestAction = { SignUpUiState.TooManyRequest },
-                                    conflictAction = { SignUpUiState.Conflict }
+                                    conflictAction = { _signUpUiState.value = SignUpUiState.Conflict },
+                                    unauthorizedAction = { _signUpUiState.value = SignUpUiState.Unauthorized }
                                 )
                             }
 
-                            is Result.Loading -> _signUpUiState.value =
-                                SignUpUiState.Loading
+                            is Result.Loading -> _signUpUiState.value = SignUpUiState.Loading
                         }
                     }
             }
@@ -130,10 +127,9 @@ class SignUpViewModel @Inject constructor(
                         is Result.Error -> {
                             _verifyNumberUiState.value = VerifyNumberUiState.Error(result.exception)
                             result.exception.errorHandling(
-                                badRequestAction = { SignUpUiState.BadRequest },
-                                notFoundAction = { SignUpUiState.NotFound },
-                                tooManyRequestAction = { SignUpUiState.TooManyRequest },
-                                conflictAction = { SignUpUiState.Conflict }
+                                badRequestAction = { _verifyNumberUiState.value = VerifyNumberUiState.BadRequest },
+                                notFoundAction = { _verifyNumberUiState.value = VerifyNumberUiState.NotFound },
+                                tooManyRequestAction = {_verifyNumberUiState.value = VerifyNumberUiState.TooManyRequest },
                             )
                         }
                     }
@@ -159,10 +155,9 @@ class SignUpViewModel @Inject constructor(
                             is Result.Error -> {
                                 _sendNumberUiState.value = SendNumberUiState.Error(result.exception)
                                 result.exception.errorHandling(
-                                    badRequestAction = { SignUpUiState.BadRequest },
-                                    notFoundAction = { SignUpUiState.NotFound },
-                                    tooManyRequestAction = { SignUpUiState.TooManyRequest },
-                                    conflictAction = { SignUpUiState.Conflict })
+                                    tooManyRequestAction = { _sendNumberUiState.value =  SendNumberUiState.TooManyRequest },
+                                )
+
                             }
                         }
                     }

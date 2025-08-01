@@ -142,8 +142,8 @@ private fun MainScreen(
 
                 GwangSanSwitchButton(
                     type = moDeselectedType,
-                    stateOn = GwangSanSwitchState.NEED,
-                    stateOff = GwangSanSwitchState.REQUEST,
+                    stateOn = GwangSanSwitchState.REQUEST,
+                    stateOff = GwangSanSwitchState.NEED,
                     initialValue = switchState,
                     onCheckedChanged = {
                         onSwitchStateChange(it)

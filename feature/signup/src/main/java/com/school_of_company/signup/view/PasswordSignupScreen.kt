@@ -151,7 +151,7 @@ private fun PasswordSignupScreen(
                     placeHolder = "비밀번호",
                     isError = isPasswordValidError,
                     isDisabled = false,
-                    errorText = "영문과 숫자를 포함한 8자 이상 입력해주세요.",
+                    errorText = "영문과 숫자를 특수문자를 포함한 8자 이상 입력해주세요.",
                     onTextChange = onPasswordChange,
                     modifier = Modifier.fillMaxWidth(),
                 )

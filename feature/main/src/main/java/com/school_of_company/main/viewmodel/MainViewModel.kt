@@ -16,6 +16,7 @@ import com.school_of_company.main.viewmodel.uistate.TransactionCompleteUiState
 import com.school_of_company.model.enum.Mode
 import com.school_of_company.model.enum.Type
 import com.school_of_company.model.post.request.TransactionCompleteRequestModel
+import com.school_of_company.network.errorHandling
 import com.school_of_company.result.asResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -128,7 +129,9 @@ internal class MainViewModel @Inject constructor(
                 when (result){
                     is Result.Loading -> _transactionCompleteUiState.value = TransactionCompleteUiState.Loading
                     is Result.Success -> _transactionCompleteUiState.value = TransactionCompleteUiState.Success
-                    is Result.Error -> _transactionCompleteUiState.value = TransactionCompleteUiState.Error(result.exception)
+                    is Result.Error -> { _transactionCompleteUiState.value = TransactionCompleteUiState.Error(result.exception)
+                        result.exception.errorHandling(badRequestAction = { _transactionCompleteUiState.value = TransactionCompleteUiState.Complete })
+                    }
                 }
             }
     }
