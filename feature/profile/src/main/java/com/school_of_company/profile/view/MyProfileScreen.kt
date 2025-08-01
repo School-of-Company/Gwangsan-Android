@@ -3,6 +3,7 @@ package com.school_of_company.profile.view
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,11 +31,11 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.school_of_company.design_system.component.button.GwangSanButton
 import com.school_of_company.design_system.component.dialog.GwangsanDialog
 import com.school_of_company.design_system.component.toast.makeToast
 import com.school_of_company.design_system.component.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
-import com.school_of_company.model.member.response.GetMemberResponseModel
 import com.school_of_company.profile.component.BrightnessProgressBar
 import com.school_of_company.profile.component.GwangSanMoney
 import com.school_of_company.profile.component.MyInformation
@@ -46,6 +47,7 @@ import com.school_of_company.profile.viewmodel.MyProfileViewModel
 import com.school_of_company.profile.viewmodel.uistate.GetMyPostUiState
 import com.school_of_company.profile.viewmodel.uistate.LogoutUiState
 import com.school_of_company.profile.viewmodel.uistate.MemberUiState
+import com.school_of_company.profile.viewmodel.uistate.WithdrawalUiState
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
@@ -61,6 +63,7 @@ internal fun MyProfileRoute(
     val memberUiState = viewModel.myProfileUiState.collectAsStateWithLifecycle().value
     val getMyPostUiState = viewModel.getMyPostUiState.collectAsStateWithLifecycle().value
     val logoutUiState by viewModel.logoutUiState.collectAsStateWithLifecycle()
+    val withdrawalUiState by viewModel.withdrawalUiState.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
 
@@ -77,6 +80,17 @@ internal fun MyProfileRoute(
         is LogoutUiState.Success -> {
             onLogoutClick()
             makeToast(context, "로그아웃 성공")
+        }
+    }
+
+    when (withdrawalUiState) {
+        is WithdrawalUiState.Loading -> Unit
+        is WithdrawalUiState.Success -> {
+            onLogoutClick()
+            makeToast(context, "회원 탈퇴 성공")
+        }
+        is WithdrawalUiState.Error -> {
+            makeToast(context, "회원 탈퇴 실패")
         }
     }
 
@@ -123,7 +137,8 @@ internal fun MyProfileRoute(
                 getMyPostUiState = getMyPostUiState,
                 onMyWritingDetailClick = onMyWritingDetailClick,
                 onMyInformationEditClick = onMyInformationEditClick,
-                onLogoutCallBack = { viewModel.logout() }
+                onLogoutCallBack = { viewModel.logout() },
+                onWithdrawalCallBack = { viewModel.withdrawalMember() }
             )
         }
     }
@@ -135,12 +150,14 @@ private fun MyProfileScreen(
     onMyWritingDetailClick: (Long) -> Unit,
     data: GetMemberResponseUi,
     onLogoutCallBack: () -> Unit,
+    onWithdrawalCallBack: () -> Unit,
     onMyInformationEditClick: () -> Unit,
     onMyWritingClick: () -> Unit,
     getMyPostUiState: GetMyPostUiState,
     onMyReviewClick: () -> Unit,
 ) {
     val (openLogoutDialog, setOpenLogoutDialog) = rememberSaveable { mutableStateOf(false) }
+    val (openWithdrawalDialog, setOpenWithdrawalDialog) = rememberSaveable { mutableStateOf(false) }
 
     GwangSanTheme { colors, typography ->
 
@@ -303,7 +320,7 @@ private fun MyProfileScreen(
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(150.dp),
+                                .padding(bottom = 24.dp),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
@@ -324,6 +341,45 @@ private fun MyProfileScreen(
                     }
                 }
             }
+
+            item { Spacer(modifier = Modifier.height(24.dp)) }
+
+            item {
+                HorizontalDivider(
+                    thickness = 12.dp,
+                    color = colors.gray200
+                )
+            }
+
+            item {
+                Text(
+                    text = "회원탈퇴",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = colors.black,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(24.dp),
+                )
+            }
+
+            item {
+                Column(modifier = Modifier.padding(
+                    start = 24.dp,
+                    end = 24.dp,
+                    bottom = 24.dp
+                )) {
+                    GwangSanButton(
+                        text = "회원탈퇴",
+                        color = colors.error,
+                        textColor = colors.white,
+                        onClick = { setOpenWithdrawalDialog(true) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(52.dp)
+                    )
+                }
+            }
         }
 
         if (openLogoutDialog) {
@@ -334,6 +390,21 @@ private fun MyProfileScreen(
                         setOpenLogoutDialog(false)
                     },
                     onDismiss = { setOpenLogoutDialog(false) }
+                )
+            }
+        }
+
+        if (openWithdrawalDialog) {
+            Dialog(onDismissRequest = { setOpenWithdrawalDialog(false) }) {
+                GwangsanDialog(
+                    onLogout = {
+                        onWithdrawalCallBack()
+                        setOpenWithdrawalDialog(false)
+                    },
+                    onDismiss = { setOpenWithdrawalDialog(false) },
+                    titleText = "회원탈퇴",
+                    contentText = "정말 회원을 탈퇴 하시겠어요?",
+                    buttonText = "탈퇴"
                 )
             }
         }
@@ -360,6 +431,7 @@ private fun MyProfileScreenPreview() {
         onMyReviewClick = {},
         onMyWritingDetailClick = {},
         getMyPostUiState = GetMyPostUiState.Empty,
-        onLogoutCallBack = {}
+        onLogoutCallBack = {},
+        onWithdrawalCallBack = {}
     )
 }

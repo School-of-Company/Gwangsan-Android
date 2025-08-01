@@ -145,7 +145,7 @@ internal class MyProfileViewModel @Inject constructor(
 
                         result.data.let { profileText ->
                             onNickNameChange(profileText.nickname)
-                            onSpecialtyListChange(profileText.specialties)
+                            onSpecialtyListChange(profileText.specialties.toList())
                             onDescriptionChange(profileText.description)
                         }
                     }
@@ -312,8 +312,7 @@ internal class MyProfileViewModel @Inject constructor(
                             _swipeRefreshLoading.value = false
                         } else {
                             _getMyReviewUiState.value =
-                                GetMyReviewUiState.Success(result.data.map { it.toUi() }
-                                    .toPersistentList())
+                                GetMyReviewUiState.Success(result.data.map { it.toUi() }.toPersistentList())
                             _swipeRefreshLoading.value = false
                         }
                     }
@@ -396,7 +395,7 @@ internal class MyProfileViewModel @Inject constructor(
     }
 
     internal fun onSpecialtyListChange(value: List<String>) {
-        savedStateHandle[SPECIALTY_LIST] = value
+        savedStateHandle[SPECIALTY_LIST] = value.toList()
     }
 
     internal fun onDescriptionChange(value: String) {
