@@ -22,4 +22,7 @@ class MemberDataSourceImpl @Inject constructor(
 
     override fun getAllMemberProfileInformation(): Flow<List<GetAllMemberResponse>> =
         performApiRequest { memberApi.getAllMemberProfileInformation() }
+
+    override fun withdrawalMember(): Flow<Unit> =
+        performApiRequest { memberApi.withdrawalMember() }
 }

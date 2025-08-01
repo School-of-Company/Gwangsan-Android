@@ -11,4 +11,5 @@ interface MemberRepository {
     fun editMyProfileInformation(body: ModifyMemberInformationRequestModel) : Flow<Unit>
     fun getSpecificMemberProfileInformation(memberId: Long) : Flow<GetAllMemberResponseModel>
     fun getAllMemberProfileInformation() : Flow<List<GetAllMemberResponseModel>>
+    fun withdrawalMember() : Flow<Unit>
 }

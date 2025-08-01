@@ -4,6 +4,7 @@ import com.school_of_company.network.dto.member.request.ModifyMemberInformationR
 import com.school_of_company.network.dto.member.response.GetAllMemberResponse
 import com.school_of_company.network.dto.member.response.GetMemberResponse
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.Path
@@ -25,4 +26,7 @@ interface MemberAPI {
 
     @GET("/api/member/all")
     suspend fun getAllMemberProfileInformation() : List<GetAllMemberResponse>
+
+    @DELETE("/api/member")
+    suspend fun withdrawalMember()
 }
