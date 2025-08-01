@@ -28,4 +28,8 @@ class MemberRepositoryImpl @Inject constructor(
     override fun getAllMemberProfileInformation(): Flow<List<GetAllMemberResponseModel>> {
         return memberDataSource.getAllMemberProfileInformation().map { it.map { list -> list.toModel() } }
     }
+
+    override fun withdrawalMember(): Flow<Unit> {
+        return memberDataSource.withdrawalMember()
+    }
 }

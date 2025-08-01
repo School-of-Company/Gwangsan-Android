@@ -11,4 +11,5 @@ interface MemberDataSource {
     fun editMyProfileInformation(body: ModifyMemberInformationRequest) : Flow<Unit>
     fun getSpecificMemberProfileInformation(memberId: Long) : Flow<GetAllMemberResponse>
     fun getAllMemberProfileInformation() : Flow<List<GetAllMemberResponse>>
+    fun withdrawalMember() : Flow<Unit>
 }
