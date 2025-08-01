@@ -22,6 +22,7 @@ import com.school_of_company.profile.viewmodel.uistate.OtherGetPostUiState
 import com.school_of_company.profile.viewmodel.uistate.OtherPersonGetUiState
 import com.school_of_company.profile.viewmodel.uistate.OtherReviewUIState
 import com.school_of_company.profile.viewmodel.uistate.TransactionCompleteUiState
+import com.school_of_company.profile.viewmodel.uistate.WithdrawalUiState
 import com.school_of_company.result.asResult
 import com.school_of_company.result.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -94,6 +95,9 @@ internal class MyProfileViewModel @Inject constructor(
     private val _myInformationPatchUiState =
         MutableStateFlow<MyInForMatIonPeTchUiState?>(MyInForMatIonPeTchUiState.Loading)
     internal val myInformationPatchUiState = _myInformationPatchUiState.asStateFlow()
+
+    private val _withdrawalUiState = MutableStateFlow<WithdrawalUiState>(WithdrawalUiState.Loading)
+    internal val withdrawalUiState = _withdrawalUiState.asStateFlow()
 
     internal val nickname = savedStateHandle.getStateFlow(NICKNAME, "")
     internal val specialty = savedStateHandle.getStateFlow(SPECIALTY, "")
@@ -344,6 +348,18 @@ internal class MyProfileViewModel @Inject constructor(
                         _swipeRefreshLoading.value = false
                         _otherReviewUIState.value = OtherReviewUIState.Error(result.exception)
                     }
+                }
+            }
+    }
+
+    internal fun withdrawalMember() = viewModelScope.launch {
+        memberRepository.withdrawalMember()
+            .asResult()
+            .collectLatest { result ->
+                when (result) {
+                    is Result.Loading -> _withdrawalUiState.value = WithdrawalUiState.Loading
+                    is Result.Success -> _withdrawalUiState.value = WithdrawalUiState.Success
+                    is Result.Error -> _withdrawalUiState.value = WithdrawalUiState.Error(result.exception)
                 }
             }
     }
