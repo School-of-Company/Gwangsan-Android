@@ -12,7 +12,7 @@
     <string name="certified">인증</string>
     <string name="resend_completion">재발송 완료</string>
     <string name="not_error">알수 없는 에러가 발생했습니다.</string>
-    <string name="resend_completion_description">인증번호를 재발송했어요.\문자를 확인해주세요!</string>
+    <string name="resend_completion_description">인증번호를 재발송했어요.문자를 확인해주세요!</string>
     <string name="check">확인</string>
 
     <string name="error_already_exists_account">이미 존재하는 계정입니다</string>
