@@ -1,0 +1,14 @@
+package com.school_of_company.network.dto.member.response
+
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
+
+@JsonClass(generateAdapter = true)
+data class GetAllMemberResponse(
+    @Json(name = "memberId") val memberId: Long,
+    @Json(name = "nickname") val nickname: String,
+    @Json(name = "placeName") val placeName: String,
+    @Json(name = "light") val light: Int,
+    @Json(name = "description") val description: String,
+    @Json(name = "specialties") val specialties: List<String>
+)
