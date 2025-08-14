@@ -1,6 +1,3 @@
-import java.io.FileInputStream
-import java.util.Properties
-
 plugins {
     id("gwangsan.android.application")
     id("gwangsan.android.hilt")
@@ -10,6 +7,14 @@ plugins {
 android {
     buildFeatures {
         buildConfig = true
+    }
+
+    buildTypes {
+        getByName("release") {
+            isMinifyEnabled = false
+            isShrinkResources = false
+            signingConfig = signingConfigs.getByName("release")
+        }
     }
 
     packaging {
@@ -46,6 +51,7 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.messaging)
+    implementation(libs.firebase.crashlytics)
     implementation(libs.androidx.window.size)
     implementation(libs.androidx.navigation.runtime)
     implementation(libs.androidx.navigation.compose)
@@ -53,10 +59,4 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext)
     implementation(libs.kotlinx.immutable)
-}
-fun getApiKey(propertyKey: String) : String {
-    val propFile = rootProject.file("./local.properties")
-    val properties = Properties()
-    properties.load(FileInputStream(propFile))
-    return properties.getProperty(propertyKey) ?: throw IllegalArgumentException("Property $propertyKey not found in local.properties")
 }
