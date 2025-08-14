@@ -36,12 +36,21 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
                 // Enable Jetpack Compose feature for the project
                 buildFeatures.compose = true
 
+                signingConfigs {
+                    create("release") {
+                        storeFile = file("/Users/imyeonghun/Downloads/Gwangsan.jks")
+                        storePassword = "audgns@1716"
+                        keyAlias = "key0"
+                        keyPassword = "audgns@1617"
+                    }
+                }
+
                 buildTypes {
                     getByName("release") {
-                        isMinifyEnabled = true
-                        isShrinkResources = true
+                        isMinifyEnabled = false
+                        isShrinkResources = false
                         isDebuggable = false
-                        proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+                        signingConfig = signingConfigs.getByName("release")
                     }
                 }
 
