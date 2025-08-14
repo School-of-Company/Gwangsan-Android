@@ -16,7 +16,7 @@ android {
         }
     }
 
-    namespace = "com.school_of_company.gwangsan_android"
+    namespace = "com.school_of_company.gwangsan"
 }
 
 dependencies {

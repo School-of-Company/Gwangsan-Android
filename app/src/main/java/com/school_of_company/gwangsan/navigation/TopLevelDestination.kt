@@ -1,4 +1,4 @@
-package com.school_of_company.gwangsan_android.navigation
+package com.school_of_company.gwangsan.navigation
 
 import com.school_of_company.chat.navigation.ChatRoute
 import com.school_of_company.design_system.R

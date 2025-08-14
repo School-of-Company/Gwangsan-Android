@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
         <service
-            android:name="com.school_of_company.gwangsan_android.service.GwangsanMessagingService"
+            android:name="com.school_of_company.gwangsan.service.GwangsanMessagingService"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
