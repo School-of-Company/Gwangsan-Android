@@ -19,14 +19,16 @@ class AndroidFirebaseConventionPlugin : Plugin<Project> {
             dependencies {
                 val bom = libs.findLibrary("firebase-bom").get()
                 add("implementation", platform(bom))
-                "implementation"(libs.findLibrary("firebase.analytics").get())
-                "implementation"(libs.findLibrary("firebase.crashlytics").get())
+                add("implementation", libs.findLibrary("firebase.analytics").get())
+                add("implementation", libs.findLibrary("firebase.crashlytics").get())
             }
 
+            // Crashlytics 설정: 릴리즈에서 매핑 업로드 비활성
             extensions.configure<ApplicationExtension> {
                 buildTypes.configureEach {
-                    configure<CrashlyticsExtension> {
-                        mappingFileUploadEnabled = name == "release"
+                    // Kotlin DSL 방식 CrashlyticsExtension 접근
+                    extensions.configure<CrashlyticsExtension> {
+                        mappingFileUploadEnabled = false
                     }
                 }
             }
