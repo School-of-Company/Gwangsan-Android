@@ -1,4 +1,4 @@
-package com.school_of_company.gwangsan_android.ui.theme
+package com.school_of_company.gwangsan.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

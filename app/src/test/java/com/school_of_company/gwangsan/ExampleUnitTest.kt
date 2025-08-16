@@ -1,4 +1,4 @@
-package com.school_of_company.gwangsan_android
+package com.school_of_company.gwangsan
 
 import org.junit.Test
 

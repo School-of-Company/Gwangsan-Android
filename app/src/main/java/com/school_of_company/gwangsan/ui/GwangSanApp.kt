@@ -1,4 +1,4 @@
-package com.school_of_company.gwangsan_android.ui
+package com.school_of_company.gwangsan.ui
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.WindowInsets
@@ -16,8 +16,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.school_of_company.chat.navigation.ChatRoute
-import com.school_of_company.gwangsan_android.navigation.GwangsanNavHost
-import com.school_of_company.gwangsan_android.navigation.TopLevelDestination
+import com.school_of_company.gwangsan.navigation.GwangsanNavHost
+import com.school_of_company.gwangsan.navigation.TopLevelDestination
 import com.school_of_company.design_system.component.bottombar.GwangSanNavigationBar
 import com.school_of_company.design_system.component.bottombar.GwangSanNavigationBarItem
 import com.school_of_company.design_system.theme.GwangSanTheme

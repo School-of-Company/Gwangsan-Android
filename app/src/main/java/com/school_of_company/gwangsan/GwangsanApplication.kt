@@ -1,4 +1,4 @@
-package com.school_of_company.gwangsan_android
+package com.school_of_company.gwangsan
 
 import android.app.Application
 import com.school_of_company.firebase.reporter.CrashReporter

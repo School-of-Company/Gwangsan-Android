@@ -1,10 +1,10 @@
-package com.school_of_company.gwangsan_android.service
+package com.school_of_company.gwangsan.service
 
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.school_of_company.device.manager.DeviceTokenManager
 import com.school_of_company.device.manager.NotificationManager
-import com.school_of_company.gwangsan_android.MainActivity
+import com.school_of_company.gwangsan.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
