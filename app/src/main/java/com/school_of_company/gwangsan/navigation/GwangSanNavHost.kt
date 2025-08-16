@@ -1,8 +1,8 @@
-package com.school_of_company.gwangsan_android.navigation
+package com.school_of_company.gwangsan.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.school_of_company.gwangsan_android.R
+import com.school_of_company.gwangsan.R
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import com.school_of_company.chat.navigation.chatRoomScreen
@@ -17,9 +17,9 @@ import com.school_of_company.common.UnKnownException
 import com.school_of_company.content.navigation.navigateToReadMore
 import com.school_of_company.content.navigation.readMoreScreen
 import com.school_of_company.design_system.component.toast.makeToast
-import com.school_of_company.gwangsan_android.ui.GwangSanAppState
-import com.school_of_company.gwangsan_android.ui.navigateToHomeAndClearLogin
-import com.school_of_company.gwangsan_android.ui.navigationPopUpToLogin
+import com.school_of_company.gwangsan.ui.GwangSanAppState
+import com.school_of_company.gwangsan.ui.navigateToHomeAndClearLogin
+import com.school_of_company.gwangsan.ui.navigationPopUpToLogin
 import com.school_of_company.inform.navigation.informDetailScreen
 import com.school_of_company.inform.navigation.informScreen
 import com.school_of_company.inform.navigation.navigateToInformDetail

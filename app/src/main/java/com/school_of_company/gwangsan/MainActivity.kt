@@ -1,4 +1,4 @@
-package com.school_of_company.gwangsan_android
+package com.school_of_company.gwangsan
 
 import android.content.pm.PackageManager
 import android.os.Build
@@ -11,7 +11,7 @@ import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
-import com.school_of_company.gwangsan_android.ui.GwangSanApp
+import com.school_of_company.gwangsan.ui.GwangSanApp
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.device.manager.DeviceTokenManager
 import com.school_of_company.signin.navigation.StartRoute

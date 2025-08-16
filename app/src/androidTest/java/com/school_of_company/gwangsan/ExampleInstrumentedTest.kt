@@ -1,4 +1,4 @@
-package com.school_of_company.gwangsan_android
+package com.school_of_company.gwangsan
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

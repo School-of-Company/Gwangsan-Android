@@ -1,27 +1,23 @@
-package com.school_of_company.gwangsan_android.ui
+package com.school_of_company.gwangsan.ui
 
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.util.trace
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.school_of_company.chat.navigation.navigateToChat
-import com.school_of_company.gwangsan_android.navigation.TopLevelDestination
+import com.school_of_company.gwangsan.navigation.TopLevelDestination
 import com.school_of_company.inform.navigation.navigateToInform
-import com.school_of_company.main.navgation.MainRoute
 import com.school_of_company.main.navgation.MainStartRoute
 import com.school_of_company.main.navgation.navigateToMainStart
 import com.school_of_company.profile.navigation.navigateToMyProfile
-import com.school_of_company.signin.navigation.SignInRoute
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.coroutines.CoroutineScope
 
