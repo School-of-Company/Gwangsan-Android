@@ -63,11 +63,18 @@ jobs:
             echo "BUNDLE_SIZE=빌드 실패" >> $GITHUB_ENV
           fi
           
-          END_TIME=$(date +%s)
+      - name: Finalize build metrics
+        if: ${{ always() }}
+        run: |
+          : "${BUNDLE_SIZE:=미생성}"
+             echo "BUNDLE_SIZE=${BUNDLE_SIZE}" >> $GITHUB_ENV
+             END_TIME=$(date +%s)
+          : "${START_TIME:=${END_TIME}}"
           BUILD_TIME=$((END_TIME - START_TIME))
-          echo "BUILD_TIME=${BUILD_TIME}초" >> $GITHUB_ENV
+           echo "BUILD_TIME=${BUILD_TIME}초" >> $GITHUB_ENV
 
       - name: Sign Release
+        id: sign
         uses: r0adkll/sign-android-release@v1
         with:
           releaseDirectory: app/build/outputs/bundle/release
@@ -80,14 +87,14 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: app-release
-          path: app/build/outputs/bundle/release/app-release.aab
+          path: ${{ steps.sign.outputs.signedReleaseFile }}
 
       - name: Deploy to production
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJson: service_account.json
           packageName: com.school_of_company.gwangsan
-          releaseFiles: app/build/outputs/bundle/release/app-release.aab
+          releaseFiles: ${{ steps.sign.outputs.signedReleaseFile }}
           track: production
 
       - name: Android CD Discord Notification (Success)
