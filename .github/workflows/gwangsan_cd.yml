@@ -1,0 +1,122 @@
+name: Android CD
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Record start time
+        run: echo "START_TIME=$(date +%s)" >> $GITHUB_ENV
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Get commit info
+        run: |
+          echo "COMMIT_HASH=${GITHUB_SHA:0:8}" >> $GITHUB_ENV
+          echo "COMMIT_MSG=$(git log -1 --pretty=format:'%s')" >> $GITHUB_ENV
+
+      - name: Gradle caching
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+            ${{ runner.os }}-
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+          cache: gradle
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Create LOCAL_PROPERTIES
+        run: echo '${{ secrets.LOCAL_PROPERTIES }}' > ./local.properties
+
+      - name: Create service_account.json
+        run: echo '${{ secrets.SERVICE_ACCOUNT_JSON }}' > service_account.json
+
+      - name: Assemble Release Bundle
+        run: ./gradlew bundleRelease --no-daemon
+
+      - name: Get bundle info
+        run: |
+          if [ -f "app/build/outputs/bundle/release/app-release.aab" ]; then
+            BUNDLE_SIZE=$(du -h "app/build/outputs/bundle/release/app-release.aab" | cut -f1)
+            echo "BUNDLE_SIZE=${BUNDLE_SIZE}" >> $GITHUB_ENV
+          else
+            echo "BUNDLE_SIZE=빌드 실패" >> $GITHUB_ENV
+          fi
+          
+          END_TIME=$(date +%s)
+          BUILD_TIME=$((END_TIME - START_TIME))
+          echo "BUILD_TIME=${BUILD_TIME}초" >> $GITHUB_ENV
+
+      - name: Sign Release
+        uses: r0adkll/sign-android-release@v1
+        with:
+          releaseDirectory: app/build/outputs/bundle/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+
+      - name: Upload AAB artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release
+          path: app/build/outputs/bundle/release/app-release.aab
+
+      - name: Deploy to production
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJson: service_account.json
+          packageName: com.school_of_company.gwangsan
+          releaseFiles: app/build/outputs/bundle/release/app-release.aab
+          track: production
+
+      - name: Android CD Discord Notification (Success)
+        uses: sarisia/actions-status-discord@v1
+        if: ${{ success() }}
+        with:
+          title: CD 성공~
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: ${{ job.status }}
+          description: |
+            빌드 시간: ${{ env.BUILD_TIME }}
+            용량: ${{ env.BUNDLE_SIZE }}
+            커밋: "${{ env.COMMIT_MSG }}" (${{ env.COMMIT_HASH }})
+            링크: [Play Console](https://play.google.com/console/developers) | [로그 보기](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          color: 65280
+          url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          username: Gwangsan-CD Bot
+
+      - name: Android CD Discord Notification (Fail)
+        uses: sarisia/actions-status-discord@v1
+        if: ${{ failure() }}
+        with:
+          title: CD 실패~
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: ${{ job.status }}
+          description: |
+            커밋: "${{ env.COMMIT_MSG }}" (${{ env.COMMIT_HASH }})
+            소요 시간: ${{ env.BUILD_TIME }}
+            링크: [로그 확인하기](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          color: 16711680
+          url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          username: Gwangsan-CD Bot
