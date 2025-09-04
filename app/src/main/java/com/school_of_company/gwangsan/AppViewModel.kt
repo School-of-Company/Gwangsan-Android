@@ -1,6 +1,6 @@
 package com.school_of_company.gwangsan
 
-import android.util.Log
+import com.school_of_company.result.Result
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -14,8 +14,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
-
 @HiltViewModel
 class AppViewModel @Inject constructor(
     private val authTokenDataSource: AuthTokenDataSource,
@@ -26,7 +24,6 @@ class AppViewModel @Inject constructor(
 
     init {
         tokenRefresh()
-
     }
 
     private fun tokenRefresh() = viewModelScope.launch {
@@ -40,15 +37,12 @@ class AppViewModel @Inject constructor(
                 .asResult()
                 .collectLatest { result ->
                     when (result) {
-                        com.school_of_company.result.Result.Loading -> _appLoginState.value = AppLoginState.Loading
-                        is com.school_of_company.result.Result.Success-> {
+                        is Result.Loading -> _appLoginState.value = AppLoginState.Loading
+                        is Result.Success-> {
                             _appLoginState.value = AppLoginState.Success
                             authRepository.saveToken(result.data)
                         }
-                        is com.school_of_company.result.Result.Error -> {
-                            Log.e("AppViewModel", "Token refresh ERROR: ${result.exception?.message}")
-                            Log.e("AppViewModel", "Error details: ${result.exception}")
-                            _appLoginState.value = AppLoginState.Fail}
+                        is Result.Error -> _appLoginState.value = AppLoginState.Fail
                     }
                 }
         }
