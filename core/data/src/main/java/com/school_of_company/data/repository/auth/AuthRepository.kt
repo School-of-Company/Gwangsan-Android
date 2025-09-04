@@ -12,7 +12,7 @@ interface AuthRepository {
 
     fun signIn(body: LoginRequestModel) : Flow<LoginResponseModel>
 
-    fun tokenRefresh(refreshToken: String) : Flow<LoginResponseModel>
+    fun tokenRefresh() : Flow<LoginResponseModel>
 
     fun logout() : Flow<Unit>
 

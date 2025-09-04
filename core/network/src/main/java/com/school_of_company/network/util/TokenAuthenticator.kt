@@ -38,7 +38,7 @@ class TokenAuthenticator @Inject constructor(
                 .build()
 
             val authApi = retrofit.create(AuthAPI::class.java)
-            val response = runBlocking { authApi.tokenRefresh(refreshToken) }
+            val response = runBlocking { authApi.tokenRefresh() }
 
             runBlocking {
                 with(dataSource) {

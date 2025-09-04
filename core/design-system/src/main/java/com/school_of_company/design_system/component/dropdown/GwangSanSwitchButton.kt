@@ -110,8 +110,8 @@ fun GwangSanSwitchButton(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = if (type == Type.SERVICE) "해주세요" else "필요해요",
-                        color = if (swipeableState.currentValue == GwangSanSwitchState.REQUEST) Color.Black else Color.Gray
+                        text = if (type == Type.SERVICE) "할 수 있어요" else "필요해요",
+                        color = if (swipeableState.currentValue == GwangSanSwitchState.REQUEST) Color.Gray else Color.Black
                     )
                 }
                 Box(
@@ -119,8 +119,8 @@ fun GwangSanSwitchButton(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = if (type == Type.SERVICE) "할수있어요" else "팔아요",
-                        color = if (swipeableState.currentValue == GwangSanSwitchState.NEED) Color.Black else Color.Gray
+                        text = if (type == Type.SERVICE) "해주세요" else "팔아요",
+                        color = if (swipeableState.currentValue == GwangSanSwitchState.NEED) Color.Gray else Color.Black
                     )
                 }
             }

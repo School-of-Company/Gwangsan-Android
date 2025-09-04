@@ -25,9 +25,7 @@ interface AuthAPI {
     ): LoginResponse
 
     @PATCH("/api/auth/reissue")
-    suspend fun tokenRefresh(
-        @Header("refreshToken") refreshToken: String
-    ): LoginResponse
+    suspend fun tokenRefresh(): LoginResponse
 
     @DELETE("/api/auth/signout")
     suspend fun logout()
