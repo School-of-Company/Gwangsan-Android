@@ -19,8 +19,8 @@ class AuthDataSourceImpl @Inject constructor(
     override fun login(body: LoginRequest): Flow<LoginResponse> =
         performApiRequest { authAPI.login(body = body)}
 
-    override fun tokenRefresh(refreshToken: String): Flow<LoginResponse> =
-        performApiRequest { authAPI.tokenRefresh(refreshToken) }
+    override fun tokenRefresh(): Flow<LoginResponse> =
+        performApiRequest { authAPI.tokenRefresh() }
 
     override fun signLogout(): Flow<Unit> =
         performApiRequest { authAPI.signLogout() }

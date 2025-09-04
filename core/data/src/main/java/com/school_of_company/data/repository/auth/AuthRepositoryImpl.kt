@@ -34,8 +34,8 @@ class AuthRepositoryImpl @Inject constructor(
         return remoteDatasource.logout()
     }
 
-    override fun tokenRefresh(refreshToken: String): Flow<LoginResponseModel> {
-        return remoteDatasource.tokenRefresh(refreshToken = refreshToken).transform { response ->
+    override fun tokenRefresh(): Flow<LoginResponseModel> {
+        return remoteDatasource.tokenRefresh().transform { response ->
             emit(response.toModel())
         }
     }

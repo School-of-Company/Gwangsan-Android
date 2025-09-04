@@ -12,7 +12,7 @@ interface AuthDataSource {
 
     fun login(body: LoginRequest): Flow<LoginResponse>
 
-    fun tokenRefresh(refreshToken: String): Flow<LoginResponse>
+    fun tokenRefresh(): Flow<LoginResponse>
 
     fun signLogout(): Flow<Unit>
 
