@@ -6,6 +6,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.activity.viewModels
+import com.school_of_company.main.navgation.MainRoute
+import com.school_of_company.signin.navigation.StartRoute
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.CompositionLocalProvider
@@ -14,6 +18,7 @@ import androidx.lifecycle.lifecycleScope
 import com.school_of_company.gwangsan.ui.GwangSanApp
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.device.manager.DeviceTokenManager
+import com.school_of_company.main.navgation.MainStartRoute
 import com.school_of_company.signin.navigation.StartRoute
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -21,6 +26,8 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private val viewModel: AppViewModel by viewModels()
 
     @Inject
     lateinit var deviceTokenManager: DeviceTokenManager
@@ -31,10 +38,18 @@ class MainActivity : ComponentActivity() {
 
         checkNotificationPermission()
 
+        installSplashScreen().setKeepOnScreenCondition {
+            viewModel.appLoginState.value is AppLoginState.Loading
+        }
+
         enableEdgeToEdge()
 
         setContent {
-            val startDestination = StartRoute
+            if (viewModel.appLoginState.value is AppLoginState.Loading) return@setContent
+            val startDestination = when (viewModel.appLoginState.value) {
+                is AppLoginState.Success -> MainStartRoute// 로그인 성공시 홈으로
+                else ->  StartRoute// 그 외에는 로그인 화면으로
+            }
             CompositionLocalProvider {
                 GwangSanTheme { _, _ ->
                     GwangSanApp(
