@@ -47,10 +47,10 @@ internal class SignInViewModel @Inject constructor(
 
         val deviceToken = localRepository.getDeviceToken()
 
-        if (!isValidId(nicknameValue)) {
-            _signInUiState.value = SignInUiState.IdNotValid
-            return@launch
-        }
+//        if (!isValidId(nicknameValue)) {
+//            _signInUiState.value = SignInUiState.IdNotValid
+//            return@launch
+//        }
 
         val body = LoginRequestModel(
             nickname = nicknameValue,
