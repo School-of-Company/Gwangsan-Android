@@ -8,14 +8,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.transform.Transformation
 import com.school_of_company.design_system.component.button.GwangSanStateButton
 import com.school_of_company.design_system.component.button.state.ButtonState
 import com.school_of_company.design_system.theme.GwangSanTheme
@@ -69,10 +73,15 @@ private fun PostInputScreen(
         ) {
             GwangSanTextField(
                 value = value,
-                onTextChange = onValueChange,
+                onTextChange = { input ->
+                    if (input.isEmpty() || input.all { it.isDigit() }) {
+                        onValueChange(input)
+                    }
+                },
                 label = "광산",
-                placeHolder = "광산을 입력해주세요",
+                placeHolder = "광산을 입력해주세요(ex: 1000 숫자로만)",
                 singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth()
             )
 
