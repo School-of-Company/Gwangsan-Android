@@ -74,7 +74,7 @@ private fun PostInputScreen(
             GwangSanTextField(
                 value = value,
                 onTextChange = { input ->
-                    if (input.isEmpty() || input.all { it.isDigit() }) {
+                    if (input.isEmpty() || input.all { it in '0'..'9' }) {
                         onValueChange(input)
                     }
                 },
