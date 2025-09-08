@@ -154,7 +154,7 @@ private fun PlaceNameScreen(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     SingleSelectDropdown(
-                        options = persistentListOf("수완세영", "수완마을지점", "신가", "신창", "도산", "우산", "월곡1", "첨단1", "평동", "월곡2", "하남"),
+                        options = persistentListOf("수완세영", "수완마을", "신가", "신창", "도산", "우산", "월곡1", "첨단1", "평동", "월곡2", "하남"),
                         selectedOption = placeName,
                         onOptionClick = onPlaceNameChange,
                         onDismissRequest = { isDropdownVisible.value = false },
