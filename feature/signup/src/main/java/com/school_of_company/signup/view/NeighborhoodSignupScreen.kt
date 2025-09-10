@@ -140,6 +140,7 @@ private fun NeighborhoodSignupScreen(
                     placeHolder = "동네를 검색해주세요",
                     setText = studentSearch,
                     onValueChange = onStudentSearchChange,
+                    maxLines = 1,
                     onSearchTextChange = onStudentSearchChange,
                     modifier = Modifier.fillMaxWidth()
                 )
