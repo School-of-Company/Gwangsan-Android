@@ -135,6 +135,7 @@ private fun NickNameSignupScreen(
                 GwangSanTextField(
                     placeHolder = "별칭",
                     value = id,
+                    maxLines = 1,
                     onTextChange = onIdChange,
                     label = "별칭을 입력해주세요",
                     isDisabled = false,
