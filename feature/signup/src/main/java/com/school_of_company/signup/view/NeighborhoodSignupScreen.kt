@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -92,6 +93,7 @@ private fun NeighborhoodSignupScreen(
                 .fillMaxSize()
                 .background(color = colors.white)
                 .verticalScroll(scrollState)
+                .imePadding()
                 .padding(top = 24.dp, start = 24.dp, end = 24.dp)
                 .pointerInput(Unit) {
                     detectTapGestures { focusManager.clearFocus() }
