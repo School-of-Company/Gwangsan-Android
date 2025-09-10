@@ -33,8 +33,8 @@ import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.model.member.request.ModifyMemberInformationRequestModel
 import com.school_of_company.profile.viewmodel.MyProfileViewModel
 import com.school_of_company.profile.viewmodel.uistate.MyInForMatIonPeTchUiState
-import com.yourpackage.design_system.component.textField.GwangSanSelectTextField
-import com.yourpackage.design_system.component.textField.GwangSanTextField
+import com.school_of_company.design_system.component.textfield.GwangSanSelectTextField
+import com.school_of_company.design_system.component.textfield.GwangSanTextField
 
 @Composable
 internal fun MyInformationEditRoute(

@@ -38,7 +38,7 @@ import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.signup.componet.AreaList
 import com.school_of_company.signup.viewmodel.SignUpViewModel
 import com.school_of_company.ui.previews.GwangsanPreviews
-import com.yourpackage.design_system.component.textField.GwangSanSearchTextField
+import com.school_of_company.design_system.component.textfield.GwangSanSearchTextField
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList

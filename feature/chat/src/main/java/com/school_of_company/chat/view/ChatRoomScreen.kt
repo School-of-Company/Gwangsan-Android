@@ -38,7 +38,7 @@ import com.school_of_company.design_system.component.topbar.GwangSanTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.network.socket.manager.ConnectionStatus
 import com.school_of_company.ui.previews.GwangsanPreviews
-import com.yourpackage.design_system.component.textField.ChatInputTextField
+import com.school_of_company.design_system.component.textfield.ChatInputTextField
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
