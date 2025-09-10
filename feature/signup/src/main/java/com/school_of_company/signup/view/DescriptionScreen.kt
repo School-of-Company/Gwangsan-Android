@@ -121,7 +121,7 @@ private fun DescriptionScreen(
                 Spacer(modifier = Modifier.height(6.dp))
 
                 Text(
-                    text = "이름을 입력해주세요",
+                    text = "자기소개를 입력해주세요",
                     style = typography.label,
                     color = colors.black.copy(alpha = 0.5f),
                     fontWeight = FontWeight.Normal
