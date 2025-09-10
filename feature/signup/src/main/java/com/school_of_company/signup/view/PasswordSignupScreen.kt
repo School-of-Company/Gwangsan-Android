@@ -150,6 +150,7 @@ private fun PasswordSignupScreen(
                 GwangSanTextField(
                     value = password,
                     label = "비밀번호",
+                    maxLines = 1,
                     placeHolder = "비밀번호",
                     isError = isPasswordValidError,
                     isDisabled = false,
@@ -165,6 +166,7 @@ private fun PasswordSignupScreen(
                     placeHolder = "비밀번호 재입력",
                     isError = isPasswordMismatchError,
                     isDisabled = false,
+                    maxLines = 1,
                     errorText = "비밀번호가 일치하지 않습니다.",
                     onTextChange = onRePasswordChange,
                     label = "비밀번호를 다시 입력해주세요",
