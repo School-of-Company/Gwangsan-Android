@@ -232,6 +232,7 @@ private fun CertinSignUpScreen(
                     placeHolder = "연락처는 \" - \" 빼고 입력해주세요",
                     isDisabled = false,
                     errorText = "",
+                    maxLines = 1,
                     onTextChange = onPhoneNumberChange,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     modifier = Modifier
