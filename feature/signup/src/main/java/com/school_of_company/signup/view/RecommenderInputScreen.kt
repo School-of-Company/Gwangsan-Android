@@ -162,6 +162,7 @@ fun RecommenderInputScreen(
 
                 GwangSanTextField(
                     label = "추천인",
+                    maxLines = 1,
                     value = recommender,
                     placeHolder = "추천인 별칭을 입력해주세요",
                     onTextChange = onRecommenderChange
