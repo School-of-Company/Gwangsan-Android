@@ -136,6 +136,7 @@ private fun NameSignupScreen(
                 GwangSanTextField(
                     placeHolder = "이름",
                     value = id,
+                    maxLines = 1,
                     onTextChange = onIdChange,
                     label = "이름을 입력해주세요",
                     isDisabled = false,
