@@ -1,4 +1,4 @@
-package com.yourpackage.design_system.component.textField
+package com.school_of_company.design_system.component.textfield
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

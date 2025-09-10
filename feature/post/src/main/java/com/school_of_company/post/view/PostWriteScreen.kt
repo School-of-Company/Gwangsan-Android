@@ -32,7 +32,7 @@ import com.school_of_company.model.enum.Mode
 import com.school_of_company.model.enum.Type
 import com.school_of_company.post.viewmodel.PostViewModel
 import com.school_of_company.ui.previews.GwangsanPreviews
-import com.yourpackage.design_system.component.textField.GwangSanTextField
+import com.school_of_company.design_system.component.textfield.GwangSanTextField
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList

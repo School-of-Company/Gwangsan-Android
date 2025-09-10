@@ -41,7 +41,7 @@ import com.school_of_company.design_system.component.topbar.GwangSanTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.design_system.theme.color.GwangSanColor
 import com.school_of_company.signup.viewmodel.SignUpViewModel
-import com.yourpackage.design_system.component.textField.GwangSanSelectTextField
+import com.school_of_company.design_system.component.textfield.GwangSanSelectTextField
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
