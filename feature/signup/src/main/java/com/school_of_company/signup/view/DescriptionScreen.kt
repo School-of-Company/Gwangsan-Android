@@ -136,6 +136,7 @@ private fun DescriptionScreen(
                     value = description,
                     onTextChange = onDescriptionChange,
                     label = "자기소개",
+                    maxLines = 1,
                     isDisabled = false,
                     keyboardOptions = KeyboardOptions.Default,
                     isError = false,
