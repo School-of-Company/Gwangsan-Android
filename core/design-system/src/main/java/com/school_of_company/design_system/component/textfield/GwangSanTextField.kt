@@ -29,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.school_of_company.design_system.R
 import com.school_of_company.design_system.component.clickable.GwangSanClickable
+import com.school_of_company.design_system.component.icons.DropDownIcon
 import com.school_of_company.design_system.component.icons.PlusIcon
 import com.school_of_company.design_system.component.icons.SearchIcon
 import com.school_of_company.design_system.theme.GwangSanTheme
@@ -317,16 +318,6 @@ fun GwangSanSelectTextField(
                     .padding(horizontal = 8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(24.dp)
-                        .GwangSanClickable(enabled = !isDisabled) {
-                            onClick()
-                        }
-                ) {
-                    PlusIcon()
-                }
-
                 Spacer(modifier = Modifier.width(8.dp))
 
                 TextField(
@@ -360,6 +351,16 @@ fun GwangSanSelectTextField(
                         unfocusedPlaceholderColor = GwangSanColor.gray400
                     )
                 )
+
+                Box(
+                    modifier = Modifier
+                        .size(24.dp)
+                        .GwangSanClickable(enabled = !isDisabled) {
+                            onClick()
+                        }
+                ) {
+                    DropDownIcon()
+                }
             }
 
             if (isError) {

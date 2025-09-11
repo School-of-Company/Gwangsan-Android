@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,6 +30,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -145,7 +147,7 @@ private fun PlaceNameScreen(
                 GwangSanSelectTextField(
                     label = "지점",
                     value = placeName,
-                    placeHolder = "지점 추가",
+                    placeHolder = "지점을 선택해주세요",
                     onClick = onToggleDropdown,
                     onTextChange = { /* NONE */ }
                 )
@@ -204,3 +206,18 @@ private fun PlaceNameScreen(
         }
     }
 }
+
+
+@Preview(showBackground = true, name = "PlaceName - Empty (Disabled)")
+@Composable
+private fun PlaceNameScreenPreview_Empty() {
+    var place by rememberSaveable { mutableStateOf("") }
+
+    PlaceNameScreen(
+        onBackClick = {},
+        onNextClick = {},
+        placeName = place,
+        onPlaceNameChange = { place = it }
+    )
+}
+

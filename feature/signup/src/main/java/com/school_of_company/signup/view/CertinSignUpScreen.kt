@@ -121,7 +121,7 @@ internal fun CertInSignUpRoute(
             is SendNumberUiState.Success -> makeToast(context, "인증번호 성공")
             is SendNumberUiState.PhoneNumberNotValid -> {
                 isLoading = false
-                onErrorToast(null, R.string.error_id_not_valid)
+                onErrorToast(null, R.string.error_number_not_valid)
             }
 
             is SendNumberUiState.TooManyRequest -> {
