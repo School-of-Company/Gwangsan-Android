@@ -4,7 +4,7 @@ sealed interface VerifyNumberUiState {
     object Loading : VerifyNumberUiState
     object Success : VerifyNumberUiState
     object BadRequest : VerifyNumberUiState
-    object NotFound : VerifyNumberUiState
-    object TooManyRequest : VerifyNumberUiState
+    object Unauthorized : VerifyNumberUiState
+    object Forbidden : VerifyNumberUiState
     data class Error(val exception: Throwable) : VerifyNumberUiState
 }
