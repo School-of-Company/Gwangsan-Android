@@ -94,7 +94,6 @@ private fun PlaceNameScreen(
             modifier = modifier
                 .fillMaxSize()
                 .background(backgroundColor)
-                .imePadding()
                 .pointerInput(isDropdownVisible) {
                     detectTapGestures {
                         if (isDropdownVisible.value) {
