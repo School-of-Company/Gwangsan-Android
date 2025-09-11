@@ -8,7 +8,7 @@
     <string name="error_conflict_number">이 번호로 가입한 사용자가 존재합니다.</string>
     <string name="error_number_mismatch">인증번호가 일치하지 않습니다</string>
     <string name="error_number_not_valid">잘못된 번호입니다</string>
-    <string name="unauthorized_message">니넥임 또는 비밀번호가 잘못됐습니다.</string>
+    <string name="unauthorized_message">닉네임 또는 비밀번호가 잘못됐습니다.</string>
     <string name="error_verify_number">인증이 실패했습니다</string>
     <string name="certified">인증</string>
     <string name="resend_completion">재발송 완료</string>
