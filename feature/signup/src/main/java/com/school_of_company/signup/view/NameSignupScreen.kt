@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -82,6 +83,7 @@ private fun NameSignupScreen(
             modifier = modifier
                 .fillMaxSize()
                 .background(color = colors.white)
+                .imePadding()
                 .padding(
                     top = 24.dp,
                     start = 24.dp,
@@ -134,6 +136,7 @@ private fun NameSignupScreen(
                 GwangSanTextField(
                     placeHolder = "이름",
                     value = id,
+                    maxLines = 1,
                     onTextChange = onIdChange,
                     label = "이름을 입력해주세요",
                     isDisabled = false,
