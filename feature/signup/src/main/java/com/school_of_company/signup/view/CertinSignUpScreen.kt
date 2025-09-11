@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -92,16 +93,16 @@ internal fun CertInSignUpRoute(
                 onErrorToast(null, R.string.error_id_not_valid)
             }
 
-            is VerifyNumberUiState.NotFound -> {
+            is VerifyNumberUiState.Unauthorized -> {
                 isLoading = false
                 isError = true
-                onErrorToast(null, R.string.error_too_many_request_send_email)
+                onErrorToast(null, R.string.unauthorized_message)
             }
 
-            is VerifyNumberUiState.TooManyRequest -> {
+            is VerifyNumberUiState.Forbidden -> {
                 isLoading = false
                 isError = true
-                onErrorToast(null, R.string.error_send_number)
+                onErrorToast(null, R.string.forbidden_message)
             }
 
             is VerifyNumberUiState.Error -> {
@@ -124,9 +125,14 @@ internal fun CertInSignUpRoute(
                 onErrorToast(null, R.string.error_number_not_valid)
             }
 
+            is SendNumberUiState.Conflict -> {
+                isLoading = false
+                onErrorToast(null, R.string.error_conflict_number)
+            }
+
             is SendNumberUiState.TooManyRequest -> {
                 isLoading = false
-                onErrorToast(null, R.string.error_too_many_request_send_email)
+                onErrorToast(null, R.string.error_too_many_request_send_number)
             }
 
             is SendNumberUiState.Error -> {
@@ -274,6 +280,7 @@ private fun CertinSignUpScreen(
             verticalArrangement = Arrangement.Bottom,
             modifier = Modifier
                 .fillMaxSize()
+                .imePadding()
                 .padding(
                     start = 24.dp,
                     end = 24.dp,
