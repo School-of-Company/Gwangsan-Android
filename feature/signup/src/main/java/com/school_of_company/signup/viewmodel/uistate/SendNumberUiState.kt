@@ -5,5 +5,6 @@ sealed interface SendNumberUiState {
     data object Success : SendNumberUiState
     data object PhoneNumberNotValid : SendNumberUiState
     data object TooManyRequest : SendNumberUiState
+    data object Conflict: SendNumberUiState
     data class Error(val exception: Throwable) : SendNumberUiState
 }
