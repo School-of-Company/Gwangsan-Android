@@ -23,6 +23,7 @@ fun NavController.navigateToMainStart(navOptions: NavOptions? = null) {
     this.navigate(MainStartRoute, navOptions)
 }
 
+
 fun NavController.navigateToNoticeScreen(navOptions: NavOptions? = null){
     this.navigate(NoticeRoute, navOptions)
 }
@@ -67,12 +68,14 @@ fun NavGraphBuilder.mainStartScreen(
 
 fun NavGraphBuilder.noticeScreen(
     onBackClick: () -> Unit,
-    navigationToDetail: (Long) -> Unit
+    navigationToDetail: (Long) -> Unit,
+    navigateToInformDetail: (Long) -> Unit
 ){
     composable(route = NoticeRoute){
         NoticeRoute(
             onBackClick = onBackClick,
-            navigationToDetail = navigationToDetail
+            navigationToDetail = navigationToDetail,
+            navigateToInformDetail = navigateToInformDetail
         )
     }
 }
