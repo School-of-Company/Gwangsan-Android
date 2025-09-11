@@ -33,6 +33,7 @@ import com.school_of_company.model.enum.Type
 import com.school_of_company.post.viewmodel.PostViewModel
 import com.school_of_company.ui.previews.GwangsanPreviews
 import com.school_of_company.design_system.component.textfield.GwangSanTextField
+import com.school_of_company.design_system.component.toast.makeToast
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
@@ -56,7 +57,6 @@ internal fun PostWriteRoute(
         selectedImages.map { it.toString() }.toPersistentList()
     }
 
-
     val uploadedUris = remember { mutableStateListOf<String>() }
 
     val context = LocalContext.current
@@ -64,18 +64,29 @@ internal fun PostWriteRoute(
     val galleryLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             if (uri != null) {
-                actualViewModel.addImage(uri)
+                val currentTotal = existingImageUrls.size + selectedImages.size
+                if (currentTotal < 5) {
+                    actualViewModel.addImage(uri)
+                } else {
+                    makeToast(context, "이미지는 5장까지 선택할 수 있습니다.")
+                }
             }
         }
 
-    LaunchedEffect(selectedImageUris) {
-        selectedImageUris.forEach { uriString ->
-            if (uploadedUris.contains(uriString).not()) {
+    LaunchedEffect(selectedImageUris, existingImageUrls) {
+        val totalAllow = 5 - existingImageUrls.size
+        if (totalAllow <= 0) return@LaunchedEffect
+
+        var remainingSlots = totalAllow
+        for (uriString in selectedImageUris) {
+            if (remainingSlots <= 0) break
+            if (!uploadedUris.contains(uriString)) {
                 try {
                     val uri = Uri.parse(uriString)
                     val imageId = actualViewModel.imageUpLoad(context, uri)
                     actualViewModel.onImageIdAdded(imageId)
                     uploadedUris.add(uriString)
+                    remainingSlots--
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -119,6 +130,8 @@ private fun PostWriteScreen(
 ) {
     val focusManager = LocalFocusManager.current
     val isNextEnabled = subject.isNotBlank() && content.isNotBlank()
+    val totalImages = existingImageUrls.size + imageUri.size
+    val canAddMore = totalImages < 5
 
     GwangSanTheme { colors, typography ->
 
@@ -168,24 +181,9 @@ private fun PostWriteScreen(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
-                itemsIndexed(existingImageUrls) { index, imageUrl ->
+                itemsIndexed(imageUri) { index, imageUriStr ->
                     AsyncImage(
-                        model = imageUrl,
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .size(60.dp)
-                            .GwangSanClickable {
-                                onExistingImageRemove(index)
-                            }
-                    )
-                }
-
-                itemsIndexed(imageUri) { index, imageUri ->
-                    AsyncImage(
-                        model = imageUri,
+                        model = imageUriStr,
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
@@ -195,22 +193,23 @@ private fun PostWriteScreen(
                     )
                 }
 
-                item {
-                    Box(
-                        modifier = Modifier
-                            .size(60.dp)
-                            .clip(CircleShape)
-                            .background(Color(0xFFF5F6F8))
-                            .GwangSanClickable { onImageAdd() }
-                    ) {
-                        PlussIcon(
-                            tint = colors.black,
-                            modifier = Modifier.align(Alignment.Center)
-                        )
+                if (canAddMore) {
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .size(60.dp)
+                                .clip(CircleShape)
+                                .background(Color(0xFFF5F6F8))
+                                .GwangSanClickable { onImageAdd() }
+                        ) {
+                            PlussIcon(
+                                tint = colors.black,
+                                modifier = Modifier.align(Alignment.Center)
+                            )
+                        }
                     }
                 }
             }
-
 
             Spacer(modifier = Modifier.weight(1f, fill = true))
 
