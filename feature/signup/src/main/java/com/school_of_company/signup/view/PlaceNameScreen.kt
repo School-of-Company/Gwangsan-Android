@@ -207,7 +207,7 @@ private fun PlaceNameScreen(
 }
 
 
-@Preview(showBackground = true, name = "PlaceName - Empty (Disabled)")
+@Preview(showBackground = true, name = "PlaceName")
 @Composable
 private fun PlaceNameScreenPreview_Empty() {
     var place by rememberSaveable { mutableStateOf("") }
