@@ -111,7 +111,6 @@ internal fun PostWriteRoute(
         onImageAdd = { galleryLauncher.launch("image/*") },
         onNextClick = onNextClick,
         onBackClick = onBackClick,
-        // ▼ Enum 상태 & 콜백
         selectedType = selectedType,
         selectedMode = selectedMode,
         onTypeSelect = actualViewModel::setType,
@@ -143,7 +142,7 @@ private fun PostWriteScreen(
 
     val typeOptions = mapOf(Type.OBJECT to "물건", Type.SERVICE to "서비스")
 
-    // ▼ Type에 따라 보여줄 Mode 옵션과 라벨을 계산
+
     val modeOptionsForType: List<Pair<Mode, String>> = remember(selectedType) {
         if (selectedType == Type.SERVICE) {
             listOf(
@@ -158,11 +157,11 @@ private fun PostWriteScreen(
         }
     }
 
-    // ▼ 현재 선택 상태를 기반으로 표시할 라벨 (파생 상태)
+
     val modeLabel by remember(selectedType, selectedMode) {
         mutableStateOf(
             when (selectedType) {
-                Type.SERVICE -> if (selectedMode == Mode.RECEIVER) "할 수 있어요" else "해주세요"
+                Type.SERVICE -> if (selectedMode == Mode.RECEIVER) "해주세요" else "할 수 있어요"
                 Type.OBJECT  -> if (selectedMode == Mode.RECEIVER) "필요해요" else "팔아요"
             }
         )
