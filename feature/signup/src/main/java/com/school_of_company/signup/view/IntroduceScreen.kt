@@ -96,7 +96,6 @@ private fun IntroduceScreen(
             modifier = modifier
                 .fillMaxSize()
                 .background(color = colors.white)
-                .imePadding()
         ) {
             Column(
                 verticalArrangement = Arrangement.Top,
