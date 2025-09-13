@@ -45,7 +45,6 @@ import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 internal fun MainRoute(
-    navigationToPost: (Mode) -> Unit,
     navigationToDetail: (Long) -> Unit,
     onBackClick: () -> Unit,
     onErrorToast: (throwable: Throwable?, message: Int?) -> Unit,
@@ -78,7 +77,6 @@ internal fun MainRoute(
     }
 
     MainScreen(
-        navigationToPostService = { navigationToPost(selectedMode) },
         onBackClick = onBackClick,
         mainCallBack = {
             viewModel.getMainList(
@@ -99,7 +97,6 @@ internal fun MainRoute(
 @Composable
 private fun MainScreen(
     modifier: Modifier = Modifier,
-    navigationToPostService: () -> Unit,
     navigationToDetail: (Long) -> Unit,
     mainCallBack: () -> Unit,
     onBackClick: () -> Unit,
@@ -231,17 +228,6 @@ private fun MainScreen(
                         }
                     }
                 }
-            }
-
-            GwangSanFloatingButton(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(
-                        end = 24.dp,
-                        bottom = 60.dp
-                    )
-            ) {
-                navigationToPostService()
             }
         }
     }
