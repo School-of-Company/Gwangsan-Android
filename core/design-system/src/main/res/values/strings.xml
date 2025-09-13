@@ -12,7 +12,7 @@
     <string name="error_verify_number">인증이 실패했습니다</string>
     <string name="certified">인증</string>
     <string name="resend_completion">재발송 완료</string>
-    <string name="forbidden_message">탈퇴한 회원이거나 접근이 제한인 전화번호 입니다.</string>
+    <string name="forbidden_message">탈퇴한 회원이거나 접근이 제한된 전화번호 입니다.</string>
     <string name="not_error">알수 없는 에러가 발생했습니다.</string>
     <string name="resend_completion_description">인증번호를 재발송했어요.문자를 확인해주세요!</string>
     <string name="check">확인</string>

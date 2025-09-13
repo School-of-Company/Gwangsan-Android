@@ -273,6 +273,9 @@ fun GwangsanNavHost(
             onBackClick = { navController.popBackStack() },
             navigationToDetail = { id ->
                 navController.navigateToReadMore(id)
+            },
+            navigateToInformDetail = { id ->
+                navController.navigateToInformDetail(id)
             }
         )
     }
