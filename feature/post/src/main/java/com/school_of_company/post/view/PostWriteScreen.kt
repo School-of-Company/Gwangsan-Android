@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -27,38 +29,40 @@ import com.school_of_company.design_system.component.button.GwangSanStateButton
 import com.school_of_company.design_system.component.button.state.ButtonState
 import com.school_of_company.design_system.component.clickable.GwangSanClickable
 import com.school_of_company.design_system.component.icons.PlussIcon
+import com.school_of_company.design_system.component.textfield.GwangSanSelectTextField
+import com.school_of_company.design_system.component.textfield.GwangSanTextField
+import com.school_of_company.design_system.component.toast.makeToast
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.model.enum.Mode
 import com.school_of_company.model.enum.Type
 import com.school_of_company.post.viewmodel.PostViewModel
 import com.school_of_company.ui.previews.GwangsanPreviews
-import com.school_of_company.design_system.component.textfield.GwangSanTextField
-import com.school_of_company.design_system.component.toast.makeToast
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 internal fun PostWriteRoute(
-    type: Type,
-    mode: Mode,
     onBackClick: () -> Unit,
     onNextClick: (String, String) -> Unit,
     viewModel: PostViewModel? = null,
 ) {
     val actualViewModel = viewModel ?: hiltViewModel()
-    val subject by actualViewModel.title.collectAsState()
-    val content by actualViewModel.content.collectAsState()
+
+    val subject by actualViewModel.title.collectAsStateWithLifecycle()
+    val content by actualViewModel.content.collectAsStateWithLifecycle()
+
+    val selectedType by actualViewModel.type.collectAsStateWithLifecycle()
+    val selectedMode by actualViewModel.mode.collectAsStateWithLifecycle()
 
     val selectedImages by actualViewModel.selectedImages.collectAsStateWithLifecycle()
-    val existingImageUrls by actualViewModel.existingImageUrls.collectAsState()
+    val existingImageUrls by actualViewModel.existingImageUrls.collectAsStateWithLifecycle()
 
     val selectedImageUris = remember(selectedImages) {
         selectedImages.map { it.toString() }.toPersistentList()
     }
 
     val uploadedUris = remember { mutableStateListOf<String>() }
-
     val context = LocalContext.current
 
     val galleryLauncher =
@@ -99,17 +103,17 @@ internal fun PostWriteRoute(
         content = content,
         imageUri = selectedImageUris,
         existingImageUrls = existingImageUrls.toPersistentList(),
-        onImageRemove = { index ->
-            actualViewModel.removeNewImage(index)
-        },
-        onExistingImageRemove = { index ->
-            actualViewModel.removeExistingImage(index)
-        },
+        onImageRemove = { index -> actualViewModel.removeNewImage(index) },
+        onExistingImageRemove = { index -> actualViewModel.removeExistingImage(index) },
         onSubjectChange = actualViewModel::onTitleChange,
         onContentChange = actualViewModel::onContentChange,
         onImageAdd = { galleryLauncher.launch("image/*") },
         onNextClick = onNextClick,
         onBackClick = onBackClick,
+        selectedType = selectedType,
+        selectedMode = selectedMode,
+        onTypeSelect = actualViewModel::setType,
+        onModeSelect = actualViewModel::setMode
     )
 }
 
@@ -127,25 +131,103 @@ private fun PostWriteScreen(
     onImageAdd: () -> Unit,
     onNextClick: (String, String) -> Unit,
     onBackClick: () -> Unit,
+    selectedType: Type,
+    selectedMode: Mode,
+    onTypeSelect: (Type) -> Unit,
+    onModeSelect: (Mode) -> Unit,
 ) {
     val focusManager = LocalFocusManager.current
+
+    val typeOptions = mapOf(Type.OBJECT to "물건", Type.SERVICE to "서비스")
+
+
+    val modeOptionsForType: List<Pair<Mode, String>> = remember(selectedType) {
+        if (selectedType == Type.SERVICE) {
+            listOf(
+                Mode.RECEIVER to "해주세요",
+                Mode.GIVER to "할 수 있어요",
+            )
+        } else {
+            listOf(
+                Mode.GIVER to "팔아요",
+                Mode.RECEIVER to "필요해요"
+            )
+        }
+    }
+
+
+    val modeLabel by remember(selectedType, selectedMode) {
+        mutableStateOf(
+            when (selectedType) {
+                Type.SERVICE -> if (selectedMode == Mode.RECEIVER) "해주세요" else "할 수 있어요"
+                Type.OBJECT  -> if (selectedMode == Mode.RECEIVER) "필요해요" else "팔아요"
+            }
+        )
+    }
+
     val isNextEnabled = subject.isNotBlank() && content.isNotBlank()
     val totalImages = existingImageUrls.size + imageUri.size
     val canAddMore = totalImages < 5
 
-    GwangSanTheme { colors, typography ->
+    var typeExpanded by remember { mutableStateOf(false) }
+    var modeExpanded by remember { mutableStateOf(false) }
 
+    GwangSanTheme { colors, typography ->
         Column(
             modifier = modifier
                 .fillMaxSize()
                 .background(colors.white)
                 .padding(horizontal = 24.dp)
-                .pointerInput(Unit) {
-                    detectTapGestures {
-                        focusManager.clearFocus()
-                    }
-                }
+                .pointerInput(Unit) { detectTapGestures { focusManager.clearFocus() } }
         ) {
+            GwangSanSelectTextField(
+                label = "카테고리",
+                value = typeOptions[selectedType] ?: "",
+                placeHolder = "카테고리를 선택해주세요",
+                onClick = { typeExpanded = true },
+                onTextChange = { /* NO-OP */ }
+            )
+            DropdownMenu(
+                expanded = typeExpanded,
+                onDismissRequest = { typeExpanded = false }
+            ) {
+                typeOptions.forEach { (enumValue, displayText) ->
+                    DropdownMenuItem(
+                        text = { Text(displayText) },
+                        onClick = {
+                            onTypeSelect(enumValue)
+                            typeExpanded = false
+                        }
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(28.dp))
+
+            GwangSanSelectTextField(
+                label = "유형",
+                value = modeLabel,
+                placeHolder = "유형을 선택해주세요",
+                onClick = { modeExpanded = true },
+                onTextChange = { /* NO-OP */ }
+            )
+            DropdownMenu(
+                expanded = modeExpanded,
+                onDismissRequest = { modeExpanded = false }
+            ) {
+                modeOptionsForType.forEach { (enumValue, displayText) ->
+                    DropdownMenuItem(
+                        text = { Text(displayText) },
+                        onClick = {
+                            onModeSelect(enumValue)
+                            modeExpanded = false
+                        }
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(28.dp))
+
             GwangSanTextField(
                 value = subject,
                 onTextChange = onSubjectChange,
@@ -169,12 +251,7 @@ private fun PostWriteScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            Text(
-                text = "사진첨부",
-                style = typography.body5,
-                color = colors.black
-            )
-
+            Text(text = "사진첨부", style = typography.body5, color = colors.black)
             Spacer(modifier = Modifier.height(12.dp))
 
             LazyRow(
@@ -225,22 +302,4 @@ private fun PostWriteScreen(
             Spacer(modifier = Modifier.height(64.dp))
         }
     }
-}
-
-@GwangsanPreviews
-@Composable
-private fun PostWritePreview() {
-    PostWriteScreen(
-        subject = "예시 주제",
-        content = "예시 내용입니다.\n여러 줄로 작성된 내용도 미리보기 됩니다.",
-        onSubjectChange = {},
-        onContentChange = {},
-        onImageAdd = {},
-        onNextClick = { _, _ -> },
-        onBackClick = {},
-        imageUri = persistentListOf(),
-        onImageRemove = {},
-        existingImageUrls = persistentListOf(),
-        onExistingImageRemove = {}
-    )
 }

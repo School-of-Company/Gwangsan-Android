@@ -4,6 +4,7 @@ import com.school_of_company.chat.navigation.ChatRoute
 import com.school_of_company.design_system.R
 import com.school_of_company.inform.navigation.InformRoute
 import com.school_of_company.main.navgation.MainStartRoute
+import com.school_of_company.post.navigation.PostRoute
 import com.school_of_company.profile.navigation.MyProfileRoute
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
@@ -25,6 +26,12 @@ enum class TopLevelDestination(
         routeName = ChatRoute
     ),
 
+    POST(
+        unSelectedIcon = R.drawable.vector,
+        iconText = "",
+        routeName = PostRoute
+    ),
+
     INFORM(
         unSelectedIcon = R.drawable.horn,
         iconText = "공지",
@@ -39,7 +46,7 @@ enum class TopLevelDestination(
 
     companion object {
         val topLevelDestinations: PersistentList<TopLevelDestination> = persistentListOf(
-            MAIN, CHAT, INFORM, PROFILE
+            MAIN, CHAT,  POST, INFORM, PROFILE
         )
     }
 }

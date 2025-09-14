@@ -166,14 +166,11 @@ fun GwangsanNavHost(
         )
 
         mainScreen(
-            navigationToPost = { type: Type, mode: Mode ->
-                navController.navigateToPost(type = type, mode = mode)
-            },
             navigateToDetail = { id ->
                 navController.navigateToReadMore(id)
             },
             onBackClick = { navController.popBackStack() },
-            onErrorToast = onErrorToast
+            onErrorToast = onErrorToast,
         )
 
         mainStartScreen(
@@ -204,7 +201,7 @@ fun GwangsanNavHost(
             onReviewClick = { _, _ -> },
             onReportClick = { _, _ -> },
             onEditClick = { id, type, mode ->
-                navController.navigateToPostEdit(id, type, mode)
+                navController.navigateToPostEdit(id)
             }
         )
 
@@ -263,7 +260,7 @@ fun GwangsanNavHost(
             onCompleteClick = { navController.popBackStack() },
             onErrorToast = onErrorToast,
             onEditClick = { id, type, mode ->
-                navController.navigateToPostEdit(id, type, mode)
+                navController.navigateToPostEdit(id)
             }
         )
 

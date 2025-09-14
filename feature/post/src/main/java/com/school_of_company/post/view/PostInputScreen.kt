@@ -29,8 +29,6 @@ import com.school_of_company.design_system.component.textfield.GwangSanTextField
 
 @Composable
 internal fun PostInputRoute(
-    type: Type,
-    mode: Mode,
     onBackClick: () -> Unit,
     onNextClick: () -> Unit,
     viewModel: PostViewModel? = null,

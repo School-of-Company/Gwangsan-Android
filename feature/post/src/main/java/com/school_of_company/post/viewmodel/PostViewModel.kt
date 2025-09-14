@@ -54,18 +54,25 @@ class PostViewModel @Inject constructor(
         _selectedImages.value += uri
     }
 
+    /** 외부에서 쓰는 간단 API (SavedStateHandle 기반 변경을 래핑) */
+    fun setType(type: Type) = onTypeChange(type)
+    fun setMode(mode: Mode) = onModeChange(mode)
+
     private val _postUiState = MutableStateFlow<PostUiState>(PostUiState.Loading)
     internal val postUiState = _postUiState.asStateFlow()
 
     private val _modifyPostUiStat = MutableStateFlow<ModifyPostUiState>(ModifyPostUiState.Loading)
     internal val modifyPostUiStat = _modifyPostUiStat.asStateFlow()
 
-    private val _getMySpecificInformationUiState = MutableStateFlow<GetMySpecificInformationUiState>(GetMySpecificInformationUiState.Loading)
+    private val _getMySpecificInformationUiState =
+        MutableStateFlow<GetMySpecificInformationUiState>(GetMySpecificInformationUiState.Loading)
     internal val getMySpecificInformationUiState = _getMySpecificInformationUiState.asStateFlow()
 
-    private val _imageUpLoadUiState = MutableStateFlow<ImageUpLoadUiState>(ImageUpLoadUiState.Loading)
+    private val _imageUpLoadUiState =
+        MutableStateFlow<ImageUpLoadUiState>(ImageUpLoadUiState.Loading)
     internal val imageUpLoadUiState = _imageUpLoadUiState.asStateFlow()
 
+    /** SavedStateHandle - 화면 회전/프로세스 재생성에도 유지 */
     internal val title = savedStateHandle.getStateFlow(TITLE, "")
     internal val content = savedStateHandle.getStateFlow(CONTENT, "")
     internal val gwangsan = savedStateHandle.getStateFlow(GWANGSAN, "")
@@ -81,7 +88,6 @@ class PostViewModel @Inject constructor(
 
     internal fun loadPostForEdit(postId: Long) = viewModelScope.launch {
         _postUiState.value = PostUiState.Loading
-
         _isEditMode.value = true
         _editPostId.value = postId
 
@@ -89,9 +95,12 @@ class PostViewModel @Inject constructor(
             .asResult()
             .collectLatest { result ->
                 when (result) {
-                    is Result.Loading -> _getMySpecificInformationUiState.value = GetMySpecificInformationUiState.Loading
+                    is Result.Loading -> _getMySpecificInformationUiState.value =
+                        GetMySpecificInformationUiState.Loading
+
                     is Result.Success -> {
-                        _getMySpecificInformationUiState.value = GetMySpecificInformationUiState.Success(result.data)
+                        _getMySpecificInformationUiState.value =
+                            GetMySpecificInformationUiState.Success(result.data)
 
                         result.data.let { editData ->
                             onGwangsanChange(editData.gwangsan.toString())
@@ -100,29 +109,26 @@ class PostViewModel @Inject constructor(
                             onImageIdsChange(editData.images.map { it.imageId })
 
                             _existingImageUrls.value = editData.images.map { it.imageUrl }
-
                             _selectedImages.value = emptyList()
 
                             editData.type.let { typeString ->
                                 try {
-                                    val type = Type.valueOf(typeString)
-                                    onTypeChange(type)
-                                } catch (e: IllegalArgumentException) {
-                                    null
-                                }
+                                    val parsed = Type.valueOf(typeString)
+                                    onTypeChange(parsed)
+                                } catch (_: IllegalArgumentException) { }
                             }
 
                             editData.mode.let { modeString ->
                                 try {
-                                    val mode = Mode.valueOf(modeString)
-                                    onModeChange(mode)
-                                } catch (e: IllegalArgumentException) {
-                                    null
-                                }
+                                    val parsed = Mode.valueOf(modeString)
+                                    onModeChange(parsed)
+                                } catch (_: IllegalArgumentException) { }
                             }
                         }
                     }
-                    is Result.Error -> _getMySpecificInformationUiState.value = GetMySpecificInformationUiState.Error(result.exception)
+
+                    is Result.Error -> _getMySpecificInformationUiState.value =
+                        GetMySpecificInformationUiState.Error(result.exception)
                 }
             }
     }
@@ -145,23 +151,21 @@ class PostViewModel @Inject constructor(
                     gwangsan = gwangsan.value.toInt(),
                     imageIds = imageIds.value
                 )
-            )
-                .asResult()
-                .collectLatest { result ->
-                    when (result) {
-                        is Result.Loading -> _modifyPostUiStat.value = ModifyPostUiState.Loading
-                        is Result.Success -> {
-                            _modifyPostUiStat.value = ModifyPostUiState.Success
-                            _selectedImages.value = emptyList()
-                            _isEditMode.value = false
-                            _editPostId.value = null
-                        }
-                        is Result.Error -> {
-                            _modifyPostUiStat.value = ModifyPostUiState.Error(result.exception)
-                            Log.e("ModifyPostViewModel", "Error: ${result.exception}")
-                        }
+            ).asResult().collectLatest { result ->
+                when (result) {
+                    is Result.Loading -> _modifyPostUiStat.value = ModifyPostUiState.Loading
+                    is Result.Success -> {
+                        _modifyPostUiStat.value = ModifyPostUiState.Success
+                        _selectedImages.value = emptyList()
+                        _isEditMode.value = false
+                        _editPostId.value = null
+                    }
+                    is Result.Error -> {
+                        _modifyPostUiStat.value = ModifyPostUiState.Error(result.exception)
+                        Log.e("ModifyPostViewModel", "Error: ${result.exception}")
                     }
                 }
+            }
         } catch (e: Exception) {
             _modifyPostUiStat.value = ModifyPostUiState.Error(e)
         }
@@ -183,9 +187,7 @@ class PostViewModel @Inject constructor(
                 gwangsan = gwangsan.value.toInt(),
                 imageIds = imageIds.value
             )
-        )
-            .asResult()
-            .collectLatest { result ->
+        ).asResult().collectLatest { result ->
             when (result) {
                 is Result.Success -> _postUiState.value = PostUiState.Success
                 is Result.Error -> {
@@ -213,12 +215,10 @@ class PostViewModel @Inject constructor(
                     is Result.Loading -> {
                         _imageUpLoadUiState.value = ImageUpLoadUiState.Loading
                     }
-
                     is Result.Success -> {
                         _imageUpLoadUiState.value = ImageUpLoadUiState.Success(result.data)
                         imageId = result.data.imageId
                     }
-
                     is Result.Error -> {
                         _imageUpLoadUiState.value = ImageUpLoadUiState.Error(result.exception)
                         throw result.exception
@@ -236,7 +236,6 @@ class PostViewModel @Inject constructor(
         if (index < currentUrls.size) {
             currentUrls.removeAt(index)
             currentIds.removeAt(index)
-
             _existingImageUrls.value = currentUrls
             onImageIdsChange(currentIds)
         }
@@ -256,27 +255,10 @@ class PostViewModel @Inject constructor(
         savedStateHandle[IMAGE_IDS] = currentList
     }
 
-    internal fun onTitleChange(value: String) {
-        savedStateHandle[TITLE] = value
-    }
-
-    internal fun onContentChange(value: String) {
-        savedStateHandle[CONTENT] = value
-    }
-
-    internal fun onGwangsanChange(value: String) {
-        savedStateHandle[GWANGSAN] = value
-    }
-
-    internal fun onImageIdsChange(value: List<Long>) {
-        savedStateHandle[IMAGE_IDS] = value
-    }
-
-    internal fun onTypeChange(value: Type) {
-        savedStateHandle[TYPE] = value
-    }
-
-    internal fun onModeChange(value: Mode) {
-        savedStateHandle[MODE] = value
-    }
+    internal fun onTitleChange(value: String) { savedStateHandle[TITLE] = value }
+    internal fun onContentChange(value: String) { savedStateHandle[CONTENT] = value }
+    internal fun onGwangsanChange(value: String) { savedStateHandle[GWANGSAN] = value }
+    internal fun onImageIdsChange(value: List<Long>) { savedStateHandle[IMAGE_IDS] = value }
+    internal fun onTypeChange(value: Type) { savedStateHandle[TYPE] = value }
+    internal fun onModeChange(value: Mode) { savedStateHandle[MODE] = value }
 }
