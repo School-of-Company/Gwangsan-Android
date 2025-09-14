@@ -49,15 +49,15 @@ internal fun PostWriteRoute(
 ) {
     val actualViewModel = viewModel ?: hiltViewModel()
 
-    val subject by actualViewModel.title.collectAsState()
-    val content by actualViewModel.content.collectAsState()
+    val subject by actualViewModel.title.collectAsStateWithLifecycle()
+    val content by actualViewModel.content.collectAsStateWithLifecycle()
 
     // ▼ ViewModel의 Enum 상태 구독
-    val selectedType by actualViewModel.type.collectAsState()
-    val selectedMode by actualViewModel.mode.collectAsState()
+    val selectedType by actualViewModel.type.collectAsStateWithLifecycle()
+    val selectedMode by actualViewModel.mode.collectAsStateWithLifecycle()
 
     val selectedImages by actualViewModel.selectedImages.collectAsStateWithLifecycle()
-    val existingImageUrls by actualViewModel.existingImageUrls.collectAsState()
+    val existingImageUrls by actualViewModel.existingImageUrls.collectAsStateWithLifecycle()
 
     val selectedImageUris = remember(selectedImages) {
         selectedImages.map { it.toString() }.toPersistentList()
