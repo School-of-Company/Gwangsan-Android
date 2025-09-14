@@ -52,7 +52,6 @@ internal fun PostWriteRoute(
     val subject by actualViewModel.title.collectAsStateWithLifecycle()
     val content by actualViewModel.content.collectAsStateWithLifecycle()
 
-    // ▼ ViewModel의 Enum 상태 구독
     val selectedType by actualViewModel.type.collectAsStateWithLifecycle()
     val selectedMode by actualViewModel.mode.collectAsStateWithLifecycle()
 
@@ -132,7 +131,6 @@ private fun PostWriteScreen(
     onImageAdd: () -> Unit,
     onNextClick: (String, String) -> Unit,
     onBackClick: () -> Unit,
-    // ▼ Enum 파라미터
     selectedType: Type,
     selectedMode: Mode,
     onTypeSelect: (Type) -> Unit,
@@ -149,7 +147,7 @@ private fun PostWriteScreen(
                 Mode.RECEIVER to "해주세요",
                 Mode.GIVER to "할 수 있어요",
             )
-        } else { // Type.OBJECT
+        } else {
             listOf(
                 Mode.GIVER to "팔아요",
                 Mode.RECEIVER to "필요해요"
@@ -197,8 +195,8 @@ private fun PostWriteScreen(
                     DropdownMenuItem(
                         text = { Text(displayText) },
                         onClick = {
-                            onTypeSelect(enumValue)   // 뷰모델에 타입만 저장
-                            typeExpanded = false      // 라벨은 파생 상태라 자동 갱신됨
+                            onTypeSelect(enumValue)
+                            typeExpanded = false
                         }
                     )
                 }
