@@ -15,10 +15,10 @@ import kotlinx.collections.immutable.PersistentList
 data class GetChatRoomResponseUi(
     val roomId: Long,
     val member: GetMemberResponseUi,
-    val messageId: Long,
-    val lastMessage: String,
-    val lastMessageType: String,
-    val lastMessageTime: String,
+    val messageId: Long?,
+    val lastMessage: String?,
+    val lastMessageType: String?,
+    val lastMessageTime: String?,
     val unreadMessageCount: Long,
     val product: GetProductResponseUi
 )

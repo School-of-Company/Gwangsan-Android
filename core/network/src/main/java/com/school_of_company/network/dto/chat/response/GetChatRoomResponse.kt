@@ -7,11 +7,13 @@ import com.squareup.moshi.JsonClass
 data class GetChatRoomResponse(
     @Json(name = "roomId") val roomId: Long,
     @Json(name = "member") val member: GetMemberResponse,
-    @Json(name = "messageId") val messageId: Long,
-    @Json(name = "lastMessage") val lastMessage: String,
-    @Json(name = "lastMessageType") val lastMessageType: String,
-    @Json(name = "lastMessageTime") val lastMessageTime: String,
-    @Json(name = "unreadMessageCount") val unreadMessageCount: Long,
+
+    @Json(name = "messageId") val messageId: Long? = null,             // ✅ nullable
+    @Json(name = "lastMessage") val lastMessage: String? = null,       // ✅ nullable
+    @Json(name = "lastMessageType") val lastMessageType: String? = null, // ✅ nullable
+    @Json(name = "lastMessageTime") val lastMessageTime: String? = null, // ✅ nullable
+
+    @Json(name = "unreadMessageCount") val unreadMessageCount: Long,   // 그대로 non-null
     @Json(name = "product") val product: GetProductResponse
 )
 
