@@ -168,12 +168,7 @@ private fun ChatRoomScreen(
 
             GwangSanTopBar(
                 startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { onBackClick() }) },
-                betweenText = when (connectionStatus) {
-                    ConnectionStatus.CONNECTED -> "뒤로"
-                    ConnectionStatus.CONNECTING -> "연결 중..."
-                    ConnectionStatus.DISCONNECTED -> "연결 끊김"
-                    ConnectionStatus.ERROR -> "에러.."
-                }
+                betweenText = "뒤로"
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -257,6 +252,7 @@ private fun ChatRoomScreen(
                 }
 
                 is ChatMessageUiState.Error -> {
+                    Log.d("ChatRoomRoute", "ChatRoomScreen: ${chatMessageUiState.exception}")
                     Box(
                         modifier = Modifier
                             .weight(1f)
