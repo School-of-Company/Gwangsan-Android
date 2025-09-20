@@ -6,12 +6,11 @@ data class GetChatRoomResponseModel(
     val roomId: Long,
     val member: GetMemberResponseModel,
 
-    val messageId: Long?,            // ✅ nullable
-    val lastMessage: String?,        // ✅ nullable
-    val lastMessageType: String?,    // ✅ nullable
-    val lastMessageTime: String?,    // ✅ nullable
-
-    val unreadMessageCount: Long,    // 그대로 non-null
+    val messageId: Long?,
+    val lastMessage: String?,
+    val lastMessageType: String?,
+    val lastMessageTime: String?,
+    val unreadMessageCount: Long,
     val product: GetProductResponseModel
 )
 
