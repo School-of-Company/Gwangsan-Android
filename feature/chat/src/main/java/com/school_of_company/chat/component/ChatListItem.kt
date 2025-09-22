@@ -83,9 +83,10 @@ internal fun ChatListItem(
 
                 Spacer(modifier = Modifier.height(5.dp))
 
-                val messagePreview = when (item.lastMessageType) {
-                    "IMAGE" -> "이미지를 보냈습니다."
-                    else -> item.lastMessage
+                val messagePreview: String = if (item.lastMessageType == "IMAGE") {
+                    "이미지를 보냈습니다."
+                } else {
+                    item.lastMessage.orEmpty()
                 }
 
                 Text(
@@ -98,9 +99,10 @@ internal fun ChatListItem(
             }
 
             Column {
+                val timeText = item.lastMessageTime?.let { formatChatTime(it) }.orEmpty()
 
                 Text(
-                    text = formatChatTime(item.lastMessageTime),
+                    text = timeText,
                     style = typography.caption,
                     color = colors.gray400
                 )
@@ -108,38 +110,10 @@ internal fun ChatListItem(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 if (item.unreadMessageCount > 0L) {
-                    UnreadBadge(
-                        modifier = Modifier.align(Alignment.End)
-                    )
+                    UnreadBadge(modifier = Modifier.align(Alignment.End))
                 }
             }
         }
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-private fun ChatListItemPreview() {
-    val dummyItem = GetChatRoomResponseUi(
-        roomId = 1L,
-        member = GetMemberResponseUi(
-            memberId = 42L,
-            nickname = "홍길동"
-        ),
-        messageId = 100L,
-        lastMessage = "안녕하세요, 채팅 테스트입니다!",
-        lastMessageType = "TEXT",
-        lastMessageTime = "2025-07-22T12:34:56",
-        unreadMessageCount = 2L,
-        product = GetProductResponseUi(
-            productId = 1000L,
-            title = "상품 제목",
-            images = persistentListOf()
-        )
-    )
-
-    ChatListItem(
-        item = dummyItem,
-        onClick = {},
-    )
-}
