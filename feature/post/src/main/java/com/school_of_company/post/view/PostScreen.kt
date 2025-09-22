@@ -101,7 +101,7 @@ private fun PostScreen(
                             })
                     )
                 },
-                betweenText = "해주세요",
+                betweenText = "게시글 등록",
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp),
