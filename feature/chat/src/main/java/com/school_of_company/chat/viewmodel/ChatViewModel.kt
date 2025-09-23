@@ -125,7 +125,20 @@ class ChatViewModel @Inject constructor(
                 when (result){
                     is Result.Loading -> _transactionCompleteUiState.value = ChatTransactionCompleteUiState.Loading
                     is Result.Success -> _transactionCompleteUiState.value = ChatTransactionCompleteUiState.Success
-                    is Result.Error -> _transactionCompleteUiState.value = ChatTransactionCompleteUiState.Error(result.exception)
+                    is Result.Error -> {_transactionCompleteUiState.value = ChatTransactionCompleteUiState.Error(result.exception)
+                    result.exception.errorHandling(
+                        notFoundAction = {
+                            _transactionCompleteUiState.value = ChatTransactionCompleteUiState.NotFound
+                        },
+                        unauthorizedAction = {
+                            _transactionCompleteUiState.value = ChatTransactionCompleteUiState.Unauthorized
+                        },
+                        conflictAction = {
+                            _transactionCompleteUiState.value = ChatTransactionCompleteUiState.Conflict
+                        }
+                    )
+                    }
+
                 }
             }
     }

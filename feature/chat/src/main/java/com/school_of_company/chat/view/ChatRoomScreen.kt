@@ -112,13 +112,20 @@ internal fun ChatRoomRoute(
         else -> Unit
     }
 
-    when (transactionCompleteUiState){
-        is ChatTransactionCompleteUiState.Loading -> ""
-        is ChatTransactionCompleteUiState.Error -> makeToast(context, "거래실패")
-        is ChatTransactionCompleteUiState.Success -> makeToast(context, "거래성공")
-        is ChatTransactionCompleteUiState.Unauthorized -> makeToast(context, "본인을 거래 대상으로 선택할 수 없습니다.")
-        is ChatTransactionCompleteUiState.NotFound -> makeToast(context, "거래실패")
-        is ChatTransactionCompleteUiState.Conflict -> makeToast(context, "이미 거래 완료된 상품입니다.")
+
+    LaunchedEffect(transactionCompleteUiState) {
+        when (transactionCompleteUiState) {
+            is ChatTransactionCompleteUiState.Loading -> ""
+            is ChatTransactionCompleteUiState.Error -> makeToast(context, "거래실패")
+            is ChatTransactionCompleteUiState.Success -> makeToast(context, "거래성공")
+            is ChatTransactionCompleteUiState.Unauthorized -> makeToast(
+                context,
+                "본인을 거래 대상으로 선택할 수 없습니다."
+            )
+
+            is ChatTransactionCompleteUiState.NotFound -> makeToast(context, "거래실패")
+            is ChatTransactionCompleteUiState.Conflict -> makeToast(context, "이미 거래 완료된 상품입니다.")
+        }
     }
 
     // 채팅 진입 분기

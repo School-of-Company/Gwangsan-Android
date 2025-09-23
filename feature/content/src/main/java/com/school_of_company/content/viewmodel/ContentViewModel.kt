@@ -141,7 +141,20 @@ class ContentViewModel @Inject constructor(
                 when (result){
                     is Result.Loading -> _transactionCompleteUiState.value = TransactionCompleteUiState.Loading
                     is Result.Success -> _transactionCompleteUiState.value = TransactionCompleteUiState.Success
-                    is Result.Error -> _transactionCompleteUiState.value = TransactionCompleteUiState.Error(result.exception)
+                    is Result.Error -> {_transactionCompleteUiState.value = TransactionCompleteUiState.Error(result.exception)
+                        result.exception.errorHandling(
+                            notFoundAction = {
+                                _transactionCompleteUiState.value = TransactionCompleteUiState.NotFound
+                            },
+                            unauthorizedAction = {
+                                _transactionCompleteUiState.value = TransactionCompleteUiState.Unauthorized
+                            },
+                            conflictAction = {
+                                _transactionCompleteUiState.value = TransactionCompleteUiState.Conflict
+                            }
+                        )
+                    }
+
                 }
             }
     }

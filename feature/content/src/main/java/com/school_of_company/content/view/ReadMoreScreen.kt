@@ -128,19 +128,17 @@ internal fun ReadMoreRoute(
     }
 
     LaunchedEffect(transactionCompleteUiState) {
-        when (transactionCompleteUiState) {
-            is TransactionCompleteUiState.Loading -> Unit
-            is TransactionCompleteUiState.Success -> {
-                setButtonText("리뷰쓰기")
-                setOpenReviewBottomSheet(false)
-                makeToast(context, "거래완료 성공")
-            }
-
-            is TransactionCompleteUiState.Error -> {
-                makeToast(context, "거래완료 실패")
-            }
+        when (transactionCompleteUiState){
+            is TransactionCompleteUiState.Loading -> ""
+            is TransactionCompleteUiState.Error -> makeToast(context, "거래실패")
+            is TransactionCompleteUiState.Success -> makeToast(context, "거래성공")
+            is TransactionCompleteUiState.Unauthorized -> makeToast(context, "본인을 거래 대상으로 선택할 수 없습니다.")
+            is TransactionCompleteUiState.NotFound -> makeToast(context, "거래실패")
+            is TransactionCompleteUiState.Conflict -> makeToast(context, "이미 거래 완료된 상품입니다.")
         }
     }
+
+
 
     when (getSpecificPostUiState) {
 
