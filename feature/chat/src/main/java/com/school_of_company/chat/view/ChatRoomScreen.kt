@@ -105,11 +105,16 @@ internal fun ChatRoomRoute(
     }
 
 
-    when (tradeReservationUiState) {
-        is TradeReservationUiState.Error -> makeToast(context, "예약실패")
-        is TradeReservationUiState.Loading -> ""
-        is TradeReservationUiState.Success -> makeToast(context, "예약성공")
-        else -> Unit
+    LaunchedEffect(transactionCompleteUiState) {
+        when (tradeReservationUiState) {
+            is TradeReservationUiState.Error -> makeToast(context, "예약실패")
+            is TradeReservationUiState.Loading -> ""
+            is TradeReservationUiState.Success -> makeToast(context, "예약성공")
+            is TradeReservationUiState.Unauthorized -> makeToast(context, "본인을 거래 대상으로 선택할 수 없습니다.")
+            is TradeReservationUiState.NotFound -> makeToast(context, "거래실패")
+            is TradeReservationUiState.Conflict -> makeToast(context, "이미 예약 완료된 상품입니다.")
+            is TradeReservationUiState.BadRequest -> makeToast(context, "진행 중인 상품만 예약할 수 있습니다.")
+        }
     }
 
 
