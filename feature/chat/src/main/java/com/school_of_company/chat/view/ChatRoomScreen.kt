@@ -10,6 +10,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -104,30 +105,27 @@ internal fun ChatRoomRoute(
         onDispose { viewModel.disconnect() }
     }
 
-
-    LaunchedEffect(transactionCompleteUiState) {
+    // 예약 상태 토스트: 예약 상태가 변경될 때만 반응
+    LaunchedEffect(tradeReservationUiState) {
         when (tradeReservationUiState) {
             is TradeReservationUiState.Error -> makeToast(context, "예약실패")
-            is TradeReservationUiState.Loading -> ""
+            is TradeReservationUiState.Loading -> Unit
             is TradeReservationUiState.Success -> makeToast(context, "예약성공")
             is TradeReservationUiState.Unauthorized -> makeToast(context, "본인을 거래 대상으로 선택할 수 없습니다.")
             is TradeReservationUiState.NotFound -> makeToast(context, "거래실패")
             is TradeReservationUiState.Conflict -> makeToast(context, "이미 예약 완료된 상품입니다.")
             is TradeReservationUiState.BadRequest -> makeToast(context, "진행 중인 상품만 예약할 수 있습니다.")
+            else -> Unit
         }
     }
 
-
+    // 거래 완료 토스트: 거래 상태가 변경될 때만 반응
     LaunchedEffect(transactionCompleteUiState) {
         when (transactionCompleteUiState) {
-            is ChatTransactionCompleteUiState.Loading -> ""
+            is ChatTransactionCompleteUiState.Loading -> Unit
             is ChatTransactionCompleteUiState.Error -> makeToast(context, "거래실패")
             is ChatTransactionCompleteUiState.Success -> makeToast(context, "거래성공")
-            is ChatTransactionCompleteUiState.Unauthorized -> makeToast(
-                context,
-                "본인을 거래 대상으로 선택할 수 없습니다."
-            )
-
+            is ChatTransactionCompleteUiState.Unauthorized -> makeToast(context, "본인을 거래 대상으로 선택할 수 없습니다.")
             is ChatTransactionCompleteUiState.NotFound -> makeToast(context, "거래실패")
             is ChatTransactionCompleteUiState.Conflict -> makeToast(context, "이미 거래 완료된 상품입니다.")
         }
@@ -157,6 +155,7 @@ internal fun ChatRoomRoute(
                 userName = userName,
                 lastTime = latestMessageTime,
                 getLoadTradUiState = getLoadTradUiState,
+                getMySpecificInformationUiState = getMySpecificInformationUiState,
                 connectionStatus = connectionStatus,
                 onBackClick = onBackClick,
                 onSendClick = { message ->
@@ -178,9 +177,7 @@ internal fun ChatRoomRoute(
                         )
                     )
                 },
-                chatMessageUiState = chatMessageUiState,
-                getMySpecificInformationUiState = getMySpecificInformationUiState
-
+                chatMessageUiState = chatMessageUiState
             )
         }
     }
@@ -207,7 +204,6 @@ private fun ChatRoomScreen(
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
 
-
     var openTradeBottomSheet by rememberSaveable { mutableStateOf(false) }
     var sheetProduct by remember { mutableStateOf<com.school_of_company.chat.ui.model.TradeProductUi?>(null) }
     var sheetMessage by remember { mutableStateOf<com.school_of_company.chat.ui.model.ChatMessageUi?>(null) }
@@ -222,21 +218,16 @@ private fun ChatRoomScreen(
         ) {
             Spacer(modifier = Modifier.height(60.dp))
 
+            // 내 모드(giver) 여부 판단
             val modeStr = ((getMySpecificInformationUiState as? GetMySpecificInformationUiState.Success)
                 ?.data
                 ?.mode)
-
-
-// giver 여부 (대소문자 무시)
+                ?.toString()
             val isGiver = modeStr.equals("giver", ignoreCase = true)
 
             GwangSanSubTopBar(
                 modifier = Modifier.height(50.dp),
                 startIcon = { DownArrowIcon(modifier = Modifier.GwangSanClickable { onBackClick() }) },
-
-                // 필요하면 가운데 텍스트도 다시 넣을 수 있음
-                // betweenText = "뒤로",
-
                 endIcon = {
                     if (isGiver) {
                         addBottomSheetIcon(
@@ -254,7 +245,7 @@ private fun ChatRoomScreen(
                                 }
                             }
                         )
-                    } // giver가 아니면 endIcon 자체를 렌더링하지 않음
+                    }
                 }
             )
             Spacer(modifier = Modifier.height(12.dp))
@@ -294,23 +285,28 @@ private fun ChatRoomScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            // 1) 최초 로드(기준) + 상품
             val baseData = (getLoadTradUiState as? GetLoadTradUiState.Success)?.data
             val baseMessages = baseData?.message.orEmpty()
             val tradeProduct = baseData?.product
 
-// 2) 실시간 메시지 (ChatMessageItem만 그릴 대상)
+            // 2) 실시간 메시지 (ChatMessageItem만)
             val liveAll = (chatMessageUiState as? ChatMessageUiState.Success)?.data.orEmpty()
 
-// 3) 기준 메시지 id 집합
+            // 3) 기준 메시지 id 집합
             val baseIds = remember(baseMessages) { baseMessages.map { it.messageId }.toSet() }
 
-// 4) 최종 머지: 기준 + (기준에 없는) 실시간
+            // 4) 최종 머지: 기준 + (기준에 없는) 실시간
             val mergedMessages = remember(baseMessages, liveAll) {
                 val liveOnly = liveAll.filter { it.messageId !in baseIds }
                 baseMessages + liveOnly
             }
 
-// 5) 리스트 그리기 (기준 메시지엔 TradeActionBubble, 실시간 추가분은 ChatMessageItem만)
+            // 5) 버블은 '첫 기준 메시지' 위치에서만 1회 렌더
+            val firstBubbleIndex = remember(mergedMessages, baseIds) {
+                mergedMessages.indexOfFirst { it.messageId in baseIds }
+            }
+
             LazyColumn(
                 state = listState,
                 verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -318,10 +314,10 @@ private fun ChatRoomScreen(
                     .weight(1f)
                     .fillMaxWidth()
             ) {
-                items(items = mergedMessages, key = { it.messageId }) { message ->
-                    val isBase = message.messageId in baseIds
-                    if (isBase && tradeProduct != null) {
-                        val productId = tradeProduct.id
+                itemsIndexed(items = mergedMessages, key = { _, m -> m.messageId }) { index, message ->
+                    val showBubbleOnce = tradeProduct != null && index == firstBubbleIndex && firstBubbleIndex >= 0
+                    if (showBubbleOnce) {
+                        val productId = tradeProduct!!.id
                         val senderId = message.senderId
                         TradeActionBubble(
                             data = tradeProduct,
@@ -331,18 +327,18 @@ private fun ChatRoomScreen(
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                     }
-                    ChatMessageItem(message = message) // 실시간 추가분은 항상 이거만!
+                    ChatMessageItem(message = message)
                 }
             }
 
-// 6) 스크롤 하단 고정
+            // 6) 스크롤 하단 고정
             LaunchedEffect(mergedMessages.size) {
                 if (mergedMessages.isNotEmpty()) {
                     coroutineScope.launch { listState.animateScrollToItem(mergedMessages.size - 1) }
                 }
             }
 
-// 7) 로딩/에러 상태 표시 (리스트 비었을 때만 센터 표시)
+            // 7) 로딩/에러 상태 표시 (리스트 비었을 때만 센터 표시)
             when {
                 (chatMessageUiState is ChatMessageUiState.Loading ||
                         getLoadTradUiState is GetLoadTradUiState.Loading) && mergedMessages.isEmpty() -> {
