@@ -178,6 +178,7 @@ private fun PostWriteScreen(
                 .fillMaxSize()
                 .background(colors.white)
                 .padding(horizontal = 24.dp)
+                .navigationBarsPadding()
                 .pointerInput(Unit) { detectTapGestures { focusManager.clearFocus() } }
         ) {
             GwangSanSelectTextField(

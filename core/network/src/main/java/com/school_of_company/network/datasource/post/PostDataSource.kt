@@ -30,4 +30,6 @@ interface PostDataSource {
         mode: String? = null,
         memberId: Long
     ) : Flow<List<AllPostDto>>
+    fun transactionReservation(postId: Long) : Flow<Unit>
+    fun deleteReservation(postId: Long) : Flow<Unit>
 }

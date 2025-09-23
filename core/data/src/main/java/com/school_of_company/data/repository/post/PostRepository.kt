@@ -29,4 +29,7 @@ interface PostRepository {
         mode: String? = null,
         memberId: Long
     ) : Flow<List<AllPost>>
+    fun transactionReservation(postId: Long) : Flow<Unit>
+    fun deleteReservation(postId: Long) : Flow<Unit>
+
 }

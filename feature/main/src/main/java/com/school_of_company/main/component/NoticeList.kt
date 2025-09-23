@@ -59,7 +59,7 @@ fun NoticeListItem(
                     )
                     .clip(RoundedCornerShape(10.dp))
             ) {
-                if (firstImageUrl.isNullOrEmpty()) {
+                if (firstImageUrl.isNullOrBlank()) {
                     Image(
                         painter = painterResource(id = R.drawable.gwangsan),
                         contentDescription = "기본 이미지",

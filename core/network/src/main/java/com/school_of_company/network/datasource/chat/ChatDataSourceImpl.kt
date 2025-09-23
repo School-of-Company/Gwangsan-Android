@@ -2,11 +2,11 @@ package com.school_of_company.network.datasource.chat
 
 import com.school_of_company.network.api.ChatAPI
 import com.school_of_company.network.dto.chat.request.ReadMessageRequest
-import com.school_of_company.network.dto.chat.response.GetChatMessageResponse
 import com.school_of_company.network.dto.chat.response.GetChatRoomResponse
 import com.school_of_company.network.dto.chat.response.JoinChatResponse
 import com.school_of_company.network.socket.dto.request.SendMessageDto
 import com.school_of_company.network.socket.dto.response.ChatMessageDto
+import com.school_of_company.network.socket.dto.response.GetChatMessagesResponseDto
 import com.school_of_company.network.socket.manager.ConnectionStatus
 import com.school_of_company.network.socket.manager.SocketManager
 import com.school_of_company.network.socket.model.response.ChatMessage
@@ -33,7 +33,7 @@ class ChatDataSourceImpl @Inject constructor(
         lastCreatedAt: String?,
         lastMessageId: Long?,
         limit: Int
-    ): Flow<List<ChatMessageDto>> =
+    ): Flow<GetChatMessagesResponseDto> =
         performApiRequest { chatAPI.getChatMessageList(
             roomId = roomId,
             lastCreatedAt = lastCreatedAt,

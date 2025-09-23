@@ -8,6 +8,7 @@ import com.school_of_company.network.socket.mapper.response.toModel
 import com.school_of_company.network.socket.model.response.ChatMessage
 import com.school_of_company.network.socket.model.response.RoomUpdate
 import com.squareup.moshi.Moshi
+import io.socket.client.Ack
 import io.socket.client.IO
 import io.socket.client.Socket
 import kotlinx.coroutines.channels.Channel
@@ -67,14 +68,17 @@ class SocketManager @Inject constructor(
         socket?.apply {
 
             on(Socket.EVENT_CONNECT) {
+                Log.e("SocketManager", "Socket connected")
                 _connectionEvents.trySend(ConnectionStatus.CONNECTED)
             }
 
             on(Socket.EVENT_CONNECT_ERROR) {
+                Log.e("SocketManager", "Socket connection error: ${it[0]}")
                 _connectionEvents.trySend(ConnectionStatus.ERROR)
             }
 
             on(Socket.EVENT_DISCONNECT) {
+                Log.e("SocketManager", "Socket disconnected")
                 _connectionEvents.trySend(ConnectionStatus.DISCONNECTED)
             }
 
@@ -107,13 +111,30 @@ class SocketManager @Inject constructor(
         }
     }
 
+    private  val TAG = "SocketManager"
+
     fun sendMessage(message: SendMessageDto) {
         try {
+            val s = socket
+            if (s == null) {
+                Log.e(TAG, "sendMessage: socket is NULL (not connected?)")
+                return
+            }
+
             val jsonString = sendMessageAdapter.toJson(message)
             val jsonObject = JSONObject(jsonString)
-            socket?.emit("sendMessage", jsonObject)
+
+            Log.d(TAG, "sendMessage() called")
+            Log.d(TAG, "-> emit sendMessage payload=$jsonObject")
+            Log.d(TAG, "socket connected=${s.connected()} id=${s.id()}")
+
+            s.emit("sendMessage", jsonObject, object : Ack {
+                override fun call(vararg ackArgs: Any?) {
+                    Log.d(TAG, "<- ack sendMessage args=${ackArgs.joinToString()}")
+                }
+            })
         } catch (e: Exception) {
-            Log.e("SocketManager", "Error sending message", e)
+            Log.e(TAG, "Error sending message", e)
         }
     }
 

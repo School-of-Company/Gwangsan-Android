@@ -11,6 +11,7 @@ import com.school_of_company.network.socket.mapper.request.toDto
 import com.school_of_company.network.socket.mapper.response.toModel
 import com.school_of_company.network.socket.model.request.SendMessage
 import com.school_of_company.network.socket.model.response.ChatMessage
+import com.school_of_company.network.socket.model.response.GetChatResponse
 import com.school_of_company.network.socket.model.response.RoomUpdate
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -36,13 +37,13 @@ class ChatRepositoryImpl @Inject constructor(
         lastCreatedAt: String?,
         lastMessageId: Long?,
         limit: Int
-    ): Flow<List<ChatMessage>> {
+    ): Flow<GetChatResponse> {
         return chatDataSource.getChatMessageList(
             roomId = roomId,
             lastCreatedAt = lastCreatedAt,
             lastMessageId = lastMessageId,
             limit = limit
-        ).map { it.map { list -> list.toModel() } }
+        ).map { it.toModel() }
     }
 
     override fun readChatMessage(body: ReadMessageRequestModel): Flow<Unit> {

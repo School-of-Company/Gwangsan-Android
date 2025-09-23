@@ -1,15 +1,25 @@
 package com.school_of_company.chat.ui.mapper
 
 import com.school_of_company.chat.ui.model.ChatMessageUi
+import com.school_of_company.chat.ui.model.GetChatResponseUi
 import com.school_of_company.chat.ui.model.MessageImageUi
+import com.school_of_company.chat.ui.model.TradeImageUi
+import com.school_of_company.chat.ui.model.TradeProductUi
 import com.school_of_company.network.socket.model.response.ChatMessage
+import com.school_of_company.network.socket.model.response.GetChatResponse
 import com.school_of_company.network.socket.model.response.MessageImage
+import com.school_of_company.network.socket.model.response.TradeImage
+
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
 /**
  * Socket 응답 → UI 모델 변환
  */
+fun GetChatResponse.toUi() = GetChatResponseUi(
+    message = this.message.map { it.toUi() }.toPersistentList(),
+    product = this.product.toUi()
+)
 
 fun ChatMessage.toUi() = ChatMessageUi(
     messageId = this.messageId,
@@ -25,6 +35,20 @@ fun ChatMessage.toUi() = ChatMessageUi(
 )
 
 fun MessageImage.toUi() = MessageImageUi(
+    imageId = this.imageId,
+    imageUrl = this.imageUrl
+)
+
+fun com.school_of_company.network.socket.model.response.TradeProduct.toUi() = TradeProductUi(
+    id = this.id,
+    title = this.title,
+    images = this.images?.map { it.toUi() }?.toPersistentList() ?: persistentListOf(),
+    createdAt = this.createdAt,
+    isSeller = this.isSeller,
+    isCompletable = this.isCompletable
+)
+
+fun TradeImage.toUi() = TradeImageUi(
     imageId = this.imageId,
     imageUrl = this.imageUrl
 )
