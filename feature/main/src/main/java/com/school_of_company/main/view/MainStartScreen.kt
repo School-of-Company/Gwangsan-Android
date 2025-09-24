@@ -48,6 +48,28 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+private object GwangsanCenters {
+    val centerToAreas = mapOf(
+        "광산구도시재생공동체센터" to listOf("수완마을", "고실마을", "신가동", "신창동"),
+        "광산구자원봉사센터"     to listOf("도산", "우산", "월곡1", "첨단2"),
+        "광산구지역사회보장협의체" to listOf("평동", "월곡2", "하남")
+    )
+    val areaToCenter: Map<String, String> =
+        centerToAreas.flatMap { (c, areas) -> areas.map { it to c } }.toMap()
+}
+
+/** placeName(예: "광산구 수완동")에서 마지막 토큰을 추출해서 센터 라벨을 돌려줌 */
+private fun centerLabelOf(placeName: String?): String {
+    if (placeName.isNullOrBlank()) return "센터 확인 중…"
+    val token = placeName.trim()
+        .split(' ', '·', '-', '/', '(', ')')
+        .lastOrNull()
+        ?.trim()
+        ?: placeName.trim()
+    return GwangsanCenters.areaToCenter[token] ?: "미지정 센터"
+}
+
+// ===== Route =====
 @Composable
 internal fun MainStartRoute(
     navigationToService: () -> Unit,
@@ -55,7 +77,6 @@ internal fun MainStartRoute(
     navigationToNotice: () -> Unit,
     viewModel: MainViewModel = hiltViewModel()
 ) {
-
     val getMyProfileUiState by viewModel.myProfileUiState.collectAsStateWithLifecycle()
     val getUnReadAlertUiState by viewModel.getUnReadAlertUiState.collectAsStateWithLifecycle()
 
@@ -73,6 +94,7 @@ internal fun MainStartRoute(
     )
 }
 
+// ===== Screen =====
 @Composable
 private fun MainStartScreen(
     modifier: Modifier = Modifier,
@@ -112,7 +134,6 @@ private fun MainStartScreen(
                             }
                         }
                         else -> BellIcon(modifier = Modifier.GwangSanClickable { navigationToNotice() })
-
                     }
                 },
                 modifier = Modifier.padding(
@@ -130,7 +151,6 @@ private fun MainStartScreen(
                     .fillMaxWidth()
                     .padding(top = 3.dp)
                     .height(280.dp),
-
             ) {
                 Column(modifier = Modifier.fillMaxSize()) {
                     Divider(
@@ -161,8 +181,16 @@ private fun MainStartScreen(
 
             Column(modifier = Modifier.padding(horizontal = 24.dp)) {
 
+                // placeName 기반 동적 센터 타이틀
+                val centerTitle = when (getMyProfileUiState) {
+                    is MemberUiState.Success -> centerLabelOf(getMyProfileUiState.data.placeName)
+                    is MemberUiState.Loading -> "센터 확인 중…"
+                    is MemberUiState.Error   -> "미지정 센터"
+                    else -> "미지정 센터"
+                }
+
                 Text(
-                    text = "광산구도시재생센터",
+                    text = centerTitle,
                     style = typography.titleMedium2,
                     color = colors.black,
                 )
@@ -177,7 +205,6 @@ private fun MainStartScreen(
                             color = colors.gray500
                         )
                     }
-
                     is MemberUiState.Success -> {
                         Text(
                             text = getMyProfileUiState.data.placeName,
@@ -185,7 +212,6 @@ private fun MainStartScreen(
                             color = colors.black
                         )
                     }
-
                     is MemberUiState.Error -> {
                         Text(
                             text = "요청 실패..",
@@ -222,6 +248,7 @@ private fun MainStartScreen(
     }
 }
 
+// ===== 배너 =====
 @Composable
 private fun AutoSlideBanner(
     modifier: Modifier = Modifier,
@@ -229,15 +256,15 @@ private fun AutoSlideBanner(
     durationMillis: Long = 2650L
 ) {
     val pagerState = rememberPagerState(pageCount = { imageIds.size })
-    val coroutineScope = rememberCoroutineScope()
+    val cs = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         while (true) {
             delay(durationMillis)
-            val nextPage = (pagerState.currentPage + 1) % imageIds.size
-            coroutineScope.launch {
+            val next = (pagerState.currentPage + 1) % imageIds.size
+            cs.launch {
                 pagerState.animateScrollToPage(
-                    page = nextPage,
+                    page = next,
                     animationSpec = tween(durationMillis = 500)
                 )
             }
@@ -256,6 +283,7 @@ private fun AutoSlideBanner(
     }
 }
 
+// ===== Preview =====
 @GwangsanPreviews
 @Composable
 fun MainStartScreenPreview() {
@@ -267,4 +295,3 @@ fun MainStartScreenPreview() {
         getUnReadAlertUiState = GetUnReadAlertUiState.Loading
     )
 }
-
