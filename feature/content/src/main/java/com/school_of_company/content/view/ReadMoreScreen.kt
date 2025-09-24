@@ -220,9 +220,26 @@ private fun ReadMoreScreen(
 
     GwangSanTheme { colors, typography ->
 
+        fun betweenLabel(type: String, mode: String): String {
+            val t = type.uppercase()
+            val m = when (mode.uppercase()) {
+                "RECIVER" -> "RECEIVER"
+                else -> mode.uppercase()
+            }
+
+            return when (t) {
+                "OBJECT"  -> if (m == "RECEIVER") "필요해요" else "팔아요"
+                "SERVICE" -> if (m == "RECEIVER") "해주세요" else "할 수 있어요"
+                else      -> mode
+            }
+        }
+
         when (getSpecificPostUiState) {
             is GetSpecificPostUiState.Success -> {
                 val post = getSpecificPostUiState.post
+                val betweenTextLabel = remember(post.type, post.mode) {
+                    betweenLabel(post.type, post.mode)
+                }
                 val pagerState = rememberPagerState(pageCount = { post.images.size })
 
                 Box(
@@ -239,7 +256,7 @@ private fun ReadMoreScreen(
                             startIcon = {
                                 DownArrowIcon(modifier = Modifier.GwangSanClickable { onBackClick() })
                             },
-                            betweenText = "해주세요",
+                            betweenText = betweenTextLabel,
                             endIcon = { Spacer(modifier = Modifier.size(24.dp)) },
                             modifier = Modifier.padding(
                                 top = 52.dp,
@@ -366,7 +383,7 @@ private fun ReadMoreScreen(
                             } else {
                                 GwangSanStateButton(
                                     text = "거래하기",
-                                    state = if (getSpecificPostUiState.post.isCompletable == true) {
+                                    state = if (getSpecificPostUiState.post.isCompletable == true && getSpecificPostUiState.post.mode == "RECEIVER") {
                                         ButtonState.Enable
                                     } else {
                                         ButtonState.Disable
@@ -419,17 +436,6 @@ private fun ReadMoreScreen(
                 onDismiss = { setOpenReportBottomSheet(false) },
                 onSubmit = { reportType, reportContent ->
                     onReportCallBack(reportType, reportContent)
-                }
-            )
-        }
-    }
-
-    if (openReviewBottomSheet) {
-        Dialog(onDismissRequest = { setOpenReviewBottomSheet(false) }) {
-            ReviewBottomSheet(
-                onDismiss = { setOpenReviewBottomSheet(false) },
-                onSubmit = { content, light ->
-                    onReviewCallBack(content, light)
                 }
             )
         }

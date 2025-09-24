@@ -52,5 +52,6 @@ data class TradeProductUi(
     val images: PersistentList<TradeImageUi>?,
     val createdAt: String?,
     val isSeller: Boolean,
-    val isCompletable: Boolean
+    val isCompletable: Boolean,
+    val isCompleted: Boolean,
 )

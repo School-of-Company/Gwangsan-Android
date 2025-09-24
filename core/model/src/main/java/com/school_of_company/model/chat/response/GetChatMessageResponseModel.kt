@@ -32,5 +32,6 @@ data class TradeProductModel(
     val images: List<TradeImageModel>?,
     val createdAt: String?,          // nullable
     val isSeller: Boolean,
-    val isCompletable: Boolean
+    val isCompletable: Boolean,
+    val isCompleted: Boolean,
 )

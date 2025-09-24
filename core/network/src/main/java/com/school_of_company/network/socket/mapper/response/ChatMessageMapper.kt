@@ -47,6 +47,8 @@ fun TradeProductDto.toModel() = TradeProduct(
     images = images?.map { it.toModel() }?.toPersistentList() ?:persistentListOf(),
     createdAt = this.createdAt,
     isSeller = this.isSeller,
-    isCompletable = this.isCompletable
+    isCompletable = this.isCompletable,
+    isCompleted = this.isCompleted
+
 
 )

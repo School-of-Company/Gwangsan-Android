@@ -31,6 +31,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import com.school_of_company.chat.component.ChatMessageItem
 import com.school_of_company.chat.component.TradeActionBubble
+import com.school_of_company.chat.component.TradeActionBubbleSuccess
 import com.school_of_company.chat.component.TradeRequestBottomSheet
 import com.school_of_company.chat.util.formatChatTimeToDate
 import com.school_of_company.chat.viewmodel.ChatViewModel
@@ -40,12 +41,13 @@ import com.school_of_company.chat.viewmodel.uistate.GetLoadTradUiState
 import com.school_of_company.chat.viewmodel.uistate.GetMySpecificInformationUiState
 import com.school_of_company.chat.viewmodel.uistate.JoinChatUiState
 import com.school_of_company.chat.viewmodel.uistate.TradeReservationUiState
+import com.school_of_company.content.component.ReviewBottomSheet
+
 import com.school_of_company.design_system.R
 import com.school_of_company.design_system.component.button.ChatSendButton
 import com.school_of_company.design_system.component.clickable.GwangSanClickable
 import com.school_of_company.design_system.component.icons.DownArrowIcon
 import com.school_of_company.design_system.component.icons.addBottomSheetIcon
-import com.school_of_company.design_system.component.topbar.GwangSanTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.network.socket.manager.ConnectionStatus
 import com.school_of_company.ui.previews.GwangsanPreviews
@@ -53,6 +55,7 @@ import com.school_of_company.design_system.component.textfield.ChatInputTextFiel
 import com.school_of_company.design_system.component.toast.makeToast
 import com.school_of_company.design_system.component.topbar.GwangSanSubTopBar
 import com.school_of_company.model.post.request.TransactionCompleteRequestModel
+import com.school_of_company.model.review.request.ReviewRequestModel
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
@@ -76,6 +79,8 @@ internal fun ChatRoomRoute(
     val selectedImages = remember { mutableStateListOf<Uri>() }
     val uploadedUris = remember { mutableStateListOf<Uri>() }
     val imageIdMap = remember { mutableStateMapOf<Uri, Long>() }
+
+    val (openReviewBottomSheet, setOpenReviewBottomSheet) = rememberSaveable { mutableStateOf(false) }
 
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetMultipleContents(),
@@ -105,7 +110,6 @@ internal fun ChatRoomRoute(
         onDispose { viewModel.disconnect() }
     }
 
-    // 예약 상태 토스트: 예약 상태가 변경될 때만 반응
     LaunchedEffect(tradeReservationUiState) {
         when (tradeReservationUiState) {
             is TradeReservationUiState.Error -> makeToast(context, "예약실패")
@@ -119,7 +123,6 @@ internal fun ChatRoomRoute(
         }
     }
 
-    // 거래 완료 토스트: 거래 상태가 변경될 때만 반응
     LaunchedEffect(transactionCompleteUiState) {
         when (transactionCompleteUiState) {
             is ChatTransactionCompleteUiState.Loading -> Unit
@@ -131,7 +134,6 @@ internal fun ChatRoomRoute(
         }
     }
 
-    // 채팅 진입 분기
     when (joinChatUiState) {
         is JoinChatUiState.Loading -> LoadingScreen()
         is JoinChatUiState.Error -> {
@@ -156,6 +158,7 @@ internal fun ChatRoomRoute(
                 lastTime = latestMessageTime,
                 getLoadTradUiState = getLoadTradUiState,
                 getMySpecificInformationUiState = getMySpecificInformationUiState,
+                transactionCompleteUiState = transactionCompleteUiState, // 현재 로직에서는 사용 X (정리 가능)
                 connectionStatus = connectionStatus,
                 onBackClick = onBackClick,
                 onSendClick = { message ->
@@ -177,7 +180,18 @@ internal fun ChatRoomRoute(
                         )
                     )
                 },
-                chatMessageUiState = chatMessageUiState
+                chatMessageUiState = chatMessageUiState,
+                setOpenReviewBottomSheet = setOpenReviewBottomSheet,
+                openReviewBottomSheet = openReviewBottomSheet,
+                onReviewCallBack = { pid, light, content ->
+                    viewModel.reviewPost(
+                        body = ReviewRequestModel(
+                            productId = pid,
+                            content = content,
+                            light = light
+                        )
+                    )
+                },
             )
         }
     }
@@ -189,10 +203,14 @@ private fun ChatRoomScreen(
     userName: String,
     lastTime: String?,
     chatMessageUiState: ChatMessageUiState,
+    onReviewCallBack: (Long, Int, String) -> Unit,
     uploadedUris: PersistentList<String>,
     selectedImages: PersistentList<String>,
     getLoadTradUiState: GetLoadTradUiState,
     getMySpecificInformationUiState: GetMySpecificInformationUiState,
+    setOpenReviewBottomSheet: (Boolean) -> Unit,
+    openReviewBottomSheet: Boolean,
+    transactionCompleteUiState: ChatTransactionCompleteUiState, // 현재 판단에는 미사용
     connectionStatus: ConnectionStatus,
     onBackClick: () -> Unit,
     onSendClick: (String) -> Unit,
@@ -208,6 +226,8 @@ private fun ChatRoomScreen(
     var sheetProduct by remember { mutableStateOf<com.school_of_company.chat.ui.model.TradeProductUi?>(null) }
     var sheetMessage by remember { mutableStateOf<com.school_of_company.chat.ui.model.ChatMessageUi?>(null) }
 
+    val context = LocalContext.current
+
     GwangSanTheme { colors, typography ->
         Column(
             modifier = modifier
@@ -218,7 +238,6 @@ private fun ChatRoomScreen(
         ) {
             Spacer(modifier = Modifier.height(60.dp))
 
-            // 내 모드(giver) 여부 판단
             val modeStr = ((getMySpecificInformationUiState as? GetMySpecificInformationUiState.Success)
                 ?.data
                 ?.mode)
@@ -266,7 +285,7 @@ private fun ChatRoomScreen(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    text = userName,
+                    text = userName.ifBlank { "상대방" },
                     style = typography.titleSmall,
                     color = colors.black
                 )
@@ -307,6 +326,11 @@ private fun ChatRoomScreen(
                 mergedMessages.indexOfFirst { it.messageId in baseIds }
             }
 
+            // 거래 완료 여부는 product에서 판단
+            val isProductCompleted = tradeProduct?.isCompleted == true
+            // 만약 서버/모델 필드명이 isCompated 라면 아래로 바꿔 사용:
+            // val isProductCompleted = tradeProduct?.isCompated == true
+
             LazyColumn(
                 state = listState,
                 verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -317,14 +341,25 @@ private fun ChatRoomScreen(
                 itemsIndexed(items = mergedMessages, key = { _, m -> m.messageId }) { index, message ->
                     val showBubbleOnce = tradeProduct != null && index == firstBubbleIndex && firstBubbleIndex >= 0
                     if (showBubbleOnce) {
-                        val productId = tradeProduct!!.id
-                        val senderId = message.senderId
-                        TradeActionBubble(
-                            data = tradeProduct,
-                            message = message,
-                            onReserveClick = { onReserveClick(productId) },
-                            onDealClick = { onDealClick(productId, senderId) }
-                        )
+                        if (isProductCompleted) {
+                            TradeActionBubbleSuccess(
+                                data = tradeProduct!!,
+                                onReviewClick = {
+                                    sheetProduct = tradeProduct
+                                    setOpenReviewBottomSheet(true)
+                                },
+                                message = message,
+                            )
+                        } else {
+                            val productId = tradeProduct!!.id
+                            val senderId = message.senderId
+                            TradeActionBubble(
+                                data = tradeProduct,
+                                message = message,
+                                onReserveClick = { onReserveClick(productId) },
+                                onDealClick = { onDealClick(productId, senderId) }
+                            )
+                        }
                         Spacer(modifier = Modifier.height(8.dp))
                     }
                     ChatMessageItem(message = message)
@@ -416,6 +451,24 @@ private fun ChatRoomScreen(
                 message = sheetMessage!!,
                 onCancelClick = { openTradeBottomSheet = false },
             )
+        }
+
+        if (openReviewBottomSheet) {
+            Dialog(onDismissRequest = { setOpenReviewBottomSheet(false) }) {
+                ReviewBottomSheet(
+                    onDismiss = { setOpenReviewBottomSheet(false) },
+                    onSubmit = { reportType, reportContent ->
+                        val productId = sheetProduct?.id
+                        if (productId != null) {
+                            onReviewCallBack(productId, reportType.toInt(), reportContent)
+                        } else {
+                            Log.w("ChatRoom", "Review submit clicked without productId")
+                            makeToast(context, "상품 정보를 찾을 수 없어요.")
+                        }
+                        setOpenReviewBottomSheet(false)
+                    }
+                )
+            }
         }
     }
 }

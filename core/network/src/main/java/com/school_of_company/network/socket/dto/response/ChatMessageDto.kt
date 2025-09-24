@@ -42,5 +42,7 @@ data class TradeProductDto(
     @Json(name = "images") val images: List<TradeImageDto>?,
     @Json(name = "createdAt") val createdAt: String?,
     @Json(name = "isSeller") val isSeller: Boolean,
-    @Json(name = "isCompletable") val isCompletable: Boolean
+    @Json(name = "isCompletable") val isCompletable: Boolean,
+    @Json(name = "isCompleted") val isCompleted: Boolean
+
 )

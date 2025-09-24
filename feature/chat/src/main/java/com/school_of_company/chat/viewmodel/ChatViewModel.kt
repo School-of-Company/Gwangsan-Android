@@ -16,13 +16,17 @@ import com.school_of_company.chat.viewmodel.uistate.GetLoadTradUiState
 import com.school_of_company.chat.viewmodel.uistate.GetMySpecificInformationUiState
 import com.school_of_company.chat.viewmodel.uistate.ImageUpLoadUiState
 import com.school_of_company.chat.viewmodel.uistate.JoinChatUiState
+import com.school_of_company.chat.viewmodel.uistate.ReviewChatUiState
 import com.school_of_company.chat.viewmodel.uistate.TradeReservationUiState
+import com.school_of_company.content.viewmodel.uistate.ReviewPostUiState
 
 import com.school_of_company.data.repository.auth.AuthRepository
 import com.school_of_company.data.repository.chat.ChatRepository
 import com.school_of_company.data.repository.image.ImageRepository
 import com.school_of_company.data.repository.post.PostRepository
+import com.school_of_company.data.repository.review.ReviewRepository
 import com.school_of_company.model.post.request.TransactionCompleteRequestModel
+import com.school_of_company.model.review.request.ReviewRequestModel
 import com.school_of_company.network.errorHandling
 import com.school_of_company.network.socket.manager.ConnectionStatus
 import com.school_of_company.network.socket.model.request.SendMessage
@@ -44,8 +48,9 @@ class ChatViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val imageRepository: ImageRepository,
     private val postRepository: PostRepository,
+    private val reviewRepository: ReviewRepository,
 
-) : ViewModel() {
+    ) : ViewModel() {
 
 
 
@@ -57,6 +62,9 @@ class ChatViewModel @Inject constructor(
 
     private val _joinChatUiState = MutableStateFlow<JoinChatUiState>(JoinChatUiState.Loading)
     val joinChatUiState = _joinChatUiState.asStateFlow()
+
+    private val _reviewChatUiState = MutableStateFlow<ReviewChatUiState>(ReviewChatUiState.Loading)
+    val reviewChatUiState = _reviewChatUiState.asStateFlow()
 
     private val _chatMessageUiState = MutableStateFlow<ChatMessageUiState>(ChatMessageUiState.Loading)
     val chatMessageUiState = _chatMessageUiState.asStateFlow()
@@ -333,6 +341,19 @@ class ChatViewModel @Inject constructor(
 
                     is Result.Error -> _getMySpecificInformationUiState.value =
                         GetMySpecificInformationUiState.Error(result.exception)
+                }
+            }
+    }
+
+    internal fun reviewPost(body: ReviewRequestModel) = viewModelScope.launch {
+        _reviewChatUiState.value = ReviewChatUiState.Loading
+        reviewRepository.postReview(body = body)
+            .asResult()
+            .collectLatest { result ->
+                when (result) {
+                    is Result.Loading -> _reviewChatUiState.value = ReviewChatUiState.Loading
+                    is Result.Success -> _reviewChatUiState.value = ReviewChatUiState.Success
+                    is Result.Error -> _reviewChatUiState.value = ReviewChatUiState.Error(result.exception)
                 }
             }
     }

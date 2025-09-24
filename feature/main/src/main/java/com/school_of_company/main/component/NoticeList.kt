@@ -97,7 +97,6 @@ fun NoticeListItem(
                 )
             }
         }
-
         Spacer(modifier = Modifier.padding(bottom = 32.dp))
     }
 }

@@ -10,6 +10,7 @@ import com.school_of_company.network.dto.chat.response.GetChatMessageImage
 import com.school_of_company.network.dto.chat.response.GetChatMessagesResponse
 import com.school_of_company.network.dto.chat.response.TradeImage
 import com.school_of_company.network.dto.chat.response.TradeProduct
+import kotlin.concurrent.thread
 
 fun GetChatMessagesResponse.toModel() = GetChatMessagesResponseModel(
     messages = this.messages.map { it.toModel() },
@@ -41,7 +42,8 @@ fun TradeProduct.toModel() = TradeProductModel(
     images = this.images?.map { it.toModel() },
     createdAt = this.createdAt,
     isSeller = this.isSeller,
-    isCompletable = this.isCompletable
+    isCompletable = this.isCompletable,
+    isCompleted = this.isCompleted
 )
 
 fun TradeImage.toModel () = TradeImageModel(

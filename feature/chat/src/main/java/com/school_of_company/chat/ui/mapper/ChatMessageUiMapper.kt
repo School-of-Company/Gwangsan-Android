@@ -45,7 +45,8 @@ fun com.school_of_company.network.socket.model.response.TradeProduct.toUi() = Tr
     images = this.images?.map { it.toUi() }?.toPersistentList() ?: persistentListOf(),
     createdAt = this.createdAt,
     isSeller = this.isSeller,
-    isCompletable = this.isCompletable
+    isCompletable = this.isCompletable,
+    isCompleted = this.isCompleted
 )
 
 fun TradeImage.toUi() = TradeImageUi(
