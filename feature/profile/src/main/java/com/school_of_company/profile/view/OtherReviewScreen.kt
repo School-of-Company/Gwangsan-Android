@@ -44,6 +44,7 @@ import kotlinx.collections.immutable.toPersistentList
 internal fun OtherReviewRoute(
     onBackClick: () -> Unit,
     memberId: Long,
+    onPostClick: (Long) -> Unit,
     viewModel: MyProfileViewModel = hiltViewModel()
 ) {
 
@@ -63,6 +64,7 @@ internal fun OtherReviewRoute(
         otherReviewUIState = getOtherReviewUiState,
         getMyReceiveCallBack = {viewModel.getOtherReview(memberId = memberId )},
         swipeRefreshState = swipeRefreshState,
+        onPostClick = onPostClick
     )
 }
 
@@ -70,6 +72,7 @@ internal fun OtherReviewRoute(
 private fun OtherReviewScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
+    onPostClick: (Long) -> Unit,
     otherReviewUIState: OtherReviewUIState,
     getMyReceiveCallBack: () -> Unit,
     swipeRefreshState: SwipeRefreshState,
@@ -115,6 +118,7 @@ private fun OtherReviewScreen(
                 when (otherReviewUIState) {
                     is OtherReviewUIState.Success -> {
                         OtherReviewScreenList(
+                            onPostClick = onPostClick,
                             items = otherReviewUIState.data.toPersistentList(),
                             modifier = Modifier
                                 .fillMaxSize()
@@ -181,7 +185,8 @@ private fun OtherReviewScreen(
 @Composable
 fun OtherReviewScreenList(
     items: PersistentList<ReviewResponseUi>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onPostClick: (Long) -> Unit
 ) {
     LazyColumn(
         modifier = modifier,
@@ -189,6 +194,7 @@ fun OtherReviewScreenList(
     ) {
         items(items) { review ->
             MyProfileReviewListItem(
+                onClick = onPostClick,
                 data = review,
             )
         }
@@ -202,6 +208,7 @@ private fun OtherReviewScreenPreview() {
         otherReviewUIState = OtherReviewUIState.Loading,
         onBackClick = {},
         getMyReceiveCallBack = {},
-        swipeRefreshState = rememberSwipeRefreshState(isRefreshing = false)
+        swipeRefreshState = rememberSwipeRefreshState(isRefreshing = false),
+        onPostClick = {}
     )
 }
