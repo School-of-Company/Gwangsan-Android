@@ -1,19 +1,11 @@
 package com.school_of_company.profile.component
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.school_of_company.design_system.R
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -39,10 +31,10 @@ import kotlinx.collections.immutable.persistentListOf
 @Composable
 internal fun MyProfileReviewListItem(
     modifier: Modifier = Modifier,
-    data : ReviewResponseUi,
+    data: ReviewResponseUi,
     onClick: () -> Unit = {}
 ) {
-    GwangSanTheme { colors, typography ->
+    GwangSanTheme { _, _ ->
         Card(
             colors = CardDefaults.cardColors(containerColor = Color.White),
             onClick = onClick,
@@ -80,8 +72,11 @@ internal fun MyProfileReviewListItem(
                         .padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
+                    // light: 1..10 -> 진행 비율 0f..1f
+                    val progress = (data.light.coerceIn(1, 10) / 10f)
+
                     MyProfileReviewProgressBar(
-                        progress = (data.light / 100f).coerceIn(0f, 1f),
+                        progress = progress,
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(8.dp)
@@ -106,10 +101,9 @@ internal fun MyProfileReviewListItem(
             }
         }
 
-        Spacer(modifier = Modifier.padding(bottom = 16.dp))
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }
-
 
 @Composable
 private fun MyProfileReviewProgressBar(
@@ -126,6 +120,7 @@ private fun MyProfileReviewProgressBar(
         val canvasHeight = size.height
         val cornerRadius = canvasHeight / 2f
 
+        // 배경 바
         drawRoundRect(
             color = GwangSanColor.gray200,
             topLeft = Offset(0f, 0f),
@@ -133,7 +128,9 @@ private fun MyProfileReviewProgressBar(
             cornerRadius = CornerRadius(cornerRadius, cornerRadius)
         )
 
-        val progressWidth = canvasWidth * progress.coerceIn(0f, 1f)
+        // 진행 바 (0f..1f 보정)
+        val clamped = progress.coerceIn(0f, 1f)
+        val progressWidth = canvasWidth * clamped
         if (progressWidth > 0f) {
             drawRoundRect(
                 color = GwangSanColor.subYellow300,
@@ -151,8 +148,8 @@ private fun MyProfileReviewListItemPreview() {
     MyProfileReviewListItem(
         data = ReviewResponseUi(
             productId = 0L,
-            content = "adsfasdf",
-            light = 19,
+            content = "친절하고 응답도 빨랐어요. 다음에도 거래하고 싶습니다!",
+            light = 7, // 1~10
             reviewerName = "김치라",
             images = persistentListOf()
         )

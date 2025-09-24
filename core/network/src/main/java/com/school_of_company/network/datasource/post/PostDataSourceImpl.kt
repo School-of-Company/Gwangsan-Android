@@ -43,6 +43,12 @@ class PostDataSourceImpl @Inject constructor(
     override fun deletePostInformation(postId: Long): Flow<Unit> =
         performApiRequest { postAPI.deletePostInformation(postId = postId) }
 
+    override fun transactionReservation(postId: Long): Flow<Unit> =
+        performApiRequest { postAPI.transactionReservation(postId = postId) }
+
+    override fun deleteReservation(postId: Long): Flow<Unit> =
+        performApiRequest { postAPI.deleteReservation(postId = postId) }
+
     override fun transactionComplete(body: TransactionCompleteRequest): Flow<Unit> =
         performApiRequest { postAPI.transactionComplete(body = body) }
 

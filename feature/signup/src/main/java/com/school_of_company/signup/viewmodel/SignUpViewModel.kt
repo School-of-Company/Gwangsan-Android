@@ -95,7 +95,7 @@ class SignUpViewModel @Inject constructor(
                                 _signUpUiState.value = SignUpUiState.Error(result.exception)
                                 result.exception.errorHandling(
                                     conflictAction = { _signUpUiState.value = SignUpUiState.Conflict },
-                                    unauthorizedAction = { _signUpUiState.value = SignUpUiState.Unauthorized }
+                                    unauthorizedAction = { _signUpUiState.value = SignUpUiState.Unauthorized },
                                 )
                             }
 

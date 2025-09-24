@@ -77,7 +77,7 @@ internal fun ReCommenDerInputRoute(
                 onErrorToast(null, R.string.error_invalid_password)
             }
             is SignUpUiState.Unauthorized -> {
-                onErrorToast(null, R.string.error_Unauthorized)
+                makeToast(context, "닉네임 또는 비밀번호가 잘못되었습니다.")
             }
         }
     }

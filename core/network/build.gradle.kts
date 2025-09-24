@@ -29,6 +29,7 @@ dependencies {
     implementation(libs.retrofit.kotlin.serialization)
     implementation(libs.retrofit.moshi.converter)
     implementation(libs.moshi)
+    implementation(libs.runtime.android)
     ksp(libs.retrofit.moshi.codegen)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

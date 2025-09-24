@@ -116,6 +116,7 @@ private fun PostInputScreen(
 
     val totalImages = existingImageUrls.size + imageUri.size
     val canAddMore = totalImages < 5
+    val hasAnyImage = totalImages > 0   // ✅ 첨부 이미지 1장 이상 여부
 
     GwangSanTheme { colors, typography ->
         Column(
@@ -127,11 +128,7 @@ private fun PostInputScreen(
         ) {
             Spacer(Modifier.height(28.dp))
 
-            Text(
-                text = "사진첨부",
-                style = typography.body5,
-                color = colors.black
-            )
+            Text(text = "사진첨부", style = typography.body5, color = colors.black)
             Spacer(Modifier.height(12.dp))
 
             LazyRow(
@@ -159,15 +156,11 @@ private fun PostInputScreen(
                                 .background(Color(0xFFF5F6F8))
                                 .GwangSanClickable { onImageAdd() }
                         ) {
-                            PlussIcon(
-                                tint = colors.black,
-                                modifier = Modifier.align(Alignment.Center)
-                            )
+                            PlussIcon(tint = colors.black, modifier = Modifier.align(Alignment.Center))
                         }
                     }
                 }
             }
-
 
             Spacer(Modifier.height(28.dp))
 
@@ -185,9 +178,11 @@ private fun PostInputScreen(
 
             Spacer(modifier = Modifier.weight(1f, fill = true))
 
+            // ✅ 텍스트가 있고 + 이미지가 1장 이상일 때만 활성화
+            val canProceed = value.isNotBlank() && hasAnyImage
             GwangSanStateButton(
                 text = "다음",
-                state = if (value.isNotBlank()) ButtonState.Enable else ButtonState.Disable,
+                state = if (canProceed) ButtonState.Enable else ButtonState.Disable,
                 onClick = onNextClick,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -199,18 +194,3 @@ private fun PostInputScreen(
     }
 }
 
-@GwangsanPreviews
-@Composable
-private fun PostInputPreview() {
-    PostInputScreen(
-        value = "1000",
-        onValueChange = {},
-        onNextClick = {},
-        onBackClick = {},
-        imageUri = emptyList<String>().toPersistentList(),
-        existingImageUrls = emptyList<String>().toPersistentList(),
-        onImageRemove = {},
-        onExistingImageRemove = {},
-        onImageAdd = {}
-    )
-}

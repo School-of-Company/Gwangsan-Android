@@ -1,4 +1,4 @@
-package com.school_of_company.content.view
+package com.school_of_company.content.component
 
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
@@ -26,7 +26,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun ReviewBottomSheet(
+fun ReviewBottomSheet(
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit = {},
     onSubmit: (Int, String) -> Unit = { _, _ -> },

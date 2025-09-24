@@ -6,6 +6,7 @@ import com.school_of_company.model.chat.response.JoinChatResponseModel
 import com.school_of_company.network.socket.manager.ConnectionStatus
 import com.school_of_company.network.socket.model.request.SendMessage
 import com.school_of_company.network.socket.model.response.ChatMessage
+import com.school_of_company.network.socket.model.response.GetChatResponse
 import com.school_of_company.network.socket.model.response.RoomUpdate
 import kotlinx.coroutines.flow.Flow
 
@@ -19,7 +20,7 @@ interface ChatRepository {
         lastCreatedAt: String? = null,
         lastMessageId: Long? = null,
         limit: Int = 20
-    ) : Flow<List<ChatMessage>>
+    ) : Flow<GetChatResponse>
     fun readChatMessage(body: ReadMessageRequestModel) : Flow<Unit>
 
     fun connectSocket(baseUrl: String, accessToken: String)

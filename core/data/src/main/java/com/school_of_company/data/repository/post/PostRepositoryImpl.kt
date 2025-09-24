@@ -72,4 +72,12 @@ class PostRepositoryImpl @Inject constructor (
             memberId = memberId
         ).map {it.map { list -> list.toModel() }}
     }
+
+    override fun transactionReservation(postId: Long): Flow<Unit> {
+        return postDataSource.transactionReservation(postId = postId)
+    }
+
+    override fun deleteReservation(postId: Long): Flow<Unit> {
+        return postDataSource.deleteReservation(postId = postId)
+    }
 }
