@@ -39,6 +39,7 @@ import kotlinx.collections.immutable.toPersistentSet
 @Composable
 internal fun MyReceiveReviewRoute(
     onBackClick: () -> Unit,
+    onPostClick: (Long) -> Unit,
     viewModel: MyProfileViewModel = hiltViewModel(),
 ) {
     val swipeRefreshLoading by viewModel.swipeRefreshLoading.collectAsStateWithLifecycle(
@@ -56,7 +57,8 @@ internal fun MyReceiveReviewRoute(
         onBackClick = onBackClick,
         getMyReviewUiState = getMyReviewUiState,
         getMyReceiveCallBack = { viewModel.getMyReview() },
-        swipeRefreshState = swipeRefreshState
+        swipeRefreshState = swipeRefreshState,
+        onPostClick = onPostClick
     )
 }
 
@@ -66,7 +68,9 @@ private fun MyReceiveReviewScreen(
     onBackClick: () -> Unit,
     getMyReviewUiState: GetMyReviewUiState,
     swipeRefreshState: SwipeRefreshState,
-    getMyReceiveCallBack: () -> Unit
+    getMyReceiveCallBack: () -> Unit,
+    onPostClick: (Long) -> Unit
+
 ) {
     GwangSanTheme { colors, typography ->
 
@@ -99,6 +103,7 @@ private fun MyReceiveReviewScreen(
                 when (getMyReviewUiState) {
                     is GetMyReviewUiState.Success -> {
                         MyReceiveReviewProfileList(
+                            onPostClick = onPostClick,
                             items = getMyReviewUiState.review.toPersistentList(),
                             modifier = Modifier
                                 .fillMaxSize()
@@ -165,6 +170,7 @@ private fun MyReceiveReviewScreen(
 @Composable
 fun MyReceiveReviewProfileList(
     items: PersistentList<ReviewResponseUi>,
+    onPostClick: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -172,7 +178,10 @@ fun MyReceiveReviewProfileList(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         items(items) { review ->
-            MyProfileReviewListItem(data = review)
+            MyProfileReviewListItem(
+                onClick = onPostClick,
+                data = review
+            )
         }
     }
 }
