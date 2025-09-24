@@ -251,9 +251,17 @@ fun GwangsanNavHost(
             onErrorToast = onErrorToast
         )
 
-        myReviewScreen(onBackClick = { navController.popBackStack() })
+        myReviewScreen(
+            onBackClick = { navController.popBackStack() },
+            onPostClick = { id -> navController.navigateToReadMore(id) }
+        )
 
-        myWritingScreen(onBackClick = { navController.popBackStack() })
+
+        myWritingScreen(
+            onBackClick = { navController.popBackStack() },
+            onPostClick = { id -> navController.navigateToReadMore(id) }
+
+        )
 
         myWritingDetailScreen(
             onBackClick = { navController.popBackStack() },
@@ -264,7 +272,10 @@ fun GwangsanNavHost(
             }
         )
 
-        otherReviewScreen(onBackClick = { navController.popBackStack() })
+        otherReviewScreen(
+            onBackClick = { navController.popBackStack() },
+            onPostClick = { id -> navController.navigateToReadMore(id) }
+        )
 
         noticeScreen(
             onBackClick = { navController.popBackStack() },
