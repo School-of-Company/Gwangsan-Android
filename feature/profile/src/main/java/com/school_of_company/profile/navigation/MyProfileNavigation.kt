@@ -120,20 +120,24 @@ fun NavGraphBuilder.myProfileScreen(
 
 fun NavGraphBuilder.myReviewScreen(
     onBackClick: () -> Unit,
+    onPostClick: (Long) -> Unit
 ) {
     composable(route = MyReviewRoute) {
         MyReceiveReviewRoute(
             onBackClick = onBackClick,
+            onPostClick = onPostClick
         )
     }
 }
 
 fun NavGraphBuilder.myWritingScreen(
     onBackClick: () -> Unit,
+    onPostClick: (Long) -> Unit
 ) {
     composable(route = MyWritingRoute) {
         MyReviewRoute(
             onBackClick = onBackClick,
+            onPostClick = onPostClick,
         )
     }
 }
@@ -172,13 +176,15 @@ fun NavGraphBuilder.transactionHistoryScreen(
 
 fun NavGraphBuilder.otherReviewScreen(
     onBackClick: () -> Unit,
+    onPostClick: (Long) -> Unit
 ){
     composable( "$OtherReviewRoute/{memberId}"){ backStackEntry ->
         val memberId = backStackEntry.arguments?.getString("memberId")?.toLongOrNull() ?: return@composable
 
         OtherReviewRoute(
             onBackClick =  onBackClick,
-            memberId = memberId
+            memberId = memberId,
+            onPostClick = onPostClick
         )
     }
 }
