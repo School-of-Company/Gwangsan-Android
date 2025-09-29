@@ -50,9 +50,9 @@ import kotlinx.coroutines.launch
 
 private object GwangsanCenters {
     val centerToAreas = mapOf(
-        "광산구도시재생공동체센터" to listOf("수완마을", "고실마을", "신가", "신창"),
-        "광산구자원봉사센터"     to listOf("도산", "우산", "월곡1", "첨단2"),
-        "광산구지역사회보장협의체" to listOf("평동", "월곡2", "하남")
+        "광산구도시재생공동체센터" to listOf("수완마을", "고실마을", "신가동", "신창동"),
+        "광산구자원봉사센터"     to listOf("도산동", "우산동", "월곡1동", "첨단2동"),
+        "광산구지역사회보장협의체" to listOf("평동", "월곡2동", "하남동")
     )
     val areaToCenter: Map<String, String> =
         centerToAreas.flatMap { (c, areas) -> areas.map { it to c } }.toMap()
