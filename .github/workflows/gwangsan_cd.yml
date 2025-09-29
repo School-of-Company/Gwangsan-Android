@@ -102,7 +102,7 @@ jobs:
         if: ${{ success() }}
         with:
           title: CD 성공~
-          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          webhook: ${{ secrets.GWANGSAN_DISCORD_WEBHOOK }}
           status: ${{ job.status }}
           description: |
             빌드 시간: ${{ env.BUILD_TIME }}
