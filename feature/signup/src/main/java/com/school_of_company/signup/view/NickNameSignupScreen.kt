@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -37,7 +38,7 @@ import com.school_of_company.design_system.component.topbar.GwangSanTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.signup.viewmodel.SignUpViewModel
 import com.school_of_company.ui.previews.GwangsanPreviews
-import com.yourpackage.design_system.component.textField.GwangSanTextField
+import com.school_of_company.design_system.component.textfield.GwangSanTextField
 
 @Composable
 internal fun NickNameSignupRoute(
@@ -81,6 +82,7 @@ private fun NickNameSignupScreen(
             modifier = modifier
                 .fillMaxSize()
                 .background(color = colors.white)
+                .imePadding()
                 .padding(
                     top = 24.dp,
                     start = 24.dp,
@@ -133,6 +135,7 @@ private fun NickNameSignupScreen(
                 GwangSanTextField(
                     placeHolder = "별칭",
                     value = id,
+                    maxLines = 1,
                     onTextChange = onIdChange,
                     label = "별칭을 입력해주세요",
                     isDisabled = false,

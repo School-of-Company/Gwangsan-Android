@@ -13,24 +13,20 @@ import com.school_of_company.post.view.PostRoute
 const val PostRoute = "post"
 
 fun NavController.navigateToPost(
-    type: Type,
-    mode: Mode,
     navOptions: NavOptions? = null
 ) {
     this.navigate(
-        route = "$PostRoute/${type.name}/${mode.name}",
+        route = PostRoute,
         navOptions = navOptions
     )
 }
 
 fun NavController.navigateToPostEdit(
     postId: Long,
-    type: String,
-    mode: String,
     navOptions: NavOptions? = null
 ) {
     this.navigate(
-        route = "$PostRoute/${type}/${mode}/$postId",
+        route = "$PostRoute/$postId",
         navOptions = navOptions
     )
 }
@@ -40,49 +36,28 @@ fun NavGraphBuilder.postScreen(
     onCreateComplete: () -> Unit,
     onEditComplete: () -> Unit
 ) {
-    composable(
-        route = "$PostRoute/{type}/{mode}",
-        arguments = listOf(
-            navArgument("type") { type = NavType.StringType },
-            navArgument("mode") { type = NavType.StringType }
-        )
-    ) { backStackEntry ->
-        val typeStr = backStackEntry.arguments?.getString("type") ?: Type.SERVICE.name
-        val modeStr = backStackEntry.arguments?.getString("mode") ?: Mode.GIVER.name
-        val type = Type.valueOf(typeStr)
-        val mode = Mode.valueOf(modeStr)
-
+    composable(route = PostRoute) {
         PostRoute(
-            type = type,
-            mode = mode,
-            editPostId = null,
             onBackClick = onBackClick,
-            onEditComplete = onEditComplete,
-            onCreateComplete = onCreateComplete
+            onCreateComplete = onCreateComplete,
+            onEditComplete = onEditComplete
         )
     }
 
     composable(
-        route = "$PostRoute/{type}/{mode}/{postId}",
+        route = "$PostRoute/{postId}",
         arguments = listOf(
-            navArgument("type") { type = NavType.StringType },
-            navArgument("mode") { type = NavType.StringType },
             navArgument("postId") { type = NavType.LongType }
         )
     ) { backStackEntry ->
-        val typeStr = backStackEntry.arguments?.getString("type") ?: Type.SERVICE.name
-        val modeStr = backStackEntry.arguments?.getString("mode") ?: Mode.GIVER.name
         val postId = backStackEntry.arguments?.getLong("postId") ?: 0L
-        val type = Type.valueOf(typeStr)
-        val mode = Mode.valueOf(modeStr)
 
         PostRoute(
-            type = type,
-            mode = mode,
             editPostId = postId,
             onBackClick = onBackClick,
             onEditComplete = onEditComplete,
             onCreateComplete = onCreateComplete
         )
     }
+
 }

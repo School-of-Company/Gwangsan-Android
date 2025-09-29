@@ -166,14 +166,11 @@ fun GwangsanNavHost(
         )
 
         mainScreen(
-            navigationToPost = { type: Type, mode: Mode ->
-                navController.navigateToPost(type = type, mode = mode)
-            },
             navigateToDetail = { id ->
                 navController.navigateToReadMore(id)
             },
             onBackClick = { navController.popBackStack() },
-            onErrorToast = onErrorToast
+            onErrorToast = onErrorToast,
         )
 
         mainStartScreen(
@@ -204,7 +201,7 @@ fun GwangsanNavHost(
             onReviewClick = { _, _ -> },
             onReportClick = { _, _ -> },
             onEditClick = { id, type, mode ->
-                navController.navigateToPostEdit(id, type, mode)
+                navController.navigateToPostEdit(id)
             }
         )
 
@@ -254,25 +251,39 @@ fun GwangsanNavHost(
             onErrorToast = onErrorToast
         )
 
-        myReviewScreen(onBackClick = { navController.popBackStack() })
+        myReviewScreen(
+            onBackClick = { navController.popBackStack() },
+            onPostClick = { id -> navController.navigateToReadMore(id) }
+        )
 
-        myWritingScreen(onBackClick = { navController.popBackStack() })
+
+        myWritingScreen(
+            onBackClick = { navController.popBackStack() },
+            onPostClick = { id -> navController.navigateToReadMore(id) }
+
+        )
 
         myWritingDetailScreen(
             onBackClick = { navController.popBackStack() },
             onCompleteClick = { navController.popBackStack() },
             onErrorToast = onErrorToast,
             onEditClick = { id, type, mode ->
-                navController.navigateToPostEdit(id, type, mode)
+                navController.navigateToPostEdit(id)
             }
         )
 
-        otherReviewScreen(onBackClick = { navController.popBackStack() })
+        otherReviewScreen(
+            onBackClick = { navController.popBackStack() },
+            onPostClick = { id -> navController.navigateToReadMore(id) }
+        )
 
         noticeScreen(
             onBackClick = { navController.popBackStack() },
             navigationToDetail = { id ->
                 navController.navigateToReadMore(id)
+            },
+            navigateToInformDetail = { id ->
+                navController.navigateToInformDetail(id)
             }
         )
     }

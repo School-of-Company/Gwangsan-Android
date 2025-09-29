@@ -29,51 +29,52 @@ import kotlinx.coroutines.launch
 
 @Composable
 internal fun PostRoute(
-    type: Type,
-    mode: Mode,
     editPostId: Long? = null,
     onBackClick: () -> Unit,
     onCreateComplete: () -> Unit,
-    onEditComplete: () -> Unit
+    onEditComplete: () -> Unit,
+    type: Type? = null,
+    mode: Mode? = null
 ) {
     PostScreen(
-        type = type,
-        mode = mode,
         onBackClick = onBackClick,
         editPostId = editPostId,
         onCreateComplete = onCreateComplete,
-        onEditComplete = onEditComplete
+        onEditComplete = onEditComplete,
+        type = type,
+        mode = mode
     )
 }
 
 @Composable
 private fun PostScreen(
     modifier: Modifier = Modifier,
-    type: Type,
-    mode: Mode,
     editPostId: Long? = null,
     onBackClick: () -> Unit,
     onCreateComplete: () -> Unit,
-    onEditComplete: () -> Unit
+    onEditComplete: () -> Unit,
+    type: Type? = null,          // ← nullable
+    mode: Mode? = null
 ) {
     val pagerState = rememberPagerState(pageCount = { 3 })
     val coroutineScope = rememberCoroutineScope()
+
 
     val viewModel: PostViewModel = hiltViewModel()
 
     val isEditMode = editPostId != null
 
+    val progressRatios = listOf(0.3f, 0.6f, 1.0f)
+    val currentProgress = progressRatios.getOrElse(pagerState.currentPage) { 0.3f }
+
     LaunchedEffect(type, mode) {
-        viewModel.onTypeChange(type)
-        viewModel.onModeChange(mode)
+        type?.let { viewModel.onTypeChange(it) }
+        mode?.let { viewModel.onModeChange(it) }
 
         if (isEditMode && editPostId != null) {
             viewModel.loadPostForEdit(editPostId)
         }
     }
-
-    val progressRatios = listOf(0.3f, 0.6f, 1.0f)
-    val currentProgress = progressRatios.getOrElse(pagerState.currentPage) { 0.3f }
 
     GwangSanTheme { colors, _ ->
         Column(
@@ -100,7 +101,7 @@ private fun PostScreen(
                             })
                     )
                 },
-                betweenText = "해주세요",
+                betweenText = "게시글",
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp),
@@ -121,10 +122,7 @@ private fun PostScreen(
                 modifier = Modifier.fillMaxSize()
             ) { page ->
                 when(page) {
-
                     0 -> PostWriteRoute(
-                        type = type,
-                        mode = mode,
                         onBackClick = {
                             coroutineScope.launch {
                                 if (pagerState.currentPage > 0) {
@@ -143,8 +141,6 @@ private fun PostScreen(
                     )
 
                     1 -> PostInputRoute(
-                        type = type,
-                        mode = mode,
                         onBackClick = {
                             coroutineScope.launch {
                                 pagerState.animateScrollToPage(page = 0)
@@ -155,12 +151,10 @@ private fun PostScreen(
                                 pagerState.animateScrollToPage(page = 2)
                             }
                         },
-                        viewModel = viewModel
+                        viewModel = viewModel,
                     )
 
                     2 -> PostFinalRoute(
-                        type = type,
-                        mode = mode,
                         onSubmitClick = {
                             if (isEditMode) {
                                 onEditComplete()
@@ -192,10 +186,10 @@ private fun PostScreen(
 @Composable
 private fun PostScreenPreview() {
     PostRoute(
-        type = Type.OBJECT,
-        mode = Mode.GIVER,
         onBackClick = {},
         onCreateComplete = {},
-        onEditComplete = {}
+        onEditComplete = {},
+        type = Type.OBJECT,
+        mode = Mode.RECEIVER
     )
 }

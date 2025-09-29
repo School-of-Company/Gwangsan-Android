@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,6 +30,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -41,7 +43,7 @@ import com.school_of_company.design_system.component.topbar.GwangSanTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.design_system.theme.color.GwangSanColor
 import com.school_of_company.signup.viewmodel.SignUpViewModel
-import com.yourpackage.design_system.component.textField.GwangSanSelectTextField
+import com.school_of_company.design_system.component.textfield.GwangSanSelectTextField
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
@@ -92,7 +94,6 @@ private fun PlaceNameScreen(
             modifier = modifier
                 .fillMaxSize()
                 .background(backgroundColor)
-                .imePadding()
                 .pointerInput(isDropdownVisible) {
                     detectTapGestures {
                         if (isDropdownVisible.value) {
@@ -145,7 +146,7 @@ private fun PlaceNameScreen(
                 GwangSanSelectTextField(
                     label = "지점",
                     value = placeName,
-                    placeHolder = "지점 추가",
+                    placeHolder = "지점을 선택해주세요",
                     onClick = onToggleDropdown,
                     onTextChange = { /* NONE */ }
                 )
@@ -154,7 +155,7 @@ private fun PlaceNameScreen(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     SingleSelectDropdown(
-                        options = persistentListOf("수완세영", "수완에너지", "신가", "신창", "도산", "우산", "월곡1", "첨단1", "평동", "월곡2", "하남"),
+                        options = persistentListOf("고실마을", "수완마을", "신가", "신창", "도산", "우산", "월곡1", "첨단2", "평동", "월곡2", "하남"),
                         selectedOption = placeName,
                         onOptionClick = onPlaceNameChange,
                         onDismissRequest = { isDropdownVisible.value = false },
@@ -204,3 +205,18 @@ private fun PlaceNameScreen(
         }
     }
 }
+
+
+@Preview(showBackground = true, name = "PlaceName")
+@Composable
+private fun PlaceNameScreenPreview_Empty() {
+    var place by rememberSaveable { mutableStateOf("") }
+
+    PlaceNameScreen(
+        onBackClick = {},
+        onNextClick = {},
+        placeName = place,
+        onPlaceNameChange = { place = it }
+    )
+}
+

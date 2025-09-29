@@ -23,6 +23,7 @@ fun NavController.navigateToMainStart(navOptions: NavOptions? = null) {
     this.navigate(MainStartRoute, navOptions)
 }
 
+
 fun NavController.navigateToNoticeScreen(navOptions: NavOptions? = null){
     this.navigate(NoticeRoute, navOptions)
 }
@@ -30,7 +31,6 @@ fun NavController.navigateToNoticeScreen(navOptions: NavOptions? = null){
 fun NavGraphBuilder.mainScreen(
     onBackClick: () -> Unit,
     navigateToDetail: (Long) -> Unit,
-    navigationToPost: (Type, Mode) -> Unit,
     onErrorToast: (Throwable?, Int?) -> Unit
 ) {
     composable("main_route/{type}") { backStackEntry ->
@@ -39,11 +39,6 @@ fun NavGraphBuilder.mainScreen(
 
         MainRoute(
             onBackClick = onBackClick,
-            navigationToPost = { mode ->
-                navigationToPost(
-                    selectedType,
-                    mode
-                ) },
             onErrorToast = onErrorToast,
             moDeselectedType = selectedType,
             navigationToDetail = navigateToDetail
@@ -67,12 +62,14 @@ fun NavGraphBuilder.mainStartScreen(
 
 fun NavGraphBuilder.noticeScreen(
     onBackClick: () -> Unit,
-    navigationToDetail: (Long) -> Unit
+    navigationToDetail: (Long) -> Unit,
+    navigateToInformDetail: (Long) -> Unit
 ){
     composable(route = NoticeRoute){
         NoticeRoute(
             onBackClick = onBackClick,
-            navigationToDetail = navigationToDetail
+            navigationToDetail = navigationToDetail,
+            navigateToInformDetail = navigateToInformDetail
         )
     }
 }

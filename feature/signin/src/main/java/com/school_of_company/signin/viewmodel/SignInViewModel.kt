@@ -47,10 +47,10 @@ internal class SignInViewModel @Inject constructor(
 
         val deviceToken = localRepository.getDeviceToken()
 
-        if (!isValidId(nicknameValue)) {
-            _signInUiState.value = SignInUiState.IdNotValid
-            return@launch
-        }
+//        if (!isValidId(nicknameValue)) {
+//            _signInUiState.value = SignInUiState.IdNotValid
+//            return@launch
+//        }
 
         val body = LoginRequestModel(
             nickname = nicknameValue,
@@ -67,10 +67,14 @@ internal class SignInViewModel @Inject constructor(
                         _signInUiState.value = SignInUiState.Loading
                     }
                     is Result.Success -> {
+
+                        Log.d("LoginViewModel", "Login success, saving token...")
+                        Log.d("LoginViewModel", "Token data: ${result.data}")
                         _signInUiState.value = SignInUiState.Success
                         authRepository.saveToken(result.data)
                     }
                     is Result.Error -> {
+                        Log.e("LoginViewModel", "Login failed: ${result.exception}")
                         _signInUiState.value = SignInUiState.Error(result.exception)
                         result.exception.errorHandling(
                             notFoundAction = { _signInUiState.value = SignInUiState.NotFound } ,

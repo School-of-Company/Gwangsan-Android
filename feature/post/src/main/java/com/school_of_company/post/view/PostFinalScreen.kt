@@ -1,6 +1,5 @@
 package com.school_of_company.post.view
 
-import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -27,7 +26,6 @@ import com.school_of_company.design_system.R
 import com.school_of_company.design_system.component.button.GwangSanEnableButton
 import com.school_of_company.design_system.component.button.GwangSanStateButton
 import com.school_of_company.design_system.component.button.state.ButtonState
-import com.school_of_company.design_system.component.icon.AddImageButton
 import com.school_of_company.design_system.component.icons.PlussIcon
 import com.school_of_company.design_system.component.toast.makeToast
 import com.school_of_company.design_system.theme.GwangSanTheme
@@ -43,8 +41,6 @@ import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 internal fun PostFinalRoute(
-    type: Type,
-    mode: Mode,
     onEditClick: () -> Unit,
     onSubmitClick: () -> Unit,
     onBackClick: () -> Unit,
@@ -52,9 +48,14 @@ internal fun PostFinalRoute(
     viewModel: PostViewModel? = null,
 ) {
     val actualViewModel = viewModel ?: hiltViewModel()
+
     val subject by actualViewModel.title.collectAsState()
     val content by actualViewModel.content.collectAsState()
     val price by actualViewModel.gwangsan.collectAsState()
+
+    val selectedType by actualViewModel.type.collectAsState()
+    val selectedMode by actualViewModel.mode.collectAsState()
+
     val selectedImageUris by actualViewModel.selectedImages.collectAsStateWithLifecycle()
     val images = remember(selectedImageUris) {
         selectedImageUris.map { it.toString() }.toPersistentList()
@@ -62,7 +63,6 @@ internal fun PostFinalRoute(
 
     val postUiState by actualViewModel.postUiState.collectAsState()
     val modifyPostUiState by actualViewModel.modifyPostUiStat.collectAsStateWithLifecycle()
-
     val isEditMode by actualViewModel.isEditMode.collectAsState()
     val editPostId by actualViewModel.editPostId.collectAsState()
 
@@ -71,25 +71,13 @@ internal fun PostFinalRoute(
     LaunchedEffect(postUiState) {
         when (postUiState) {
             is PostUiState.Loading -> Unit
-
             is PostUiState.Success -> {
                 makeToast(context, "게시를 성공하였습니다.")
                 onSubmitClick()
             }
-
-            is PostUiState.BadRequest -> {
-                onErrorToast(null, R.string.error_bad_request)
-            }
-
-            is PostUiState.NotFound -> {
-                onErrorToast(null, R.string.error_resource_not_found)
-            }
-
-            is PostUiState.Error -> {
-                onErrorToast(
-                    (postUiState as PostUiState.Error).exception, R.string.error_generic
-                )
-            }
+            is PostUiState.BadRequest -> onErrorToast(null, R.string.error_bad_request)
+            is PostUiState.NotFound -> onErrorToast(null, R.string.error_resource_not_found)
+            is PostUiState.Error -> onErrorToast((postUiState as PostUiState.Error).exception, R.string.error_generic)
         }
     }
 
@@ -100,17 +88,26 @@ internal fun PostFinalRoute(
                 makeToast(context, "게시글 수정 성공")
                 onSubmitClick()
             }
-
             is ModifyPostUiState.Error -> {
                 makeToast(context, "게시글 수정 실패")
             }
         }
     }
 
+    val typeLabel = when (selectedType) {
+        Type.OBJECT -> "물건"
+        Type.SERVICE -> "서비스"
+    }
+    val modeLabel = when (selectedMode) {
+        Mode.RECEIVER -> "필요해요"
+        Mode.GIVER -> "팔아요"
+    }
+
     PostFinalScreen(
         subject = subject,
         content = content,
         price = price,
+        images = images,
         onEditClick = onEditClick,
         onSubmitClick = {
             if (isEditMode && editPostId != null) {
@@ -120,10 +117,10 @@ internal fun PostFinalRoute(
             }
         },
         onBackClick = onBackClick,
-        images = images
+        typeLabel = typeLabel,
+        modeLabel = modeLabel
     )
 }
-
 
 @Composable
 private fun PostFinalScreen(
@@ -135,11 +132,12 @@ private fun PostFinalScreen(
     onEditClick: () -> Unit,
     onSubmitClick: () -> Unit,
     onBackClick: () -> Unit,
+    typeLabel: String,
+    modeLabel: String,
 ) {
     val scrollState = rememberScrollState()
 
     GwangSanTheme { colors, typography ->
-
         Box(modifier = modifier.fillMaxSize()) {
 
             Column(
@@ -158,7 +156,7 @@ private fun PostFinalScreen(
                 Spacer(modifier = Modifier.height(28.dp))
 
                 Text(
-                    text = "주제",
+                    text = "카테고리",
                     style = typography.body5,
                     color = colors.black
                 )
@@ -166,18 +164,12 @@ private fun PostFinalScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(
-                            colors.white,
-                            RoundedCornerShape(8.dp)
-                        )
-                        .border(
-                            1.dp, GwangSanColor.subYellow500,
-                            RoundedCornerShape(8.dp)
-                        )
+                        .background(colors.white, RoundedCornerShape(8.dp))
+                        .border(1.dp, GwangSanColor.subYellow500, RoundedCornerShape(8.dp))
                         .padding(16.dp)
                 ) {
                     Text(
-                        text = subject,
+                        text = typeLabel,
                         style = typography.body5,
                         color = colors.black
                     )
@@ -186,7 +178,7 @@ private fun PostFinalScreen(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    text = "내용",
+                    text = "유형",
                     style = typography.body5,
                     color = colors.black
                 )
@@ -194,23 +186,38 @@ private fun PostFinalScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(
-                            colors.white,
-                            RoundedCornerShape(8.dp)
-                        )
-                        .border(
-                            1.dp,
-                            GwangSanColor.subYellow500,
-                            RoundedCornerShape(8.dp)
-                        )
+                        .background(colors.white, RoundedCornerShape(8.dp))
+                        .border(1.dp, GwangSanColor.subYellow500, RoundedCornerShape(8.dp))
+                        .padding(16.dp)
+                ) {
+                    Text(text = modeLabel, style = typography.body5, color = colors.black)
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text(text = "주제", style = typography.body5, color = colors.black)
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(colors.white, RoundedCornerShape(8.dp))
+                        .border(1.dp, GwangSanColor.subYellow500, RoundedCornerShape(8.dp))
+                        .padding(16.dp)
+                ) {
+                    Text(text = subject, style = typography.body5, color = colors.black)
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text(text = "내용", style = typography.body5, color = colors.black)
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(colors.white, RoundedCornerShape(8.dp))
+                        .border(1.dp, GwangSanColor.subYellow500, RoundedCornerShape(8.dp))
                         .padding(16.dp)
                         .height(185.dp)
                 ) {
-                    Text(
-                        text = content,
-                        style = typography.body5,
-                        color = colors.black
-                    )
+                    Text(text = content, style = typography.body5, color = colors.black)
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -220,6 +227,7 @@ private fun PostFinalScreen(
                     style = typography.body5,
                     color = colors.black
                 )
+
 
                 Spacer(modifier = Modifier.height(12.dp))
 
@@ -236,9 +244,7 @@ private fun PostFinalScreen(
                         )
                     }
                 } else {
-                    LazyRow(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
+                    LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         items(images) { uri ->
                             AsyncImage(
                                 model = uri,
@@ -290,8 +296,7 @@ private fun PostFinalScreen(
                         modifier = Modifier
                             .weight(1f)
                             .height(56.dp)
-                            .border(
-                                1.dp,
+                            .border(1.dp,
                                 GwangSanColor.main500,
                                 RoundedCornerShape(8.dp)
                             )
@@ -323,6 +328,8 @@ private fun PostFinalPreview() {
         onEditClick = {},
         onSubmitClick = {},
         onBackClick = {},
-        images = persistentListOf()
+        images = persistentListOf(),
+        typeLabel = "물건",
+        modeLabel = "필요해요"
     )
 }

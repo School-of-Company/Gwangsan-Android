@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -34,7 +35,7 @@ import com.school_of_company.design_system.component.icons.DownArrowIcon
 import com.school_of_company.design_system.component.topbar.GwangSanTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.signup.viewmodel.SignUpViewModel
-import com.yourpackage.design_system.component.textField.GwangSanTextField
+import com.school_of_company.design_system.component.textfield.GwangSanTextField
 
 @Composable
 internal fun DescriptionRoute(
@@ -86,6 +87,7 @@ private fun DescriptionScreen(
                     end = 24.dp
                 )
                 .verticalScroll(scrollState)
+                .imePadding()
                 .pointerInput(Unit) {
                     detectTapGestures {
                         focusManager.clearFocus()
@@ -121,7 +123,7 @@ private fun DescriptionScreen(
                 Spacer(modifier = Modifier.height(6.dp))
 
                 Text(
-                    text = "이름을 입력해주세요",
+                    text = "자기소개를 입력해주세요",
                     style = typography.label,
                     color = colors.black.copy(alpha = 0.5f),
                     fontWeight = FontWeight.Normal
@@ -134,6 +136,7 @@ private fun DescriptionScreen(
                     value = description,
                     onTextChange = onDescriptionChange,
                     label = "자기소개",
+                    maxLines = 1,
                     isDisabled = false,
                     keyboardOptions = KeyboardOptions.Default,
                     isError = false,

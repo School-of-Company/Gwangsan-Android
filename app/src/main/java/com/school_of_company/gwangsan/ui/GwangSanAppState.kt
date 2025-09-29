@@ -17,6 +17,7 @@ import com.school_of_company.gwangsan.navigation.TopLevelDestination
 import com.school_of_company.inform.navigation.navigateToInform
 import com.school_of_company.main.navgation.MainStartRoute
 import com.school_of_company.main.navgation.navigateToMainStart
+import com.school_of_company.post.navigation.navigateToPost
 import com.school_of_company.profile.navigation.navigateToMyProfile
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.coroutines.CoroutineScope
@@ -64,6 +65,7 @@ class GwangSanAppState(
                 TopLevelDestination.CHAT -> navController.navigateToChat(topLevelNavOptions)
                 TopLevelDestination.INFORM -> navController.navigateToInform(topLevelNavOptions)
                 TopLevelDestination.PROFILE -> navController.navigateToMyProfile(topLevelNavOptions)
+                TopLevelDestination.POST -> navController.navigateToPost(topLevelNavOptions)
             }
         }
     }

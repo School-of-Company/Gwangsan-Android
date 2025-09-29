@@ -227,3 +227,29 @@ fun UnReadBellIcon(
         tint = tint
     )
 }
+
+@Composable
+fun addPostIcon(
+    modifier: Modifier = Modifier,
+    tint: Color = Color.Black
+){
+    Icon(
+        painter = painterResource(id = R.drawable.vector),
+        contentDescription = "알림",
+        modifier = modifier,
+        tint = tint
+    )
+}
+
+@Composable
+fun addBottomSheetIcon(
+    modifier: Modifier = Modifier,
+    tint: Color = Color.Black
+){
+    Icon(
+        painter = painterResource(id = R.drawable.vector__1_),
+        contentDescription = "알림",
+        modifier = modifier,
+        tint = tint
+    )
+}

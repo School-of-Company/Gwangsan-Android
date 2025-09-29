@@ -53,6 +53,16 @@ interface PostAPI {
         @Body body: TransactionCompleteRequest
     )
 
+    @PATCH("/api/post/reservation/{product_id}")
+    suspend fun transactionReservation(
+        @Path("product_id") postId: Long
+    )
+
+    @DELETE("/api/post/reservation/{product_id}")
+    suspend fun deleteReservation(
+        @Path("product_id") postId: Long
+    )
+
     @GET("/api/post/member/{member_id}")
     suspend fun otherPostInformation(
         @Path("member_id") memberId: Long,

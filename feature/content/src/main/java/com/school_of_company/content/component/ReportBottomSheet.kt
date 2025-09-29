@@ -19,7 +19,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -34,7 +33,8 @@ import com.school_of_company.design_system.component.topbar.GwangSanSubTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.design_system.theme.color.GwangSanColor
 import com.school_of_company.model.enum.ReportType
-import com.yourpackage.design_system.component.textField.GwangSanTextField
+import com.school_of_company.design_system.component.textfield.GwangSanTextField
+import com.school_of_company.design_system.component.toast.makeToast
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,25 +47,36 @@ fun ReportBottomSheet(
     sheetState: SheetState = rememberModalBottomSheetState(),
     viewModel: ContentViewModel = hiltViewModel()
 ) {
-    val selectedImageUris by viewModel.selectedImages.collectAsStateWithLifecycle()
-    val existingImageUrls by viewModel.existingImageUrls.collectAsStateWithLifecycle()
-    val uploadedUris = remember { mutableStateListOf<Uri>() }
+    val selectedImageUris by viewModel.selectedImages.collectAsStateWithLifecycle() // List<Uri>
+    val existingImageUrls by viewModel.existingImageUrls.collectAsStateWithLifecycle() // List<String>
+    val uploadedUris = remember { mutableStateListOf<Uri>() } // 업로드 시도된 로컬 Uri 추적
 
     val context = LocalContext.current
-
     val galleryLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.GetContent()
     ) { uri ->
-        uri?.let { viewModel.addImage(it) }
+        uri?.let {
+            val currentTotal = existingImageUrls.size + selectedImageUris.size
+            if (currentTotal < 5) {
+                viewModel.addImage(it)
+            } else {
+                makeToast(context, "이미지는 5장까지 선택할 수 있습니다.")
+            }
+        }
     }
 
-    LaunchedEffect(selectedImageUris) {
-        selectedImageUris.forEach { uri ->
+    LaunchedEffect(selectedImageUris, existingImageUrls) {
+        var remainingSlots = (5 - existingImageUrls.size)
+        if (remainingSlots <= 0) return@LaunchedEffect
+
+        for (uri in selectedImageUris) {
+            if (remainingSlots <= 0) break
             if (!uploadedUris.contains(uri)) {
                 try {
                     val imageId = viewModel.imageUpLoad(context, uri)
                     viewModel.onImageIdAdded(imageId)
                     uploadedUris.add(uri)
+                    remainingSlots--
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -80,6 +91,8 @@ fun ReportBottomSheet(
     var reportContent by remember { mutableStateOf(initialReportContent) }
 
     val isButtonEnabled = selectedReportType != null && reportContent.isNotBlank()
+    val totalImages = existingImageUrls.size + selectedImageUris.size
+    val canAddMore = totalImages < 5
 
     GwangSanTheme { colors, typography ->
 
@@ -163,21 +176,6 @@ fun ReportBottomSheet(
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-
-                    itemsIndexed(existingImageUrls) { index, imageUrl ->
-                        AsyncImage(
-                            model = imageUrl,
-                            contentDescription = null,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .clip(CircleShape)
-                                .size(60.dp)
-                                .GwangSanClickable {
-                                    viewModel.removeExistingImage(index)
-                                }
-                        )
-                    }
-
                     itemsIndexed(selectedImageUris) { index, imageUri ->
                         AsyncImage(
                             model = imageUri,
@@ -192,18 +190,20 @@ fun ReportBottomSheet(
                         )
                     }
 
-                    item {
-                        Box(
-                            modifier = Modifier
-                                .size(60.dp)
-                                .clip(CircleShape)
-                                .background(Color(0xFFF5F6F8))
-                                .GwangSanClickable { galleryLauncher.launch("image/*") }
-                        ) {
-                            PlussIcon(
-                                tint = colors.black,
-                                modifier = Modifier.align(Alignment.Center)
-                            )
+                    if (canAddMore) {
+                        item {
+                            Box(
+                                modifier = Modifier
+                                    .size(60.dp)
+                                    .clip(CircleShape)
+                                    .background(Color(0xFFF5F6F8))
+                                    .GwangSanClickable { galleryLauncher.launch("image/*") }
+                            ) {
+                                PlussIcon(
+                                    tint = colors.black,
+                                    modifier = Modifier.align(Alignment.Center)
+                                )
+                            }
                         }
                     }
                 }

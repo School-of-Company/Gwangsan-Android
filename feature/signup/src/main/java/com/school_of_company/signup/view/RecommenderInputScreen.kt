@@ -32,7 +32,7 @@ import com.school_of_company.model.auth.request.SignUpRequestModel
 import com.school_of_company.signup.viewmodel.SignUpViewModel
 import com.school_of_company.signup.viewmodel.uistate.SignUpUiState
 import com.school_of_company.ui.previews.GwangsanPreviews
-import com.yourpackage.design_system.component.textField.GwangSanTextField
+import com.school_of_company.design_system.component.textfield.GwangSanTextField
 
 @Composable
 internal fun ReCommenDerInputRoute(
@@ -77,7 +77,7 @@ internal fun ReCommenDerInputRoute(
                 onErrorToast(null, R.string.error_invalid_password)
             }
             is SignUpUiState.Unauthorized -> {
-                onErrorToast(null, R.string.error_Unauthorized)
+                makeToast(context, "닉네임 또는 비밀번호가 잘못되었습니다.")
             }
         }
     }
@@ -162,6 +162,7 @@ fun RecommenderInputScreen(
 
                 GwangSanTextField(
                     label = "추천인",
+                    maxLines = 1,
                     value = recommender,
                     placeHolder = "추천인 별칭을 입력해주세요",
                     onTextChange = onRecommenderChange

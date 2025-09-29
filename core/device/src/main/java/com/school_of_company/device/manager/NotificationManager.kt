@@ -53,7 +53,7 @@ class NotificationManager(
         )
 
         val builder = NotificationCompat.Builder(context, Notifications.CHANNEL_ID)
-            .setSmallIcon(R.drawable.gwangsan)
+            .setSmallIcon(R.drawable.fcm_horn_icon)
             .setColor(ContextCompat.getColor(context, R.color.main))
             .setAutoCancel(true)
             .setPriority(NotificationCompat.PRIORITY_HIGH)

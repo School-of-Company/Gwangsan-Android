@@ -95,7 +95,7 @@ class SignUpViewModel @Inject constructor(
                                 _signUpUiState.value = SignUpUiState.Error(result.exception)
                                 result.exception.errorHandling(
                                     conflictAction = { _signUpUiState.value = SignUpUiState.Conflict },
-                                    unauthorizedAction = { _signUpUiState.value = SignUpUiState.Unauthorized }
+                                    unauthorizedAction = { _signUpUiState.value = SignUpUiState.Unauthorized },
                                 )
                             }
 
@@ -128,8 +128,8 @@ class SignUpViewModel @Inject constructor(
                             _verifyNumberUiState.value = VerifyNumberUiState.Error(result.exception)
                             result.exception.errorHandling(
                                 badRequestAction = { _verifyNumberUiState.value = VerifyNumberUiState.BadRequest },
-                                notFoundAction = { _verifyNumberUiState.value = VerifyNumberUiState.NotFound },
-                                tooManyRequestAction = {_verifyNumberUiState.value = VerifyNumberUiState.TooManyRequest },
+                                unauthorizedAction = { _verifyNumberUiState.value = VerifyNumberUiState.Unauthorized },
+                                forbiddenAction = { _verifyNumberUiState.value = VerifyNumberUiState.Forbidden }
                             )
                         }
                     }
@@ -156,6 +156,8 @@ class SignUpViewModel @Inject constructor(
                                 _sendNumberUiState.value = SendNumberUiState.Error(result.exception)
                                 result.exception.errorHandling(
                                     tooManyRequestAction = { _sendNumberUiState.value =  SendNumberUiState.TooManyRequest },
+                                    badRequestAction = { _sendNumberUiState.value = SendNumberUiState.PhoneNumberNotValid },
+                                    conflictAction = { _sendNumberUiState.value = SendNumberUiState.Conflict}
                                 )
 
                             }

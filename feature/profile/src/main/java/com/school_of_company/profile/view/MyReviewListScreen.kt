@@ -35,6 +35,7 @@ import kotlinx.collections.immutable.toPersistentList
 @Composable
 internal fun MyReviewRoute(
     onBackClick: () -> Unit,
+    onPostClick: (Long) -> Unit,
     viewModel: MyProfileViewModel = hiltViewModel()
 ) {
     val getMyWriteReviewUiState by viewModel.getMyWriteReviewUiState.collectAsStateWithLifecycle()
@@ -52,7 +53,8 @@ internal fun MyReviewRoute(
         onBackClick = onBackClick,
         getMyReviewUiState = getMyWriteReviewUiState,
         getMyReviewList = { viewModel.getMyWriteReview() },
-        swipeRefreshState = swipeRefreshState
+        swipeRefreshState = swipeRefreshState,
+        onPostClick = onPostClick
     )
 }
 
@@ -60,6 +62,7 @@ internal fun MyReviewRoute(
 private fun MyReviewScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
+    onPostClick: (Long) -> Unit,
     getMyReviewUiState: GetMyReviewWriteUiState,
     swipeRefreshState: SwipeRefreshState,
     getMyReviewList: () -> Unit
@@ -96,6 +99,7 @@ private fun MyReviewScreen(
                 when (getMyReviewUiState) {
                     is GetMyReviewWriteUiState.Success -> {
                         MyReviewProfileList(
+                            onClick = onPostClick,
                             items = getMyReviewUiState.data.toPersistentList(),
                             modifier = Modifier
                                 .fillMaxSize()
@@ -162,6 +166,7 @@ private fun MyReviewScreen(
 @Composable
 fun MyReviewProfileList(
     items: List<ReviewResponseUi>,
+    onClick: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -170,6 +175,7 @@ fun MyReviewProfileList(
     ) {
         items(items) { review ->
             MyProfileReviewListItem(
+                onClick = onClick,
                 data = review,
             )
         }

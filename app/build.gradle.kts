@@ -24,6 +24,7 @@ dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:design-system"))
     implementation(project(":core:data"))
+    implementation(project(":core:datastore"))
     implementation(project(":core:local"))
     implementation(project(":core:device"))
     implementation(project(":core:network"))
@@ -34,6 +35,7 @@ dependencies {
     implementation(project(":feature:content"))
     implementation(project(":feature:chat"))
     implementation(project(":feature:inform"))
+
     implementation(project(":feature:main"))
     implementation(project(":feature:post"))
     implementation(project(":feature:signin"))
@@ -45,6 +47,7 @@ dependencies {
     implementation(libs.firebase.messaging)
     implementation(libs.firebase.crashlytics)
     implementation(libs.androidx.window.size)
+    implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.navigation.runtime)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.material3)

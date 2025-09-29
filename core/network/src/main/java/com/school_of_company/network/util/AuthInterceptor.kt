@@ -30,13 +30,14 @@ class AuthInterceptor @Inject constructor(
                 request
             }
 
+
             path.contains("/api/sms") && method == POST -> {
                 request
             }
 
             // 토큰 재발급은 refreshToken 사용
-            path.endsWith("/api/auth/") && method == PATCH -> {
-                request.newBuilder().addHeader("Authorization", "Bearer $refreshToken").build()
+            path.endsWith("/api/auth/reissue") && method == PATCH -> {
+                request.newBuilder().addHeader("RefreshToken"," $refreshToken").build()
             }
 
             // 로그아웃, 회원탈퇴 등 그 외는 accessToken 사용

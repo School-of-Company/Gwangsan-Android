@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -38,7 +39,7 @@ import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.signup.componet.AreaList
 import com.school_of_company.signup.viewmodel.SignUpViewModel
 import com.school_of_company.ui.previews.GwangsanPreviews
-import com.yourpackage.design_system.component.textField.GwangSanSearchTextField
+import com.school_of_company.design_system.component.textfield.GwangSanSearchTextField
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
@@ -92,6 +93,7 @@ private fun NeighborhoodSignupScreen(
                 .fillMaxSize()
                 .background(color = colors.white)
                 .verticalScroll(scrollState)
+                .imePadding()
                 .padding(top = 24.dp, start = 24.dp, end = 24.dp)
                 .pointerInput(Unit) {
                     detectTapGestures { focusManager.clearFocus() }
@@ -138,6 +140,7 @@ private fun NeighborhoodSignupScreen(
                     placeHolder = "동네를 검색해주세요",
                     setText = studentSearch,
                     onValueChange = onStudentSearchChange,
+                    maxLines = 1,
                     onSearchTextChange = onStudentSearchChange,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -193,7 +196,11 @@ private val allAreas = listOf(
     "하남동",
     "비아동",
     "어룡동",
-    "삼도동"
+    "삼도동",
+    "광산구지역사회보장협의체",
+    "광산구자원봉사센터",
+    "광산구도시재생공동체센터",
+    "투게더광산나눔문화센터"
 )
 
 @GwangsanPreviews

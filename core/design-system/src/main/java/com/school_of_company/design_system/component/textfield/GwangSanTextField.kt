@@ -1,4 +1,4 @@
-package com.yourpackage.design_system.component.textField
+package com.school_of_company.design_system.component.textfield
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -29,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.school_of_company.design_system.R
 import com.school_of_company.design_system.component.clickable.GwangSanClickable
+import com.school_of_company.design_system.component.icons.DropDownIcon
 import com.school_of_company.design_system.component.icons.PlusIcon
 import com.school_of_company.design_system.component.icons.SearchIcon
 import com.school_of_company.design_system.theme.GwangSanTheme
@@ -77,7 +78,7 @@ fun GwangSanTextField(
                 maxLines = maxLines,
                 singleLine = singleLine,
                 cursorBrush = SolidColor(GwangSanColor.subYellow500),
-                modifier = modifier
+                modifier = Modifier
                     .focusable(true)
                     .fillMaxWidth()
                     .onFocusChanged { isFocused.value = it.isFocused }
@@ -317,16 +318,6 @@ fun GwangSanSelectTextField(
                     .padding(horizontal = 8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(24.dp)
-                        .GwangSanClickable(enabled = !isDisabled) {
-                            onClick()
-                        }
-                ) {
-                    PlusIcon()
-                }
-
                 Spacer(modifier = Modifier.width(8.dp))
 
                 TextField(
@@ -360,6 +351,16 @@ fun GwangSanSelectTextField(
                         unfocusedPlaceholderColor = GwangSanColor.gray400
                     )
                 )
+
+                Box(
+                    modifier = Modifier
+                        .size(24.dp)
+                        .GwangSanClickable(enabled = !isDisabled) {
+                            onClick()
+                        }
+                ) {
+                    DropDownIcon()
+                }
             }
 
             if (isError) {

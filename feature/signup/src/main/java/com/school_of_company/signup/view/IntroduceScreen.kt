@@ -29,7 +29,7 @@ import com.school_of_company.design_system.component.icons.DownArrowIcon
 import com.school_of_company.design_system.component.topbar.GwangSanTopBar
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.signup.viewmodel.SignUpViewModel
-import com.yourpackage.design_system.component.textField.GwangSanSelectTextField
+import com.school_of_company.design_system.component.textfield.GwangSanSelectTextField
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.school_of_company.ui.previews.GwangsanPreviews
 import kotlinx.collections.immutable.PersistentList
@@ -96,7 +96,6 @@ private fun IntroduceScreen(
             modifier = modifier
                 .fillMaxSize()
                 .background(color = colors.white)
-                .imePadding()
         ) {
             Column(
                 verticalArrangement = Arrangement.Top,

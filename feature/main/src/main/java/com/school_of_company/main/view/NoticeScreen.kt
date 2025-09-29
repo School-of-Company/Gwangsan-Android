@@ -48,6 +48,7 @@ import kotlinx.collections.immutable.toPersistentList
 internal  fun NoticeRoute(
     onBackClick: () -> Unit,
     navigationToDetail: (Long) -> Unit,
+    navigateToInformDetail: (Long) -> Unit,
     viewModel: MainViewModel = hiltViewModel()
 ){
 
@@ -89,7 +90,8 @@ internal  fun NoticeRoute(
         transactionCompleteUiState = transactionCompleteUiState,
         openBottomSheet = openBottomSheet,
         setOpenBottomSheet = setOpenBottomSheet,
-        navigationToDetail = navigationToDetail
+        navigationToDetail = navigationToDetail,
+        navigateToInformDetail = navigateToInformDetail
     )
 }
 
@@ -102,6 +104,7 @@ private fun NoticeScreen(
     openBottomSheet: Boolean,
     setOpenBottomSheet: (Boolean) -> Unit,
     navigationToDetail: (Long) -> Unit,
+    navigateToInformDetail: (Long) -> Unit,
     transactionCompleteUiState: TransactionCompleteUiState,
     getAlertCallBack: () -> Unit,
     onBackClick: () -> Unit,
@@ -151,14 +154,15 @@ private fun NoticeScreen(
                         is GetAlertUiState.Success -> {
                             NoticeList(
                                 items = getAlertUiState.data.toPersistentList(),
-                                onClick = { sourceId, sendMemberId, alertType ->
+                                onClick = {sourceId, sendMemberId, alertType ->
                                     if (alertType == AlertType.TRADE_COMPLETE) {
                                         navigationToDetail(sourceId)
-                                    }else if(alertType == AlertType.OTHER_MEMBER_TRADE_COMPLETE) {
-                                        selectedSourceId.value = sourceId
-                                        selectedMemberId.value = sendMemberId
-                                        setOpenBottomSheet(true)
-                                    }else {
+                                    }
+                                    else if (alertType == AlertType.NOTICE) {
+                                        navigateToInformDetail(sourceId)
+                                    }
+
+                                    else {
                                         Unit
                                     }
                                 },
@@ -236,25 +240,6 @@ private fun NoticeScreen(
                         else -> Unit
                     }
 
-                }
-            }
-            if (openBottomSheet) {
-                Dialog(onDismissRequest = { setOpenBottomSheet(false) }) {
-                    GwangsanDialog(
-                        onLogout = {
-                            transactionCompletedCallBack(
-                                selectedSourceId.value ?: return@GwangsanDialog,
-                                selectedMemberId.value ?: 0L
-                            )
-                            setOpenBottomSheet(false)
-                        },
-                        onDismiss = {
-                            setOpenBottomSheet(false)
-                        },
-                        titleText = "거래 완료",
-                        contentText = "정말 거래 완료를 하시겠습니까?",
-                        buttonText = "거래 완료"
-                    )
                 }
             }
         }
