@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import com.school_of_company.design_system.component.clickable.GwangSanClickable
 import com.school_of_company.design_system.theme.GwangSanTheme
 import com.school_of_company.design_system.theme.color.GwangSanColor
 import com.school_of_company.profile.ui.model.ReviewResponseUi
@@ -32,13 +33,14 @@ import kotlinx.collections.immutable.persistentListOf
 internal fun MyProfileReviewListItem(
     modifier: Modifier = Modifier,
     data: ReviewResponseUi,
-    onClick: () -> Unit = {}
+    onClick: (Long) -> Unit
 ) {
     GwangSanTheme { _, _ ->
         Card(
             colors = CardDefaults.cardColors(containerColor = Color.White),
-            onClick = onClick,
-            modifier = modifier.fillMaxWidth()
+            modifier = modifier
+                .GwangSanClickable { onClick(data.productId) }
+                .fillMaxWidth()
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -142,16 +144,3 @@ private fun MyProfileReviewProgressBar(
     }
 }
 
-@Preview
-@Composable
-private fun MyProfileReviewListItemPreview() {
-    MyProfileReviewListItem(
-        data = ReviewResponseUi(
-            productId = 0L,
-            content = "친절하고 응답도 빨랐어요. 다음에도 거래하고 싶습니다!",
-            light = 7, // 1~10
-            reviewerName = "김치라",
-            images = persistentListOf()
-        )
-    )
-}
