@@ -51,6 +51,15 @@ jobs:
       - name: Create service_account.json
         run: echo '${{ secrets.SERVICE_ACCOUNT_JSON }}' > service_account.json
 
+      - name: Create google-services.json
+        env:
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: |
+          echo "$GOOGLE_SERVICES_JSON" | base64 -d > app/google-services.json
+          mkdir -p app/src/release
+          cp app/google-services.json app/src/release/google-services.json
+          test -s app/google-services.json || (echo "google-services.json 생성 실패" && exit 1)
+
       - name: Assemble Release Bundle
         run: ./gradlew bundleRelease --no-daemon
 
@@ -62,7 +71,7 @@ jobs:
           else
             echo "BUNDLE_SIZE=빌드 실패" >> $GITHUB_ENV
           fi
-          
+
       - name: Finalize build metrics
         if: ${{ always() }}
         run: |
