@@ -26,6 +26,8 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -156,6 +158,7 @@ private fun PasswordSignupScreen(
                     isDisabled = false,
                     errorText = "영문과 숫자를 특수문자를 포함한 8자 이상 입력해주세요.",
                     onTextChange = onPasswordChange,
+                    visualTransformation = PasswordVisualTransformation(),
                     modifier = Modifier.fillMaxWidth(),
                 )
 
@@ -170,6 +173,7 @@ private fun PasswordSignupScreen(
                     errorText = "비밀번호가 일치하지 않습니다.",
                     onTextChange = onRePasswordChange,
                     label = "비밀번호를 다시 입력해주세요",
+                    visualTransformation = PasswordVisualTransformation(),
                     modifier = Modifier.fillMaxWidth(),
                 )
             }
