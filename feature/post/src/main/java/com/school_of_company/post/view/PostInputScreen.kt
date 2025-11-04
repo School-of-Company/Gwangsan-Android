@@ -45,12 +45,11 @@ internal fun PostInputRoute(
     val actualViewModel = viewModel ?: hiltViewModel()
     val gwangsan by actualViewModel.gwangsan.collectAsState()
 
-    val selectedImages by actualViewModel.selectedImages.collectAsState()
     val existingImageUrls by actualViewModel.existingImageUrls.collectAsState()
 
-    val selectedImageUris = remember(selectedImages) {
-        selectedImages.map { it.toString() }.toPersistentList()
-    }
+    val selectedImages by actualViewModel.selectedImages.collectAsState()
+
+    val selectedImageUris = selectedImages.map { it.toString() }.toPersistentList()
 
     val uploadedUris = remember { mutableStateListOf<String>() }
     val context = LocalContext.current
@@ -116,7 +115,7 @@ private fun PostInputScreen(
 
     val totalImages = existingImageUrls.size + imageUri.size
     val canAddMore = totalImages < 5
-    val hasAnyImage = totalImages > 0   // ✅ 첨부 이미지 1장 이상 여부
+    val hasAnyImage = totalImages > 0
 
     GwangSanTheme { colors, typography ->
         Column(
@@ -135,16 +134,38 @@ private fun PostInputScreen(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                itemsIndexed(imageUri) { index, imageUriStr ->
-                    AsyncImage(
-                        model = imageUriStr,
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
+                itemsIndexed(existingImageUrls) { index, imageUrl ->
+                    Box(
                         modifier = Modifier
-                            .clip(CircleShape)
                             .size(60.dp)
-                            .GwangSanClickable { onImageRemove(index) }
-                    )
+                            .clip(CircleShape)
+                    ) {
+                        AsyncImage(
+                            model = imageUrl,
+                            contentDescription = "기존 이미지",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .matchParentSize()
+                                .GwangSanClickable { onExistingImageRemove(index) }
+                        )
+                    }
+                }
+
+                itemsIndexed(imageUri) { index, imageUriStr ->
+                    Box(
+                        modifier = Modifier
+                            .size(60.dp)
+                            .clip(CircleShape)
+                    ) {
+                        AsyncImage(
+                            model = imageUriStr,
+                            contentDescription = "선택된 이미지",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .matchParentSize()
+                                .GwangSanClickable { onImageRemove(index) }
+                        )
+                    }
                 }
 
                 if (canAddMore) {
@@ -178,7 +199,6 @@ private fun PostInputScreen(
 
             Spacer(modifier = Modifier.weight(1f, fill = true))
 
-            // ✅ 텍스트가 있고 + 이미지가 1장 이상일 때만 활성화
             val canProceed = value.isNotBlank() && hasAnyImage
             GwangSanStateButton(
                 text = "다음",

@@ -56,10 +56,11 @@ internal fun PostFinalRoute(
     val selectedType by actualViewModel.type.collectAsState()
     val selectedMode by actualViewModel.mode.collectAsState()
 
+    val existingImageUrls by actualViewModel.existingImageUrls.collectAsState()
+
     val selectedImageUris by actualViewModel.selectedImages.collectAsStateWithLifecycle()
-    val images = remember(selectedImageUris) {
-        selectedImageUris.map { it.toString() }.toPersistentList()
-    }
+
+    val images = (existingImageUrls + selectedImageUris.map { it.toString() }).toPersistentList()
 
     val postUiState by actualViewModel.postUiState.collectAsState()
     val modifyPostUiState by actualViewModel.modifyPostUiStat.collectAsStateWithLifecycle()
