@@ -64,6 +64,7 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun ChatRoomRoute(
     productId: Long,
+    initialRoomId: Long? = null,
     onBackClick: () -> Unit,
     viewModel: ChatViewModel = hiltViewModel()
 ) {
@@ -103,7 +104,14 @@ internal fun ChatRoomRoute(
 
     LaunchedEffect(productId) {
         viewModel.getMyPostDetail(productId)
-        viewModel.joinOrCreateChatRoom(productId)
+    }
+
+    LaunchedEffect(initialRoomId, productId) {
+        if (initialRoomId != null) {
+            viewModel.joinDirectChatRoom(initialRoomId)
+        } else {
+            viewModel.joinOrCreateChatRoom(productId)
+        }
     }
 
     DisposableEffect(Unit) {
