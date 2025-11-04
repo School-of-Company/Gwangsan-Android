@@ -35,6 +35,9 @@ import com.school_of_company.ui.previews.GwangsanPreviews
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.school_of_company.post.viewmodel.uiState.ImageUpLoadUiState
 
 @Composable
 internal fun PostInputRoute(
@@ -49,9 +52,12 @@ internal fun PostInputRoute(
 
     val selectedImages by actualViewModel.selectedImages.collectAsState()
 
+    val imageUpLoadUiState by actualViewModel.imageUpLoadUiState.collectAsStateWithLifecycle()
+
     val selectedImageUris = selectedImages.map { it.toString() }.toPersistentList()
 
     val uploadedUris = remember { mutableStateListOf<String>() }
+
     val context = LocalContext.current
 
     val galleryLauncher =
@@ -80,7 +86,9 @@ internal fun PostInputRoute(
                     actualViewModel.onImageIdAdded(imageId)
                     uploadedUris.add(uriString)
                     remainingSlots--
-                } catch (_: Exception) { }
+                } catch (_: Exception) {
+                    makeToast(context, "이미지 업로드에 실패했습니다.")
+                }
             }
         }
     }
@@ -94,7 +102,8 @@ internal fun PostInputRoute(
         existingImageUrls = existingImageUrls.toPersistentList(),
         onImageRemove = { index -> actualViewModel.removeNewImage(index) },
         onExistingImageRemove = { index -> actualViewModel.removeExistingImage(index) },
-        onImageAdd = { galleryLauncher.launch("image/*") }
+        onImageAdd = { galleryLauncher.launch("image/*") },
+        imageUpLoadUiState = imageUpLoadUiState
     )
 }
 
@@ -110,6 +119,7 @@ private fun PostInputScreen(
     onImageRemove: (Int) -> Unit,
     onExistingImageRemove: (Int) -> Unit,
     onImageAdd: () -> Unit,
+    imageUpLoadUiState: ImageUpLoadUiState
 ) {
     val focusManager = LocalFocusManager.current
 
@@ -199,7 +209,14 @@ private fun PostInputScreen(
 
             Spacer(modifier = Modifier.weight(1f, fill = true))
 
-            val canProceed = value.isNotBlank() && hasAnyImage
+            val canProceed = when {
+                value.isBlank() -> false
+                !hasAnyImage -> false
+                imageUri.isEmpty() -> true
+                imageUpLoadUiState is ImageUpLoadUiState.Success -> true
+                else -> false
+            }
+
             GwangSanStateButton(
                 text = "다음",
                 state = if (canProceed) ButtonState.Enable else ButtonState.Disable,
