@@ -1,290 +1,507 @@
-package com.school_of_company.gwangsan.navigation
+package com.school_of_company.content.view
 
+import android.util.Log
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.school_of_company.gwangsan.R
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.navigation.compose.NavHost
-import com.school_of_company.chat.navigation.chatRoomScreen
-import com.school_of_company.chat.navigation.chatScreen
-import com.school_of_company.chat.navigation.navigateToChatRoom
-import com.school_of_company.common.ForBiddenException
-import com.school_of_company.common.NoInternetException
-import com.school_of_company.common.OtherHttpException
-import com.school_of_company.common.ServerException
-import com.school_of_company.common.TimeOutException
-import com.school_of_company.common.UnKnownException
-import com.school_of_company.content.navigation.navigateToReadMore
-import com.school_of_company.content.navigation.readMoreScreen
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
+import com.school_of_company.content.component.MyProfileUserLevel
+import com.school_of_company.content.component.ReportBottomSheet
+import com.school_of_company.content.ui.model.ImageUi
+import com.school_of_company.content.ui.model.MemberUi
+import com.school_of_company.content.ui.model.PostUi
+import com.school_of_company.content.viewmodel.ContentViewModel
+import com.school_of_company.content.viewmodel.uistate.DeletePostUiState
+import com.school_of_company.content.viewmodel.uistate.GetSpecificPostUiState
+import com.school_of_company.content.viewmodel.uistate.ReportPostUiState
+import com.school_of_company.content.viewmodel.uistate.ReviewPostUiState
+import com.school_of_company.content.viewmodel.uistate.TransactionCompleteUiState
+import com.school_of_company.design_system.R
+import com.school_of_company.design_system.component.button.GwangSanEnableButton
+import com.school_of_company.design_system.component.button.GwangSanStateButton
+import com.school_of_company.design_system.component.button.state.ButtonState
+import com.school_of_company.design_system.component.clickable.GwangSanClickable
+import com.school_of_company.design_system.component.dialog.GwangsanDialog
+import com.school_of_company.design_system.component.icons.DownArrowIcon
+import com.school_of_company.design_system.component.recycle.CleaningRequestCard
 import com.school_of_company.design_system.component.toast.makeToast
-import com.school_of_company.gwangsan.ui.GwangSanAppState
-import com.school_of_company.gwangsan.ui.navigateToHomeAndClearLogin
-import com.school_of_company.gwangsan.ui.navigationPopUpToLogin
-import com.school_of_company.inform.navigation.informDetailScreen
-import com.school_of_company.inform.navigation.informScreen
-import com.school_of_company.inform.navigation.navigateToInformDetail
-import com.school_of_company.main.navgation.mainScreen
-import com.school_of_company.main.navgation.mainStartScreen
-import com.school_of_company.main.navgation.navigateToMain
-import com.school_of_company.main.navgation.navigateToMainStart
-import com.school_of_company.main.navgation.navigateToNoticeScreen
-import com.school_of_company.main.navgation.noticeScreen
-import com.school_of_company.model.enum.Mode
-import com.school_of_company.model.enum.Type
-import com.school_of_company.post.navigation.navigateToPost
-import com.school_of_company.post.navigation.navigateToPostEdit
-import com.school_of_company.post.navigation.postScreen
-import com.school_of_company.profile.navigation.myInformationEditScreen
-import com.school_of_company.profile.navigation.myProfileScreen
-import com.school_of_company.profile.navigation.myReviewScreen
-import com.school_of_company.profile.navigation.myWritingDetailScreen
-import com.school_of_company.profile.navigation.myWritingScreen
-import com.school_of_company.profile.navigation.navigateToMyPeTchWritingDetail
-import com.school_of_company.profile.navigation.navigateToMyProfile
-import com.school_of_company.profile.navigation.navigateToMyReview
-import com.school_of_company.profile.navigation.navigateToMyWriting
-import com.school_of_company.profile.navigation.navigateToOtherPersonProfile
-import com.school_of_company.profile.navigation.navigateToOtherReview
-import com.school_of_company.profile.navigation.otherPersonProfileScreen
-import com.school_of_company.profile.navigation.otherReviewScreen
-import com.school_of_company.signin.navigation.StartRoute
-import com.school_of_company.signin.navigation.navigateToSignIn
-import com.school_of_company.signin.navigation.signInScreen
-import com.school_of_company.signin.navigation.startScreen
-import com.school_of_company.signup.navigation.navigateToSignUpDescription
-import com.school_of_company.signup.navigation.navigateToSignUpFinish
-import com.school_of_company.signup.navigation.navigateToSignUpIntroduce
-import com.school_of_company.signup.navigation.navigateToSignUpName
-import com.school_of_company.signup.navigation.navigateToSignUpNeighborhood
-import com.school_of_company.signup.navigation.navigateToSignUpPassword
-import com.school_of_company.signup.navigation.navigateToSignUpPhone
-import com.school_of_company.signup.navigation.navigateToSignUpPlaceName
-import com.school_of_company.signup.navigation.navigateToSignUpRecommender
-import com.school_of_company.signup.navigation.navigateToSignUpStart
-import com.school_of_company.signup.navigation.signUpDescriptionScreen
-import com.school_of_company.signup.navigation.signUpFinishScreen
-import com.school_of_company.signup.navigation.signUpIntroduceScreen
-import com.school_of_company.signup.navigation.signUpNameScreen
-import com.school_of_company.signup.navigation.signUpNeighborhoodScreen
-import com.school_of_company.signup.navigation.signUpNickNameScreen
-import com.school_of_company.signup.navigation.signUpPasswordScreen
-import com.school_of_company.signup.navigation.signUpPhoneScreen
-import com.school_of_company.signup.navigation.signUpPlaceNameScreen
-import com.school_of_company.signup.navigation.signUpRecommenderScreen
+import com.school_of_company.design_system.component.topbar.GwangSanSubTopBar
+import com.school_of_company.design_system.theme.GwangSanTheme
+import com.school_of_company.model.post.request.TransactionCompleteRequestModel
+import com.school_of_company.model.report.request.ReportRequestModel
+import com.school_of_company.model.review.request.ReviewRequestModel
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
-fun GwangsanNavHost(
-    modifier: Modifier = Modifier,
-    appState: GwangSanAppState,
-    startDestination: String = StartRoute
+internal fun ReadMoreRoute(
+    postId: Long,
+    onBackClick: () -> Unit,
+    onOtherProfileClick: (Long) -> Unit,
+    onChatClick: (Long, Long?) -> Unit,
+    onReviewClick: (Int, String) -> Unit,
+    onReportClick: (String, String) -> Unit,
+    onEditClick: (Long, String, String) -> Unit,
+    viewModel: ContentViewModel = hiltViewModel()
 ) {
-    val navController = appState.navController
+    val getSpecificPostUiState by viewModel.getSpecificPostUiState.collectAsStateWithLifecycle()
+    val reportPostUiState by viewModel.reportPostUiState.collectAsStateWithLifecycle()
+    val reviewPostUiState by viewModel.reviewPostUiState.collectAsStateWithLifecycle()
+    val transactionCompleteUiState by viewModel.transactionCompleteUiState.collectAsStateWithLifecycle()
+    val deletePostUiState by viewModel.deletePostUiState.collectAsStateWithLifecycle()
+
     val context = LocalContext.current
+    val (openReportBottomSheet, setOpenReportBottomSheet) = rememberSaveable { mutableStateOf(false) }
+    val (openReviewBottomSheet, setOpenReviewBottomSheet) = rememberSaveable { mutableStateOf(false) }
+    val (openDeleteBottomSheet, setOpenDeleteBottomSheet) = rememberSaveable { mutableStateOf(false) }
 
-    val onErrorToast: (throwable: Throwable?, message: Int?) -> Unit = { throwable, message ->
-        val errorMessage = throwable?.let {
-            when (it) {
-                is ForBiddenException -> R.string.error_forbidden
-                is TimeOutException -> R.string.error_time_out
-                is ServerException -> R.string.error_server
-                is NoInternetException -> R.string.error_no_internet
-                is OtherHttpException -> R.string.error_no_internet
-                is UnKnownException -> R.string.error_un_known
-                else -> message
-            }
-        } ?: message ?: R.string.error_default
+    val (buttonText, setButtonText) = remember { mutableStateOf("거래완료") }
 
-        makeToast(context, context.getString(errorMessage))
+    LaunchedEffect(postId) {
+        viewModel.getSpecificPost(postId)
     }
-    NavHost(
-        navController = navController,
-        startDestination = startDestination,
-        modifier = modifier
-    ) {
-        startScreen(
-            onSignUpClick = { navController.navigateToSignUpStart() },
-            onInputLoginClick = { navController.navigateToSignIn() }
-        )
 
-        signInScreen(
-            onBackClick = { navController.popBackStack() },
-            onMainClick = { navController.navigateToHomeAndClearLogin() },
-            onErrorToast = onErrorToast
-        )
-
-        signUpNameScreen(
-            onBackClick = { navController.popBackStack() },
-            onNicknameClick = { navController.navigateToSignUpName() }
-        )
-
-        signUpNickNameScreen(
-            onBackClick = { navController.popBackStack() },
-            onPasswordClick = { navController.navigateToSignUpPassword() },
-            onErrorToast = onErrorToast
-        )
-
-        signUpPasswordScreen(
-            onBackClick = { navController.popBackStack() },
-            onCerTinSignUpClick = { navController.navigateToSignUpPhone() }
-        )
-
-        signUpPhoneScreen(
-            onBackClick = { navController.popBackStack() },
-            onNeighborhoodClick = { navController.navigateToSignUpNeighborhood() },
-            onErrorToast = onErrorToast
-        )
-
-        signUpNeighborhoodScreen(
-            onBackClick = { navController.popBackStack() },
-            onIntroduceClick = { navController.navigateToSignUpPlaceName() }
-        )
-
-        signUpPlaceNameScreen(
-            onBackClick = { navController.popBackStack() },
-            onNextClick = { navController.navigateToSignUpIntroduce() }
-        )
-
-        signUpIntroduceScreen(
-            onBackClick = { navController.popBackStack() },
-            onNextClick = { navController.navigateToSignUpDescription() },
-            onErrorToast = onErrorToast
-        )
-
-        signUpDescriptionScreen(
-            onBackClick = { navController.popBackStack() },
-            onNextClick = { navController.navigateToSignUpRecommender() }
-        )
-
-        signUpRecommenderScreen(
-            onBackClick = { navController.popBackStack() },
-            onRecommenderClick = { navController.navigateToSignUpFinish() },
-            onErrorToast = onErrorToast
-        )
-
-        signUpFinishScreen(
-            onClickGoToLogin = { navController.navigateToSignIn() }
-        )
-
-        mainScreen(
-            navigateToDetail = { id ->
-                navController.navigateToReadMore(id)
-            },
-            onBackClick = { navController.popBackStack() },
-            onErrorToast = onErrorToast,
-        )
-
-        mainStartScreen(
-            navigationToService = { navController.navigateToMain("SERVICE") },
-            navigationToObject = { navController.navigateToMain("OBJECT") },
-            navigationToNotice = { navController.navigateToNoticeScreen() }
-        )
-
-        chatScreen(
-            onCloseClick = { navController.popBackStack() },
-            onChatClick = { productId, roomId ->
-                navController.navigateToChatRoom(productId, roomId)
+    LaunchedEffect(deletePostUiState) {
+        when (deletePostUiState) {
+            is DeletePostUiState.Loading -> Unit
+            is DeletePostUiState.Success -> {
+                makeToast(context, "내 게시물 삭제 성공")
+                setOpenDeleteBottomSheet(false)
+                onBackClick()
             }
-        )
-
-        chatRoomScreen(
-            onBackClick = { navController.popBackStack() },
-        )
-
-        readMoreScreen(
-            onBackClick = { navController.popBackStack() },
-            onOtherProfileClick = { memberId ->
-                navController.navigateToOtherPersonProfile(memberId = memberId)
-            },
-            onChatClick = { id, roomId ->
-                navController.navigateToChatRoom(id, roomId)
-            },
-            onReviewClick = { _, _ -> },
-            onReportClick = { _, _ -> },
-            onEditClick = { id, type, mode ->
-                navController.navigateToPostEdit(id)
+            is DeletePostUiState.Error -> {
+                makeToast(context, "내 게시물 삭제 실패")
             }
-        )
-
-        informScreen(
-            onNextClick = { id ->
-                navController.navigateToInformDetail(id)
-            }
-        )
-
-        informDetailScreen(
-            onBackClick = { navController.popBackStack() }
-        )
-
-        postScreen(
-            onBackClick = { navController.popBackStack() },
-            onCreateComplete = { navController.navigateToMainStart() },
-            onEditComplete = { navController.popBackStack() }
-        )
-
-        myProfileScreen(
-            onMyReviewClick = { navController.navigateToMyReview() },
-            onMyWritingClick = { navController.navigateToMyWriting() },
-            onErrorToast = onErrorToast,
-            onMyWritingDetailClick = { id ->
-                navController.navigateToReadMore(id)
-            },
-            onMyInformationEditClick = { navController.navigateToMyPeTchWritingDetail() },
-            onLogoutClick = { navController.navigationPopUpToLogin(loginRoute = StartRoute) }
-        )
-
-        otherPersonProfileScreen(
-            onBackClick = { navController.popBackStack() },
-            onErrorToast = onErrorToast,
-            onOtherReviewClick = { id ->
-                navController.navigateToOtherReview(id)
-            },
-            onOtherWritingDetailClick = { id ->
-                navController.navigateToReadMore(id)
-            }
-        )
-
-        myInformationEditScreen(
-            onBackClick = { navController.popBackStack() },
-            onSubmitComplete = {
-                navController.navigateToMyProfile()
-            },
-            onErrorToast = onErrorToast
-        )
-
-        myReviewScreen(
-            onBackClick = { navController.popBackStack() },
-            onPostClick = { id -> navController.navigateToReadMore(id) }
-        )
-
-
-        myWritingScreen(
-            onBackClick = { navController.popBackStack() },
-            onPostClick = { id -> navController.navigateToReadMore(id) }
-
-        )
-
-        myWritingDetailScreen(
-            onBackClick = { navController.popBackStack() },
-            onCompleteClick = { navController.popBackStack() },
-            onErrorToast = onErrorToast,
-            onEditClick = { id, type, mode ->
-                navController.navigateToPostEdit(id)
-            }
-        )
-
-        otherReviewScreen(
-            onBackClick = { navController.popBackStack() },
-            onPostClick = { id -> navController.navigateToReadMore(id) }
-        )
-
-        noticeScreen(
-            onBackClick = { navController.popBackStack() },
-            navigationToDetail = { id ->
-                navController.navigateToReadMore(id)
-            },
-            navigateToInformDetail = { id ->
-                navController.navigateToInformDetail(id)
-            }
-        )
+        }
     }
+
+    LaunchedEffect(reportPostUiState) {
+        when (reportPostUiState) {
+            is ReportPostUiState.Loading -> Unit
+            is ReportPostUiState.Success -> {
+                makeToast(context, "신고 성공")
+                setOpenReportBottomSheet(false)
+            }
+
+            is ReportPostUiState.Error -> {
+                makeToast(context, "신고 실패")
+            }
+        }
+    }
+
+    LaunchedEffect(reviewPostUiState) {
+        when (reviewPostUiState) {
+            is ReviewPostUiState.Loading -> Unit
+            is ReviewPostUiState.Success -> {
+                makeToast(context, "리뷰를 성공하였습니다.")
+                setOpenReviewBottomSheet(false)
+            }
+
+            is ReviewPostUiState.Error -> {
+                makeToast(context, "리뷰를 실패하였습니다.")
+            }
+        }
+    }
+
+    LaunchedEffect(transactionCompleteUiState) {
+        when (transactionCompleteUiState){
+            is TransactionCompleteUiState.Loading -> ""
+            is TransactionCompleteUiState.Error -> makeToast(context, "거래실패")
+            is TransactionCompleteUiState.Success -> makeToast(context, "거래성공")
+            is TransactionCompleteUiState.Unauthorized -> makeToast(context, "본인을 거래 대상으로 선택할 수 없습니다.")
+            is TransactionCompleteUiState.NotFound -> makeToast(context, "거래실패")
+            is TransactionCompleteUiState.Conflict -> makeToast(context, "이미 거래 완료된 상품입니다.")
+        }
+    }
+
+
+
+    when (getSpecificPostUiState) {
+
+        is GetSpecificPostUiState.Success -> {
+            val post = (getSpecificPostUiState as GetSpecificPostUiState.Success).post
+            ReadMoreScreen(
+                getSpecificPostUiState = getSpecificPostUiState,
+                onBackClick = onBackClick,
+                onEditClick = {
+                    onEditClick(post.id, post.type, post.mode)
+                },
+                onOtherProfileClick = onOtherProfileClick,
+                onChatClick = onChatClick,
+                onTransactionCompleteCallBack = {
+                    viewModel.transactionComplete(
+                        body = TransactionCompleteRequestModel(
+                            productId = postId,
+                            otherMemberId = (getSpecificPostUiState as GetSpecificPostUiState.Success).post.member.memberId
+                        )
+                    )
+                },
+                onReviewCallBack = { light, content ->
+                    viewModel.reviewPost(
+                        body = ReviewRequestModel(
+                            productId = postId,
+                            content = content,
+                            light = light
+                        )
+                    )
+                },
+                onReportCallBack = { reportType, reportContent ->
+                    val sourceId = if (reportType != "FRAUD") {
+                        (getSpecificPostUiState as GetSpecificPostUiState.Success).post.member.memberId
+                    } else {
+                        postId
+                    }
+
+                    viewModel.reportPost(
+                        body = ReportRequestModel(
+                            sourceId = sourceId,
+                            reportType = reportType,
+                            content = reportContent
+                        )
+                    )
+                },
+                onDeleteCallBack = { viewModel.deletePost(postId = postId) },
+                openReportBottomSheet = openReportBottomSheet,
+                openReviewBottomSheet = openReviewBottomSheet,
+                openDeleteBottomSheet = openDeleteBottomSheet,
+                setOpenReportBottomSheet = setOpenReportBottomSheet,
+                setOpenReviewBottomSheet = setOpenReviewBottomSheet,
+                setOpenDeleteBottomSheet = setOpenDeleteBottomSheet,
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ReadMoreScreen(
+    modifier: Modifier = Modifier,
+    getSpecificPostUiState: GetSpecificPostUiState,
+    onBackClick: () -> Unit,
+    onEditClick: () -> Unit,
+    onOtherProfileClick: (Long) -> Unit,
+    onChatClick: (Long, Long?) -> Unit,
+    onTransactionCompleteCallBack: () -> Unit,
+    onReportCallBack: (String, String) -> Unit,
+    onReviewCallBack: (Int, String) -> Unit,
+    onDeleteCallBack: () -> Unit,
+    openReportBottomSheet: Boolean,
+    openReviewBottomSheet: Boolean,
+    openDeleteBottomSheet: Boolean,
+    setOpenReportBottomSheet: (Boolean) -> Unit,
+    setOpenReviewBottomSheet: (Boolean) -> Unit,
+    setOpenDeleteBottomSheet: (Boolean) -> Unit
+) {
+    val scrollState = rememberScrollState()
+
+    GwangSanTheme { colors, typography ->
+
+        fun betweenLabel(type: String, mode: String): String {
+            val t = type.uppercase()
+            val m = when (mode.uppercase()) {
+                "RECIVER" -> "RECEIVER"
+                else -> mode.uppercase()
+            }
+
+            return when (t) {
+                "OBJECT"  -> if (m == "RECEIVER") "필요해요" else "팔아요"
+                "SERVICE" -> if (m == "RECEIVER") "해주세요" else "할 수 있어요"
+                else      -> mode
+            }
+        }
+
+        when (getSpecificPostUiState) {
+            is GetSpecificPostUiState.Success -> {
+                val post = getSpecificPostUiState.post
+                val betweenTextLabel = remember(post.type, post.mode) {
+                    betweenLabel(post.type, post.mode)
+                }
+                val pagerState = rememberPagerState(pageCount = { post.images.size })
+
+                Box(
+                    modifier = modifier
+                        .fillMaxSize()
+                        .background(colors.white)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .verticalScroll(scrollState)
+                    ) {
+                        GwangSanSubTopBar(
+                            startIcon = {
+                                DownArrowIcon(modifier = Modifier.GwangSanClickable { onBackClick() })
+                            },
+                            betweenText = betweenTextLabel,
+                            endIcon = { Spacer(modifier = Modifier.size(24.dp)) },
+                            modifier = Modifier.padding(
+                                top = 52.dp,
+                                start = 24.dp,
+                                end = 24.dp
+                            )
+                        )
+
+                        Spacer(modifier = Modifier.height(24.dp))
+
+                        if (post.images.isEmpty()) {
+                            Image(
+                                painter = painterResource(id = R.drawable.gwangsan),
+                                contentDescription = null,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(280.dp),
+                            )
+                        } else {
+                            HorizontalPager(
+                                state = pagerState,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(280.dp)
+                            ) { page ->
+                                AsyncImage(
+                                    model = post.images[page].imageUrl,
+                                    contentDescription = null,
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentScale = ContentScale.Crop,
+                                    placeholder = painterResource(id = R.drawable.gwangsan),
+                                    error = painterResource(id = R.drawable.gwangsan),
+                                    fallback = painterResource(id = R.drawable.gwangsan)
+                                )
+                            }
+                        }
+
+                        Row(
+                            horizontalArrangement = Arrangement.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 8.dp)
+                        ) {
+                            repeat(post.images.size) { index ->
+                                val isSelected = pagerState.currentPage == index
+                                Box(
+                                    modifier = Modifier
+                                        .padding(horizontal = 4.dp)
+                                        .size(if (isSelected) 8.dp else 6.dp)
+                                        .background(
+                                            color = if (isSelected) colors.main500 else colors.gray300,
+                                            shape = RoundedCornerShape(50)
+                                        )
+                                )
+                            }
+                        }
+
+                        MyProfileUserLevel(
+                            modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp),
+                            onClick = onOtherProfileClick,
+                            data = post.member
+                        )
+
+                        Spacer(
+                            modifier = Modifier
+                                .height(1.dp)
+                                .fillMaxWidth()
+                                .background(colors.gray100)
+                        )
+
+                        Spacer(modifier = Modifier.height(24.dp))
+
+                        CleaningRequestCard(
+                            title = post.title,
+                            priceAndLocation = "${post.gwangsan} 광산",
+                            description = post.content,
+                            modifier = Modifier.padding(horizontal = 24.dp)
+                        )
+
+                        Spacer(modifier = Modifier.height(24.dp))
+
+                        Text(
+                            text = if (getSpecificPostUiState.post.isMine) "이 게시글 삭제하기" else "이 게시글 신고하기",
+                            style = typography.label.copy(textDecoration = TextDecoration.Underline),
+                            color = colors.error,
+                            modifier = Modifier
+                                .GwangSanClickable {
+                                    if (getSpecificPostUiState.post.isMine) setOpenDeleteBottomSheet(
+                                        true
+                                    ) else setOpenReportBottomSheet(true)
+                                }
+                                .padding(horizontal = 24.dp)
+                        )
+
+                        Spacer(modifier = Modifier.weight(1f))
+
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(24.dp)
+                        ) {
+                            GwangSanEnableButton(
+                                text = if (getSpecificPostUiState.post.isMine) "수정" else "채팅하기",
+                                backgroundColor = colors.white,
+                                textColor = colors.main500,
+                                onClick = {
+                                    if (getSpecificPostUiState.post.isMine) {
+                                        onEditClick()
+                                    } else {
+                                        onChatClick(getSpecificPostUiState.post.id, null)
+                                    }
+                                },
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .border(1.dp, colors.main500, RoundedCornerShape(8.dp))
+                            )
+
+                            if (post.isCompleted) {
+                                GwangSanStateButton(
+                                    text = "리뷰쓰기",
+                                    onClick = {
+                                        setOpenReviewBottomSheet(true)
+                                    },
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .border(1.dp, colors.main500, RoundedCornerShape(8.dp))
+                                )
+                            } else {
+                                GwangSanStateButton(
+                                    text = "거래하기",
+                                    state = if (getSpecificPostUiState.post.isCompletable == true && getSpecificPostUiState.post.mode == "RECEIVER") {
+                                        ButtonState.Enable
+                                    } else {
+                                        ButtonState.Disable
+                                    },
+                                    onClick = { onTransactionCompleteCallBack() },
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .border(1.dp, colors.main500, RoundedCornerShape(8.dp))
+                                )
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.padding(bottom = 40.dp))
+                    }
+                }
+            }
+
+            is GetSpecificPostUiState.Loading -> Unit
+
+            is GetSpecificPostUiState.Error -> {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(color = colors.white)
+                ) {
+                    Text(
+                        text = "게시물 정보를 가져올 수 없어요..",
+                        style = typography.titleMedium2,
+                        color = colors.gray500
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = "뒤로가기",
+                        style = typography.body3.copy(textDecoration = TextDecoration.Underline),
+                        color = colors.main500,
+                        modifier = Modifier.GwangSanClickable { onBackClick() }
+                    )
+                }
+            }
+        }
+    }
+
+    if (openReportBottomSheet) {
+        Dialog(onDismissRequest = { setOpenReportBottomSheet(false) }) {
+            ReportBottomSheet(
+                onDismiss = { setOpenReportBottomSheet(false) },
+                onSubmit = { reportType, reportContent ->
+                    onReportCallBack(reportType, reportContent)
+                }
+            )
+        }
+    }
+
+    if (openDeleteBottomSheet) {
+        Dialog(onDismissRequest = { setOpenDeleteBottomSheet(false) }) {
+            GwangsanDialog(
+                onDismiss = { setOpenDeleteBottomSheet(false) },
+                onLogout = { onDeleteCallBack() },
+                titleText = "게시글 삭제",
+                contentText = "이 게시글을 삭제하시겠습니까?",
+                buttonText = "삭제"
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewReadMoreScreen() {
+    val dummyPost = PostUi(
+        id = 1L,
+        type = "SERVICE",
+        mode = "RECEIVER",
+        title = "에어컨 청소 부탁드립니다",
+        content = "에어컨 청소가 필요합니다. 더운 여름이라 빠른 시일 내에 부탁드려요.",
+        gwangsan = 10000,
+        member = MemberUi(
+            memberId = 10L,
+            nickname = "광산이",
+            placeName = "광산구 수완동",
+            light = 3
+        ),
+        images = persistentListOf(
+            ImageUi(
+                imageId = 1L,
+                imageUrl = "https://via.placeholder.com/600/92c952"
+            )
+        ),
+        isCompletable = true,
+        isCompleted = false,
+        isMine = false
+    )
+
+    ReadMoreScreen(
+        onChatClick = { _, _ -> },
+        onBackClick = {},
+        onOtherProfileClick = {},
+        getSpecificPostUiState = GetSpecificPostUiState.Success(dummyPost),
+        onReportCallBack = { _, _ -> },
+        setOpenReportBottomSheet = {},
+        setOpenReviewBottomSheet = {},
+        openReportBottomSheet = false,
+        openReviewBottomSheet = false,
+        onReviewCallBack = { _, _ -> },
+        onTransactionCompleteCallBack = {},
+        openDeleteBottomSheet = false,
+        setOpenDeleteBottomSheet = {},
+        onDeleteCallBack = {},
+        onEditClick = {}
+    )
 }
