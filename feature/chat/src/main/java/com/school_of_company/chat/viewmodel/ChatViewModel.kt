@@ -25,6 +25,7 @@ import com.school_of_company.data.repository.chat.ChatRepository
 import com.school_of_company.data.repository.image.ImageRepository
 import com.school_of_company.data.repository.post.PostRepository
 import com.school_of_company.data.repository.review.ReviewRepository
+import com.school_of_company.model.chat.response.JoinChatResponseModel
 import com.school_of_company.model.post.request.TransactionCompleteRequestModel
 import com.school_of_company.model.review.request.ReviewRequestModel
 import com.school_of_company.network.errorHandling
@@ -208,6 +209,8 @@ class ChatViewModel @Inject constructor(
     }
 
     suspend fun joinDirectChatRoom(roomId: Long) {
+        _joinChatUiState.value = JoinChatUiState.Success(JoinChatResponseModel(roomId))
+
         if (!isSocketConnected) {
             connectSocket()
         }
@@ -312,8 +315,9 @@ class ChatViewModel @Inject constructor(
     private suspend fun connectSocket() {
         val token = authRepository.getAccessToken().first()
         if (token.isNotBlank()) {
+            val sanitizedBaseUrl = BuildConfig.BASE_URL.trimEnd('/') + "/api/chat"
             chatRepository.connectSocket(
-                baseUrl = "${BuildConfig.BASE_URL}api/chat",
+                baseUrl = sanitizedBaseUrl,
                 accessToken = token
             )
         }
