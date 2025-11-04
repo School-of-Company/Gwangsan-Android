@@ -68,16 +68,20 @@ internal fun PostFinalRoute(
 
     val context = LocalContext.current
 
+
     LaunchedEffect(postUiState) {
         when (postUiState) {
             is PostUiState.Loading -> Unit
             is PostUiState.Success -> {
                 makeToast(context, "게시를 성공하였습니다.")
+                actualViewModel.resetPostState()
                 onSubmitClick()
             }
             is PostUiState.BadRequest -> onErrorToast(null, R.string.error_bad_request)
             is PostUiState.NotFound -> onErrorToast(null, R.string.error_resource_not_found)
-            is PostUiState.Error -> onErrorToast((postUiState as PostUiState.Error).exception, R.string.error_generic)
+            is PostUiState.Error ->
+                onErrorToast((postUiState as PostUiState.Error).exception, R.string.error_generic)
+            else -> Unit
         }
     }
 
@@ -86,11 +90,13 @@ internal fun PostFinalRoute(
             is ModifyPostUiState.Loading -> Unit
             is ModifyPostUiState.Success -> {
                 makeToast(context, "게시글 수정 성공")
+                actualViewModel.resetModifyState()
                 onSubmitClick()
             }
             is ModifyPostUiState.Error -> {
                 makeToast(context, "게시글 수정 실패")
             }
+            else -> Unit
         }
     }
 

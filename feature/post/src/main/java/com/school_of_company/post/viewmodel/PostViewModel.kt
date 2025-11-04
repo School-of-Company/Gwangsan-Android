@@ -261,4 +261,12 @@ class PostViewModel @Inject constructor(
     internal fun onImageIdsChange(value: List<Long>) { savedStateHandle[IMAGE_IDS] = value }
     internal fun onTypeChange(value: Type) { savedStateHandle[TYPE] = value }
     internal fun onModeChange(value: Mode) { savedStateHandle[MODE] = value }
+
+    fun resetPostState() {
+        _postUiState.value = PostUiState.Loading
+    }
+
+    fun resetModifyState() {
+        _modifyPostUiStat.value = ModifyPostUiState.Loading
+    }
 }
