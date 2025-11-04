@@ -59,7 +59,6 @@ private fun PostScreen(
     val pagerState = rememberPagerState(pageCount = { 3 })
     val coroutineScope = rememberCoroutineScope()
 
-
     val viewModel: PostViewModel = hiltViewModel()
 
     val isEditMode = editPostId != null
