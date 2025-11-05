@@ -26,8 +26,8 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
                     applicationId = "com.school_of_company.gwangsan"
                     minSdk = 26
                     targetSdk = 35
-                    versionCode = 202509029
-                    versionName = "1.2.8"
+                    versionCode = 20251105
+                    versionName = "1.3.0"
                     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
                     vectorDrawables.useSupportLibrary = true
