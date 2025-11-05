@@ -53,12 +53,11 @@ private fun PostScreen(
     onBackClick: () -> Unit,
     onCreateComplete: () -> Unit,
     onEditComplete: () -> Unit,
-    type: Type? = null,          // ← nullable
+    type: Type? = null,
     mode: Mode? = null
 ) {
     val pagerState = rememberPagerState(pageCount = { 3 })
     val coroutineScope = rememberCoroutineScope()
-
 
     val viewModel: PostViewModel = hiltViewModel()
 

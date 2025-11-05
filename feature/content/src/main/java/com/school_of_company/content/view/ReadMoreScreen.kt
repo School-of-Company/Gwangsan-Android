@@ -62,7 +62,7 @@ internal fun ReadMoreRoute(
     postId: Long,
     onBackClick: () -> Unit,
     onOtherProfileClick: (Long) -> Unit,
-    onChatClick: (Long) -> Unit,
+    onChatClick: (Long, Long?) -> Unit,
     onReviewClick: (Int, String) -> Unit,
     onReportClick: (String, String) -> Unit,
     onEditClick: (Long, String, String) -> Unit,
@@ -204,7 +204,7 @@ private fun ReadMoreScreen(
     onBackClick: () -> Unit,
     onEditClick: () -> Unit,
     onOtherProfileClick: (Long) -> Unit,
-    onChatClick: (Long) -> Unit,
+    onChatClick: (Long, Long?) -> Unit,
     onTransactionCompleteCallBack: () -> Unit,
     onReportCallBack: (String, String) -> Unit,
     onReviewCallBack: (Int, String) -> Unit,
@@ -364,7 +364,13 @@ private fun ReadMoreScreen(
                                 text = if (getSpecificPostUiState.post.isMine) "수정" else "채팅하기",
                                 backgroundColor = colors.white,
                                 textColor = colors.main500,
-                                onClick = { if (getSpecificPostUiState.post.isMine) onEditClick() else onChatClick(getSpecificPostUiState.post.id) },
+                                onClick = {
+                                    if (getSpecificPostUiState.post.isMine) {
+                                        onEditClick()
+                                    } else {
+                                        onChatClick(getSpecificPostUiState.post.id, null)
+                                    }
+                                },
                                 modifier = Modifier
                                     .weight(1f)
                                     .border(1.dp, colors.main500, RoundedCornerShape(8.dp))
@@ -482,7 +488,7 @@ private fun PreviewReadMoreScreen() {
     )
 
     ReadMoreScreen(
-        onChatClick = {},
+        onChatClick = { _, _ -> },
         onBackClick = {},
         onOtherProfileClick = {},
         getSpecificPostUiState = GetSpecificPostUiState.Success(dummyPost),

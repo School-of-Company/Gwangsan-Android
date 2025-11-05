@@ -29,7 +29,7 @@ import kotlinx.collections.immutable.persistentListOf
 @Composable
 internal fun ChatListItem(
     modifier: Modifier = Modifier,
-    onClick: (Long) -> Unit,
+    onClick: (productId: Long, roomId: Long) -> Unit,
     item: GetChatRoomResponseUi,
 ) {
     GwangSanTheme { colors, typography ->
@@ -37,7 +37,7 @@ internal fun ChatListItem(
             verticalAlignment = Alignment.CenterVertically,
             modifier = modifier
                 .fillMaxWidth()
-                .GwangSanClickable { onClick(item.product.productId) }
+                .GwangSanClickable { onClick(item.product.productId, item.roomId) }
                 .padding(
                     horizontal = 16.dp,
                     vertical = 12.dp
@@ -116,4 +116,3 @@ internal fun ChatListItem(
         }
     }
 }
-

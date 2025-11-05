@@ -21,7 +21,7 @@ fun NavController.navigateToReadMore(
 fun NavGraphBuilder.readMoreScreen(
     onBackClick: () -> Unit,
     onOtherProfileClick: (Long) -> Unit,
-    onChatClick: (Long) -> Unit,
+    onChatClick: (Long, Long?) -> Unit,
     onReviewClick: (Int, String) -> Unit,
     onReportClick: (String, String) -> Unit,
     onEditClick: (Long, String, String) -> Unit,

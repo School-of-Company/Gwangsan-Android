@@ -181,8 +181,8 @@ fun GwangsanNavHost(
 
         chatScreen(
             onCloseClick = { navController.popBackStack() },
-            onChatClick = { id ->
-                navController.navigateToChatRoom(id)
+            onChatClick = { productId, roomId ->
+                navController.navigateToChatRoom(productId, roomId)
             }
         )
 
@@ -195,8 +195,8 @@ fun GwangsanNavHost(
             onOtherProfileClick = { memberId ->
                 navController.navigateToOtherPersonProfile(memberId = memberId)
             },
-            onChatClick = { id ->
-                navController.navigateToChatRoom(id)
+            onChatClick = { id, roomId ->
+                navController.navigateToChatRoom(id, roomId)
             },
             onReviewClick = { _, _ -> },
             onReportClick = { _, _ -> },

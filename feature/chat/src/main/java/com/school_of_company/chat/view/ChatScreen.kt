@@ -32,7 +32,7 @@ import com.school_of_company.design_system.theme.GwangSanTheme
 @Composable
 internal fun ChatRoute(
     onCloseClick: () -> Unit,
-    onChatClick: (Long) -> Unit,
+    onChatClick: (productId: Long, roomId: Long) -> Unit,
     viewModel: ChatViewModel = hiltViewModel()
 ) {
     val swipeRefreshLoading by viewModel.swipeRefreshLoading.collectAsStateWithLifecycle()
@@ -60,7 +60,7 @@ private fun ChatScreen(
     getChatRoom: () -> Unit,
     getChatRoomUiState: GetChatRoomUiState,
     onCloseClick: () -> Unit,
-    onChatClick: (Long) -> Unit,
+    onChatClick: (productId: Long, roomId: Long) -> Unit,
 ) {
     GwangSanTheme { colors, typography ->
         Column(
@@ -124,7 +124,7 @@ private fun ChatScreen(
                             ) { item ->
                                 ChatListItem(
                                     item = item,
-                                    onClick = { onChatClick(item.product.productId) }
+                                    onClick = { productId, roomId -> onChatClick(productId, roomId) }
                                 )
                             }
                         }
