@@ -26,8 +26,8 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
                     applicationId = "com.school_of_company.gwangsan"
                     minSdk = 26
                     targetSdk = 35
-                    versionCode = 202511050
-                    versionName = "1.3.0"
+                    versionCode = 202511052
+                    versionName = "1.3.2"
 
                     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
