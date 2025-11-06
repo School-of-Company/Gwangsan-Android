@@ -6,14 +6,13 @@ plugins {
     id("gwangsan.android.hilt")
 }
 
-
 android {
     namespace = "com.school_of_company.network"
 
     buildFeatures {
         buildConfig = true
         defaultConfig {
-            buildConfigField("String", "BASE_URL",  getApiKey("BASE_URL"))
+            buildConfigField("String", "BASE_URL", "\"https://api.gwangsan.io.kr:28668\"")
         }
     }
 }
