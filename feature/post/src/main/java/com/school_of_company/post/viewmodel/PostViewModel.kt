@@ -161,7 +161,7 @@ class PostViewModel @Inject constructor(
                         _editPostId.value = null
                     }
                     is Result.Error -> {
-                        if (mode.value.name == Mode.GIVER.name && imageIds.value.isEmpty()) {
+                        if (mode.value.name == Mode.GIVER.name && type.value.name == Type.OBJECT.name && imageIds.value.isEmpty()) {
                             _modifyPostUiStat.value = ModifyPostUiState.NotFoundImage
                         } else {
                             _modifyPostUiStat.value = ModifyPostUiState.Error(result.exception)
@@ -198,7 +198,7 @@ class PostViewModel @Inject constructor(
                         badRequestAction = { PostUiState.BadRequest },
                         notFoundAction = { PostUiState.NotFound },
                     )
-                    if (mode.value.name == Mode.GIVER.name && imageIds.value.isEmpty()) {
+                    if (mode.value.name == Mode.GIVER.name && type.value.name == Type.OBJECT.name && imageIds.value.isEmpty()) {
                         _postUiState.value = PostUiState.NotFoundImage
                     } else {
                         _postUiState.value = PostUiState.Error(result.exception)
