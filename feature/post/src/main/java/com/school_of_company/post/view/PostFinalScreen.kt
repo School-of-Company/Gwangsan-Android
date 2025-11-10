@@ -1,5 +1,6 @@
 package com.school_of_company.post.view
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -69,7 +70,6 @@ internal fun PostFinalRoute(
 
     val context = LocalContext.current
 
-
     LaunchedEffect(postUiState) {
         when (postUiState) {
             is PostUiState.Loading -> Unit
@@ -80,8 +80,8 @@ internal fun PostFinalRoute(
             }
             is PostUiState.BadRequest -> onErrorToast(null, R.string.error_bad_request)
             is PostUiState.NotFound -> onErrorToast(null, R.string.error_resource_not_found)
-            is PostUiState.Error ->
-                onErrorToast((postUiState as PostUiState.Error).exception, R.string.error_generic)
+            is PostUiState.Error -> onErrorToast((postUiState as PostUiState.Error).exception, R.string.error_generic)
+            is PostUiState.NotFoundImage -> onErrorToast(null, R.string.require_image)
             else -> Unit
         }
     }
@@ -97,6 +97,7 @@ internal fun PostFinalRoute(
             is ModifyPostUiState.Error -> {
                 makeToast(context, "게시글 수정 실패")
             }
+            is ModifyPostUiState.NotFoundImage -> onErrorToast(null, R.string.require_image)
             else -> Unit
         }
     }
@@ -111,6 +112,7 @@ internal fun PostFinalRoute(
     }
 
     PostFinalScreen(
+        context = context,
         subject = subject,
         content = content,
         price = price,
@@ -132,6 +134,7 @@ internal fun PostFinalRoute(
 @Composable
 private fun PostFinalScreen(
     modifier: Modifier = Modifier,
+    context: Context,
     subject: String,
     content: String,
     price: String,
@@ -312,7 +315,13 @@ private fun PostFinalScreen(
                     GwangSanStateButton(
                         text = "완료",
                         state = ButtonState.Enable,
-                        onClick = onSubmitClick,
+                        onClick = {
+                            if (modeLabel == "팔아요" && typeLabel == "물건" && images.isEmpty()) {
+                                makeToast(context, "이미지를 첨부해주세요.")
+                            } else {
+                                onSubmitClick()
+                            }
+                        },
                         modifier = Modifier
                             .weight(1f)
                             .height(56.dp)
@@ -337,6 +346,7 @@ private fun PostFinalPreview() {
         onBackClick = {},
         images = persistentListOf(),
         typeLabel = "물건",
-        modeLabel = "필요해요"
+        modeLabel = "필요해요",
+        context = LocalContext.current
     )
 }
