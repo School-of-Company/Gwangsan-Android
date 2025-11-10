@@ -211,10 +211,10 @@ private fun PostInputScreen(
 
             val canProceed = when {
                 value.isBlank() -> false
-                !hasAnyImage -> false
                 imageUri.isEmpty() -> true
+                imageUpLoadUiState is ImageUpLoadUiState.Loading -> false
                 imageUpLoadUiState is ImageUpLoadUiState.Success -> true
-                else -> false
+                else -> true
             }
 
             GwangSanStateButton(

@@ -5,5 +5,6 @@ sealed interface PostUiState {
     data object Success : PostUiState
     data object BadRequest : PostUiState
     data object NotFound : PostUiState
+    data object NotFoundImage : PostUiState
     data class Error(val exception: Throwable) : PostUiState
 }

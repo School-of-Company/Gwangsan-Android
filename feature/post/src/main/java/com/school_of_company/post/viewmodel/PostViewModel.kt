@@ -161,8 +161,11 @@ class PostViewModel @Inject constructor(
                         _editPostId.value = null
                     }
                     is Result.Error -> {
-                        _modifyPostUiStat.value = ModifyPostUiState.Error(result.exception)
-                        Log.e("ModifyPostViewModel", "Error: ${result.exception}")
+                        if (mode.value == Mode.GIVER && type.value == Type.OBJECT && imageIds.value.isEmpty()) {
+                            _modifyPostUiStat.value = ModifyPostUiState.NotFoundImage
+                        } else {
+                            _modifyPostUiStat.value = ModifyPostUiState.Error(result.exception)
+                        }
                     }
                 }
             }
@@ -191,11 +194,15 @@ class PostViewModel @Inject constructor(
             when (result) {
                 is Result.Success -> _postUiState.value = PostUiState.Success
                 is Result.Error -> {
-                    _postUiState.value = PostUiState.Error(result.exception)
                     result.exception.errorHandling(
                         badRequestAction = { PostUiState.BadRequest },
                         notFoundAction = { PostUiState.NotFound },
                     )
+                    if (mode.value == Mode.GIVER && type.value == Type.OBJECT && imageIds.value.isEmpty()) {
+                        _postUiState.value = PostUiState.NotFoundImage
+                    } else {
+                        _postUiState.value = PostUiState.Error(result.exception)
+                    }
                 }
                 is Result.Loading -> _postUiState.value = PostUiState.Loading
             }
