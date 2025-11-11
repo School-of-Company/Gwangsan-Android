@@ -237,16 +237,16 @@ class PostViewModel @Inject constructor(
     }
 
     internal fun removeExistingImage(index: Int) {
-        val currentUrls = _existingImageUrls.value.toMutableList()
-        val currentIds = imageIds.value.toMutableList()
-
-        if (index < currentUrls.size) {
-            currentUrls.removeAt(index)
-            currentIds.removeAt(index)
-            _existingImageUrls.value = currentUrls
-            onImageIdsChange(currentIds)
+        val urls = _existingImageUrls.value.toMutableList()
+        val ids = imageIds.value.toMutableList()
+        if (index < urls.size) {
+            urls.removeAt(index)
+            ids.removeAt(index)
+            _existingImageUrls.value = urls
+            savedStateHandle[IMAGE_IDS] = ids
         }
     }
+
 
     internal fun removeNewImage(index: Int) {
         val currentImages = _selectedImages.value.toMutableList()
