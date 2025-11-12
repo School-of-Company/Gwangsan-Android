@@ -72,7 +72,7 @@ internal fun PostInputRoute(
             }
         }
 
-    LaunchedEffect(selectedImageUris, existingImageUrls) {
+    LaunchedEffect(selectedImageUris) {
         val totalAllow = 5 - existingImageUrls.size
         if (totalAllow <= 0) return@LaunchedEffect
 
