@@ -244,11 +244,11 @@ class SignUpViewModel @Inject constructor(
     }
 
     internal fun onPasswordChange(value: String) {
-        savedStateHandle[PASSWORD] = value.trim()
+        savedStateHandle[PASSWORD] = value
     }
 
     internal fun onCheckPasswordChange(value: String) {
-        savedStateHandle[RE_PASSWORD] = value.trim()
+        savedStateHandle[RE_PASSWORD] = value
     }
 
     internal fun onNumberChange(value: String) {
