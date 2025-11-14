@@ -162,7 +162,7 @@ fun GwangsanNavHost(
         )
 
         signUpFinishScreen(
-            onClickGoToLogin = { navController.navigateToSignIn() }
+            onClickGoToLogin = { navController.navigationPopUpToLogin(loginRoute = StartRoute) }
         )
 
         mainScreen(
