@@ -20,7 +20,6 @@ internal fun FinishRoute(
     FinishScreen(onClickGoToLogin = onClickGoToLogin)
 }
 
-
 @Composable
 fun FinishScreen(
     modifier: Modifier = Modifier,
