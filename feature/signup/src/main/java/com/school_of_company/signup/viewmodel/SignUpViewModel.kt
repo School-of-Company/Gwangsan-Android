@@ -236,19 +236,19 @@ class SignUpViewModel @Inject constructor(
     }
 
     fun onNameChange(value: String) {
-        savedStateHandle[NAME] = value
+        savedStateHandle[NAME] = value.trim()
     }
 
     internal fun onNicknameChange(value: String) {
-        savedStateHandle[NICKNAME] = value
+        savedStateHandle[NICKNAME] = value.trim()
     }
 
     internal fun onPasswordChange(value: String) {
-        savedStateHandle[PASSWORD] = value
+        savedStateHandle[PASSWORD] = value.trim()
     }
 
     internal fun onCheckPasswordChange(value: String) {
-        savedStateHandle[RE_PASSWORD] = value
+        savedStateHandle[RE_PASSWORD] = value.trim()
     }
 
     internal fun onNumberChange(value: String) {
@@ -268,7 +268,7 @@ class SignUpViewModel @Inject constructor(
     }
 
     internal fun onRecommenderChange(value: String) {
-        savedStateHandle[RECOMMENDER] = value
+        savedStateHandle[RECOMMENDER] = value.trim()
     }
 
     internal fun onSpecialtyListChange(list: List<String>) {
